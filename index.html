@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SwiftPath Capital - First, Fast, Funded</title>
+  <meta property="og:title" content="SwiftPath Capital: First, Fast, Funded.">
+  <meta property="og:description" content="Real estate investment funding at the speed of the deal. Get pre-qualified in minutes.">
+  <meta property="og:image" content="https://i.postimg.cc/5tFPsLvR/Untitled-design.png">
+  <meta property="og:url" content="https://www.swiftpathcapital.com">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>body{font-family:'Inter',sans-serif}.bg-brand-blue{background:#4A7A9D}.bg-brand-gold{background:#c5a35a}</style>
+</head>
+<body class="bg-gray-50 text-slate-700">
+  <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-40 shadow-sm">
+    <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+      <a href="/" class="flex items-center space-x-2">
+        <img src="https://i.postimg.cc/5tFPsLvR/Untitled-design.png" alt="SwiftPath Capital Logo" class="h-12 w-auto">
+      </a>
+      <div class="hidden md:flex items-center space-x-8">
+        <a href="#products" class="hover:text-slate-900">Loan Products</a>
+        <a href="/LoanApp.html" class="bg-brand-gold text-white font-bold py-2 px-5 rounded-lg shadow">Apply Now</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="relative min-h-[70vh] flex items-center bg-cover bg-center" style="background-image:url('https://images.unsplash.com/photo-1580587771525-78b9dba3b914?q=80&w=2874&auto=format&fit=crop')">
+      <div class="absolute inset-0 bg-slate-900/60"></div>
+      <div class="relative container mx-auto px-6 text-center text-white">
+        <h1 class="text-5xl font-extrabold mb-4">Real Estate Investment Funding</h1>
+        <p class="text-xl text-gray-200 mb-8">From pre‑qual to funded in days, not weeks.</p>
+        <div class="flex flex-col sm:flex-row gap-3 justify-center">
+          <a href="/LoanApp.html" class="bg-brand-blue text-white font-bold py-3 px-8 rounded-lg shadow">Get Pre‑Qualified</a>
+          <a href="#lead" class="border-2 border-white text-white font-bold py-3 px-8 rounded-lg">Talk to a Loan Pro</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="lead" class="py-16">
+      <div class="container mx-auto px-6 max-w-2xl">
+        <div class="bg-white rounded-xl shadow-xl p-8">
+          <h2 class="text-2xl font-bold mb-1">Get a Free Pre‑Qual Call</h2>
+          <p class="text-slate-600 mb-6">Tell us how to reach you—no credit pull.</p>
+
+          <form id="leadForm" class="grid gap-4" novalidate>
+            <div class="grid md:grid-cols-2 gap-4">
+              <div><label class="block text-sm font-medium mb-1" for="leadName">Full Name</label><input id="leadName" name="full_name" required class="w-full border rounded-lg px-3 py-2"></div>
+              <div><label class="block text-sm font-medium mb-1" for="leadPhone">Phone</label><input id="leadPhone" name="phone" required class="w-full border rounded-lg px-3 py-2"></div>
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1" for="leadEmail">Email</label>
+              <input id="leadEmail" type="email" name="email" required class="w-full border rounded-lg px-3 py-2">
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1" for="leadPurpose">Loan Type</label>
+              <select id="leadPurpose" name="loan_purpose" class="w-full border rounded-lg px-3 py-2">
+                <option value="">Select</option>
+                <option>Fix-and-Flip</option><option>BRRRR</option><option>Rental</option><option>New Construction</option><option>Bridge</option>
+              </select>
+            </div>
+            <p class="text-xs text-slate-500">By submitting, you agree to our <a class="underline" href="#" id="open-terms">Terms</a> and <a class="underline" href="#" id="open-privacy">Privacy Policy</a>.</p>
+            <button type="submit" class="mt-2 bg-brand-gold text-white font-bold py-3 px-8 rounded-lg">Send</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <section id="products" class="py-12 bg-white">
+      <div class="container mx-auto px-6 grid md:grid-cols-3 gap-8">
+        <div class="border rounded-xl p-6"><h3 class="font-bold text-lg">Fix‑and‑Flip</h3><p class="text-slate-600 mt-2">Up to 90% LTC, fast draws.</p></div>
+        <div class="border rounded-xl p-6"><h3 class="font-bold text-lg">Rental DSCR</h3><p class="text-slate-600 mt-2">30‑yr, no‑income loans.</p></div>
+        <div class="border rounded-xl p-6"><h3 class="font-bold text-lg">New Construction</h3><p class="text-slate-600 mt-2">Ground‑up, interest‑only.</p></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="bg-slate-800 text-white">
+    <div class="container mx-auto px-6 py-10 grid md:grid-cols-3 gap-8">
+      <div>
+        <img src="https://i.postimg.cc/5tFPsLvR/Untitled-design.png" alt="SwiftPath Capital Logo" class="h-10 w-auto bg-white p-1 rounded-md">
+        <p class="mt-3 text-slate-400">Equal Housing Opportunity · Not a commitment to lend.</p>
+      </div>
+      <div>
+        <h3 class="font-bold tracking-wide text-[#c5a35a]">Navigation</h3>
+        <ul class="mt-3 space-y-2">
+          <li><a href="/LoanApp.html" class="hover:text-[#c5a35a]">Apply Now</a></li>
+          <li><a href="#products" class="hover:text-[#c5a35a]">Loan Products</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="font-bold tracking-wide text-[#c5a35a]">Contact</h3>
+        <ul class="mt-3 space-y-1 text-slate-300">
+          <li>Email: <a href="mailto:loans@swiftpathcapital.com" class="hover:text-[#c5a35a]">loans@swiftpathcapital.com</a></li>
+          <li>Phone: <a href="tel:+1-800-555-3863" class="hover:text-[#c5a35a]">1‑800‑555‑FUND</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="border-t border-slate-700 text-center py-4 text-sm text-slate-400">
+      © 2025 SwiftPath Capital
+      <span class="mx-2">·</span>
+      <a href="#" id="open-privacy-footer" class="hover:text-[#c5a35a]">Privacy</a>
+      <span class="mx-2">·</span>
+      <a href="#" id="open-terms-footer" class="hover:text-[#c5a35a]">Terms</a>
+    </div>
+  </footer>
+
+  <!-- Simple Terms/Privacy modals -->
+  <div id="overlay" class="fixed inset-0 bg-black/50 hidden"></div>
+  <div id="modal" class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white w-11/12 max-w-2xl rounded-lg shadow-lg p-6 hidden">
+    <button id="close-modal" class="absolute right-3 top-3 text-slate-500">✕</button>
+    <div id="modal-body" class="text-sm text-slate-700 space-y-2">
+      <h2 class="text-xl font-bold">Policy</h2>
+      <p>We collect contact, business, financial, and property details solely to evaluate and process real estate investor loans. We do not sell your data.</p>
+      <p>Submitting an application is not a commitment to lend. All loans are subject to underwriting.</p>
+    </div>
+  </div>
+
+  <script>window.HUBSPOT_PORTAL_ID="243569048";</script>
+  <script src="/assets/hubspot.js"></script>
+  <script>
+    // modal
+    const overlay=document.getElementById('overlay');const modal=document.getElementById('modal');const closeBtn=document.getElementById('close-modal');
+    const openModal=()=>{overlay.classList.remove('hidden');modal.classList.remove('hidden');};
+    const closeModal=()=>{overlay.classList.add('hidden');modal.classList.add('hidden');};
+    document.getElementById('open-privacy')?.addEventListener('click',e=>{e.preventDefault();openModal();});
+    document.getElementById('open-terms')?.addEventListener('click',e=>{e.preventDefault();openModal();});
+    document.getElementById('open-privacy-footer')?.addEventListener('click',e=>{e.preventDefault();openModal();});
+    document.getElementById('open-terms-footer')?.addEventListener('click',e=>{e.preventDefault();openModal();});
+    closeBtn.addEventListener('click',closeModal);overlay.addEventListener('click',closeModal);
+
+    // lead form submit -> HubSpot
+    const leadForm = document.getElementById('leadForm');
+    leadForm.addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      const btn = leadForm.querySelector('button[type="submit"]');
+      btn.disabled=true; btn.innerText='Sending...';
+      try {
+        const fields = [
+          { name: 'full_name', value: document.getElementById('leadName').value.trim() },
+          { name: 'email', value: document.getElementById('leadEmail').value.trim() },
+          { name: 'phone', value: document.getElementById('leadPhone').value.trim() },
+          { name: 'loan_purpose', value: document.getElementById('leadPurpose').value }
+        ];
+        if(!window.HUBSPOT_LEAD_GUID) throw new Error('Missing HUBSPOT_LEAD_GUID');
+        await window.__swiftpathHS.submitToHubSpot(window.HUBSPOT_LEAD_GUID, fields, '/thank-you.html');
+      } catch(err) {
+        alert('There was a problem submitting your info. ' + err.message);
+      } finally { btn.disabled=false; btn.innerText='Send'; }
+    });
+  </script>
+  <script>
+    // TODO: paste your real GUIDs after creating forms in HubSpot
+    window.HUBSPOT_LEAD_GUID = 'REPLACE_WITH_LEAD_FORM_GUID';
+  </script>
+</body>
+</html>

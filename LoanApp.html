@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Apply • SwiftPath Capital</title>
+  <meta name="description" content="Start your real estate investor loan application. Secure form.">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>body{font-family:'Inter',sans-serif}.bg-brand-blue{background:#4A7A9D}.bg-brand-gold{background:#c5a35a}</style>
+</head>
+<body class="bg-gray-50 text-slate-700">
+  <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-40 shadow-sm">
+    <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+      <a href="/" class="flex items-center space-x-2">
+        <img src="https://i.postimg.cc/5tFPsLvR/Untitled-design.png" alt="SwiftPath Capital Logo" class="h-12 w-auto">
+      </a>
+      <div class="hidden md:flex items-center space-x-8">
+        <a href="/#products" class="hover:text-slate-900">Loan Products</a>
+        <a href="#application" class="bg-brand-gold text-white font-bold py-2 px-5 rounded-lg shadow">Apply Now</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="relative min-h-[40vh] flex items-center bg-cover bg-center" style="background-image:url('https://images.unsplash.com/photo-1580587771525-78b9dba3b914?q=80&w=2874&auto=format&fit=crop')">
+      <div class="absolute inset-0 bg-slate-900/60"></div>
+      <div class="relative container mx-auto px-6 text-center text-white">
+        <h1 class="text-4xl md:text-5xl font-extrabold leading-tight mb-4">Start Your Loan Application</h1>
+        <p class="text-lg md:text-xl max-w-3xl mx-auto mb-8">A loan officer will contact you to finish the process.</p>
+        <a href="#application" class="inline-block bg-brand-blue text-white font-bold py-3 px-8 rounded-lg shadow">Jump to Form</a>
+      </div>
+    </section>
+
+    <section id="application" class="py-16 bg-white">
+      <div class="container mx-auto px-6">
+        <form id="loanForm" class="max-w-4xl mx-auto bg-gray-50 p-8 rounded-xl shadow-lg" novalidate>
+          <h2 class="text-2xl font-bold text-slate-800 border-b-2 border-[#c5a35a] pb-2">Personal Information</h2>
+          <div class="grid md:grid-cols-2 gap-6 mt-6">
+            <div><label class="block mb-1 font-medium" for="fullName">Full Name</label><input id="fullName" name="full_name" class="w-full border rounded-lg px-3 py-2" required></div>
+            <div><label class="block mb-1 font-medium" for="email">Email</label><input id="email" type="email" name="email" class="w-full border rounded-lg px-3 py-2" required></div>
+            <div><label class="block mb-1 font-medium" for="phone">Phone</label><input id="phone" name="phone" class="w-full border rounded-lg px-3 py-2" required></div>
+            <div><label class="block mb-1 font-medium" for="mailingAddress">Mailing Address</label><input id="mailingAddress" name="mailing_address" class="w-full border rounded-lg px-3 py-2"></div>
+          </div>
+
+          <h2 class="mt-10 text-2xl font-bold text-slate-800 border-b-2 border-[#c5a35a] pb-2">Business & Financial</h2>
+          <div class="grid md:grid-cols-2 gap-6 mt-6">
+            <div><label class="block mb-1 font-medium" for="businessName">Business Name</label><input id="businessName" name="business_name" class="w-full border rounded-lg px-3 py-2"></div>
+            <div><label class="block mb-1 font-medium" for="businessType">Business Type</label><input id="businessType" name="business_type" class="w-full border rounded-lg px-3 py-2" placeholder="LLC, Corp, Sole Prop"></div>
+            <div><label class="block mb-1 font-medium" for="annualRevenue">Estimated Annual Revenue</label><input id="annualRevenue" name="annual_revenue" class="w-full border rounded-lg px-3 py-2" placeholder="$"></div>
+            <div>
+              <label class="block mb-1 font-medium" for="creditScore">Estimated Credit Score</label>
+              <select id="creditScore" name="credit_score_range" class="w-full border rounded-lg px-3 py-2">
+                <option value="">Select</option>
+                <option>740+</option><option>700-739</option><option>660-699</option><option>620-659</option><option>Below 620</option>
+              </select>
+            </div>
+          </div>
+
+          <h2 class="mt-10 text-2xl font-bold text-slate-800 border-b-2 border-[#c5a35a] pb-2">Property & Loan</h2>
+          <div class="grid md:grid-cols-2 gap-6 mt-6">
+            <div><label class="block mb-1 font-medium" for="propertyAddress">Investment Property Address</label><input id="propertyAddress" name="property_address" class="w-full border rounded-lg px-3 py-2"></div>
+            <div><label class="block mb-1 font-medium" for="loanAmount">Requested Loan Amount</label><input id="loanAmount" name="requested_loan_amount" class="w-full border rounded-lg px-3 py-2" placeholder="$"></div>
+            <div>
+              <label class="block mb-1 font-medium" for="loanPurpose">Purpose of Loan</label>
+              <select id="loanPurpose" name="loan_purpose" class="w-full border rounded-lg px-3 py-2">
+                <option value="">Select</option>
+                <option>Fix-and-Flip</option><option>BRRRR</option><option>Rental Property</option><option>New Construction</option><option>Bridge Loan</option><option>Other</option>
+              </select>
+            </div>
+            <div class="md:col-span-2"><label class="block mb-1 font-medium" for="loanDetails">Additional Details</label><textarea id="loanDetails" name="loan_details" rows="4" class="w-full border rounded-lg px-3 py-2" placeholder="Tell us about your project..."></textarea></div>
+          </div>
+
+          <div class="mt-8 flex items-start">
+            <input id="terms-agree" type="checkbox" class="h-5 w-5 mt-1" required>
+            <label for="terms-agree" class="ml-3 text-sm">I agree to the <a href="#" id="open-terms" class="underline">Terms</a> and <a href="#" id="open-privacy" class="underline">Privacy Policy</a>.</label>
+          </div>
+
+          <div class="mt-8 text-center">
+            <button type="submit" class="bg-brand-gold text-white font-bold py-3 px-12 rounded-lg shadow">Submit Application</button>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="bg-slate-800 text-white">
+    <div class="container mx-auto px-6 py-10 grid md:grid-cols-3 gap-8">
+      <div>
+        <img src="https://i.postimg.cc/5tFPsLvR/Untitled-design.png" alt="SwiftPath Capital Logo" class="h-10 w-auto bg-white p-1 rounded-md">
+        <p class="mt-3 text-slate-400">Equal Housing Opportunity · Not a commitment to lend.</p>
+      </div>
+      <div>
+        <h3 class="font-bold tracking-wide text-[#c5a35a]">Navigation</h3>
+        <ul class="mt-3 space-y-2">
+          <li><a href="/#products" class="hover:text-[#c5a35a]">Loan Products</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="font-bold tracking-wide text-[#c5a35a]">Contact</h3>
+        <ul class="mt-3 space-y-1 text-slate-300">
+          <li>Email: <a href="mailto:loans@swiftpathcapital.com" class="hover:text-[#c5a35a]">loans@swiftpathcapital.com</a></li>
+          <li>Phone: <a href="tel:+1-800-555-3863" class="hover:text-[#c5a35a]">1‑800‑555‑FUND</a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Modal -->
+  <div id="overlay" class="fixed inset-0 bg-black/50 hidden"></div>
+  <div id="modal" class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white w-11/12 max-w-2xl rounded-lg shadow-lg p-6 hidden">
+    <button id="close-modal" class="absolute right-3 top-3 text-slate-500">✕</button>
+    <div id="modal-body" class="text-sm text-slate-700 space-y-2">
+      <h2 class="text-xl font-bold">Policy</h2>
+      <p>We collect contact, business, financial, and property details solely to evaluate and process real estate investor loans. We do not sell your data.</p>
+      <p>Submitting an application is not a commitment to lend. All loans are subject to underwriting.</p>
+    </div>
+  </div>
+
+  <script>window.HUBSPOT_PORTAL_ID="243569048";</script>
+  <script src="/assets/hubspot.js"></script>
+  <script>
+    // modal
+    const overlay=document.getElementById('overlay');const modal=document.getElementById('modal');const closeBtn=document.getElementById('close-modal');
+    const openModal=()=>{overlay.classList.remove('hidden');modal.classList.remove('hidden');};
+    const closeModal=()=>{overlay.classList.add('hidden');modal.classList.add('hidden');};
+    document.getElementById('open-privacy')?.addEventListener('click',e=>{e.preventDefault();openModal();});
+    document.getElementById('open-terms')?.addEventListener('click',e=>{e.preventDefault();openModal();});
+    closeBtn.addEventListener('click',closeModal);overlay.addEventListener('click',closeModal);
+
+    // loan form submit -> HubSpot
+    const loanForm = document.getElementById('loanForm');
+    loanForm.addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      const btn = loanForm.querySelector('button[type="submit"]');
+      btn.disabled=true; btn.innerText='Submitting...';
+      try {
+        const fields = [
+          { name:'full_name', value: document.getElementById('fullName').value.trim() },
+          { name:'email', value: document.getElementById('email').value.trim() },
+          { name:'phone', value: document.getElementById('phone').value.trim() },
+          { name:'mailing_address', value: document.getElementById('mailingAddress').value.trim() },
+          { name:'business_name', value: document.getElementById('businessName').value.trim() },
+          { name:'business_type', value: document.getElementById('businessType').value.trim() },
+          { name:'annual_revenue', value: document.getElementById('annualRevenue').value.trim() },
+          { name:'credit_score_range', value: document.getElementById('creditScore').value },
+          { name:'property_address', value: document.getElementById('propertyAddress').value.trim() },
+          { name:'requested_loan_amount', value: document.getElementById('loanAmount').value.trim() },
+          { name:'loan_purpose', value: document.getElementById('loanPurpose').value },
+          { name:'loan_details', value: document.getElementById('loanDetails').value.trim() }
+        ];
+        if(!window.HUBSPOT_LOAN_GUID) throw new Error('Missing HUBSPOT_LOAN_GUID');
+        await window.__swiftpathHS.submitToHubSpot(window.HUBSPOT_LOAN_GUID, fields, '/thank-you.html');
+      } catch(err) {
+        alert('There was a problem submitting your application. ' + err.message);
+      } finally { btn.disabled=false; btn.innerText='Submit Application'; }
+    });
+  </script>
+  <script>
+    // TODO: paste your real GUID after creating the form in HubSpot
+    window.HUBSPOT_LOAN_GUID = 'REPLACE_WITH_LOAN_FORM_GUID';
+  </script>
+</body>
+</html>
