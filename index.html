@@ -234,19 +234,50 @@
                     <div class="max-w-3xl mx-auto">
                         <h2 class="text-3xl md:text-4xl font-bold mb-2 text-center">Ready to Fund Your Next Deal?</h2>
                         <p class="text-lg text-blue-100 max-w-2xl mx-auto mb-8 text-center">Fast, free pre‑qualification. No credit impact.</p>
-                        <form id="leadForm" class="grid md:grid-cols-3 gap-4">
-                            <input id="leadName" class="w-full border border-white/30 bg-white/10 rounded-lg px-3 py-3 placeholder-blue-100" placeholder="Full name" required>
-                            <input id="leadEmail" type="email" class="w-full border border-white/30 bg-white/10 rounded-lg px-3 py-3 placeholder-blue-100" placeholder="Email" required>
-                            <input id="leadPhone" class="w-full border border-white/30 bg-white/10 rounded-lg px-3 py-3 placeholder-blue-100" placeholder="Phone" required>
-                            <div class="md:col-span-3 flex flex-col sm:flex-row gap-3">
-                                <select id="leadPurpose" class="flex-1 border border-white/30 bg-white/10 rounded-lg px-3 py-3">
-                                    <option value="">Loan type</option><option>Fix-and-Flip</option><option>BRRRR</option><option>Rental</option><option>New Construction</option><option>Bridge</option>
-                                </select>
-                                <a href="/LoanApp.html" class="sm:w-auto w-full border-2 border-white/60 text-white font-bold py-3 px-6 rounded-lg text-center">Full Application</a>
-                                <button type="submit" class="sm:w-auto w-full bg-brand-gold text-white font-bold py-3 px-8 rounded-lg">Get Pre‑Qualified</button>
-                            </div>
-                            <p class="md:col-span-3 text-sm text-blue-100/80 mt-2">By submitting, you agree to our Terms and Privacy Policy.</p>
-                        </form>
+                        <!-- HubSpot Embedded Form -->
+<div id="hubspot-lead-form" class="max-w-xl mx-auto bg-white/90 rounded-xl p-6 shadow-lg"></div>
+<script type="text/javascript" src="//js-na2.hsforms.net/forms/embed/v2.js" charset="utf-8"></script>
+<script>
+  if (window.hbspt && hbspt.forms && hbspt.forms.create) {
+    hbspt.forms.create({
+      region: "na2",
+      portalId: "243569048",
+      formId: "65717a53-a61c-4f85-ae97-8c34b85c5d83",
+      target: "#hubspot-lead-form"
+    },
+  onFormSubmitted: function() {
+    try {
+      var qs = window.location.search || "";
+      var dest = "/thank-you.html" + qs;
+      window.location.assign(dest);
+    } catch (e) {
+      window.location.assign("/thank-you.html");
+    }
+  }
+});
+  } else {
+    document.addEventListener("DOMContentLoaded", function() {
+      if (window.hbspt && hbspt.forms && hbspt.forms.create) {
+        hbspt.forms.create({
+          region: "na2",
+          portalId: "243569048",
+          formId: "65717a53-a61c-4f85-ae97-8c34b85c5d83",
+          target: "#hubspot-lead-form"
+        },
+  onFormSubmitted: function() {
+    try {
+      var qs = window.location.search || "";
+      var dest = "/thank-you.html" + qs;
+      window.location.assign(dest);
+    } catch (e) {
+      window.location.assign("/thank-you.html");
+    }
+  }
+});
+      }
+    });
+  }
+</script>
                     </div>
                 </div>
             </div>

@@ -1,14 +1,110 @@
-<!DOCTYPE html><html lang="en"><head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Thank You • SwiftPath Capital</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-<style>body{font-family:'Inter',sans-serif}.bg-brand-blue{background:#4A7A9D}</style>
-</head><body class="bg-gray-50 text-slate-700 min-h-screen flex items-center"><div class="container mx-auto px-6">
-<div class="max-w-2xl mx-auto bg-white rounded-xl shadow-xl p-10 text-center">
-<div class="w-16 h-16 mx-auto rounded-full bg-brand-blue text-white flex items-center justify-center mb-4"><svg viewBox="0 0 24 24" class="w-8 h-8" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></div>
-<h1 class="text-3xl font-extrabold">Thanks—you're on the calendar!</h1>
-<p class="mt-3 text-slate-600">We received your info. A loan officer will reach out shortly.</p>
-<div class="mt-8"><a href="/" class="inline-block border px-5 py-3 rounded-lg">Back to Home</a></div>
-</div></div></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thank You — SwiftPath Capital</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>body{font-family:'Inter',sans-serif}</style>
+
+  <!-- Google tag (gtag.js) — replace G-XXXXXXXXXX with your GA4 Measurement ID -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+    // Optional: conversion event on page view
+    gtag('event', 'conversion', {'send_to':'G-XXXXXXXXXX/thank_you_view'});
+  </script>
+
+  <!-- Meta Pixel Code — replace 123456789012345 with your Pixel ID -->
+  <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '123456789012345');
+    fbq('track', 'Lead'); // Typical event for thank-you pages
+  </script>
+  <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=123456789012345&ev=Lead&noscript=1"
+  /></noscript>
+
+</head>
+<body class="bg-gray-50 text-slate-800">
+  <main class="container mx-auto px-6 py-16">
+    <div class="max-w-3xl mx-auto bg-white rounded-2xl shadow-xl p-10">
+      <div class="text-center">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-14 w-14 mx-auto text-emerald-600" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 00-1.414-1.414L8 11.172 4.707 7.879a1 1 0 10-1.414 1.414l4 4a1 1 0 001.414 0l8-8z" clip-rule="evenodd"/></svg>
+        <h1 class="text-3xl font-extrabold mt-4">Thanks! We got your info.</h1>
+        <p class="text-slate-600 mt-2">A loan specialist will review and contact you shortly.</p>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-6 mt-10">
+        <div class="bg-gray-50 rounded-lg p-6">
+          <h2 class="font-bold text-slate-900">Next Step 1</h2>
+          <p class="text-slate-600 mt-1">Book a quick pre‑qual call (15 min).</p>
+          <a href="#" class="inline-block mt-3 px-4 py-2 rounded-lg bg-slate-900 text-white">Book a Call</a>
+        </div>
+        <div class="bg-gray-50 rounded-lg p-6">
+          <h2 class="font-bold text-slate-900">Next Step 2</h2>
+          <p class="text-slate-600 mt-1">Prepare docs: ID, entity docs, last 2 deals.</p>
+        </div>
+        <div class="bg-gray-50 rounded-lg p-6">
+          <h2 class="font-bold text-slate-900">Contact</h2>
+          <p class="text-slate-600 mt-1">Prefer to talk? Call <a href="tel:1800555FUND" class="text-slate-900 font-semibold">1‑800‑555‑FUND</a> or email <a href="mailto:loans@swiftpath.capital" class="text-slate-900 font-semibold">loans@swiftpath.capital</a>.</p>
+        </div>
+      </div>
+
+      <p class="text-xs text-slate-400 mt-8">Tip: We’ll route your request with any UTM tracking so your specialist knows which campaign you came from.</p>
+    
+      <hr class="my-10 border-gray-200">
+
+      <div class="mt-8">
+        <h2 class="text-2xl font-bold text-slate-900 text-center">Book Your Pre‑Qual Call</h2>
+        <p class="text-slate-600 mt-2 text-center">Pick a time that works for you below. We’ll review your deal and next steps.</p>
+
+        <!-- Calendly Inline Embed -->
+        <div id="calendly-container" class="mt-6">
+          <div class="calendly-inline-widget rounded-xl overflow-hidden shadow-lg"
+               data-url="https://calendly.com/swiftpathcapital-info/book-a-call"
+               style="min-width:320px;height:780px;"></div>
+        </div>
+
+        <!-- Calendly script -->
+        <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
+        <script>
+          // Append any existing UTM/query params to Calendly so tracking carries through
+          (function() {
+            try {
+              var qs = window.location.search || "";
+              var el = document.querySelector('.calendly-inline-widget');
+              if (el && qs && !el.getAttribute('data-url').includes('?')) {
+                el.setAttribute('data-url', el.getAttribute('data-url') + qs);
+              }
+            } catch (e) { /* no-op */ }
+          })();
+        </script>
+
+        <div class="text-center mt-6">
+          <a id="calendly-fallback" href="https://calendly.com/swiftpathcapital-info/book-a-call" class="inline-block mt-3 px-5 py-3 rounded-lg bg-slate-900 text-white">
+            Open Calendly in a new tab
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </main>
+  <script>
+    // Example: if you use Calendly, swap the link above and optionally read UTMs here
+    // const params = new URLSearchParams(location.search);
+  </script>
+</body>
+</html>
