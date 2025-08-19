@@ -234,50 +234,25 @@
                     <div class="max-w-3xl mx-auto">
                         <h2 class="text-3xl md:text-4xl font-bold mb-2 text-center">Ready to Fund Your Next Deal?</h2>
                         <p class="text-lg text-blue-100 max-w-2xl mx-auto mb-8 text-center">Fast, free pre‑qualification. No credit impact.</p>
-                        <!-- HubSpot Embedded Form -->
-<div id="hubspot-lead-form" class="max-w-xl mx-auto bg-white/90 rounded-xl p-6 shadow-lg"></div>
-<script type="text/javascript" src="//js-na2.hsforms.net/forms/embed/v2.js" charset="utf-8"></script>
-<script>
-  if (window.hbspt && hbspt.forms && hbspt.forms.create) {
-    hbspt.forms.create({
-      region: "na2",
-      portalId: "243569048",
-      formId: "65717a53-a61c-4f85-ae97-8c34b85c5d83",
-      target: "#hubspot-lead-form"
-    },
-  onFormSubmitted: function() {
-    try {
-      var qs = window.location.search || "";
-      var dest = "/thank-you.html" + qs;
-      window.location.assign(dest);
-    } catch (e) {
-      window.location.assign("/thank-you.html");
-    }
-  }
-});
-  } else {
-    document.addEventListener("DOMContentLoaded", function() {
-      if (window.hbspt && hbspt.forms && hbspt.forms.create) {
-        hbspt.forms.create({
-          region: "na2",
-          portalId: "243569048",
-          formId: "65717a53-a61c-4f85-ae97-8c34b85c5d83",
-          target: "#hubspot-lead-form"
-        },
-  onFormSubmitted: function() {
-    try {
-      var qs = window.location.search || "";
-      var dest = "/thank-you.html" + qs;
-      window.location.assign(dest);
-    } catch (e) {
-      window.location.assign("/thank-you.html");
-    }
-  }
-});
-      }
-    });
-  }
-</script>
+                                                <!-- HubSpot Embedded Lead Form (corrected) -->
+                        <div id="hubspot-lead-form" class="max-w-xl mx-auto bg-white/90 rounded-xl p-6 shadow-lg"></div>
+                        <script charset="utf-8" type="text/javascript" src="https://js-na2.hsforms.net/forms/embed/v2.js"></script>
+                        <script>
+                          hbspt.forms.create({
+                            region: "na2",
+                            portalId: "243569048",
+                            formId: "65717a53-a61c-4f85-ae97-8c34b85c5d83",
+                            target: "#hubspot-lead-form",
+                            onFormSubmitted: function () {
+                              try {
+                                var qs = window.location.search || "";
+                                window.location.assign("/thank-you.html" + qs);
+                              } catch (e) {
+                                window.location.assign("/thank-you.html");
+                              }
+                            }
+                          });
+                        </script>
                     </div>
                 </div>
             </div>
@@ -397,36 +372,5 @@
         openPrivacyBtn.addEventListener('click',e=>{e.preventDefault();openModal(privacyModal);}); closePrivacyBtn.addEventListener('click',()=>closeModal(privacyModal));
         openTermsBtn.addEventListener('click',e=>{e.preventDefault();openModal(termsModal);}); closeTermsBtn.addEventListener('click',()=>closeModal(termsModal));
         modalOverlay.addEventListener('click',()=>{ closeModal(privacyModal); closeModal(termsModal); });
-
-        // HubSpot lead submit
-        async function submitLeadToHubSpot(fields){
-            if(!window.__swiftpathHS || !window.__swiftpathHS.submitToHubSpot){ alert('HubSpot helper missing'); return; }
-            if(!window.HUBSPOT_PORTAL_ID){ alert('Missing HUBSPOT_PORTAL_ID'); return; }
-            if(!window.HUBSPOT_LEAD_GUID){ alert('Missing HUBSPOT_LEAD_GUID'); return; }
-            await window.__swiftpathHS.submitToHubSpot(window.HUBSPOT_LEAD_GUID, fields, '/thank-you.html');
-        }
-        const leadForm=document.getElementById('leadForm');
-        if(leadForm){
-            leadForm.addEventListener('submit', async (e)=>{
-                e.preventDefault();
-                const btn=leadForm.querySelector('button[type="submit"]'); btn.disabled=true; btn.innerText='Sending...';
-                try{
-                    const fields=[
-                        {name:'full_name', value:document.getElementById('leadName').value.trim()},
-                        {name:'email', value:document.getElementById('leadEmail').value.trim()},
-                        {name:'phone', value:document.getElementById('leadPhone').value.trim()},
-                        {name:'loan_purpose', value:document.getElementById('leadPurpose').value}
-                    ];
-                    await submitLeadToHubSpot(fields);
-                }catch(err){ alert('Problem submitting: '+err.message); }
-                finally{ btn.disabled=false; btn.innerText='Get Pre‑Qualified'; }
-            });
-        }
-    </script>
-    <script>
-      window.HUBSPOT_PORTAL_ID="243569048";
-      window.HUBSPOT_LEAD_GUID="REPLACE_WITH_LEAD_FORM_GUID";
-    </script>
-    <script src="assets/hubspot.js"></script>
 </body>
 </html>
