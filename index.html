@@ -435,5 +435,53 @@
 })();
 </script>
 
+
+<!-- SwiftPath HubSpot Hotfix v2 (forces helper, adds hutk if present) -->
+<script>
+(function () {
+  try {
+    // Force correct constants (last-write-wins)
+    window.HUBSPOT_PORTAL_ID = "243569048";
+    window.HUBSPOT_LEAD_GUID = "65717a53-a61c-4f85-ae97-8c34b85c5d83";
+    window.HUBSPOT_LOAN_GUID = "6648e233-6873-4546-a9cf-b20d66ff4e8e";
+
+    function getCookie(name){
+      const m = document.cookie.match(new RegExp('(?:^|; )' + name.replace(/([.$?*|{}()\[\]\\/+^])/g, '\\$1') + '=([^;]*)'));
+      return m ? decodeURIComponent(m[1]) : null;
+    }
+
+    // Always override submit helper to avoid older versions
+    window.__swiftpathHS = window.__swiftpathHS || {};
+    window.__swiftpathHS.submitToHubSpot = async function (formGuid, fields, redirectTo) {
+      const portalId = window.HUBSPOT_PORTAL_ID;
+      if (!portalId) throw new Error("Missing HUBSPOT_PORTAL_ID");
+      const url = `https://api.hsforms.com/submissions/v3/integration/submit/${portalId}/${formGuid}`;
+      const context = {
+        pageUri: window.location.href,
+        pageName: document.title
+      };
+      const hutk = getCookie('hubspotutk');
+      if (hutk) context.hutk = hutk; // include only if present; don't send empty
+      const payload = {
+        fields: (fields || []).map(f => ({ name: f.name, value: f.value })),
+        context: context
+      };
+      const res = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+      if (!res.ok) throw new Error("HubSpot returned " + res.status + ": " + await res.text());
+      if (redirectTo) {
+        try { const qs = window.location.search || ""; window.location.assign(redirectTo + qs); }
+        catch (_) { window.location.assign(redirectTo); }
+      }
+    };
+  } catch (e) {
+    console.warn("HubSpot hotfix init error:", e);
+  }
+})();
+</script>
+
 </body>
 </html>
