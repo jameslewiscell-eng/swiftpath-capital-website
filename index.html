@@ -235,7 +235,24 @@
                         <h2 class="text-3xl md:text-4xl font-bold mb-2 text-center">Ready to Fund Your Next Deal?</h2>
                         <p class="text-lg text-blue-100 max-w-2xl mx-auto mb-8 text-center">Fast, free pre‑qualification. No credit impact.</p>
                         <!-- HubSpot Lead Form (official embed) -->
-<div id="hubspot-lead-form" class="max-w-xl mx-auto bg-white/90 rounded-xl p-6 shadow-lg"></div>
+\1
+<!-- CTA: Full Application button under lead form -->
+<div class="mt-6 flex justify-center">
+  <a href="/LoanApp.html" id="cta-full-application"
+     class="inline-flex items-center px-6 py-3 rounded-xl font-semibold shadow-lg bg-white text-slate-800 ring-1 ring-slate-200 hover:bg-slate-50 hover:translate-y-[1px] transition">
+     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" class="mr-2"><path d="M12 5v14m-7-7h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+     Start Full Application
+  </a>
+</div>
+<script>
+  (function(){
+    try {
+      var link = document.getElementById('cta-full-application');
+      var qs = window.location.search || '';
+      if (qs) link.setAttribute('href', '/LoanApp.html' + qs);
+    } catch (e) {}
+  })();
+</script>
 <script charset="utf-8" type="text/javascript" src="https://js-na2.hsforms.net/forms/embed/v2.js"></script>
 <script>
   hbspt.forms.create({
