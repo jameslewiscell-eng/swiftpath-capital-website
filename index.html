@@ -41,7 +41,6 @@
         .modal-overlay{transition:opacity .3s ease}.modal-container{transition:transform .3s ease,opacity .3s ease;transform:translateY(20px) scale(.95);opacity:0}.modal-container.active{transform:translateY(0) scale(1);opacity:1}
         .modal-content h3{font-size:1.25rem;font-weight:700;margin-top:1.5rem;margin-bottom:.5rem}.modal-content p,.modal-content li{color:#4a5568}.modal-content ul{list-style-type:disc;padding-left:1.5rem;margin-top:.5rem}
     </style>
-<script>window.HUBSPOT_PORTAL_ID="243569048";window.HUBSPOT_LEAD_GUID="65717a53-a61c-4f85-ae97-8c34b85c5d83";</script>
 </head>
 <body class="bg-gray-50 text-slate-700">
 
@@ -394,9 +393,47 @@
         }
     </script>
     <script>
-      window.HUBSPOT_PORTAL_ID="243569048";
-      window.HUBSPOT_LEAD_GUID="REPLACE_WITH_LEAD_FORM_GUID";
-    </script>
+      
+      </script>
     <script src="assets/hubspot.js"></script>
+
+<!-- SwiftPath HubSpot Hotfix (inline) -->
+<script>
+(function () {
+  try {
+    // Force correct constants (last-write-wins)
+    window.HUBSPOT_PORTAL_ID = "243569048";
+    window.HUBSPOT_LEAD_GUID = "65717a53-a61c-4f85-ae97-8c34b85c5d83";
+    window.HUBSPOT_LOAN_GUID = "6648e233-6873-4546-a9cf-b20d66ff4e8e";
+
+    // Minimal submit helper (if missing)
+    if (!window.__swiftpathHS) window.__swiftpathHS = {};
+    if (typeof window.__swiftpathHS.submitToHubSpot !== "function") {
+      window.__swiftpathHS.submitToHubSpot = async function (formGuid, fields, redirectTo) {
+        const portalId = window.HUBSPOT_PORTAL_ID;
+        if (!portalId) throw new Error("Missing HUBSPOT_PORTAL_ID");
+        const url = `https://api.hsforms.com/submissions/v3/integration/submit/${portalId}/${formGuid}`;
+        const payload = {
+          fields: (fields || []).map(f => ({ name: f.name, value: f.value })),
+          context: { pageUri: window.location.href, pageName: document.title }
+        };
+        const res = await fetch(url, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+        if (!res.ok) throw new Error("HubSpot returned " + res.status + ": " + await res.text());
+        if (redirectTo) {
+          try { const qs = window.location.search || ""; window.location.assign(redirectTo + qs); }
+          catch (_) { window.location.assign(redirectTo); }
+        }
+      };
+    }
+  } catch (e) {
+    console.warn("HubSpot hotfix init error:", e);
+  }
+})();
+</script>
+
 </body>
 </html>
