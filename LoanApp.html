@@ -1,124 +1,42 @@
-<!DOCTYPE html><html lang="en"><head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Apply • SwiftPath Capital</title><meta name="description" content="Real estate investor loan application.">
-<script src="https://cdn.tailwindcss.com"></script>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<style>body{font-family:'Inter',sans-serif}.bg-brand-blue{background:#4A7A9D}.bg-brand-gold{background:#c5a35a}</style>
-</head><body class="bg-gray-50 text-slate-700">
-<header class="bg-white/80 backdrop-blur-lg sticky top-0 z-40 shadow-sm"><nav class="container mx-auto px-6 py-3 flex justify-between items-center">
-<a href="/" class="flex items-center space-x-2"><img src="https://i.postimg.cc/5tFPsLvR/Untitled-design.png" alt="SwiftPath Capital Logo" class="h-12 w-auto"></a>
-<div class="hidden md:flex items-center space-x-8"><a href="/#products" class="hover:text-slate-900">Loan Products</a><a href="#application" class="bg-brand-gold text-white font-bold py-2 px-5 rounded-lg shadow">Apply Now</a></div>
-</nav></header>
-<main>
-<section class="relative min-h-[40vh] flex items-center bg-cover bg-center" style="background-image:url('https://images.unsplash.com/photo-1580587771525-78b9dba3b914?q=80&w=2874&auto=format&fit=crop')">
-<div class="absolute inset-0 bg-slate-900/60"></div><div class="relative container mx-auto px-6 text-center text-white">
-<h1 class="text-4xl md:text-5xl font-extrabold leading-tight mb-4">Start Your Loan Application</h1>
-<p class="text-lg md:text-xl max-w-3xl mx-auto mb-8">Hard money & private lender deals.</p>
-<a href="#application" class="inline-block bg-brand-blue text-white font-bold py-3 px-8 rounded-lg shadow">Jump to Form</a>
-</div></section>
-<section id="application" class="py-16 bg-white"><div class="container mx-auto px-6">
-<!-- HubSpot Embedded Form -->
-<div id="hubspot-loan-form" class="max-w-3xl mx-auto bg-white/90 rounded-xl p-6 shadow-lg"></div>
-<script type="text/javascript" src="//js-na2.hsforms.net/forms/embed/v2.js" charset="utf-8"></script>
-<script>
-  if (window.hbspt && hbspt.forms && hbspt.forms.create) {
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SwiftPath Capital — Loan Application</title>
+  <link rel="preconnect" href="https://js-na2.hsforms.net">
+  <style>
+    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:#f8fafc;margin:0;}
+    .wrap{max-width:960px;margin:40px auto;padding:24px}
+    .card{background:#fff;border-radius:16px;box-shadow:0 10px 30px rgba(2,6,23,.08);padding:24px}
+    h1{font-size:28px;margin:0 0 12px}
+    p.lead{color:#475569;margin:0 0 18px}
+  </style>
+  <script charset="utf-8" type="text/javascript" src="https://js-na2.hsforms.net/forms/embed/v2.js"></script>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Loan Application</h1>
+    <p class="lead">Submit your deal details below. This does not impact your credit.</p>
+    <div class="card">
+      <div id="hubspot-loan-form"></div>
+    </div>
+  </div>
+  <script>
     hbspt.forms.create({
       region: "na2",
       portalId: "243569048",
       formId: "6648e233-6873-4546-a9cf-b20d66ff4e8e",
-      target: "#hubspot-loan-form"
-    },
-  onFormSubmitted: function() {
-    try {
-      var qs = window.location.search || "";
-      var dest = "/thank-you.html" + qs;
-      window.location.assign(dest);
-    } catch (e) {
-      window.location.assign("/thank-you.html");
-    }
-  }
-});
-  } else {
-    document.addEventListener("DOMContentLoaded", function() {
-      if (window.hbspt && hbspt.forms && hbspt.forms.create) {
-        hbspt.forms.create({
-          region: "na2",
-          portalId: "243569048",
-          formId: "6648e233-6873-4546-a9cf-b20d66ff4e8e",
-          target: "#hubspot-loan-form"
-        },
-  onFormSubmitted: function() {
-    try {
-      var qs = window.location.search || "";
-      var dest = "/thank-you.html" + qs;
-      window.location.assign(dest);
-    } catch (e) {
-      window.location.assign("/thank-you.html");
-    }
-  }
-});
+      target: "#hubspot-loan-form",
+      onFormSubmitted: function () {
+        try {
+          var qs = window.location.search || "";
+          window.location.assign("/thank-you.html" + qs);
+        } catch (e) {
+          window.location.assign("/thank-you.html");
+        }
       }
     });
-  }
-</script></div></section></main>
-<footer class="bg-slate-800 text-white"><div class="container mx-auto px-6 py-10 grid md:grid-cols-3 gap-8">
-<div><img src="https://i.postimg.cc/5tFPsLvR/Untitled-design.png" alt="SwiftPath Capital Logo" class="h-10 w-auto bg-white p-1 rounded-md"><p class="mt-3 text-slate-400">Equal Housing Opportunity · Not a commitment to lend.</p></div>
-<div><h3 class="font-bold tracking-wide text-[#c5a35a]">Navigation</h3><ul class="mt-3 space-y-2"><li><a href="/#products" class="hover:text-[#c5a35a]">Loan Products</a></li></ul></div>
-<div><h3 class="font-bold tracking-wide text-[#c5a35a]">Contact</h3><ul class="mt-3 space-y-1 text-slate-300"><li>Email: <a href="mailto:loans@swiftpathcapital.com" class="hover:text-[#c5a35a]">loans@swiftpathcapital.com</a></li><li>Phone: <a href="tel:+1-800-555-3863" class="hover:text-[#c5a35a]">1‑800‑555‑FUND</a></li></ul></div>
-</div></footer>
-<script>window.HUBSPOT_PORTAL_ID="243569048";</script><script src="assets/hubspot.js"></script>
-<script>
-async function uploadFile(inputId, dealName) {{
-  const el = document.getElementById(inputId);
-  if (!el || !el.files || !el.files[0]) return null;
-  const fd = new FormData();
-  fd.append('file', el.files[0]);
-  fd.append('dealName', dealName);
-  const res = await fetch('/.netlify/functions/upload-to-dropbox', {{ method:'POST', body: fd }});
-  if (!res.ok) throw new Error('Upload failed: '+res.status+' '+await res.text());
-  const data = await res.json();
-  return data.url;
-}}
-
-const loanForm = document.getElementById('loanForm');
-loanForm.addEventListener('submit', async (e)=>{{
-  e.preventDefault();
-  const btn = loanForm.querySelector('button[type="submit"]'); btn.disabled=true; btn.innerText='Uploading...';
-  try {{
-    const dealName = (document.getElementById('fullName').value || 'applicant') + ' - ' + (document.getElementById('propertyAddress').value || 'property');
-    const purchaseUrl = await uploadFile('purchaseContractFile', dealName);
-    const budgetUrl = await uploadFile('rehabBudgetFile', dealName);
-    const compsUrl = await uploadFile('compsFile', dealName);
-
-    btn.innerText='Submitting...';
-    const fields = [
-      {{ name:'full_name', value: document.getElementById('fullName').value.trim() }},
-      {{ name:'email', value: document.getElementById('email').value.trim() }},
-      {{ name:'phone', value: document.getElementById('phone').value.trim() }},
-      {{ name:'mailing_address', value: document.getElementById('mailingAddress').value.trim() }},
-      {{ name:'business_name', value: document.getElementById('businessName').value.trim() }},
-      {{ name:'business_type', value: document.getElementById('businessType').value.trim() }},
-      {{ name:'num_completed_deals', value: document.getElementById('numDeals').value.trim() }},
-      {{ name:'entity_ein', value: document.getElementById('ein').value.trim() }},
-      {{ name:'property_address', value: document.getElementById('propertyAddress').value.trim() }},
-      {{ name:'purchase_price', value: document.getElementById('purchasePrice').value.trim() }},
-      {{ name:'rehab_budget', value: document.getElementById('rehabBudget').value.trim() }},
-      {{ name:'after_repair_value', value: document.getElementById('arv').value.trim() }},
-      {{ name:'wholesaler_involved', value: document.getElementById('wholesaler').value }},
-      {{ name:'loan_purpose', value: document.getElementById('loanPurpose').value }},
-      {{ name:'requested_loan_amount', value: document.getElementById('loanAmount').value.trim() }},
-      {{ name:'timeline_to_close', value: document.getElementById('timeline').value.trim() }},
-      {{ name:'exit_strategy', value: document.getElementById('exitStrategy').value }},
-      {{ name:'loan_details', value: document.getElementById('loanDetails').value.trim() }},
-      {{ name:'purchase_contract_url', value: purchaseUrl || '' }},
-      {{ name:'rehab_budget_url', value: budgetUrl || '' }},
-      {{ name:'comps_appraisal_url', value: compsUrl || '' }}
-    ];
-    if(!window.HUBSPOT_LOAN_GUID) throw new Error('Missing HUBSPOT_LOAN_GUID');
-    await window.__swiftpathHS.submitToHubSpot(window.HUBSPOT_LOAN_GUID, fields, '/thank-you.html');
-  }} catch(err) {{ alert('There was a problem: '+err.message); }}
-  finally {{ btn.disabled=false; btn.innerText='Submit Application'; }}
-}});
-window.HUBSPOT_LOAN_GUID = 'REPLACE_WITH_LOAN_FORM_GUID';
-</script></body></html>
+  </script>
+</body>
+</html>

@@ -1,48 +1,17 @@
-# Netlify configuration for SwiftPath Capital
-# This file lives at the repo root: /netlify.toml
-
+# Minimal Netlify config with no redirects
 [build]
-  # Your site is static; no build command is required.
-  # Ensure we publish from the repo root and functions live under netlify/functions
   publish = "."
   functions = "netlify/functions"
 
 [functions]
-  # Use esbuild (fast) and Node 18 (picked up from package.json engines)
   node_bundler = "esbuild"
-  # If you ever add native deps, you can list them here to externalize. Not needed now.
-  # external_node_modules = ["busboy"]
 
-# ---- Friendly URLs for key pages ----
-[[redirects]]
-  from = "/loanapp"
-  to = "/LoanApp.html"
-  status = 301
-  force = true
-
-[[redirects]]
-  from = "/thank-you"
-  to = "/thank-you.html"
-  status = 301
-  force = true
-
-# ---- Caching headers ----
-# HTML should not be aggressively cached, so changes show up immediately.
 [[headers]]
   for = "/*.html"
   [headers.values]
     Cache-Control = "public, max-age=0, must-revalidate"
 
-# Static assets can be cached long-term for performance.
 [[headers]]
   for = "/assets/*"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
-
-# Allow CORS to Netlify Functions (e.g., uploads)
-[[headers]]
-  for = "/.netlify/functions/*"
-  [headers.values]
-    Access-Control-Allow-Origin = "*"
-    Access-Control-Allow-Methods = "GET, POST, OPTIONS"
-    Access-Control-Allow-Headers = "Content-Type, Authorization"
