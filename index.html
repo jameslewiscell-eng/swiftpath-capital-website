@@ -55,7 +55,7 @@
                 <a href="#video" class="text-slate-600 hover:text-brand-blue transition duration-300 font-medium">Weekly Insight</a>
                 <a href="#process" class="text-slate-600 hover:text-brand-blue transition duration-300 font-medium">Our Process</a>
                 <a href="#products" class="text-slate-600 hover:text-brand-blue transition duration-300 font-medium">Loan Products</a>
-                <a href="/LoanApp.html.html" class="text-slate-600 hover:text-brand-blue transition duration-300 font-medium">Apply</a>
+                <a href="/LoanApp.html" class="text-slate-600 hover:text-brand-blue transition duration-300 font-medium">Apply</a>
                 <a href="#contact" class="bg-brand-gold text-white font-bold py-2 px-5 rounded-lg shadow-md hover:bg-brand-gold-dark transition duration-300">
                     Get Pre-Qualified
                 </a>
@@ -72,7 +72,7 @@
             <a href="#video" class="block text-slate-600 hover:text-brand-blue transition duration-300 font-medium">Weekly Insight</a>
             <a href="#process" class="block text-slate-600 hover:text-brand-blue transition duration-300 font-medium">Our Process</a>
             <a href="#products" class="block text-slate-600 hover:text-brand-blue transition duration-300 font-medium">Loan Products</a>
-            <a href="/LoanApp.html.html" class="block text-slate-600 hover:text-brand-blue transition duration-300 font-medium">Apply</a>
+            <a href="/LoanApp.html" class="block text-slate-600 hover:text-brand-blue transition duration-300 font-medium">Apply</a>
             <a href="#contact" class="block bg-brand-gold text-white text-center font-bold py-2 px-5 rounded-lg shadow-md hover:bg-brand-gold-dark transition duration-300 mt-2">Get Pre-Qualified</a>
         </div>
     </header>
@@ -234,19 +234,25 @@
                     <div class="max-w-3xl mx-auto">
                         <h2 class="text-3xl md:text-4xl font-bold mb-2 text-center">Ready to Fund Your Next Deal?</h2>
                         <p class="text-lg text-blue-100 max-w-2xl mx-auto mb-8 text-center">Fast, free pre‑qualification. No credit impact.</p>
-                        <form id="leadForm" class="grid md:grid-cols-3 gap-4">
-                            <input id="leadName" class="w-full border border-white/30 bg-white/10 rounded-lg px-3 py-3 placeholder-blue-100" placeholder="Full name" required>
-                            <input id="leadEmail" type="email" class="w-full border border-white/30 bg-white/10 rounded-lg px-3 py-3 placeholder-blue-100" placeholder="Email" required>
-                            <input id="leadPhone" class="w-full border border-white/30 bg-white/10 rounded-lg px-3 py-3 placeholder-blue-100" placeholder="Phone" required>
-                            <div class="md:col-span-3 flex flex-col sm:flex-row gap-3">
-                                <select id="leadPurpose" class="flex-1 border border-white/30 bg-white/10 rounded-lg px-3 py-3">
-                                    <option value="">Loan type</option><option>Fix-and-Flip</option><option>BRRRR</option><option>Rental</option><option>New Construction</option><option>Bridge</option>
-                                </select>
-                                <a href="/LoanApp.html.html" class="sm:w-auto w-full border-2 border-white/60 text-white font-bold py-3 px-6 rounded-lg text-center">Full Application</a>
-                                <button type="submit" class="sm:w-auto w-full bg-brand-gold text-white font-bold py-3 px-8 rounded-lg">Get Pre‑Qualified</button>
-                            </div>
-                            <p class="md:col-span-3 text-sm text-blue-100/80 mt-2">By submitting, you agree to our Terms and Privacy Policy.</p>
-                        </form>
+                        <!-- HubSpot Lead Form (official embed) -->
+<div id="hubspot-lead-form" class="max-w-xl mx-auto bg-white/90 rounded-xl p-6 shadow-lg"></div>
+<script charset="utf-8" type="text/javascript" src="https://js-na2.hsforms.net/forms/embed/v2.js"></script>
+<script>
+  hbspt.forms.create({
+    region: "na2",
+    portalId: "243569048",
+    formId: "65717a53-a61c-4f85-ae97-8c34b85c5d83",
+    target: "#hubspot-lead-form",
+    onFormSubmitted: function () {
+      try {
+        var qs = window.location.search || "";
+        window.location.assign("/thank-you.html" + qs);
+      } catch (e) {
+        window.location.assign("/thank-you.html");
+      }
+    }
+  });
+</script>
                     </div>
                 </div>
             </div>
@@ -269,7 +275,7 @@
                         <li><a href="#advantage" class="hover:text-brand-gold transition duration-300">Our Advantage</a></li>
                         <li><a href="#process" class="hover:text-brand-gold transition duration-300">Our Process</a></li>
                         <li><a href="#products" class="hover:text-brand-gold transition duration-300">Loan Products</a></li>
-                        <li><a href="/LoanApp.html.html" class="hover:text-brand-gold transition duration-300">Apply</a></li>
+                        <li><a href="/LoanApp.html" class="hover:text-brand-gold transition duration-300">Apply</a></li>
                     </ul>
                 </div>
                 <div>
@@ -394,9 +400,8 @@
     </script>
     <script>
       window.HUBSPOT_PORTAL_ID="243569048";
-      window.HUBSPOT_LEAD_GUID="REPLACE_WITH_LEAD_FORM_GUID";
+      window.HUBSPOT_LEAD_GUID="65717a53-a61c-4f85-ae97-8c34b85c5d83";
     </script>
     <script src="assets/hubspot.js"></script>
-<script src="/assets/counter.js" defer></script>
 </body>
 </html>
