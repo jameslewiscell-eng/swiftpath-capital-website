@@ -77,11 +77,11 @@
         </div>
     
         <div id="header-whatsapp" class="hidden md:flex items-center gap-4 text-sm pr-4">
-            <a href="tel:+14073743301" class="hover:underline">407-374-3301</a>
+            <a href="tel:+407-374-3301" class="hover:underline">407-374-3301</a>
             <span aria-hidden="true">•</span>
             <a href="mailto:info@swiftpathcapital.com" class="hover:underline">info@swiftpathcapital.com</a>
             <span aria-hidden="true">•</span>
-            <a href="https://wa.me/14073743301" target="_blank" class="text-green-600 hover:underline">WhatsApp</a>
+            <a href="https://wa.me/407-374-3301" target="_blank" class="text-green-600 hover:underline">WhatsApp</a>
         </div>
         
 </header>
@@ -284,57 +284,59 @@
                 <div>
                     <h3 class="font-bold tracking-wide text-brand-gold">Contact Us</h3>
                     <ul class="mt-4 space-y-2 text-slate-300">
-                        <li>Email: info@swiftpathcapital.com<a href="mailto:info@swiftpathcapital.com" class="hover:text-brand-gold transition">info@swiftpathcapital.com</a></li>
-                        <li>Phone: 407-374-3301<a href="tel:+14073743301" class="hover:text-brand-gold transition">407-374-3301</a></li>
+                        <li>Email: <a href="mailto:info@swiftpathcapital.com" class="hover:text-brand-gold transition">info@swiftpathcapital.com</a></li>
+                        <li>Phone: <a href="tel:+407-374-3301" class="hover:text-brand-gold transition">407-374-3301</a></li>
                     </ul>
                 </div>
             </div>
             <div class="mt-12 border-t border-slate-700 pt-6 text-center text-sm text-slate-500">
                 <p>&copy; 2025 SwiftPath Capital. All Rights Reserved.</p>
                 <div class="mt-4 space-x-4">
-                    <a href="#" id="open-privacy-modal" class="hover:text-brand-gold transition duration-300">Privacy Policy</a>
+                    <a id="open-privacy-modal"<a href="#" id="open-privacy-modal" class="hover:text-brand-gold transition duration-300">Privacy Policy</a>
                     <span>&middot;</span>
-                    <a href="#" id="open-terms-modal" class="hover:text-brand-gold transition duration-300">Terms and Conditions</a>
+                    <a id="open-terms-modal"<a href="#" id="open-terms-modal" class="hover:text-brand-gold transition duration-300">Terms and Conditions</a>
                 </div>
             </div>
         </div>
     
         <div class="mt-2 text-sm">
-            <a class="underline text-green-600" href="https://wa.me/14073743301" target="_blank" rel="noopener">Chat on WhatsApp</a>
+            <a href="https://wa.me/14073743301" target="_blank" class="fixed bottom-24 left-4 z-40 underline text-green-600 bg-white/80 px-2 py-1 rounded">Chat on WhatsApp</a>
         </div>
         
 </footer>
 
-    <!-- Modals -->
-    <div id="modal-overlay" class="modal-overlay fixed inset-0 bg-black bg-opacity-50 z-50 hidden"></div>
-    <div id="privacy-modal" class="modal-container fixed top-1/2 left-1/2 bg-white w-11/12 max-w-3xl mx-auto rounded-lg shadow-lg z-50 p-6 md:p-8 hidden">
-        <div class="relative">
-            <button id="close-privacy-modal" class="absolute -top-2 -right-2 text-gray-600 hover:text-gray-900">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-            </button>
-            <h2 class="text-2xl font-bold text-slate-800 mb-4">Privacy Policy</h2>
-            <div class="modal-content max-h-[70vh] overflow-y-auto pr-4">
-                <p class="text-sm text-gray-500 mb-4">Effective Date: August 4, 2025</p>
+    
+    <!-- Unified Overlay -->
+    <div id="modalOverlay" class="fixed inset-0 z-50 hidden bg-black/60" aria-hidden="true"></div>
+
+    <!-- Privacy Policy Modal -->
+    <div id="privacyModal" class="fixed inset-x-0 bottom-0 z-50 hidden md:inset-0 md:flex md:items-center md:justify-center">
+      <div class="w-full bg-white rounded-t-2xl shadow-xl md:max-w-2xl md:rounded-2xl max-h-[85vh] overflow-y-auto p-6">
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-2xl font-bold">Privacy Policy</h2>
+          <button type="button" class="p-2 rounded hover:bg-gray-100" aria-label="Close" onclick="closeModal('privacyModal')">✕</button>
+        </div>
+        <p class="text-sm text-gray-500 mb-4">Effective Date: August 4, 2025</p>
                 <p>This Privacy Policy describes how SwiftPath Capital Corporation ("we," "us," or "our") collects, uses, and discloses your information when you use our website.</p>
                 <h3>1. Information We Collect</h3>
                 <ul><li>Personal and Business Information</li><li>Financial Information</li><li>Property Information</li><li>Communications</li></ul>
                 <h3>2. How We Use Your Information</h3>
                 <ul><li>Process your loan applications</li><li>Determine eligibility</li><li>Communicate with you</li><li>Marketing (opt‑out anytime)</li></ul>
-            </div>
-        </div>
+      </div>
     </div>
-    <div id="terms-modal" class="modal-container fixed top-1/2 left-1/2 bg-white w-11/12 max-w-3xl mx-auto rounded-lg shadow-lg z-50 p-6 md:p-8 hidden">
-        <div class="relative">
-            <button id="close-terms-modal" class="absolute -top-2 -right-2 text-gray-600 hover:text-gray-900">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-            </button>
-            <h2 class="text-2xl font-bold text-slate-800 mb-4">Terms and Conditions</h2>
-            <div class="modal-content max-h-[70vh] overflow-y-auto pr-4">
-                <p class="text-sm text-gray-500 mb-4">Last Updated: August 4, 2025</p>
+
+    <!-- Terms & Conditions Modal -->
+    <div id="termsModal" class="fixed inset-x-0 bottom-0 z-50 hidden md:inset-0 md:flex md:items-center md:justify-center">
+      <div class="w-full bg-white rounded-t-2xl shadow-xl md:max-w-2xl md:rounded-2xl max-h-[85vh] overflow-y-auto p-6">
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-2xl font-bold">Terms and Conditions</h2>
+          <button type="button" class="p-2 rounded hover:bg-gray-100" aria-label="Close" onclick="closeModal('termsModal')">✕</button>
+        </div>
+        <p class="text-sm text-gray-500 mb-4">Last Updated: August 4, 2025</p>
                 <p>Use of this site is subject to terms. Applying does not constitute a commitment to lend. Loans subject to underwriting.</p>
-            </div>
-        </div>
+      </div>
     </div>
+
 
     <!-- Scripts -->
     <script>
@@ -371,15 +373,35 @@
         },{threshold:.5});
         if(statsSection) observer.observe(statsSection);
 
-        // Modals
-        const modalOverlay=document.getElementById('modal-overlay');
-        const openModal=(m)=>{ if(!m) return; modalOverlay.classList.remove('hidden'); m.classList.remove('hidden'); setTimeout(()=>m.classList.add('active'),10); document.body.style.overflow='hidden'; };
-        const closeModal=(m)=>{ if(!m) return; m.classList.remove('active'); setTimeout(()=>{ modalOverlay.classList.add('hidden'); m.classList.add('hidden'); document.body.style.overflow='auto'; },300); };
-        const openPrivacyBtn=document.getElementById('open-privacy-modal'); const closePrivacyBtn=document.getElementById('close-privacy-modal'); const privacyModal=document.getElementById('privacy-modal');
-        const openTermsBtn=document.getElementById('open-terms-modal'); const closeTermsBtn=document.getElementById('close-terms-modal'); const termsModal=document.getElementById('terms-modal');
-        openPrivacyBtn.addEventListener('click',e=>{e.preventDefault();openModal(privacyModal);}); closePrivacyBtn.addEventListener('click',()=>closeModal(privacyModal));
-        openTermsBtn.addEventListener('click',e=>{e.preventDefault();openModal(termsModal);}); closeTermsBtn.addEventListener('click',()=>closeModal(termsModal));
-        modalOverlay.addEventListener('click',()=>{ closeModal(privacyModal); closeModal(termsModal); });
+        
+        // Bottom-sheet modals (mobile) / centered dialogs (md+)
+        const htmlEl = document.documentElement;
+        const overlay = document.getElementById('modalOverlay');
+        const privacyModal = document.getElementById('privacyModal');
+        const termsModal = document.getElementById('termsModal');
+
+        function lockScroll(lock){ htmlEl.style.overflow = lock ? 'hidden' : ''; }
+        function openModal(id){
+          const el = typeof id === 'string' ? document.getElementById(id) : id;
+          if(!el) return;
+          overlay.classList.remove('hidden');
+          el.classList.remove('hidden');
+          lockScroll(true);
+        }
+        function closeModal(id){
+          const el = typeof id === 'string' ? document.getElementById(id) : id;
+          if(!el) return;
+          el.classList.add('hidden');
+          if (privacyModal.classList.contains('hidden') && termsModal.classList.contains('hidden')){
+            overlay.classList.add('hidden');
+            lockScroll(false);
+          }
+        }
+        overlay?.addEventListener('click', () => { closeModal('privacyModal'); closeModal('termsModal'); });
+        document.getElementById('open-privacy-modal')?.addEventListener('click', (e)=>{ e.preventDefault(); openModal('privacyModal'); });
+        document.getElementById('open-terms-modal')?.addEventListener('click', (e)=>{ e.preventDefault(); openModal('termsModal'); });
+        window.addEventListener('keydown',(e)=>{ if(e.key==='Escape'){ closeModal('privacyModal'); closeModal('termsModal'); }});
+
 
         // HubSpot lead submit
         async function submitLeadToHubSpot(fields){
@@ -574,7 +596,7 @@
          data-product="">Apply for this Product</a>
       <a id="productAdvisorBtn" href="mailto:info@swiftpathcapital.com" 
          class="flex-1 text-brand-blue underline text-center">Talk to an Advisor (Email)</a>
-    <a id="productAdvisorWA" href="https://wa.me/14073743301" target="_blank"
+    <a id="productAdvisorWA" href="https://wa.me/407-374-3301" target="_blank"
          class="flex-1 text-green-600 underline text-center">WhatsApp Us</a>
     </div>
     <p class="text-xs text-gray-500 mt-2 text-center">Same‑day term sheets available • Dedicated account manager for repeat borrowers</p>
@@ -692,7 +714,7 @@
 
 
 <!-- WhatsApp Floating Button -->
-<a href="https://wa.me/14073743301" target="_blank" aria-label="Chat on WhatsApp"
+<a href="https://wa.me/407-374-3301" target="_blank" aria-label="Chat on WhatsApp"
    class="fixed z-50 bottom-5 right-5 md:bottom-6 md:right-6 rounded-full shadow-lg
           bg-green-500 hover:bg-green-600 text-white w-14 h-14 flex items-center justify-center">
   <!-- WA icon (inline SVG) -->
