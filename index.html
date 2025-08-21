@@ -77,11 +77,11 @@
         </div>
     
         <div id="header-whatsapp" class="hidden md:flex items-center gap-4 text-sm pr-4">
-            <a href="tel:+14073743301" class="hover:underline">407-374-3301</a>
+            <a href="tel:+407-374-3301" class="hover:underline">407-374-3301</a>
             <span aria-hidden="true">•</span>
             <a href="mailto:info@swiftpathcapital.com" class="hover:underline">info@swiftpathcapital.com</a>
             <span aria-hidden="true">•</span>
-            <a href="https://wa.me/14073743301" target="_blank" class="text-green-600 hover:underline">WhatsApp</a>
+            <a href="https://wa.me/407-374-3301" target="_blank" class="text-green-600 hover:underline">WhatsApp</a>
         </div>
         
 </header>
@@ -285,16 +285,16 @@
                     <h3 class="font-bold tracking-wide text-brand-gold">Contact Us</h3>
                     <ul class="mt-4 space-y-2 text-slate-300">
                         <li>Email: <a href="mailto:info@swiftpathcapital.com" class="hover:text-brand-gold transition">info@swiftpathcapital.com</a></li>
-                        <li>Phone: <a href="tel:+14073743301" class="hover:text-brand-gold transition">407-374-3301</a></li>
+                        <li>Phone: <a href="tel:+407-374-3301" class="hover:text-brand-gold transition">1-800-555-FUND</a></li>
                     </ul>
                 </div>
             </div>
             <div class="mt-12 border-t border-slate-700 pt-6 text-center text-sm text-slate-500">
                 <p>&copy; 2025 SwiftPath Capital. All Rights Reserved.</p>
                 <div class="mt-4 space-x-4">
-                    <a id="open-privacy-modal"<a href="#" id="open-privacy-modal" class="hover:text-brand-gold transition duration-300">Privacy Policy</a>
+                    <a href="#" id="open-privacy-modal" class="hover:text-brand-gold transition duration-300">Privacy Policy</a>
                     <span>&middot;</span>
-                    <a id="open-terms-modal"<a href="#" id="open-terms-modal" class="hover:text-brand-gold transition duration-300">Terms and Conditions</a>
+                    <a href="#" id="open-terms-modal" class="hover:text-brand-gold transition duration-300">Terms and Conditions</a>
                 </div>
             </div>
         </div>
@@ -303,40 +303,40 @@
             
         </div>
         
+
+<a href="#" id="open-cookie-prefs" class="text-xs underline">Cookie Preferences</a>
 </footer>
 
-    
-    <!-- Unified Overlay -->
-    <div id="modalOverlay" class="fixed inset-0 z-50 hidden bg-black/60" aria-hidden="true"></div>
-
-    <!-- Privacy Policy Modal -->
-    <div id="privacyModal" class="fixed inset-x-0 bottom-0 z-50 hidden md:inset-0 md:flex md:items-center md:justify-center">
-      <div class="w-full bg-white rounded-t-2xl shadow-xl md:max-w-2xl md:rounded-2xl max-h-[85vh] overflow-y-auto p-6">
-        <div class="flex items-center justify-between mb-4">
-          <h2 class="text-2xl font-bold">Privacy Policy</h2>
-          <button type="button" class="p-2 rounded hover:bg-gray-100" aria-label="Close" onclick="closeModal('privacyModal')">✕</button>
-        </div>
-        <p class="text-sm text-gray-500 mb-4">Effective Date: August 4, 2025</p>
+    <!-- Modals -->
+    <div id="modal-overlay" class="modal-overlay fixed inset-0 bg-black bg-opacity-50 z-50 hidden"></div>
+    <div id="privacy-modal" class="modal-container fixed top-1/2 left-1/2 bg-white w-11/12 max-w-3xl mx-auto rounded-lg shadow-lg z-50 p-6 md:p-8 hidden">
+        <div class="relative">
+            <button id="close-privacy-modal" class="absolute -top-2 -right-2 text-gray-600 hover:text-gray-900">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            <h2 class="text-2xl font-bold text-slate-800 mb-4">Privacy Policy</h2>
+            <div class="modal-content max-h-[70vh] overflow-y-auto pr-4">
+                <p class="text-sm text-gray-500 mb-4">Effective Date: August 4, 2025</p>
                 <p>This Privacy Policy describes how SwiftPath Capital Corporation ("we," "us," or "our") collects, uses, and discloses your information when you use our website.</p>
                 <h3>1. Information We Collect</h3>
                 <ul><li>Personal and Business Information</li><li>Financial Information</li><li>Property Information</li><li>Communications</li></ul>
                 <h3>2. How We Use Your Information</h3>
                 <ul><li>Process your loan applications</li><li>Determine eligibility</li><li>Communicate with you</li><li>Marketing (opt‑out anytime)</li></ul>
-      </div>
-    </div>
-
-    <!-- Terms & Conditions Modal -->
-    <div id="termsModal" class="fixed inset-x-0 bottom-0 z-50 hidden md:inset-0 md:flex md:items-center md:justify-center">
-      <div class="w-full bg-white rounded-t-2xl shadow-xl md:max-w-2xl md:rounded-2xl max-h-[85vh] overflow-y-auto p-6">
-        <div class="flex items-center justify-between mb-4">
-          <h2 class="text-2xl font-bold">Terms and Conditions</h2>
-          <button type="button" class="p-2 rounded hover:bg-gray-100" aria-label="Close" onclick="closeModal('termsModal')">✕</button>
+            </div>
         </div>
-        <p class="text-sm text-gray-500 mb-4">Last Updated: August 4, 2025</p>
-                <p>Use of this site is subject to terms. Applying does not constitute a commitment to lend. Loans subject to underwriting.</p>
-      </div>
     </div>
-
+    <div id="terms-modal" class="modal-container fixed top-1/2 left-1/2 bg-white w-11/12 max-w-3xl mx-auto rounded-lg shadow-lg z-50 p-6 md:p-8 hidden">
+        <div class="relative">
+            <button id="close-terms-modal" class="absolute -top-2 -right-2 text-gray-600 hover:text-gray-900">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            <h2 class="text-2xl font-bold text-slate-800 mb-4">Terms and Conditions</h2>
+            <div class="modal-content max-h-[70vh] overflow-y-auto pr-4">
+                <p class="text-sm text-gray-500 mb-4">Last Updated: August 4, 2025</p>
+                <p>Use of this site is subject to terms. Applying does not constitute a commitment to lend. Loans subject to underwriting.</p>
+            </div>
+        </div>
+    </div>
 
     <!-- Scripts -->
     <script>
@@ -373,35 +373,15 @@
         },{threshold:.5});
         if(statsSection) observer.observe(statsSection);
 
-        
-        // Bottom-sheet modals (mobile) / centered dialogs (md+)
-        const htmlEl = document.documentElement;
-        const overlay = document.getElementById('modalOverlay');
-        const privacyModal = document.getElementById('privacyModal');
-        const termsModal = document.getElementById('termsModal');
-
-        function lockScroll(lock){ htmlEl.style.overflow = lock ? 'hidden' : ''; }
-        function openModal(id){
-          const el = typeof id === 'string' ? document.getElementById(id) : id;
-          if(!el) return;
-          overlay.classList.remove('hidden');
-          el.classList.remove('hidden');
-          lockScroll(true);
-        }
-        function closeModal(id){
-          const el = typeof id === 'string' ? document.getElementById(id) : id;
-          if(!el) return;
-          el.classList.add('hidden');
-          if (privacyModal.classList.contains('hidden') && termsModal.classList.contains('hidden')){
-            overlay.classList.add('hidden');
-            lockScroll(false);
-          }
-        }
-        overlay?.addEventListener('click', () => { closeModal('privacyModal'); closeModal('termsModal'); });
-        document.getElementById('open-privacy-modal')?.addEventListener('click', (e)=>{ e.preventDefault(); openModal('privacyModal'); });
-        document.getElementById('open-terms-modal')?.addEventListener('click', (e)=>{ e.preventDefault(); openModal('termsModal'); });
-        window.addEventListener('keydown',(e)=>{ if(e.key==='Escape'){ closeModal('privacyModal'); closeModal('termsModal'); }});
-
+        // Modals
+        const modalOverlay=document.getElementById('modal-overlay');
+        const openModal=(m)=>{ if(!m) return; modalOverlay.classList.remove('hidden'); m.classList.remove('hidden'); setTimeout(()=>m.classList.add('active'),10); document.body.style.overflow='hidden'; };
+        const closeModal=(m)=>{ if(!m) return; m.classList.remove('active'); setTimeout(()=>{ modalOverlay.classList.add('hidden'); m.classList.add('hidden'); document.body.style.overflow='auto'; },300); };
+        const openPrivacyBtn=document.getElementById('open-privacy-modal'); const closePrivacyBtn=document.getElementById('close-privacy-modal'); const privacyModal=document.getElementById('privacy-modal');
+        const openTermsBtn=document.getElementById('open-terms-modal'); const closeTermsBtn=document.getElementById('close-terms-modal'); const termsModal=document.getElementById('terms-modal');
+        openPrivacyBtn.addEventListener('click',e=>{e.preventDefault();openModal(privacyModal);}); closePrivacyBtn.addEventListener('click',()=>closeModal(privacyModal));
+        openTermsBtn.addEventListener('click',e=>{e.preventDefault();openModal(termsModal);}); closeTermsBtn.addEventListener('click',()=>closeModal(termsModal));
+        modalOverlay.addEventListener('click',()=>{ closeModal(privacyModal); closeModal(termsModal); });
 
         // HubSpot lead submit
         async function submitLeadToHubSpot(fields){
@@ -596,7 +576,7 @@
          data-product="">Apply for this Product</a>
       <a id="productAdvisorBtn" href="mailto:info@swiftpathcapital.com" 
          class="flex-1 text-brand-blue underline text-center">Talk to an Advisor (Email)</a>
-    <a id="productAdvisorWA" href="https://wa.me/14073743301" target="_blank"
+    <a id="productAdvisorWA" href="https://wa.me/407-374-3301" target="_blank"
          class="flex-1 text-green-600 underline text-center">WhatsApp Us</a>
     </div>
     <p class="text-xs text-gray-500 mt-2 text-center">Same‑day term sheets available • Dedicated account manager for repeat borrowers</p>
@@ -714,7 +694,7 @@
 
 
 <!-- WhatsApp Floating Button -->
-<a href="https://wa.me/14073743301" target="_blank" aria-label="Chat on WhatsApp"
+<a href="https://wa.me/407-374-3301" target="_blank" aria-label="Chat on WhatsApp"
    class="fixed z-50 bottom-5 right-5 md:bottom-6 md:right-6 rounded-full shadow-lg
           bg-green-500 hover:bg-green-600 text-white w-14 h-14 flex items-center justify-center">
   <!-- WA icon (inline SVG) -->
@@ -722,6 +702,76 @@
     <path fill="currentColor" d="M380.9 97.1C339 55.1 283.2 32 224.8 32c-116.2 0-210.8 94.6-210.8 210.8 0 37.1 9.7 73.3 28.2 105.3L0 480l134.9-41.4c30.6 16.7 64.9 25.5 99.9 25.5h.1c116.1 0 210.8-94.6 210.8-210.8 0-58.5-23.2-114.3-64.8-156.2zM224.9 438.6h-.1c-31.1 0-61.6-8.3-88.2-24.1l-6.3-3.7-80.1 24.6 26-78.1-4.1-6.7c-17.8-29-27.2-62.5-27.2-96.6C45 156.7 126.6 75 224.8 75c47.8 0 92.8 18.6 126.5 52.3 33.8 33.8 52.4 78.7 52.4 126.5 0 98.1-81.7 184.8-178.8 184.8zM315 304.7c-4.3-2.1-25.4-12.5-29.3-13.9-3.9-1.4-6.8-2.1-9.7 2.1-2.9 4.3-11.1 13.9-13.6 16.8-2.5 2.9-5 3.2-9.3 1.1-4.3-2.1-18.1-6.7-34.4-21.4-12.7-11.3-21.3-25.3-23.8-29.6-2.5-4.3-.3-6.5 1.9-8.6 2-2 4.3-5 6.4-7.5 2.1-2.5 2.9-4.3 4.3-7.1 1.4-2.9.7-5.4-.4-7.5-1.1-2.1-9.7-23.4-13.3-32-3.5-8.4-7.1-7.3-9.7-7.4-2.5-.1-5.4-.1-8.2-.1s-7.5 1.1-11.4 5.4c-3.9 4.3-14.9 14.6-14.9 35.8s15.3 41.5 17.4 44.4c2.1 2.9 30.1 45.9 72.9 64.4 10.2 4.4 18.1 7 24.3 9 10.2 3.2 19.5 2.8 26.9 1.6 8.2-1.2 25.4-10.4 29-20.5 3.6-10.1 3.6-18.8 2.5-20.5-1.1-1.7-3.9-2.8-8.2-4.9z"/>
   </svg>
 </a>
+
+
+<script>
+// --- Modal safety: ensure closed on load; open only via explicit clicks or hash ---
+(function(){
+  function addHidden(id){
+    var el = document.getElementById(id);
+    if (el && !el.classList.contains('hidden')) el.classList.add('hidden');
+  }
+  // Force-closed on load
+  addHidden('modalOverlay');
+  addHidden('privacyModal');
+  addHidden('termsModal');
+  // Hash-based open (optional)
+  function openModal(id){
+    var overlay = document.getElementById('modalOverlay');
+    var el = document.getElementById(id);
+    if(!el || !overlay) return;
+    overlay.classList.remove('hidden');
+    el.classList.remove('hidden');
+    document.documentElement.style.overflow = 'hidden';
+  }
+  if (location.hash === '#privacy') openModal('privacyModal');
+  if (location.hash === '#terms') openModal('termsModal');
+
+  // Attach click handlers to ANY link with these IDs (header/footer)
+  ['open-privacy-modal','open-terms-modal'].forEach(function(id){
+    document.querySelectorAll('#'+id).forEach(function(a){
+      a.addEventListener('click', function(e){
+        e.preventDefault();
+        if (id==='open-privacy-modal') openModal('privacyModal');
+        else openModal('termsModal');
+      });
+    });
+  });
+})();
+</script>
+
+
+<!-- Cookie Banner -->
+<div id="cookieBanner" class="fixed inset-x-0 bottom-0 z-50 bg-gray-900 text-white p-4 shadow-lg hidden">
+  <div class="max-w-5xl mx-auto flex flex-col md:flex-row md:items-center gap-3">
+    <p class="text-sm leading-snug flex-1">
+      We use cookies to improve your experience and to understand site traffic. By clicking <strong>Accept</strong>, you agree to our use of non‑essential cookies.
+      See our <a href="#privacy" id="cookiePrivacyLink" class="underline">Privacy Policy</a>.
+    </p>
+    <div class="flex gap-2">
+      <button id="cookieDecline" class="px-3 py-2 rounded bg-gray-700 hover:bg-gray-600 text-sm">Decline</button>
+      <button id="cookieAccept" class="px-3 py-2 rounded bg-yellow-400 text-gray-900 font-semibold text-sm">Accept</button>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+  try {
+    var KEY='spc_cookie_consent';
+    var banner=document.getElementById('cookieBanner');
+    var pref=localStorage.getItem(KEY);
+    if(!pref){ banner.classList.remove('hidden'); }
+    function set(val){ localStorage.setItem(KEY,val); banner.classList.add('hidden'); }
+    document.getElementById('cookieAccept')?.addEventListener('click', function(){ set('accepted'); });
+    document.getElementById('cookieDecline')?.addEventListener('click', function(){ set('declined'); });
+    document.getElementById('open-cookie-prefs')?.addEventListener('click', function(e){ e.preventDefault(); banner.classList.remove('hidden'); });
+    document.getElementById('cookiePrivacyLink')?.addEventListener('click', function(e){ e.preventDefault(); 
+      var overlay=document.getElementById('modalOverlay'); var el=document.getElementById('privacyModal');
+      if(overlay&&el){ overlay.classList.remove('hidden'); el.classList.remove('hidden'); document.documentElement.style.overflow='hidden'; }
+    });
+  } catch(e){ console.warn('cookie banner error', e); }
+})();
+</script>
 
 
 <script>
@@ -733,66 +783,29 @@
   }
   // Force-close everything on load
   hide('modalOverlay'); hide('privacyModal'); hide('termsModal'); hide('productModal');
-
-  // Helper to open with overlay + scroll lock
   function open(id){
+    hide('privacyModal'); hide('termsModal'); hide('productModal');
     var overlay = document.getElementById('modalOverlay');
     var el = document.getElementById(id);
     if(!el || !overlay) return;
-    hide('privacyModal'); hide('termsModal'); hide('productModal');
     overlay.classList.remove('hidden');
     el.classList.remove('hidden');
     document.documentElement.style.overflow = 'hidden';
   }
-  // Helper to close all
   function closeAll(){
     hide('privacyModal'); hide('termsModal'); hide('productModal');
     var overlay = document.getElementById('modalOverlay');
     if(overlay) overlay.classList.add('hidden');
     document.documentElement.style.overflow = '';
   }
-
-  // Wire overlay + Esc
   document.getElementById('modalOverlay')?.addEventListener('click', closeAll);
   window.addEventListener('keydown', function(e){ if(e.key==='Escape') closeAll(); });
-
-  // Footer triggers
   document.getElementById('open-privacy-modal')?.addEventListener('click', function(e){ e.preventDefault(); open('privacyModal'); });
   document.getElementById('open-terms-modal')?.addEventListener('click', function(e){ e.preventDefault(); open('termsModal'); });
-
-  // Cookie banner Privacy link (if present)
   document.getElementById('cookiePrivacyLink')?.addEventListener('click', function(e){ e.preventDefault(); open('privacyModal'); });
-
-  // Optional deep-links
   if (location.hash === '#privacy') open('privacyModal');
   if (location.hash === '#terms') open('termsModal');
-})();
-</script>
-
-
-<!-- Cookie Banner -->
-<div id="cookieBanner" class="fixed bottom-0 inset-x-0 z-50 bg-slate-900 text-white py-3 px-4 flex flex-col md:flex-row items-center justify-center gap-3 shadow-lg">
-  <span class="text-sm">We use cookies to improve your experience and to understand site traffic. By clicking Accept, you agree to our use of non‑essential cookies. See our <a href="#" id="cookiePrivacyLink" class="underline">Privacy Policy</a>.</span>
-  <div class="flex gap-2">
-    <button id="cookieDecline" class="px-3 py-1 bg-slate-700 rounded">Decline</button>
-    <button id="cookieAccept" class="px-3 py-1 bg-brand-gold text-black font-semibold rounded">Accept</button>
-  </div>
-</div>
-<script>
-(function(){
-  var KEY = 'spc_cookie_consent';
-  var banner = document.getElementById('cookieBanner');
-  var pref = localStorage.getItem(KEY);
-  function hide(){ if(banner) banner.style.display='none'; }
-  function show(){ if(banner) banner.style.display='flex'; }
-  if (pref === 'accepted' || pref === 'declined') hide(); else show();
-  document.getElementById('cookieAccept')?.addEventListener('click', function(){ localStorage.setItem(KEY,'accepted'); hide(); });
-  document.getElementById('cookieDecline')?.addEventListener('click', function(){ localStorage.setItem(KEY,'declined'); hide(); });
-  document.getElementById('cookiePrivacyLink')?.addEventListener('click', function(e){ e.preventDefault();
-    // Open the privacy modal if present
-    var open = function(id){ var ol = document.getElementById('modalOverlay'); var el = document.getElementById(id); if(!ol||!el) return; ol.classList.remove('hidden'); el.classList.remove('hidden'); document.documentElement.style.overflow='hidden'; };
-    open('privacyModal');
-  });
+  window.openModal = open; window.closeModal = closeAll;
 })();
 </script>
 
