@@ -77,7 +77,7 @@
         </div>
     
         <div id="header-whatsapp" class="hidden md:flex items-center gap-4 text-sm pr-4">
-            <a href="tel:+407-374-3301" class="hover:underline">407-374-3301</a>
+            <a href="tel:+14073743301" class="hover:underline">407-374-3301</a>
             <span aria-hidden="true">•</span>
             <a href="mailto:info@swiftpathcapital.com" class="hover:underline">info@swiftpathcapital.com</a>
             <span aria-hidden="true">•</span>
@@ -285,7 +285,7 @@
                     <h3 class="font-bold tracking-wide text-brand-gold">Contact Us</h3>
                     <ul class="mt-4 space-y-2 text-slate-300">
                         <li>Email: <a href="mailto:info@swiftpathcapital.com" class="hover:text-brand-gold transition">info@swiftpathcapital.com</a></li>
-                        <li>Phone: <a href="tel:+407-374-3301" class="hover:text-brand-gold transition">407-374-3301</a></li>
+                        <li>Phone: <a href="tel:+14073743301" class="hover:text-brand-gold transition">407-374-3301</a></li>
                     </ul>
                 </div>
             </div>
@@ -766,6 +766,33 @@
   // Optional deep-links
   if (location.hash === '#privacy') open('privacyModal');
   if (location.hash === '#terms') open('termsModal');
+})();
+</script>
+
+
+<!-- Cookie Banner -->
+<div id="cookieBanner" class="fixed bottom-0 inset-x-0 z-50 bg-slate-900 text-white py-3 px-4 flex flex-col md:flex-row items-center justify-center gap-3 shadow-lg">
+  <span class="text-sm">We use cookies to improve your experience and to understand site traffic. By clicking Accept, you agree to our use of non‑essential cookies. See our <a href="#" id="cookiePrivacyLink" class="underline">Privacy Policy</a>.</span>
+  <div class="flex gap-2">
+    <button id="cookieDecline" class="px-3 py-1 bg-slate-700 rounded">Decline</button>
+    <button id="cookieAccept" class="px-3 py-1 bg-brand-gold text-black font-semibold rounded">Accept</button>
+  </div>
+</div>
+<script>
+(function(){
+  var KEY = 'spc_cookie_consent';
+  var banner = document.getElementById('cookieBanner');
+  var pref = localStorage.getItem(KEY);
+  function hide(){ if(banner) banner.style.display='none'; }
+  function show(){ if(banner) banner.style.display='flex'; }
+  if (pref === 'accepted' || pref === 'declined') hide(); else show();
+  document.getElementById('cookieAccept')?.addEventListener('click', function(){ localStorage.setItem(KEY,'accepted'); hide(); });
+  document.getElementById('cookieDecline')?.addEventListener('click', function(){ localStorage.setItem(KEY,'declined'); hide(); });
+  document.getElementById('cookiePrivacyLink')?.addEventListener('click', function(e){ e.preventDefault();
+    // Open the privacy modal if present
+    var open = function(id){ var ol = document.getElementById('modalOverlay'); var el = document.getElementById(id); if(!ol||!el) return; ol.classList.remove('hidden'); el.classList.remove('hidden'); document.documentElement.style.overflow='hidden'; };
+    open('privacyModal');
+  });
 })();
 </script>
 
