@@ -562,7 +562,7 @@
 
 <!-- Product Detail Modal -->
 <div id="productOverlay" class="fixed inset-0 z-50 hidden bg-black/60"></div>
-<div id="productModal" class="fixed inset-x-0 bottom-0 z-50 hidden md:inset-0 md:hidden md:items-center md:justify-center">
+<div id="productModal" class="fixed inset-x-0 bottom-0 z-50 hidden md:inset-0 md:items-center md:justify-center md:hidden">
   <div class="w-full bg-white rounded-t-2xl shadow-xl md:max-w-2xl md:rounded-2xl max-h-[85vh] overflow-y-auto p-6">
     <div class="flex items-center justify-between mb-3">
       <h2 id="productTitle" class="text-2xl font-bold">Loan Product</h2>
@@ -661,7 +661,7 @@
     applyBtn.dataset.product = key;
     // Open
     document.getElementById('productOverlay').classList.remove('hidden');
-    modal.classList.remove('hidden'); modal.classList.add('flex'); modal.classList.add('md:flex');
+    modal.classList.remove('hidden');
     htmlEl.style.overflow = 'hidden';
     // lightweight analytics
     window.dataLayer = window.dataLayer || [];
@@ -807,6 +807,43 @@
     else if(n.nodeType===1) Array.from(n.childNodes).forEach(walk);
   });
 })();
+</script>
+
+
+<script>
+// Defensive modal safety: keep product modal closed on load (especially desktop)
+document.addEventListener('DOMContentLoaded', function() {
+  var modal = document.getElementById('productModal');
+  if (modal) {
+    modal.classList.remove('flex','md:flex');
+    modal.classList.add('hidden','md:hidden');
+  }
+  // Wire open/close buttons if present using data attributes
+  function openModal() {
+    if (!modal) return;
+    modal.classList.remove('hidden','md:hidden');
+    modal.classList.add('flex'); // base flex; Tailwind will make it block at md unless we also add md:flex
+    modal.classList.add('md:flex'); // ensure centered layout on desktop when opened
+  }
+  function closeModal() {
+    if (!modal) return;
+    modal.classList.remove('flex','md:flex');
+    modal.classList.add('hidden','md:hidden');
+  }
+  // Attach to any triggers that have data-modal="product" attributes
+  document.querySelectorAll('[data-open="productModal"]').forEach(function(btn){
+    btn.addEventListener('click', function(e){ e.preventDefault(); openModal(); });
+  });
+  document.querySelectorAll('[data-close="productModal"]').forEach(function(btn){
+    btn.addEventListener('click', function(e){ e.preventDefault(); closeModal(); });
+  });
+  // Also close modal on backdrop click if backdrop is the target
+  if (modal) {
+    modal.addEventListener('click', function(e){
+      if (e.target === modal) closeModal();
+    });
+  }
+});
 </script>
 
 </body>
