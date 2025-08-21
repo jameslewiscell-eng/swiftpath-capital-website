@@ -660,13 +660,17 @@
     applyBtn.href = url;
     applyBtn.dataset.product = key;
     // Open
-    document.getElementById('productOverlay').classList.remove('hidden'); modal.classList.remove('hidden','md:hidden'); modal.classList.add('md:flex'); htmlEl.style.overflow = 'hidden';
+    document.getElementById('productOverlay').classList.remove('hidden');
+    modal.classList.remove('hidden'); modal.classList.remove('md:hidden'); modal.classList.add('flex','md:flex');
+    htmlEl.style.overflow = 'hidden';
     // lightweight analytics
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({ event: 'product_modal_open', product: key });
   }
   window.closeProductModal = function(){
-    document.getElementById('productOverlay').classList.add('hidden'); modal.classList.remove('md:flex'); modal.classList.add('hidden','md:hidden'); htmlEl.style.overflow = '';
+    document.getElementById('productOverlay').classList.add('hidden');
+    modal.classList.add('hidden');
+    htmlEl.style.overflow = '';
   };
   document.getElementById('productOverlay')?.addEventListener('click', closeProductModal);
   window.addEventListener('keydown', (e)=>{ if(e.key==='Escape') closeProductModal(); });
