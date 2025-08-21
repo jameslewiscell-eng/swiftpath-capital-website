@@ -106,5 +106,55 @@
     // Example: if you use Calendly, swap the link above and optionally read UTMs here
     // const params = new URLSearchParams(location.search);
   </script>
+
+<!-- WhatsApp Floating Button -->
+<a href="https://wa.me/14073743301" target="_blank" aria-label="Chat on WhatsApp"
+   class="fixed z-50 bottom-5 right-5 md:bottom-6 md:right-6 rounded-full shadow-lg
+          bg-green-500 hover:bg-green-600 text-white w-14 h-14 flex items-center justify-center">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" aria-hidden="true" class="w-7 h-7">
+    <path fill="currentColor" d="M380.9 97.1C339 55.1 283.2 32 224.8 32c-116.2 0-210.8 94.6-210.8 210.8 0 37.1 9.7 73.3 28.2 105.3L0 480l134.9-41.4c30.6 16.7 64.9 25.5 99.9 25.5h.1c116.1 0 210.8-94.6 210.8-210.8 0-58.5-23.2-114.3-64.8-156.2zM224.9 438.6h-.1c-31.1 0-61.6-8.3-88.2-24.1l-6.3-3.7-80.1 24.6 26-78.1-4.1-6.7c-17.8-29-27.2-62.5-27.2-96.6C45 156.7 126.6 75 224.8 75c47.8 0 92.8 18.6 126.5 52.3 33.8 33.8 52.4 78.7 52.4 126.5 0 98.1-81.7 184.8-178.8 184.8zM315 304.7c-4.3-2.1-25.4-12.5-29.3-13.9-3.9-.9-6.8-.5-9.8 2.6-2.9 3.1-11.4 11.1-11.4 27s11.7 31.3 13.3 33.5c1.6 2.2 22.3 35.6 54.5 48.6 32.2 13 38.7 8.9 45.7 8.4 7-.5 23.2-9.5 26.5-18.6 3.3-9.1 3.3-17.1 2.3-18.8-1-1.7-3.6-2.6-7.5-4.6z"/>
+  </svg>
+</a>
+
+
+<!-- Cookie Banner -->
+<div id="cookieBanner" class="fixed inset-x-0 bottom-0 z-50 bg-gray-900 text-white p-4 shadow-lg hidden">
+  <div class="max-w-5xl mx-auto flex flex-col md:flex-row md:items-center gap-3">
+    <p class="text-sm leading-snug flex-1">
+      We use cookies to improve your experience and to understand site traffic. By clicking <strong>Accept</strong>, you agree to our use of non‑essential cookies.
+      See our <a href="#privacy" id="cookiePrivacyLink" class="underline">Privacy Policy</a>.
+    </p>
+    <div class="flex gap-2">
+      <button id="cookieDecline" class="px-3 py-2 rounded bg-gray-700 hover:bg-gray-600 text-sm">Decline</button>
+      <button id="cookieAccept" class="px-3 py-2 rounded bg-yellow-400 text-gray-900 font-semibold text-sm">Accept</button>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+  try {
+    var KEY='spc_cookie_consent';
+    var banner=document.getElementById('cookieBanner');
+    var pref=localStorage.getItem(KEY);
+    if(!pref){ banner.classList.remove('hidden'); }
+    function set(val){ localStorage.setItem(KEY,val); banner.classList.add('hidden'); }
+    document.getElementById('cookieAccept')?.addEventListener('click', function(){ set('accepted'); });
+    document.getElementById('cookieDecline')?.addEventListener('click', function(){ set('declined'); });
+
+    // Footer "Cookie Preferences" opener
+    document.getElementById('open-cookie-prefs')?.addEventListener('click', function(e){
+      e.preventDefault(); banner.classList.remove('hidden');
+    });
+
+    // Open privacy modal from banner if available
+    document.getElementById('cookiePrivacyLink')?.addEventListener('click', function(e){
+      e.preventDefault();
+      if (typeof openModal==='function') { openModal('privacyModal'); }
+      else { location.hash = '#privacy'; }
+    });
+  } catch(e){ console.warn('cookie banner error', e); }
+})();
+</script>
+
 </body>
 </html>
