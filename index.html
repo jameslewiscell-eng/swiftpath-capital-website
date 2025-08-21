@@ -292,9 +292,9 @@
             <div class="mt-12 border-t border-slate-700 pt-6 text-center text-sm text-slate-500">
                 <p>&copy; 2025 SwiftPath Capital. All Rights Reserved.</p>
                 <div class="mt-4 space-x-4">
-                    <a id="open-privacy-modal" href="#privacy" id="open-privacy-modal" class="hover:text-brand-gold transition duration-300">Privacy Policy</a>
+                    <a id="open-privacy-modal"<a href="#" id="open-privacy-modal" class="hover:text-brand-gold transition duration-300">Privacy Policy</a>
                     <span>&middot;</span>
-                    <a id="open-terms-modal" href="#terms" id="open-terms-modal" class="hover:text-brand-gold transition duration-300">Terms and Conditions</a>
+                    <a id="open-terms-modal"<a href="#" id="open-terms-modal" class="hover:text-brand-gold transition duration-300">Terms and Conditions</a>
                 </div>
             </div>
         </div>
@@ -725,51 +725,47 @@
 
 
 <script>
-// Modal Manager: single-open policy + safe close
+// --- Modal-safety patch (force closed on load; open only via clicks or #privacy / #terms) ---
 (function(){
-  const htmlEl = document.documentElement;
-  const overlay = document.getElementById('modalOverlay');
-
-  const ids = ['privacyModal','termsModal','productModal'];
-  function get(id){ return document.getElementById(id); }
-  function isOpen(id){ const el=get(id); return el && !el.classList.contains('hidden'); }
-  function closeAll(){
-    ids.forEach(id => { const el=get(id); if(el) el.classList.add('hidden'); });
-    if(overlay) overlay.classList.add('hidden');
-    htmlEl.style.overflow='';
+  function hide(id){
+    var el = document.getElementById(id);
+    if (el && !el.classList.contains('hidden')) el.classList.add('hidden');
   }
-  window.openModal = function(id){
-    // Close any others first
-    ids.forEach(mid => { if(mid!==id){ const el=get(mid); if(el) el.classList.add('hidden'); } });
-    if(overlay) overlay.classList.remove('hidden');
-    const el=get(id);
-    if(el) el.classList.remove('hidden');
-    htmlEl.style.overflow='hidden';
-  };
-  window.closeModal = function(id){
-    const el=get(id);
-    if(el) el.classList.add('hidden');
-    if(!ids.some(isOpen)){
-      if(overlay) overlay.classList.add('hidden');
-      htmlEl.style.overflow='';
-    }
-  };
-  // overlay click closes everything
-  overlay?.addEventListener('click', closeAll);
-  window.addEventListener('keydown', e=>{ if(e.key==='Escape') closeAll(); });
-  // Defensive: ensure all closed on load
-  closeAll();
-  // Optional hash open for deep links
-  if(location.hash==='#privacy') openModal('privacyModal');
-  if(location.hash==='#terms') openModal('termsModal');
-})();
-</script>
+  // Force-close everything on load
+  hide('modalOverlay'); hide('privacyModal'); hide('termsModal'); hide('productModal');
 
+  // Helper to open with overlay + scroll lock
+  function open(id){
+    var overlay = document.getElementById('modalOverlay');
+    var el = document.getElementById(id);
+    if(!el || !overlay) return;
+    hide('privacyModal'); hide('termsModal'); hide('productModal');
+    overlay.classList.remove('hidden');
+    el.classList.remove('hidden');
+    document.documentElement.style.overflow = 'hidden';
+  }
+  // Helper to close all
+  function closeAll(){
+    hide('privacyModal'); hide('termsModal'); hide('productModal');
+    var overlay = document.getElementById('modalOverlay');
+    if(overlay) overlay.classList.add('hidden');
+    document.documentElement.style.overflow = '';
+  }
 
-<script>
-(function(){
-  document.getElementById('open-privacy-modal')?.addEventListener('click', function(e){ e.preventDefault(); openModal('privacyModal'); });
-  document.getElementById('open-terms-modal')?.addEventListener('click', function(e){ e.preventDefault(); openModal('termsModal'); });
+  // Wire overlay + Esc
+  document.getElementById('modalOverlay')?.addEventListener('click', closeAll);
+  window.addEventListener('keydown', function(e){ if(e.key==='Escape') closeAll(); });
+
+  // Footer triggers
+  document.getElementById('open-privacy-modal')?.addEventListener('click', function(e){ e.preventDefault(); open('privacyModal'); });
+  document.getElementById('open-terms-modal')?.addEventListener('click', function(e){ e.preventDefault(); open('termsModal'); });
+
+  // Cookie banner Privacy link (if present)
+  document.getElementById('cookiePrivacyLink')?.addEventListener('click', function(e){ e.preventDefault(); open('privacyModal'); });
+
+  // Optional deep-links
+  if (location.hash === '#privacy') open('privacyModal');
+  if (location.hash === '#terms') open('termsModal');
 })();
 </script>
 
