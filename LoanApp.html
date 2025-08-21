@@ -58,7 +58,7 @@
 <footer class="bg-slate-800 text-white"><div class="container mx-auto px-6 py-10 grid md:grid-cols-3 gap-8">
 <div><img src="https://i.postimg.cc/5tFPsLvR/Untitled-design.png" alt="SwiftPath Capital Logo" class="h-10 w-auto bg-white p-1 rounded-md"><p class="mt-3 text-slate-400">Equal Housing Opportunity · Not a commitment to lend.</p></div>
 <div><h3 class="font-bold tracking-wide text-[#c5a35a]">Navigation</h3><ul class="mt-3 space-y-2"><li><a href="/#products" class="hover:text-[#c5a35a]">Loan Products</a></li></ul></div>
-<div><h3 class="font-bold tracking-wide text-[#c5a35a]">Contact</h3><ul class="mt-3 space-y-1 text-slate-300"><li>Email: <a href="mailto:loans@swiftpathcapital.com" class="hover:text-[#c5a35a]">loans@swiftpathcapital.com</a></li><li>Phone: <a href="tel:+1-800-555-3863" class="hover:text-[#c5a35a]">1‑800‑555‑FUND</a></li></ul></div>
+<div><h3 class="font-bold tracking-wide text-[#c5a35a]">Contact</h3><ul class="mt-3 space-y-1 text-slate-300"><li>Email: <a href="mailto:info@swiftpathcapital.com" class="hover:text-[#c5a35a]">info@swiftpathcapital.com</a></li><li>Phone: <a href="tel:+407-374-3301" class="hover:text-[#c5a35a]">1‑800‑555‑FUND</a></li></ul></div>
 </div></footer>
 <script></script><script src="assets/hubspot.js"></script>
 <script>
@@ -113,95 +113,8 @@ loanForm.addEventListener('submit', async (e)=>{{
   }} catch(err) {{ alert('There was a problem: '+err.message); }}
   finally {{ btn.disabled=false; btn.innerText='Submit Application'; }}
 }});
-v48e233-6873-4546-a9cf-b20d66ff4e8e';
+
 </script>
-<!-- SwiftPath HubSpot Hotfix (inline) -->
-<script>
-(function () {
-  try {
-    // Force correct constants (last-write-wins)
-    window.HUBSPOT_PORTAL_ID = "243569048";
-    window.HUBSPOT_LEAD_GUID = "65717a53-a61c-4f85-ae97-8c34b85c5d83";
-    window.HUBSPOT_LOAN_GUID = "6648e233-6873-4546-a9cf-b20d66ff4e8e";
-
-    // Minimal submit helper (if missing)
-    if (!window.__swiftpathHS) window.__swiftpathHS = {};
-    if (typeof window.__swiftpathHS.submitToHubSpot !== "function") {
-      window.__swiftpathHS.submitToHubSpot = async function (formGuid, fields, redirectTo) {
-        const portalId = window.HUBSPOT_PORTAL_ID;
-        if (!portalId) throw new Error("Missing HUBSPOT_PORTAL_ID");
-        const url = `https://api.hsforms.com/submissions/v3/integration/submit/${portalId}/${formGuid}`;
-        const payload = {
-          fields: (fields || []).map(f => ({ name: f.name, value: f.value })),
-          context: { pageUri: window.location.href, pageName: document.title }
-        };
-        const res = await fetch(url, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload)
-        });
-        if (!res.ok) throw new Error("HubSpot returned " + res.status + ": " + await res.text());
-        if (redirectTo) {
-          try { const qs = window.location.search || ""; window.location.assign(redirectTo + qs); }
-          catch (_) { window.location.assign(redirectTo); }
-        }
-      };
-    }
-  } catch (e) {
-    console.warn("HubSpot hotfix init error:", e);
-  }
-})();
-</script>
-
-
-<!-- SwiftPath HubSpot Hotfix v2 (forces helper, adds hutk if present) -->
-<script>
-(function () {
-  try {
-    // Force correct constants (last-write-wins)
-    window.HUBSPOT_PORTAL_ID = "243569048";
-    window.HUBSPOT_LEAD_GUID = "65717a53-a61c-4f85-ae97-8c34b85c5d83";
-    window.HUBSPOT_LOAN_GUID = "6648e233-6873-4546-a9cf-b20d66ff4e8e";
-
-    function getCookie(name){
-      const m = document.cookie.match(new RegExp('(?:^|; )' + name.replace(/([.$?*|{}()\[\]\\/+^])/g, '\\$1') + '=([^;]*)'));
-      return m ? decodeURIComponent(m[1]) : null;
-    }
-
-    // Always override submit helper to avoid older versions
-    window.__swiftpathHS = window.__swiftpathHS || {};
-    window.__swiftpathHS.submitToHubSpot = async function (formGuid, fields, redirectTo) {
-      const portalId = window.HUBSPOT_PORTAL_ID;
-      if (!portalId) throw new Error("Missing HUBSPOT_PORTAL_ID");
-      const url = `https://api.hsforms.com/submissions/v3/integration/submit/${portalId}/${formGuid}`;
-      const context = {
-        pageUri: window.location.href,
-        pageName: document.title
-      };
-      const hutk = getCookie('hubspotutk');
-      if (hutk) context.hutk = hutk; // include only if present; don't send empty
-      const payload = {
-        fields: (fields || []).map(f => ({ name: f.name, value: f.value })),
-        context: context
-      };
-      const res = await fetch(url, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
-      });
-      if (!res.ok) throw new Error("HubSpot returned " + res.status + ": " + await res.text());
-      if (redirectTo) {
-        try { const qs = window.location.search || ""; window.location.assign(redirectTo + qs); }
-        catch (_) { window.location.assign(redirectTo); }
-      }
-    };
-  } catch (e) {
-    console.warn("HubSpot hotfix init error:", e);
-  }
-})();
-</script>
-
-
 <!-- SwiftPath HubSpot Hotfix v3 (name split + hutk guard) -->
 <script>
 (function () {
@@ -262,5 +175,53 @@ v48e233-6873-4546-a9cf-b20d66ff4e8e';
   } catch (e) { console.warn("HubSpot hotfix init error:", e); }
 })();
 </script>
+
+
+<script>
+(function(){
+  function getParam(name){
+    return new URLSearchParams(window.location.search).get(name);
+  }
+  const product = getParam('product');
+  if(!product) return;
+  const map = {
+    "BRRRR Method":"BRRRR",
+    "Rental Properties":"Rental Property",
+    "Bridge Loans":"Bridge Loan"
+  };
+  const normalized = map[product] || product;
+
+  const ids = ['loanType','loanPurpose','purpose','applicationPurpose','product'];
+  let select = null;
+  for(const id of ids){
+    const el = document.getElementById(id);
+    if(el && el.tagName === 'SELECT'){ select = el; break; }
+  }
+  if(select){
+    // try exact by text
+    let opt = Array.from(select.options).find(o => o.text.trim().toLowerCase() === normalized.toLowerCase());
+    if(!opt){
+      // try contains
+      opt = Array.from(select.options).find(o => o.text.toLowerCase().includes(normalized.toLowerCase()));
+    }
+    if(opt){ select.value = opt.value; select.dispatchEvent(new Event('change')); }
+  }
+  // set hidden mirrors if present
+  ['selected_product','lead_product','loan_product'].forEach(id => {
+    const h = document.getElementById(id);
+    if(h) h.value = normalized;
+  });
+})();
+</script>
+
+
+<!-- WhatsApp Floating Button -->
+<a href="https://wa.me/14073743301" target="_blank" aria-label="Chat on WhatsApp"
+   class="fixed z-50 bottom-5 right-5 md:bottom-6 md:right-6 rounded-full shadow-lg
+          bg-green-500 hover:bg-green-600 text-white w-14 h-14 flex items-center justify-center">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" aria-hidden="true" class="w-7 h-7">
+    <path fill="currentColor" d="M380.9 97.1C339 55.1 283.2 32 224.8 32c-116.2 0-210.8 94.6-210.8 210.8 0 37.1 9.7 73.3 28.2 105.3L0 480l134.9-41.4c30.6 16.7 64.9 25.5 99.9 25.5h.1c116.1 0 210.8-94.6 210.8-210.8 0-58.5-23.2-114.3-64.8-156.2zM224.9 438.6h-.1c-31.1 0-61.6-8.3-88.2-24.1l-6.3-3.7-80.1 24.6 26-78.1-4.1-6.7c-17.8-29-27.2-62.5-27.2-96.6C45 156.7 126.6 75 224.8 75c47.8 0 92.8 18.6 126.5 52.3 33.8 33.8 52.4 78.7 52.4 126.5 0 98.1-81.7 184.8-178.8 184.8zM315 304.7c-4.3-2.1-25.4-12.5-29.3-13.9-3.9-2-6.8-.9-9.6 2.2-2.8 3.1-11 12.6-13.5 15.2-2.5 2.6-5 2-8.5 1-3.5-1-22.4-11-38.6-24.1-14.3-11.7-26.8-26.1-36.3-42.2-2.6-4.3-2.7-7.4.1-11.3 3.2-4.3 7.1-9.9 10-13 3.1-3.3 5.2-3.3 9-.9 3.6 2.2 23.1 10.9 27 12.9 3.9 2 6.6 3 9.4-.7 2.8-3.5 11-12.9 13.5-15.4 2.7-2.5 5.6-2.7 9 .4 3.1 3.1 10.5 12.4 10.5 20.6 0 8.2-4.3 16.3-10.6 22.3z"/>
+  </svg>
+</a>
 
 </body></html>
