@@ -562,7 +562,7 @@
 
 <!-- Product Detail Modal -->
 <div id="productOverlay" class="fixed inset-0 z-50 hidden bg-black/60"></div>
-<div id="productModal" class="fixed inset-x-0 bottom-0 z-50 hidden md:inset-0 md:flex md:items-center md:justify-center">
+<div id="productModal" class="fixed inset-x-0 bottom-0 z-50 hidden md:inset-0 md:hidden md:items-center md:justify-center">
   <div class="w-full bg-white rounded-t-2xl shadow-xl md:max-w-2xl md:rounded-2xl max-h-[85vh] overflow-y-auto p-6">
     <div class="flex items-center justify-between mb-3">
       <h2 id="productTitle" class="text-2xl font-bold">Loan Product</h2>
@@ -661,7 +661,7 @@
     applyBtn.dataset.product = key;
     // Open
     document.getElementById('productOverlay').classList.remove('hidden');
-    modal.classList.remove('hidden');
+    modal.classList.remove('hidden'); modal.classList.add('flex'); modal.classList.add('md:flex');
     htmlEl.style.overflow = 'hidden';
     // lightweight analytics
     window.dataLayer = window.dataLayer || [];
