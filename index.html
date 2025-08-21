@@ -562,7 +562,7 @@
 
 <!-- Product Detail Modal -->
 <div id="productOverlay" class="fixed inset-0 z-50 hidden bg-black/60"></div>
-<div id="productModal" class="fixed inset-x-0 bottom-0 z-50 hidden md:inset-0 md:flex md:items-center md:justify-center">
+<div id="productModal" class="fixed inset-x-0 bottom-0 z-50 hidden md:inset-0 md:items-center md:justify-center md:hidden">
   <div class="w-full bg-white rounded-t-2xl shadow-xl md:max-w-2xl md:rounded-2xl max-h-[85vh] overflow-y-auto p-6">
     <div class="flex items-center justify-between mb-3">
       <h2 id="productTitle" class="text-2xl font-bold">Loan Product</h2>
@@ -661,11 +661,7 @@
     applyBtn.dataset.product = key;
     // Open
     document.getElementById('productOverlay').classList.remove('hidden');
-    // ensure modal shows on desktop too
-    modal.classList.remove('hidden','md:hidden');
-    modal.classList.add('flex','md:flex');
-    // clear inline display:none set by safety patch
-    modal.style.display = '';
+    modal.classList.remove('hidden');
     htmlEl.style.overflow = 'hidden';
     // lightweight analytics
     window.dataLayer = window.dataLayer || [];
@@ -809,6 +805,72 @@
   Array.from(document.body.childNodes).forEach(function walk(n){
     if(n.nodeType===3) n.textContent=n.textContent.replace(bad, PHONE_DISPLAY);
     else if(n.nodeType===1) Array.from(n.childNodes).forEach(walk);
+  });
+})();
+</script>
+
+
+<script>
+// Unified modal controller (id = productModal). Safe to include multiple times; last wins.
+(function(){
+  var modal = document.getElementById('productModal');
+  if (!modal) return;
+
+  // Ensure closed on load (no inline display styles required)
+  function _forceClosed() {
+    modal.classList.remove('flex','md:flex');
+    modal.classList.add('hidden','md:hidden');
+    // Clear any inline display:none set by other scripts so our class toggles work uniformly
+    modal.style.removeProperty('display');
+  }
+
+  function openProductModal() {
+    if (!modal) return;
+    // make visible
+    modal.classList.remove('hidden','md:hidden');
+    modal.classList.add('flex','md:flex');
+    modal.style.removeProperty('display');
+  }
+
+  function closeProductModal() {
+    if (!modal) return;
+    modal.classList.remove('flex','md:flex');
+    modal.classList.add('hidden','md:hidden');
+    // do NOT set style.display='none' (this can conflict with Tailwind utilities); just rely on classes
+  }
+
+  // Expose to global in case inline onclick uses it
+  window.openProductModal = openProductModal;
+  window.closeProductModal = closeProductModal;
+
+  // One-time load state
+  document.addEventListener('DOMContentLoaded', _forceClosed);
+
+  // Backdrop click closes: only when clicking the backdrop itself
+  modal.addEventListener('click', function(e){
+    if (e.target === modal) closeProductModal();
+  });
+
+  // ESC key closes when modal is visible
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape' || e.key === 'Esc') {
+      if (!modal.classList.contains('hidden')) closeProductModal();
+    }
+  });
+
+  // Delegate clicks for any close buttons/links inside the modal
+  modal.addEventListener('click', function(e){
+    var t = e.target;
+    // Match common patterns
+    if (t.closest('[data-close="productModal"],[data-close],.modal-close,[aria-label="Close"]')) {
+      e.preventDefault();
+      closeProductModal();
+    }
+  });
+
+  // If product cards use data-open attributes, wire them up too
+  document.querySelectorAll('[data-open="productModal"]').forEach(function(el){
+    el.addEventListener('click', function(e){ e.preventDefault(); openProductModal(); });
   });
 })();
 </script>
