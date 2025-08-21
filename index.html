@@ -660,17 +660,13 @@
     applyBtn.href = url;
     applyBtn.dataset.product = key;
     // Open
-    document.getElementById('productOverlay').classList.remove('hidden');
-    modal.classList.remove('hidden');
-    htmlEl.style.overflow = 'hidden';
+    document.getElementById('productOverlay').classList.remove('hidden'); modal.classList.remove('hidden','md:hidden'); modal.classList.add('md:flex'); htmlEl.style.overflow = 'hidden';
     // lightweight analytics
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({ event: 'product_modal_open', product: key });
   }
   window.closeProductModal = function(){
-    document.getElementById('productOverlay').classList.add('hidden');
-    modal.classList.add('hidden');
-    htmlEl.style.overflow = '';
+    document.getElementById('productOverlay').classList.add('hidden'); modal.classList.remove('md:flex'); modal.classList.add('hidden','md:hidden'); htmlEl.style.overflow = '';
   };
   document.getElementById('productOverlay')?.addEventListener('click', closeProductModal);
   window.addEventListener('keydown', (e)=>{ if(e.key==='Escape') closeProductModal(); });
@@ -807,43 +803,6 @@
     else if(n.nodeType===1) Array.from(n.childNodes).forEach(walk);
   });
 })();
-</script>
-
-
-<script>
-// Defensive modal safety: keep product modal closed on load (especially desktop)
-document.addEventListener('DOMContentLoaded', function() {
-  var modal = document.getElementById('productModal');
-  if (modal) {
-    modal.classList.remove('flex','md:flex');
-    modal.classList.add('hidden','md:hidden');
-  }
-  // Wire open/close buttons if present using data attributes
-  function openModal() {
-    if (!modal) return;
-    modal.classList.remove('hidden','md:hidden');
-    modal.classList.add('flex'); // base flex; Tailwind will make it block at md unless we also add md:flex
-    modal.classList.add('md:flex'); // ensure centered layout on desktop when opened
-  }
-  function closeModal() {
-    if (!modal) return;
-    modal.classList.remove('flex','md:flex');
-    modal.classList.add('hidden','md:hidden');
-  }
-  // Attach to any triggers that have data-modal="product" attributes
-  document.querySelectorAll('[data-open="productModal"]').forEach(function(btn){
-    btn.addEventListener('click', function(e){ e.preventDefault(); openModal(); });
-  });
-  document.querySelectorAll('[data-close="productModal"]').forEach(function(btn){
-    btn.addEventListener('click', function(e){ e.preventDefault(); closeModal(); });
-  });
-  // Also close modal on backdrop click if backdrop is the target
-  if (modal) {
-    modal.addEventListener('click', function(e){
-      if (e.target === modal) closeModal();
-    });
-  }
-});
 </script>
 
 </body>
