@@ -41,6 +41,26 @@
         .modal-overlay{transition:opacity .3s ease}.modal-container{transition:transform .3s ease,opacity .3s ease;transform:translateY(20px) scale(.95);opacity:0}.modal-container.active{transform:translateY(0) scale(1);opacity:1}
         .modal-content h3{font-size:1.25rem;font-weight:700;margin-top:1.5rem;margin-bottom:.5rem}.modal-content p,.modal-content li{color:#4a5568}.modal-content ul{list-style-type:disc;padding-left:1.5rem;margin-top:.5rem}
     </style>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-MC0NC3VFNR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-MC0NC3VFNR');
+</script>
+
+<style>
+    #header-whatsapp {
+        font-size: 0.875rem; /* Smaller text */
+        color: #6B7280; /* Soft gray */
+        padding-right: 1rem;
+    }
+    #header-whatsapp a {
+        font-weight: 500; /* Regular weight for text */
+    }
+</style>
 </head>
 <body class="bg-gray-50 text-slate-700">
 
@@ -51,6 +71,14 @@
                 <img src="https://i.postimg.cc/5tFPsLvR/Untitled-design.png" alt="SwiftPath Capital Logo" class="h-12 w-auto">
             </a>
             <div class="hidden lg:flex items-center space-x-8">
+<div id="header-whatsapp" class="hidden md:flex items-center gap-6 text-sm pr-4 text-slate-500">
+    <a href="tel:+14073743301" class="hover:underline">407-374-3301</a>
+    <span aria-hidden="true">•</span>
+    <a href="mailto:info@swiftpathcapital.com" class="hover:underline">info@swiftpathcapital.com</a>
+    <span aria-hidden="true">•</span>
+    <a href="https://wa.me/14073743301" target="_blank" class="text-green-600 hover:underline">WhatsApp</a>
+</div>
+
                 <a href="#advantage" class="text-slate-600 hover:text-brand-blue transition duration-300 font-medium">Our Advantage</a>
                 <a href="#video" class="text-slate-600 hover:text-brand-blue transition duration-300 font-medium">Weekly Insight</a>
                 <a href="#process" class="text-slate-600 hover:text-brand-blue transition duration-300 font-medium">Our Process</a>
@@ -255,7 +283,24 @@
                                 <button type="submit" class="sm:w-auto w-full bg-brand-gold text-white font-bold py-3 px-8 rounded-lg">Get Pre‑Qualified</button>
                             </div>
                             <p class="md:col-span-3 text-sm text-blue-100/80 mt-2">By submitting, you agree to our Terms and Privacy Policy.</p>
-                        </form>
+                        
+<script src="https://www.google.com/recaptcha/api.js?render=YOUR_SITE_KEY"></script>
+<script>
+  document.getElementById('leadForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    grecaptcha.ready(function() {
+      grecaptcha.execute('YOUR_SITE_KEY', {action: 'submit'}).then(function(token) {
+        var hiddenInput = document.createElement('input');
+        hiddenInput.setAttribute('type', 'hidden');
+        hiddenInput.setAttribute('name', 'g-recaptcha-response');
+        hiddenInput.setAttribute('value', token);
+        document.getElementById('leadForm').appendChild(hiddenInput);
+        document.getElementById('leadForm').submit();
+      });
+    });
+  });
+</script>
+</form>
                     </div>
                 </div>
             </div>
