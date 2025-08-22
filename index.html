@@ -41,26 +41,6 @@
         .modal-overlay{transition:opacity .3s ease}.modal-container{transition:transform .3s ease,opacity .3s ease;transform:translateY(20px) scale(.95);opacity:0}.modal-container.active{transform:translateY(0) scale(1);opacity:1}
         .modal-content h3{font-size:1.25rem;font-weight:700;margin-top:1.5rem;margin-bottom:.5rem}.modal-content p,.modal-content li{color:#4a5568}.modal-content ul{list-style-type:disc;padding-left:1.5rem;margin-top:.5rem}
     </style>
-
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-MC0NC3VFNR"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-MC0NC3VFNR');
-</script>
-
-<style>
-    #header-whatsapp {
-        font-size: 0.875rem; /* Smaller text */
-        color: #6B7280; /* Soft gray */
-        padding-right: 1rem;
-    }
-    #header-whatsapp a {
-        font-weight: 500; /* Regular weight for text */
-    }
-</style>
 </head>
 <body class="bg-gray-50 text-slate-700">
 
@@ -71,14 +51,6 @@
                 <img src="https://i.postimg.cc/5tFPsLvR/Untitled-design.png" alt="SwiftPath Capital Logo" class="h-12 w-auto">
             </a>
             <div class="hidden lg:flex items-center space-x-8">
-<div id="header-whatsapp" class="hidden md:flex items-center gap-6 text-sm pr-4 text-slate-500">
-    <a href="tel:+14073743301" class="hover:underline">407-374-3301</a>
-    <span aria-hidden="true">•</span>
-    <a href="mailto:info@swiftpathcapital.com" class="hover:underline">info@swiftpathcapital.com</a>
-    <span aria-hidden="true">•</span>
-    <a href="https://wa.me/14073743301" target="_blank" class="text-green-600 hover:underline">WhatsApp</a>
-</div>
-
                 <a href="#advantage" class="text-slate-600 hover:text-brand-blue transition duration-300 font-medium">Our Advantage</a>
                 <a href="#video" class="text-slate-600 hover:text-brand-blue transition duration-300 font-medium">Weekly Insight</a>
                 <a href="#process" class="text-slate-600 hover:text-brand-blue transition duration-300 font-medium">Our Process</a>
@@ -283,24 +255,7 @@
                                 <button type="submit" class="sm:w-auto w-full bg-brand-gold text-white font-bold py-3 px-8 rounded-lg">Get Pre‑Qualified</button>
                             </div>
                             <p class="md:col-span-3 text-sm text-blue-100/80 mt-2">By submitting, you agree to our Terms and Privacy Policy.</p>
-                        
-<script src="https://www.google.com/recaptcha/api.js?render=YOUR_SITE_KEY"></script>
-<script>
-  document.getElementById('leadForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    grecaptcha.ready(function() {
-      grecaptcha.execute('YOUR_SITE_KEY', {action: 'submit'}).then(function(token) {
-        var hiddenInput = document.createElement('input');
-        hiddenInput.setAttribute('type', 'hidden');
-        hiddenInput.setAttribute('name', 'g-recaptcha-response');
-        hiddenInput.setAttribute('value', token);
-        document.getElementById('leadForm').appendChild(hiddenInput);
-        document.getElementById('leadForm').submit();
-      });
-    });
-  });
-</script>
-</form>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -607,7 +562,7 @@
 
 <!-- Product Detail Modal -->
 <div id="productOverlay" class="fixed inset-0 z-50 hidden bg-black/60"></div>
-<div id="productModal" class="fixed inset-x-0 bottom-0 z-50 hidden md:inset-0 md:items-center md:justify-center md:hidden">
+<div id="productModal" class="fixed inset-x-0 bottom-0 z-50 hidden md:inset-0 md:flex md:items-center md:justify-center">
   <div class="w-full bg-white rounded-t-2xl shadow-xl md:max-w-2xl md:rounded-2xl max-h-[85vh] overflow-y-auto p-6">
     <div class="flex items-center justify-between mb-3">
       <h2 id="productTitle" class="text-2xl font-bold">Loan Product</h2>
@@ -854,117 +809,5 @@
 })();
 </script>
 
-
-<script>
-// Unified modal controller (id = productModal). Safe to include multiple times; last wins.
-(function(){
-  var modal = document.getElementById('productModal');
-  if (!modal) return;
-
-  // Ensure closed on load (no inline display styles required)
-  function _forceClosed() {
-    modal.classList.remove('flex','md:flex');
-    modal.classList.add('hidden','md:hidden');
-    // Clear any inline display:none set by other scripts so our class toggles work uniformly
-    modal.style.removeProperty('display');
-  }
-
-  function openProductModal() {
-    if (!modal) return;
-    // make visible
-    modal.classList.remove('hidden','md:hidden');
-    modal.classList.add('flex','md:flex');
-    modal.style.removeProperty('display');
-  }
-
-  function closeProductModal() {
-    if (!modal) return;
-    modal.classList.remove('flex','md:flex');
-    modal.classList.add('hidden','md:hidden');
-    // do NOT set style.display='none' (this can conflict with Tailwind utilities); just rely on classes
-  }
-
-  // Expose to global in case inline onclick uses it
-  window.openProductModal = openProductModal;
-  window.closeProductModal = closeProductModal;
-
-  // One-time load state
-  document.addEventListener('DOMContentLoaded', _forceClosed);
-
-  // Backdrop click closes: only when clicking the backdrop itself
-  modal.addEventListener('click', function(e){
-    if (e.target === modal) closeProductModal();
-  });
-
-  // ESC key closes when modal is visible
-  document.addEventListener('keydown', function(e){
-    if (e.key === 'Escape' || e.key === 'Esc') {
-      if (!modal.classList.contains('hidden')) closeProductModal();
-    }
-  });
-
-  // Delegate clicks for any close buttons/links inside the modal
-  modal.addEventListener('click', function(e){
-    var t = e.target;
-    // Match common patterns
-    if (t.closest('[data-close="productModal"],[data-close],.modal-close,[aria-label="Close"]')) {
-      e.preventDefault();
-      closeProductModal();
-    }
-  });
-
-  // If product cards use data-open attributes, wire them up too
-  document.querySelectorAll('[data-open="productModal"]').forEach(function(el){
-    el.addEventListener('click', function(e){ e.preventDefault(); openProductModal(); });
-  });
-})();
-</script>
-
 </body>
 </html>
-    <script>
-      // Modal control to handle opening/closing correctly for both desktop and mobile
-      function openProductModal() {
-        var modal = document.getElementById('productModal');
-        var overlay = document.getElementById('productOverlay');
-        if (!modal || !overlay) return;
-
-        modal.classList.remove('hidden', 'md:hidden');
-        modal.classList.add('flex', 'md:flex');
-        overlay.classList.remove('hidden');
-        document.documentElement.style.overflow = 'hidden'; // Prevent scrolling when modal is open
-      }
-
-      function closeProductModal() {
-        var modal = document.getElementById('productModal');
-        var overlay = document.getElementById('productOverlay');
-        if (!modal || !overlay) return;
-
-        modal.classList.remove('flex', 'md:flex');
-        modal.classList.add('hidden', 'md:hidden');
-        overlay.classList.add('hidden');
-        document.documentElement.style.overflow = ''; // Allow scrolling again when modal is closed
-      }
-
-      document.getElementById('productOverlay').addEventListener('click', closeProductModal);
-      document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') closeProductModal(); // Close modal on ESC key
-      });
-
-      document.querySelectorAll('#products .group').forEach(card => {
-        const h = card.querySelector('h3');
-        if (!h) return;
-        const key = h.textContent.trim();
-        card.classList.add('cursor-pointer');
-        card.setAttribute('role', 'button');
-        card.setAttribute('tabindex', '0');
-        card.addEventListener('click', () => openProductModal());
-        card.addEventListener('keypress', (e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            openProductModal();
-          }
-        });
-      });
-    </script>
-    
