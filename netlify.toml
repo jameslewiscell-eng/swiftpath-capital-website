@@ -16,18 +16,3 @@
   for = "/assets/*"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
-
-# Security Headers Configuration
-[[headers]]
-  for = "/*"
-  [headers.values]
-    # Content Security Policy (CSP)
-    Content-Security-Policy = "default-src 'self'; script-src 'self' https://trusted.com; object-src 'none';"
-    # Enforce HTTPS with Strict Transport Security (HSTS)
-    Strict-Transport-Security = "max-age=31536000; includeSubDomains; preload"
-    # Prevent MIME-sniffing
-    X-Content-Type-Options = "nosniff"
-    # Prevent Clickjacking
-    X-Frame-Options = "DENY"
-    # Enable XSS Protection
-    X-XSS-Protection = "1; mode=block"
