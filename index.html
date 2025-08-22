@@ -877,3 +877,49 @@
 
 </body>
 </html>
+    <script>
+      // Modal control to handle opening/closing correctly for both desktop and mobile
+      function openProductModal() {
+        var modal = document.getElementById('productModal');
+        var overlay = document.getElementById('productOverlay');
+        if (!modal || !overlay) return;
+
+        modal.classList.remove('hidden', 'md:hidden');
+        modal.classList.add('flex', 'md:flex');
+        overlay.classList.remove('hidden');
+        document.documentElement.style.overflow = 'hidden'; // Prevent scrolling when modal is open
+      }
+
+      function closeProductModal() {
+        var modal = document.getElementById('productModal');
+        var overlay = document.getElementById('productOverlay');
+        if (!modal || !overlay) return;
+
+        modal.classList.remove('flex', 'md:flex');
+        modal.classList.add('hidden', 'md:hidden');
+        overlay.classList.add('hidden');
+        document.documentElement.style.overflow = ''; // Allow scrolling again when modal is closed
+      }
+
+      document.getElementById('productOverlay').addEventListener('click', closeProductModal);
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') closeProductModal(); // Close modal on ESC key
+      });
+
+      document.querySelectorAll('#products .group').forEach(card => {
+        const h = card.querySelector('h3');
+        if (!h) return;
+        const key = h.textContent.trim();
+        card.classList.add('cursor-pointer');
+        card.setAttribute('role', 'button');
+        card.setAttribute('tabindex', '0');
+        card.addEventListener('click', () => openProductModal());
+        card.addEventListener('keypress', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            openProductModal();
+          }
+        });
+      });
+    </script>
+    
