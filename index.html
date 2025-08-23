@@ -829,6 +829,9 @@
 
   function closeAllModals(){
     modals.forEach(hide);
+    
+    // Also remove flex classes so Tailwind md:flex cannot override hidden on desktop
+    modals.forEach(function(m){ if(!m) return; m.classList.remove('flex','md:flex','md:items-center','md:justify-center'); });
     hideOverlay();
     document.documentElement.style.overflow = '';
   }
@@ -905,6 +908,19 @@
   // --- Compatibility tweaks: override legacy helpers if they exist ---
   // Prevent legacy scripts from forcing inline display:none
   // We don't remove them, but last-write-wins on our event handlers.
+})();
+</script>
+
+
+<script>
+(function(){
+  var productCloseBtn = document.querySelector('#productModal [aria-label="Close"]');
+  if (productCloseBtn) {
+    productCloseBtn.addEventListener('click', function(e){
+      e.preventDefault();
+      if (typeof window.closeAllModals === 'function') window.closeAllModals();
+    }, { capture: true });
+  }
 })();
 </script>
 
