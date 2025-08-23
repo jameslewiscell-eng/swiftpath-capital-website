@@ -562,7 +562,7 @@
 
 <!-- Product Detail Modal -->
 <div id="productOverlay" class="fixed inset-0 z-50 hidden bg-black/60"></div>
-<div id="productModal" class="fixed inset-x-0 bottom-0 z-50 hidden md:inset-0 md:flex md:items-center md:justify-center">
+<div id="productModal" class="fixed inset-x-0 bottom-0 z-50 hidden md:inset-0 md:items-center md:justify-center">
   <div class="w-full bg-white rounded-t-2xl shadow-xl md:max-w-2xl md:rounded-2xl max-h-[85vh] overflow-y-auto p-6">
     <div class="flex items-center justify-between mb-3">
       <h2 id="productTitle" class="text-2xl font-bold">Loan Product</h2>
@@ -806,6 +806,105 @@
     if(n.nodeType===3) n.textContent=n.textContent.replace(bad, PHONE_DISPLAY);
     else if(n.nodeType===1) Array.from(n.childNodes).forEach(walk);
   });
+})();
+</script>
+
+
+<!-- Unified Modal Controller (privacy, terms, product) -->
+<script>
+(function(){
+  // Prefer #productOverlay, fall back to #modal-overlay for compatibility
+  var overlay = document.getElementById('productOverlay') || document.getElementById('modal-overlay');
+  var modals = [
+    document.getElementById('privacy-modal'),
+    document.getElementById('terms-modal'),
+    document.getElementById('productModal')
+  ].filter(Boolean);
+
+  function hide(el){ if(!el) return; el.classList.add('hidden'); el.classList.remove('active'); }
+  function show(el){ if(!el) return; el.classList.remove('hidden'); el.classList.add('active'); el.style.removeProperty('display'); }
+
+  function showOverlay(){ if(!overlay) return; overlay.classList.remove('hidden'); }
+  function hideOverlay(){ if(!overlay) return; overlay.classList.add('hidden'); }
+
+  function closeAllModals(){
+    modals.forEach(hide);
+    hideOverlay();
+    document.documentElement.style.overflow = '';
+  }
+
+  function openModalById(id){
+    var target = document.getElementById(id);
+    if(!target) return;
+    modals.forEach(function(m){ if(m !== target) hide(m); });
+    showOverlay();
+    show(target);
+    // If product modal, ensure desktop centering layout applies
+    if (target.id === 'productModal') {
+      target.classList.add('md:flex');
+      target.classList.add('md:items-center','md:justify-center');
+    }
+    document.documentElement.style.overflow = 'hidden';
+  }
+
+  // Wire overlay + ESC to close all
+  overlay && overlay.addEventListener('click', closeAllModals);
+  window.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeAllModals(); });
+
+  // Wire header/footer triggers
+  var openPrivacy = document.getElementById('open-privacy-modal');
+  var openTerms = document.getElementById('open-terms-modal');
+  openPrivacy && openPrivacy.addEventListener('click', function(e){ e.preventDefault(); openModalById('privacy-modal'); });
+  openTerms && openTerms.addEventListener('click', function(e){ e.preventDefault(); openModalById('terms-modal'); });
+
+  // Cookie banner "Privacy Policy" link (if present) opens privacy modal
+  var cookiePrivacyLink = document.getElementById('cookiePrivacyLink');
+  cookiePrivacyLink && cookiePrivacyLink.addEventListener('click', function(e){ e.preventDefault(); openModalById('privacy-modal'); });
+
+  // Hash support
+  if (location.hash === '#privacy') openModalById('privacy-modal');
+  if (location.hash === '#terms') openModalById('terms-modal');
+
+  // --- Product modal integration ---
+  // Enhance product open handler to use unified controller
+  function openProductModalUnified(key){
+    // Populate content via existing product script if present
+    try {
+      // Use existing function to fill content if defined; else noop
+      if (typeof window.openProductModal === 'function') {
+        // Temporarily intercept original to only fill, not show
+        // But safer: replicate minimal data push by dispatching a custom event
+        var ev = new CustomEvent('spc:product:open', { detail: { key: key }});
+        window.dispatchEvent(ev);
+      }
+    } catch(_) {}
+
+    // Regardless, ensure modal is visible using unified controller
+    openModalById('productModal');
+  }
+
+  // Intercept existing product-card bindings by attaching our own
+  document.querySelectorAll('#products .group').forEach(function(card){
+    var h = card.querySelector('h3'); if(!h) return;
+    var key = (h.textContent || '').trim();
+    card.classList.add('cursor-pointer');
+    card.setAttribute('role','button');
+    card.setAttribute('tabindex','0');
+    card.addEventListener('click', function(){ openProductModalUnified(key); });
+    card.addEventListener('keypress', function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); openProductModalUnified(key); } });
+  });
+
+  // Expose for close button inside product modal
+  window.closeAllModals = closeAllModals;
+  window.openModalById = openModalById;
+
+  // Make the product modal close button use unified close
+  var productCloseBtn = document.querySelector('#productModal [aria-label="Close"]');
+  productCloseBtn && productCloseBtn.addEventListener('click', function(e){ e.preventDefault(); closeAllModals(); });
+
+  // --- Compatibility tweaks: override legacy helpers if they exist ---
+  // Prevent legacy scripts from forcing inline display:none
+  // We don't remove them, but last-write-wins on our event handlers.
 })();
 </script>
 
