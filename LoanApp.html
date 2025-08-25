@@ -33,20 +33,34 @@
 <div class="absolute inset-0 bg-slate-900/60"></div><div class="relative container mx-auto px-6 text-center text-white">
 <h1 class="text-4xl md:text-5xl font-extrabold leading-tight mb-4">Start Your Loan Application</h1>
 <p class="text-lg md:text-xl max-w-3xl mx-auto mb-8">Hard money & private lender deals.</p>
-<a href="#application" class="inline-block bg-brand-blue text-white font-bold py-3 px-8 rounded-lg shadow">Jump to Form</a>
+<a href="#application" class="inline-block bg-brand-blue text-white font-bold py-3 px-8 rounded-lg shadow">Start Your Application</a>
 </div></section>
 <section id="application" class="py-16 bg-white"><div class="container mx-auto px-6">
+
+<div id="formErrors" class="hidden mb-6 p-4 rounded-md bg-red-50 border border-red-200 text-red-700">
+  <p class="font-semibold">Please fix the following:</p>
+  <ul id="formErrorsList" class="list-disc ml-5 mt-2 space-y-1"></ul>
+</div>
+
 <form id="loanForm" class="max-w-4xl mx-auto bg-gray-50 p-8 rounded-xl shadow-lg" novalidate>
+
+  <input type="hidden" id="utm_source" value="">
+  <input type="hidden" id="utm_medium" value="">
+  <input type="hidden" id="utm_campaign" value="">
+  <input type="hidden" id="utm_term" value="">
+  <input type="hidden" id="utm_content" value="">
+  <input type="hidden" id="gclid" value="">
+
 <h2 class="text-2xl font-bold text-slate-800 border-b-2 border-[#c5a35a] pb-2">Personal Information</h2>
 <div class="grid md:grid-cols-2 gap-6 mt-6">
-<div><label class="block mb-1 font-medium" for="fullName">Full Name</label><input id="fullName" class="w-full border rounded-lg px-3 py-2" required></div>
-<div><label class="block mb-1 font-medium" for="email">Email</label><input id="email" type="email" class="w-full border rounded-lg px-3 py-2" required></div>
-<div><label class="block mb-1 font-medium" for="phone">Phone</label><input id="phone" class="w-full border rounded-lg px-3 py-2" required></div>
-<div><label class="block mb-1 font-medium" for="mailingAddress">Mailing Address</label><input id="mailingAddress" class="w-full border rounded-lg px-3 py-2"></div>
+<div><label class="block mb-1 font-medium" for="fullName">Full Name</label><input id="fullName" class="w-full border rounded-lg px-3 py-2" required autocomplete="name" placeholder="Full legal name"></div>
+<div><label class="block mb-1 font-medium" for="email">Email</label><input id="email" type="email" class="w-full border rounded-lg px-3 py-2" required autocomplete="email" placeholder="name@example.com"></div>
+<div><label class="block mb-1 font-medium" for="phone">Phone</label><input id="phone" type="tel" pattern="^\+?[0-9\s\-()]{7,20}"$ placeholder="+1 407-374-3301" class="w-full border rounded-lg px-3 py-2" required autocomplete="tel"></div>
+<div><label class="block mb-1 font-medium" for="mailingAddress">Mailing Address</label><input id="mailingAddress" class="w-full border rounded-lg px-3 py-2" autocomplete="address-line1" placeholder="Street, City, State ZIP"></div>
 </div>
 <h2 class="mt-10 text-2xl font-bold text-slate-800 border-b-2 border-[#c5a35a] pb-2">Business / Investor Profile</h2>
 <div class="grid md:grid-cols-2 gap-6 mt-6">
-<div><label class="block mb-1 font-medium" for="businessName">Business Name</label><input id="businessName" class="w-full border rounded-lg px-3 py-2"></div>
+<div><label class="block mb-1 font-medium" for="businessName">Business Name</label><input id="businessName" class="w-full border rounded-lg px-3 py-2" autocomplete="organization" placeholder="LLC or Company Name"></div>
 <div><label class="block mb-1 font-medium" for="businessType">Business Type</label><input id="businessType" class="w-full border rounded-lg px-3 py-2" placeholder="LLC, Corp, Sole Prop"></div>
 <div><label class="block mb-1 font-medium" for="numDeals">Completed Investment Deals</label><input id="numDeals" type="number" min="0" class="w-full border rounded-lg px-3 py-2"></div>
 <div><label class="block mb-1 font-medium" for="ein">Entity EIN</label><input id="ein" class="w-full border rounded-lg px-3 py-2"></div>
@@ -54,12 +68,12 @@
 <h2 class="mt-10 text-2xl font-bold text-slate-800 border-b-2 border-[#c5a35a] pb-2">Property & Loan</h2>
 <div class="grid md:grid-cols-2 gap-6 mt-6">
 <div><label class="block mb-1 font-medium" for="propertyAddress">Property Address</label><input id="propertyAddress" class="w-full border rounded-lg px-3 py-2" required></div>
-<div><label class="block mb-1 font-medium" for="purchasePrice">Purchase Price</label><input id="purchasePrice" class="w-full border rounded-lg px-3 py-2" placeholder="$" required></div>
-<div><label class="block mb-1 font-medium" for="rehabBudget">Rehab / Renovation Budget</label><input id="rehabBudget" class="w-full border rounded-lg px-3 py-2" placeholder="$" required></div>
-<div><label class="block mb-1 font-medium" for="arv">After Repair Value (ARV)</label><input id="arv" class="w-full border rounded-lg px-3 py-2" placeholder="$" required></div>
+<div><label class="block mb-1 font-medium" for="purchasePrice">Purchase Price</label><input id="purchasePrice" class="w-full border rounded-lg px-3 py-2" placeholder="$" required inputmode="decimal" autocomplete="off" placeholder="$250,000"></div>
+<div><label class="block mb-1 font-medium" for="rehabBudget">Rehab / Renovation Budget</label><input id="rehabBudget" class="w-full border rounded-lg px-3 py-2" placeholder="$" required inputmode="decimal" autocomplete="off" placeholder="$50,000"></div>
+<div><label class="block mb-1 font-medium" for="arv">After Repair Value (ARV)</label><input id="arv" class="w-full border rounded-lg px-3 py-2" placeholder="$" required inputmode="decimal" autocomplete="off" placeholder="$325,000"></div>
 <div><label class="block mb-1 font-medium" for="wholesaler">Wholesaler Involved?</label><select id="wholesaler" class="w-full border rounded-lg px-3 py-2"><option value="">Select</option><option>Yes</option><option>No</option></select></div>
 <div><label class="block mb-1 font-medium" for="loanPurpose">Loan Purpose</label><select id="loanPurpose" class="w-full border rounded-lg px-3 py-2"><option value="">Select</option><option>Fix-and-Flip</option><option>BRRRR</option><option>Rental Property</option><option>New Construction</option><option>Bridge Loan</option><option>Other</option></select></div>
-<div><label class="block mb-1 font-medium" for="loanAmount">Requested Loan Amount</label><input id="loanAmount" class="w-full border rounded-lg px-3 py-2" placeholder="$"></div>
+<div><label class="block mb-1 font-medium" for="loanAmount">Requested Loan Amount</label><input id="loanAmount" class="w-full border rounded-lg px-3 py-2" placeholder="$" inputmode="decimal" autocomplete="off" placeholder="$200,000"></div>
 <div><label class="block mb-1 font-medium" for="timeline">Timeline to Close</label><input id="timeline" class="w-full border rounded-lg px-3 py-2" placeholder="ASAP, 14-30 days, etc."></div>
 <div class="md:col-span-2"><label class="block mb-1 font-medium" for="exitStrategy">Exit Strategy</label><select id="exitStrategy" class="w-full border rounded-lg px-3 py-2"><option value="">Select</option><option>Sell after rehab</option><option>Refinance into rental loan</option><option>Other</option></select></div>
 <div class="md:col-span-2"><label class="block mb-1 font-medium" for="loanDetails">Additional Notes</label><textarea id="loanDetails" rows="4" class="w-full border rounded-lg px-3 py-2" placeholder="Tell us about your project..."></textarea></div>
@@ -88,6 +102,187 @@
 <a href="#" id="open-cookie-prefs" class="text-xs underline">Cookie Preferences</a>
 </footer>
 <script></script><script src="assets/hubspot.js"></script>
+
+<!-- Validation, attribution capture, and nicer UX -->
+<script>
+(function(){
+  const MAX_FILE_MB = 25;
+  const BYTE_LIMIT = MAX_FILE_MB * 1024 * 1024;
+  const allowedTypes = {
+    purchaseContractFile: ['application/pdf', 'image/',], // image/*
+    rehabBudgetFile: ['application/pdf', 'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'text/csv', 'image/'],
+    compsFile: ['application/pdf', 'image/']
+  };
+
+  function qs(id){ return document.getElementById(id); }
+  function addError(el, msg){
+    if(!el) return;
+    el.classList.add('border-red-500', 'ring-1', 'ring-red-300');
+    let p = document.getElementById('err-' + el.id);
+    if(!p){
+      p = document.createElement('p');
+      p.id = 'err-' + el.id;
+      p.className = 'mt-1 text-sm text-red-600';
+      el.insertAdjacentElement('afterend', p);
+    }
+    p.textContent = msg;
+  }
+  function clearError(el){
+    if(!el) return;
+    el.classList.remove('border-red-500','ring-1','ring-red-300');
+    const p = document.getElementById('err-' + el.id);
+    if(p) p.remove();
+  }
+
+  function getParam(name){ return new URLSearchParams(window.location.search).get(name) || ''; }
+  function captureAttribution(){
+    const map = ['utm_source','utm_medium','utm_campaign','utm_term','utm_content','gclid'];
+    map.forEach(k => { const v = getParam(k); const el = qs(k); if(el) el.value = v; });
+  }
+  captureAttribution();
+
+  function validateFiles(errors){
+    const pairs = [
+      ['purchaseContractFile','PDF or image (max 25MB)'],
+      ['rehabBudgetFile','PDF, spreadsheet, CSV, or image (max 25MB)'],
+      ['compsFile','PDF or image (max 25MB)']
+    ];
+    for(const [id, help] of pairs){
+      const el = qs(id);
+      clearError(el);
+      if(!el || !el.files || !el.files[0]) continue;
+      const f = el.files[0];
+      if(f.size > BYTE_LIMIT){
+        errors.push(`${id.replace(/File$/, '').replace(/([A-Z])/g,' $1').trim()}: file exceeds ${MAX_FILE_MB}MB`);
+        addError(el, `Too large. Please upload a file under ${MAX_FILE_MB} MB.`);
+        continue;
+      }
+      const t = f.type || '';
+      const allow = allowedTypes[id];
+      const ok = allow && allow.some(a => a.endsWith('/') ? t.startsWith(a) : t === a);
+      if(!ok){
+        errors.push(`${id.replace(/File$/, '').replace(/([A-Z])/g,' $1').trim()}: unsupported type. Allowed: ${help}`);
+        addError(el, `Unsupported type. Allowed: ${help}.`);
+      }
+    }
+  }
+
+  function onlyDigits(str){ return (str || '').replace(/\D+/g,''); }
+  function normalizeCurrencyForSubmit(str){
+    const clean = (str || '').replace(/[^0-9.]/g, '');
+    const parts = clean.split('.');
+    if (parts.length > 2) return parts[0] + '.' + parts.slice(1).join('');
+    return clean;
+  }
+  function validateRequired(errors, id, label){
+    const el = qs(id);
+    clearError(el);
+    if(!el || !el.value || !el.value.trim()){
+      errors.push(`${label} is required.`);
+      addError(el, `${label} is required.`);
+      return false;
+    }
+    return true;
+  }
+  function validateEmail(errors){
+    const el = qs('email');
+    clearError(el);
+    const v = (el.value||'').trim();
+    const ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+    if(!ok){
+      errors.push('Please enter a valid email.');
+      addError(el, 'Please enter a valid email.');
+    }
+  }
+  function validatePhone(errors){
+    const el = qs('phone');
+    clearError(el);
+    const d = onlyDigits(el.value);
+    if(d.length < 10){
+      errors.push('Please enter a valid phone number.');
+      addError(el, 'Please enter a valid phone number.');
+    }
+  }
+  function validateMoney(errors, id, label){
+    const el = qs(id);
+    clearError(el);
+    const num = parseFloat(normalizeCurrencyForSubmit(el.value));
+    if(!isFinite(num) || num <= 0){
+      errors.push(`${label} must be a positive number.`);
+      addError(el, `${label} must be a positive number.`);
+    }
+  }
+
+  const form = qs('loanForm');
+  const errorsBox = qs('formErrors');
+  const errorsList = qs('formErrorsList');
+
+  if(form){
+    // Guard against Enter key double-submit
+    form.addEventListener('keydown', (e)=>{
+      if(e.key === 'Enter' && e.target.tagName.toLowerCase() !== 'textarea'){
+        e.preventDefault();
+      }
+    });
+
+    // Run validation BEFORE your existing submit listener (capture phase)
+    form.addEventListener('submit', (e)=>{
+      const errors = [];
+      errorsBox.classList.add('hidden');
+      errorsList.innerHTML = '';
+
+      // Requireds
+      validateRequired(errors, 'fullName', 'Full Name');
+      validateRequired(errors, 'email', 'Email');
+      validateRequired(errors, 'phone', 'Phone');
+      validateRequired(errors, 'propertyAddress', 'Property Address');
+      validateRequired(errors, 'purchasePrice', 'Purchase Price');
+      validateRequired(errors, 'rehabBudget', 'Rehab / Renovation Budget');
+      validateRequired(errors, 'arv', 'After Repair Value');
+
+      // Email/Phone specifics
+      validateEmail(errors);
+      validatePhone(errors);
+
+      // Money numeric checks
+      validateMoney(errors, 'purchasePrice', 'Purchase Price');
+      validateMoney(errors, 'rehabBudget', 'Rehab / Renovation Budget');
+      validateMoney(errors, 'arv', 'After Repair Value');
+      const loanAmtEl = qs('loanAmount');
+      if(loanAmtEl && loanAmtEl.value.trim()){
+        validateMoney(errors, 'loanAmount', 'Requested Loan Amount');
+      }
+
+      // Consent checkbox
+      const consent = qs('consentCheckbox');
+      if(!consent || !consent.checked){
+        errors.push('You must agree to the Terms & Privacy Policy.');
+        addError(consent, 'Please check this box to continue.');
+      } else {
+        clearError(consent);
+      }
+
+      // Files
+      validateFiles(errors);
+
+      // Show errors if any
+      if(errors.length){
+        e.preventDefault();
+        errorsList.innerHTML = errors.map(t => `<li>${t}</li>`).join('');
+        errorsBox.classList.remove('hidden');
+        // Scroll to first invalid field for clarity
+        const firstErr = document.querySelector('.border-red-500');
+        if(firstErr && typeof firstErr.scrollIntoView === 'function'){
+          firstErr.scrollIntoView({behavior:'smooth', block:'center'});
+        } else {
+          errorsBox.scrollIntoView({behavior:'smooth', block:'start'});
+        }
+      }
+    }, true);
+  }
+})();
+</script>
+
 <script>
 async function uploadFile(inputId, dealName) {{
   const el = document.getElementById(inputId);
@@ -308,4 +503,93 @@ loanForm.addEventListener('submit', async (e)=>{{
 })();
 </script>
 
-</body></html>
+
+<!-- Auto-format & normalize (currency + phone) before submit -->
+<script>
+(function(){
+  // -------- helpers
+  function onlyDigits(str){ return (str || '').replace(/\D+/g,''); }
+  function normalizeCurrencyForSubmit(str){
+    // keep digits + dot; strip everything else (commas, $)
+    const clean = (str || '').replace(/[^0-9.]/g, '');
+    const parts = clean.split('.');
+    if (parts.length > 2) {
+      return parts[0] + '.' + parts.slice(1).join('');
+    }
+    return clean;
+  }
+  function formatCurrencyForDisplay(str){
+    const clean = normalizeCurrencyForSubmit(str);
+    if (!clean) return '';
+    const [intPart, decPart] = clean.split('.');
+    const withCommas = (intPart || '').replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    return decPart !== undefined ? `${withCommas}.${decPart}` : withCommas;
+  }
+
+  function formatPhoneForDisplay(str){
+    const d = onlyDigits(str);
+    if (d.length === 10) {
+      return `(${d.slice(0,3)}) ${d.slice(3,6)}-${d.slice(6)}`;
+    }
+    return str;
+  }
+  function normalizePhoneForSubmit(str){
+    const d = onlyDigits(str);
+    if (d.length === 0) return '';
+    if (d.length === 10) return `+1${d}`;         // assume US if 10 digits
+    if (d.length > 10 && d[0] != '0') return `+${d}`; // treat as E.164 with country code
+    return d;
+  }
+
+  const phone = document.getElementById('phone');
+  const moneyIds = ['purchasePrice','rehabBudget','arv','loanAmount'];
+  const moneyEls = moneyIds
+    .map(id => document.getElementById(id))
+    .filter(Boolean);
+
+  // Currency: format on input (visual) and on blur
+  moneyEls.forEach(el => {
+    el.setAttribute('inputmode','decimal');
+    el.addEventListener('input', () => {
+      const before = el.value;
+      el.value = formatCurrencyForDisplay(before);
+      try { el.setSelectionRange(el.value.length, el.value.length); } catch(_) {}
+    });
+    el.addEventListener('blur', () => {
+      el.value = formatCurrencyForDisplay(el.value);
+    });
+  });
+
+  // Phone: live clean & pretty display
+  if (phone) {
+    phone.setAttribute('type','tel');
+    phone.setAttribute('inputmode','tel');
+    phone.setAttribute('pattern','^\\+?[0-9\\s\\-()]{7,20}$');
+    phone.placeholder = '+1 407-374-3301';
+    phone.addEventListener('input', () => {
+      const raw = phone.value;
+      const d = onlyDigits(raw);
+      if (d.length <= 10) {
+        phone.value = formatPhoneForDisplay(raw);
+      } else {
+        phone.value = raw.replace(/[^\d+]/g,'').replace(/(\d{3})(?=\d)/g,'$1 ');
+      }
+    });
+    phone.addEventListener('blur', () => {
+      phone.value = formatPhoneForDisplay(phone.value);
+    });
+  }
+
+  // Normalize values right before your existing submit handler builds the field list
+  const loanForm = document.getElementById('loanForm');
+  if (loanForm) {
+    loanForm.addEventListener('submit', () => {
+      moneyEls.forEach(el => { el.value = normalizeCurrencyForSubmit(el.value); });
+      if (phone) phone.value = normalizePhoneForSubmit(phone.value);
+    }, true); // capture phase so this runs before other listeners
+  }
+})();
+</script>
+
+</body>
+</html>
