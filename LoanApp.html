@@ -52,6 +52,11 @@ details.group[open] > summary + * {
 <a href="/" class="flex items-center space-x-2"><img src="https://i.postimg.cc/5tFPsLvR/Untitled-design.png" alt="SwiftPath Capital Logo" class="h-12 w-auto"></a>
 <div class="hidden md:flex items-center space-x-8"><a href="/#products" class="hover:text-slate-900">Loan Products</a><a href="#application" class="bg-brand-gold text-white font-bold py-2 px-5 rounded-lg shadow">Apply Now</a></div>
 </nav></header>
+
+<div id="debugBanner" class="bg-yellow-200 text-yellow-900 text-center py-2 text-sm">
+  BUILD: NO-REDIRECT + ERROR CAPTURE • If you do not see this banner, your CDN/cache is serving an older file.
+</div>
+
 <main>
 <section class="relative min-h-[40vh] flex items-center bg-cover bg-center" style="background-image:url('https://images.unsplash.com/photo-1580587771525-78b9dba3b914?q=80&w=2874&auto=format&fit=crop')">
 <div class="absolute inset-0 bg-slate-900/60"></div><div class="relative container mx-auto px-6 text-center text-white">
@@ -711,12 +716,38 @@ loanForm.addEventListener('submit', async (e)=>{ e.preventDefault(); e.stopPropa
         if (window.gtag) { gtag('event', 'generate_lead'); gtag('event', 'conversion', {'send_to':'AW-17093021602/lead'}); }
       } catch(_) {}
 
-      if (redirectTo) {
-        try { const qs = window.location.search || ""; window.location.assign(redirectTo + qs); }
-        catch (_) { window.location.assign(redirectTo); }
-      }
+      if (redirectTo) { try { console.log('SUCCESS (no-redirect build): would redirect to', redirectTo); } catch(_) {} }
     };
   } catch (e) { console.warn("HubSpot helper init error:", e); }
+})();
+</script>
+
+
+<script>
+(function(){
+  function ensureStatus(){
+    var box = document.getElementById('submitStatus');
+    if(!box){
+      box = document.createElement('div');
+      box.id = 'submitStatus';
+      box.className = 'mb-6 rounded-md border p-4 bg-red-50 border-red-200 text-red-700';
+      var form = document.getElementById('loanForm');
+      if(form) form.parentNode.insertBefore(box, form);
+    }
+    return box;
+  }
+  window.addEventListener('error', function(e){
+    var box = ensureStatus();
+    box.innerHTML = '<p class="font-semibold">JavaScript error</p><pre class="mt-2 whitespace-pre-wrap text-xs">'+(e.message||'error')+'</pre>';
+    try { box.scrollIntoView({behavior:'smooth', block:'start'}); } catch(_){}
+  });
+  window.addEventListener('unhandledrejection', function(e){
+    var box = ensureStatus();
+    var msg = (e && e.reason) ? (e.reason.message || String(e.reason)) : 'unhandled rejection';
+    box.innerHTML = '<p class="font-semibold">Unhandled promise rejection</p><pre class="mt-2 whitespace-pre-wrap text-xs">'+msg+'</pre>';
+    try { box.scrollIntoView({behavior:'smooth', block:'start'}); } catch(_){}
+  });
+  console.log('NO-REDIRECT build active');
 })();
 </script>
 
