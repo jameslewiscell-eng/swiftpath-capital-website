@@ -316,7 +316,7 @@ details.group[open] > summary + * {
       showStatus('error', 'Submission failed', msg);
       throw new Error(msg);
     }
-    showStatus('success','SUCCESS (test build)','Would redirect to /thank-you.html');
+    showStatus('success','SUCCESS','Redirecting to /thank-you.html'); try{const qs = window.location.search||''; window.location.assign('/thank-you.html'+qs);}catch(_){window.location.assign('/thank-you.html');}
   };
 
   function captureAttribution(){
