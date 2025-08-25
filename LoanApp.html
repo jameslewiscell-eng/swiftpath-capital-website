@@ -55,7 +55,7 @@ details.group[open] > summary + * {
 <main>
 <section class="relative min-h-[40vh] flex items-center bg-cover bg-center" style="background-image:url('https://images.unsplash.com/photo-1580587771525-78b9dba3b914?q=80&w=2874&auto=format&fit=crop')">
 <div class="absolute inset-0 bg-slate-900/60"></div><div class="relative container mx-auto px-6 text-center text-white">
-<h1 class="text-4xl md:text-5xl font-extrabold leading-tight mb-4">Start Your Loan Application</h1>
+<h1 class="text-4xl md:text-5xl font-extrabold leading-tight mb-1">Start Your Loan Application</h1><p class="text-xs opacity-70">BUILD: NUCLEAR-DEBUG • if you don’t see this, it’s not the right file</p>
 <p class="text-lg md:text-xl max-w-3xl mx-auto mb-8">Hard money & private lender deals.</p>
 <a href="#application" class="inline-block bg-brand-blue text-white font-bold py-3 px-8 rounded-lg shadow">Start Your Application</a>
 </div></section>
@@ -183,8 +183,7 @@ details.group[open] > summary + * {
 </div>
 <a href="#" id="open-cookie-prefs" class="text-xs underline">Cookie Preferences</a>
 </footer>
-<script></script><script src="assets/hubspot.js"></script>
-
+<script></script>
 <!-- Validation, attribution capture, and nicer UX -->
 <script>
 (function(){
@@ -397,7 +396,7 @@ async function uploadFile(inputId, dealName) {{
 }}
 
 const loanForm = document.getElementById('loanForm');
-loanForm.addEventListener('submit', async (e)=>{{
+loanForm.addEventListener('submit', async (e)=>{ e.preventDefault(); e.stopPropagation(); e.stopImmediatePropagation();{
   e.preventDefault();
   const btn = loanForm.querySelector('button[type="submit"]'); btn.disabled=true; btn.innerText='Uploading...';
   try {{
@@ -438,68 +437,6 @@ loanForm.addEventListener('submit', async (e)=>{{
 }});
 
 </script>
-<!-- SwiftPath HubSpot Hotfix v3 (name split + hutk guard) -->
-<script>
-(function () {
-  try {
-    window.HUBSPOT_PORTAL_ID = "243569048";
-    window.HUBSPOT_LEAD_GUID = "65717a53-a61c-4f85-ae97-8c34b85c5d83";
-    window.HUBSPOT_LOAN_GUID = "6648e233-6873-4546-a9cf-b20d66ff4e8e";
-
-    function getCookie(name){
-      const m = document.cookie.match(new RegExp('(?:^|; )' + name.replace(/([.$?*|{}()\[\]\\/+^])/g, '\\$1') + '=([^;]*)'));
-      return m ? decodeURIComponent(m[1]) : null;
-    }
-
-    function normalizeFields(fields){
-      const out = [];
-      let fullName = null;
-      for (const f of (fields||[])) {
-        if (!f || f.value == null) continue;
-        if (f.name === 'full_name' || f.name === 'name') {
-          fullName = (''+f.value).trim();
-          continue; // we'll expand to firstname/lastname
-        }
-        out.push({ name: f.name, value: ''+f.value });
-      }
-      if (fullName) {
-        const parts = fullName.split(/\s+/);
-        const first = parts.shift() || '';
-        const last = parts.join(' ');
-        if (first) out.push({ name: 'firstname', value: first });
-        if (last)  out.push({ name: 'lastname',  value: last });
-      }
-      return out;
-    }
-
-    window.__swiftpathHS = window.__swiftpathHS || {};
-    window.__swiftpathHS.submitToHubSpot = async function (formGuid, fields, redirectTo) {
-      const portalId = window.HUBSPOT_PORTAL_ID;
-      if (!portalId) throw new Error("Missing HUBSPOT_PORTAL_ID");
-
-      const url = `https://api.hsforms.com/submissions/v3/integration/submit/${portalId}/${formGuid}`;
-      const context = { pageUri: window.location.href, pageName: document.title };
-      const hutk = getCookie('hubspotutk');
-      if (hutk) context.hutk = hutk;
-
-      const payload = { fields: normalizeFields(fields), context: context };
-
-      const res = await fetch(url, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
-      });
-      if (!res.ok) throw new Error("HubSpot returned " + res.status + ": " + await res.text());
-      if (redirectTo) {
-        try { const qs = window.location.search || ""; window.location.assign(redirectTo + qs); }
-        catch (_) { window.location.assign(redirectTo); }
-      }
-    };
-  } catch (e) { console.warn("HubSpot hotfix init error:", e); }
-})();
-</script>
-
-
 <script>
 (function(){
   function getParam(name){
@@ -689,6 +626,97 @@ loanForm.addEventListener('submit', async (e)=>{{
       if (phone) phone.value = normalizePhoneForSubmit(phone.value);
     }, true); // capture phase so this runs before other listeners
   }
+})();
+</script>
+
+
+<!-- SwiftPath HubSpot Helper v3 - single source of truth -->
+<script>
+(function () {
+  try {
+    window.HUBSPOT_PORTAL_ID = "243569048";
+    window.HUBSPOT_LEAD_GUID = "65717a53-a61c-4f85-ae97-8c34b85c5d83";
+    window.HUBSPOT_LOAN_GUID = "6648e233-6873-4546-a9cf-b20d66ff4e8e";
+
+    function getCookie(name){
+      const m = document.cookie.match(new RegExp('(?:^|; )' + name.replace(/([.$?*|{}()\[\]\\/+^])/g, '\\$1') + '=([^;]*)'));
+      return m ? decodeURIComponent(m[1]) : null;
+    }
+    function normalizeFields(fields){
+      const out = [];
+      let fullName = null;
+      for (const f of (fields||[])) {
+        if (!f || f.value == null) continue;
+        if (f.name === 'full_name' || f.name === 'name_full' || f.name === 'name') {
+          fullName = (''+f.value).trim();
+          continue;
+        }
+        out.push({ name: f.name, value: ''+f.value });
+      }
+      if (fullName) {
+        const parts = fullName.split(/\s+/);
+        const first = parts.shift() || '';
+        const last = parts.join(' ');
+        if (first) out.push({ name: 'firstname', value: first });
+        if (last)  out.push({ name: 'lastname',  value: last });
+      }
+      return out;
+    }
+
+    window.__swiftpathHS = window.__swiftpathHS || {};
+    window.__swiftpathHS.submitToHubSpot = async function (formGuid, fields, redirectTo) {
+      const portalId = window.HUBSPOT_PORTAL_ID;
+      if (!portalId) throw new Error("Missing HUBSPOT_PORTAL_ID");
+
+      const url = `https://api.hsforms.com/submissions/v3/integration/submit/${portalId}/${formGuid}`;
+      const context = { pageUri: window.location.href, pageName: document.title };
+      const hutk = getCookie('hubspotutk');
+      if (hutk) context.hutk = hutk;
+
+      const payload = { fields: normalizeFields(fields), context };
+      // Diagnostics: payload preview masked
+      try {
+        function maskFields(arr){
+          return (arr||[]).map(function(f){
+            var n = (f && f.name ? (''+f.name).toLowerCase() : '');
+            var v = (f && f.value != null ? ''+f.value : '');
+            if (n.includes('email')) v = v.replace(/(^.).*(@.*$)/, '$1***$2');
+            if (n.includes('phone') || n === 'tel') v = v.length > 4 ? ('***' + v.slice(-4)) : '***';
+            if (n.includes('ssn') || n.includes('tax')) v = '***';
+            return { name: f.name, value: v };
+          });
+        }
+        if (window.__swiftpathStatus) {
+          window.__swiftpathStatus.showStatus('success', 'Debug: Payload preview', JSON.stringify({ url, formGuid, payload: { fields: maskFields(payload.fields), context } }, null, 2));
+        }
+      } catch(_) {}
+
+      const res = await fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
+      let resultText = await res.text();
+      let json = null; try { json = JSON.parse(resultText); } catch(_) {}
+
+      try {
+        if (window.__swiftpathStatus) window.__swiftpathStatus.showStatus('success', 'Debug: HubSpot response', (resultText || '[empty]').slice(0, 4000));
+      } catch(_) {}
+
+      if (!res.ok || (json && json.status && (''+json.status).toLowerCase() === 'error')) {
+        var msg = 'HubSpot rejected the submission.';
+        if(json && json.errors){ msg += '\n' + json.errors.map(e => (e.message || e.errorType || JSON.stringify(e))).join('\n'); }
+        else { msg += '\nHTTP ' + res.status + ': ' + resultText; }
+        if (window.__swiftpathStatus) window.__swiftpathStatus.showStatus('error', 'Submission failed', msg);
+        throw new Error(msg);
+      }
+
+      try {
+        if (window.gtag) { gtag('event', 'generate_lead'); gtag('event', 'conversion', {'send_to':'AW-17093021602/lead'}); }
+      } catch(_) {}
+
+      if (redirectTo) {
+        try { const qs = window.location.search || ""; window.location.assign(redirectTo + qs); }
+        catch (_) { window.location.assign(redirectTo); }
+      }
+    };
+  } catch (e) { console.warn("HubSpot helper init error:", e); }
 })();
 </script>
 
