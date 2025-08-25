@@ -23,6 +23,30 @@
     gtag('js', new Date());
     gtag('config', 'AW-17093021602');
   </script>
+
+<style>
+/* Subtle gradient overlay in hero */
+section.relative.min-h\[40vh\] .absolute.inset-0.bg-slate-900\/60 {
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0.70) 0%, rgba(15, 23, 42, 0.55) 60%, rgba(15, 23, 42, 0.40) 100%);
+}
+/* Button hover polish */
+button.bg-brand-gold, a.bg-brand-gold {
+  transition: transform .08s ease, box-shadow .12s ease;
+}
+button.bg-brand-gold:hover, a.bg-brand-gold:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 18px rgba(0,0,0,.12);
+}
+/* Details accordion animation */
+details.group[open] > summary + * {
+  animation: slideDown .2s ease-out;
+}
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+</style>
+
 </head><body class="bg-gray-50 text-slate-700">
 <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-40 shadow-sm"><nav class="container mx-auto px-6 py-3 flex justify-between items-center">
 <a href="/" class="flex items-center space-x-2"><img src="https://i.postimg.cc/5tFPsLvR/Untitled-design.png" alt="SwiftPath Capital Logo" class="h-12 w-auto"></a>
@@ -36,6 +60,7 @@
 <a href="#application" class="inline-block bg-brand-blue text-white font-bold py-3 px-8 rounded-lg shadow">Start Your Application</a>
 </div></section>
 <section id="application" class="py-16 bg-white"><div class="container mx-auto px-6">
+<div class="grid md:grid-cols-3 gap-8 items-start">
 
 <div id="formErrors" class="hidden mb-6 p-4 rounded-md bg-red-50 border border-red-200 text-red-700">
   <p class="font-semibold">Please fix the following:</p>
@@ -93,7 +118,61 @@
       </label>
     </div>
 <button type="submit" class="bg-brand-gold text-white font-bold py-3 px-12 rounded-lg shadow">Submit Application</button></div>
-</form></div></section></main>
+</form><aside class="hidden md:block md:col-span-1 sticky top-28 self-start"><div class="bg-white rounded-xl shadow-lg p-5 border border-slate-100"><h3 class="text-slate-800 font-semibold">Need help?</h3><p class="mt-2 text-sm text-slate-600">Questions about your application? We can help you finish in minutes.</p><div class="mt-4 space-y-2"><a href="https://wa.me/14073743301" target="_blank" class="block w-full text-center bg-green-500 hover:bg-green-600 text-white font-semibold py-2 rounded-lg">WhatsApp Us</a><a href="tel:+14073743301" class="block w-full text-center bg-brand-blue hover:bg-brand-blue-dark text-white font-semibold py-2 rounded-lg">Call 407‑374‑3301</a></div><p class="mt-3 text-xs text-slate-500">Same‑day term sheets • Secure processing</p></div></aside></div></div></section></main>
+
+<section id="faq" class="py-16 bg-gray-50">
+  <div class="container mx-auto px-6 max-w-4xl">
+    <h2 class="text-3xl md:text-4xl font-bold text-slate-800 text-center">Frequently Asked Questions</h2>
+    <p class="text-slate-600 text-center mt-3">Quick answers to keep you moving.</p>
+    <div class="mt-8 divide-y divide-slate-200 rounded-xl bg-white shadow-sm border border-slate-100">
+      <details class="group p-5">
+        <summary class="flex cursor-pointer list-none items-center justify-between">
+          <span class="font-semibold text-slate-800">Will this affect my credit score?</span>
+          <span class="transition-transform group-open:rotate-180">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-slate-500" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.08 1.04l-4.25 4.25a.75.75 0 01-1.08 0L5.21 8.27a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+            </svg>
+          </span>
+        </summary>
+        <p class="mt-3 text-slate-600">No. Pre‑qualification does not require a hard credit pull.</p>
+      </details>
+      <details class="group p-5">
+        <summary class="flex cursor-pointer list-none items-center justify-between">
+          <span class="font-semibold text-slate-800">How fast can I get funded?</span>
+          <span class="transition-transform group-open:rotate-180">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-slate-500" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.08 1.04l-4.25 4.25a.75.75 0 01-1.08 0L5.21 8.27a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+            </svg>
+          </span>
+        </summary>
+        <p class="mt-3 text-slate-600">Approvals in hours; many loans close in just days, depending on docs and title.</p>
+      </details>
+      <details class="group p-5">
+        <summary class="flex cursor-pointer list-none items-center justify-between">
+          <span class="font-semibold text-slate-800">Which projects qualify?</span>
+          <span class="transition-transform group-open:rotate-180">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-slate-500" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.08 1.04l-4.25 4.25a.75.75 0 01-1.08 0L5.21 8.27a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+            </svg>
+          </span>
+        </summary>
+        <p class="mt-3 text-slate-600">Fix-and-Flip, BRRRR, DSCR rentals, new construction, and bridge loans for 1–4 unit and small multifamily.</p>
+      </details>
+      <details class="group p-5">
+        <summary class="flex cursor-pointer list-none items-center justify-between">
+          <span class="font-semibold text-slate-800">What documents should I upload?</span>
+          <span class="transition-transform group-open:rotate-180">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-slate-500" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.08 1.04l-4.25 4.25a.75.75 0 01-1.08 0L5.21 8.27a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+            </svg>
+          </span>
+        </summary>
+        <p class="mt-3 text-slate-600">Purchase contract, rehab budget, and comps/appraisal if available. You can submit and add documents later.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
 <footer class="bg-slate-800 text-white"><div class="container mx-auto px-6 py-10 grid md:grid-cols-3 gap-8">
 <div><img src="https://i.postimg.cc/5tFPsLvR/Untitled-design.png" alt="SwiftPath Capital Logo" class="h-10 w-auto bg-white p-1 rounded-md"><p class="mt-3 text-slate-400">Equal Housing Opportunity · Not a commitment to lend.</p></div>
 <div><h3 class="font-bold tracking-wide text-[#c5a35a]">Navigation</h3><ul class="mt-3 space-y-2"><li><a href="/#products" class="hover:text-[#c5a35a]">Loan Products</a></li></ul></div>
