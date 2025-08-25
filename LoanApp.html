@@ -8,45 +8,82 @@
 
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-MC0NC3VFNR"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-MC0NC3VFNR');
-</script>
+
 
   <!-- Google Ads global site tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17093021602"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'AW-17093021602');
-  </script>
+  
+
+<style>
+/* Subtle gradient overlay in hero */
+section.relative.min-h\[40vh\] .absolute.inset-0.bg-slate-900\/60 {
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0.70) 0%, rgba(15, 23, 42, 0.55) 60%, rgba(15, 23, 42, 0.40) 100%);
+}
+/* Button hover polish */
+button.bg-brand-gold, a.bg-brand-gold {
+  transition: transform .08s ease, box-shadow .12s ease;
+}
+button.bg-brand-gold:hover, a.bg-brand-gold:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 18px rgba(0,0,0,.12);
+}
+/* Details accordion animation */
+details.group[open] > summary + * {
+  animation: slideDown .2s ease-out;
+}
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+</style>
+
 </head><body class="bg-gray-50 text-slate-700">
 <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-40 shadow-sm"><nav class="container mx-auto px-6 py-3 flex justify-between items-center">
 <a href="/" class="flex items-center space-x-2"><img src="https://i.postimg.cc/5tFPsLvR/Untitled-design.png" alt="SwiftPath Capital Logo" class="h-12 w-auto"></a>
 <div class="hidden md:flex items-center space-x-8"><a href="/#products" class="hover:text-slate-900">Loan Products</a><a href="#application" class="bg-brand-gold text-white font-bold py-2 px-5 rounded-lg shadow">Apply Now</a></div>
 </nav></header>
+
+<div id="debugBanner" class="bg-yellow-200 text-yellow-900 text-center py-2 text-sm">
+  BUILD: NO-REDIRECT + ERROR CAPTURE • If you do not see this banner, your CDN/cache is serving an older file.
+</div>
+
 <main>
 <section class="relative min-h-[40vh] flex items-center bg-cover bg-center" style="background-image:url('https://images.unsplash.com/photo-1580587771525-78b9dba3b914?q=80&w=2874&auto=format&fit=crop')">
 <div class="absolute inset-0 bg-slate-900/60"></div><div class="relative container mx-auto px-6 text-center text-white">
-<h1 class="text-4xl md:text-5xl font-extrabold leading-tight mb-4">Start Your Loan Application</h1>
+<h1 class="text-4xl md:text-5xl font-extrabold leading-tight mb-1">Start Your Loan Application</h1><p class="text-xs opacity-70">BUILD: NUCLEAR-DEBUG • if you don’t see this, it’s not the right file</p>
 <p class="text-lg md:text-xl max-w-3xl mx-auto mb-8">Hard money & private lender deals.</p>
-<a href="#application" class="inline-block bg-brand-blue text-white font-bold py-3 px-8 rounded-lg shadow">Jump to Form</a>
+<a href="#application" class="inline-block bg-brand-blue text-white font-bold py-3 px-8 rounded-lg shadow">Start Your Application</a>
 </div></section>
 <section id="application" class="py-16 bg-white"><div class="container mx-auto px-6">
+<div class="grid md:grid-cols-3 gap-8 items-start">
+
+<div id="formErrors" class="hidden mb-6 p-4 rounded-md bg-red-50 border border-red-200 text-red-700">
+  <p class="font-semibold">Please fix the following:</p>
+  <ul id="formErrorsList" class="list-disc ml-5 mt-2 space-y-1"></ul>
+</div>
+
+
+<div id="submitStatus" class="hidden mb-6 rounded-md border p-4" aria-live="polite"></div>
+
 <form id="loanForm" class="max-w-4xl mx-auto bg-gray-50 p-8 rounded-xl shadow-lg" novalidate>
+
+  <input type="hidden" id="utm_source" value="">
+  <input type="hidden" id="utm_medium" value="">
+  <input type="hidden" id="utm_campaign" value="">
+  <input type="hidden" id="utm_term" value="">
+  <input type="hidden" id="utm_content" value="">
+  <input type="hidden" id="gclid" value="">
+
 <h2 class="text-2xl font-bold text-slate-800 border-b-2 border-[#c5a35a] pb-2">Personal Information</h2>
 <div class="grid md:grid-cols-2 gap-6 mt-6">
-<div><label class="block mb-1 font-medium" for="fullName">Full Name</label><input id="fullName" class="w-full border rounded-lg px-3 py-2" required></div>
-<div><label class="block mb-1 font-medium" for="email">Email</label><input id="email" type="email" class="w-full border rounded-lg px-3 py-2" required></div>
-<div><label class="block mb-1 font-medium" for="phone">Phone</label><input id="phone" class="w-full border rounded-lg px-3 py-2" required></div>
-<div><label class="block mb-1 font-medium" for="mailingAddress">Mailing Address</label><input id="mailingAddress" class="w-full border rounded-lg px-3 py-2"></div>
+<div><label class="block mb-1 font-medium" for="fullName">Full Name</label><input id="fullName" class="w-full border rounded-lg px-3 py-2" required autocomplete="name" placeholder="Full legal name"></div>
+<div><label class="block mb-1 font-medium" for="email">Email</label><input id="email" type="email" class="w-full border rounded-lg px-3 py-2" required autocomplete="email" placeholder="name@example.com"></div>
+<div><label class="block mb-1 font-medium" for="phone">Phone</label><input id="phone" type="tel" pattern="^\+?[0-9\s\-()]{7,20}$" placeholder="+1 407-374-3301" class="w-full border rounded-lg px-3 py-2" required autocomplete="tel"></div>
+<div><label class="block mb-1 font-medium" for="mailingAddress">Mailing Address</label><input id="mailingAddress" class="w-full border rounded-lg px-3 py-2" autocomplete="address-line1" placeholder="Street, City, State ZIP"></div>
 </div>
 <h2 class="mt-10 text-2xl font-bold text-slate-800 border-b-2 border-[#c5a35a] pb-2">Business / Investor Profile</h2>
 <div class="grid md:grid-cols-2 gap-6 mt-6">
-<div><label class="block mb-1 font-medium" for="businessName">Business Name</label><input id="businessName" class="w-full border rounded-lg px-3 py-2"></div>
+<div><label class="block mb-1 font-medium" for="businessName">Business Name</label><input id="businessName" class="w-full border rounded-lg px-3 py-2" autocomplete="organization" placeholder="LLC or Company Name"></div>
 <div><label class="block mb-1 font-medium" for="businessType">Business Type</label><input id="businessType" class="w-full border rounded-lg px-3 py-2" placeholder="LLC, Corp, Sole Prop"></div>
 <div><label class="block mb-1 font-medium" for="numDeals">Completed Investment Deals</label><input id="numDeals" type="number" min="0" class="w-full border rounded-lg px-3 py-2"></div>
 <div><label class="block mb-1 font-medium" for="ein">Entity EIN</label><input id="ein" class="w-full border rounded-lg px-3 py-2"></div>
@@ -54,12 +91,12 @@
 <h2 class="mt-10 text-2xl font-bold text-slate-800 border-b-2 border-[#c5a35a] pb-2">Property & Loan</h2>
 <div class="grid md:grid-cols-2 gap-6 mt-6">
 <div><label class="block mb-1 font-medium" for="propertyAddress">Property Address</label><input id="propertyAddress" class="w-full border rounded-lg px-3 py-2" required></div>
-<div><label class="block mb-1 font-medium" for="purchasePrice">Purchase Price</label><input id="purchasePrice" class="w-full border rounded-lg px-3 py-2" placeholder="$" required></div>
-<div><label class="block mb-1 font-medium" for="rehabBudget">Rehab / Renovation Budget</label><input id="rehabBudget" class="w-full border rounded-lg px-3 py-2" placeholder="$" required></div>
-<div><label class="block mb-1 font-medium" for="arv">After Repair Value (ARV)</label><input id="arv" class="w-full border rounded-lg px-3 py-2" placeholder="$" required></div>
+<div><label class="block mb-1 font-medium" for="purchasePrice">Purchase Price</label><input id="purchasePrice" class="w-full border rounded-lg px-3 py-2" placeholder="$" required inputmode="decimal" autocomplete="off" placeholder="$250,000"></div>
+<div><label class="block mb-1 font-medium" for="rehabBudget">Rehab / Renovation Budget</label><input id="rehabBudget" class="w-full border rounded-lg px-3 py-2" placeholder="$" required inputmode="decimal" autocomplete="off" placeholder="$50,000"></div>
+<div><label class="block mb-1 font-medium" for="arv">After Repair Value (ARV)</label><input id="arv" class="w-full border rounded-lg px-3 py-2" placeholder="$" required inputmode="decimal" autocomplete="off" placeholder="$325,000"></div>
 <div><label class="block mb-1 font-medium" for="wholesaler">Wholesaler Involved?</label><select id="wholesaler" class="w-full border rounded-lg px-3 py-2"><option value="">Select</option><option>Yes</option><option>No</option></select></div>
 <div><label class="block mb-1 font-medium" for="loanPurpose">Loan Purpose</label><select id="loanPurpose" class="w-full border rounded-lg px-3 py-2"><option value="">Select</option><option>Fix-and-Flip</option><option>BRRRR</option><option>Rental Property</option><option>New Construction</option><option>Bridge Loan</option><option>Other</option></select></div>
-<div><label class="block mb-1 font-medium" for="loanAmount">Requested Loan Amount</label><input id="loanAmount" class="w-full border rounded-lg px-3 py-2" placeholder="$"></div>
+<div><label class="block mb-1 font-medium" for="loanAmount">Requested Loan Amount</label><input id="loanAmount" class="w-full border rounded-lg px-3 py-2" placeholder="$" inputmode="decimal" autocomplete="off" placeholder="$200,000"></div>
 <div><label class="block mb-1 font-medium" for="timeline">Timeline to Close</label><input id="timeline" class="w-full border rounded-lg px-3 py-2" placeholder="ASAP, 14-30 days, etc."></div>
 <div class="md:col-span-2"><label class="block mb-1 font-medium" for="exitStrategy">Exit Strategy</label><select id="exitStrategy" class="w-full border rounded-lg px-3 py-2"><option value="">Select</option><option>Sell after rehab</option><option>Refinance into rental loan</option><option>Other</option></select></div>
 <div class="md:col-span-2"><label class="block mb-1 font-medium" for="loanDetails">Additional Notes</label><textarea id="loanDetails" rows="4" class="w-full border rounded-lg px-3 py-2" placeholder="Tell us about your project..."></textarea></div>
@@ -79,7 +116,61 @@
       </label>
     </div>
 <button type="submit" class="bg-brand-gold text-white font-bold py-3 px-12 rounded-lg shadow">Submit Application</button></div>
-</form></div></section></main>
+</form><aside class="hidden md:block md:col-span-1 sticky top-28 self-start"><div class="bg-white rounded-xl shadow-lg p-5 border border-slate-100"><h3 class="text-slate-800 font-semibold">Need help?</h3><p class="mt-2 text-sm text-slate-600">Questions about your application? We can help you finish in minutes.</p><div class="mt-4 space-y-2"><a href="https://wa.me/14073743301" target="_blank" class="block w-full text-center bg-green-500 hover:bg-green-600 text-white font-semibold py-2 rounded-lg">WhatsApp Us</a><a href="tel:+14073743301" class="block w-full text-center bg-brand-blue hover:bg-brand-blue-dark text-white font-semibold py-2 rounded-lg">Call 407‑374‑3301</a></div><p class="mt-3 text-xs text-slate-500">Same‑day term sheets • Secure processing</p></div></aside></div></div></section></main>
+
+<section id="faq" class="py-16 bg-gray-50">
+  <div class="container mx-auto px-6 max-w-4xl">
+    <h2 class="text-3xl md:text-4xl font-bold text-slate-800 text-center">Frequently Asked Questions</h2>
+    <p class="text-slate-600 text-center mt-3">Quick answers to keep you moving.</p>
+    <div class="mt-8 divide-y divide-slate-200 rounded-xl bg-white shadow-sm border border-slate-100">
+      <details class="group p-5">
+        <summary class="flex cursor-pointer list-none items-center justify-between">
+          <span class="font-semibold text-slate-800">Will this affect my credit score?</span>
+          <span class="transition-transform group-open:rotate-180">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-slate-500" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.08 1.04l-4.25 4.25a.75.75 0 01-1.08 0L5.21 8.27a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+            </svg>
+          </span>
+        </summary>
+        <p class="mt-3 text-slate-600">No. Pre‑qualification does not require a hard credit pull.</p>
+      </details>
+      <details class="group p-5">
+        <summary class="flex cursor-pointer list-none items-center justify-between">
+          <span class="font-semibold text-slate-800">How fast can I get funded?</span>
+          <span class="transition-transform group-open:rotate-180">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-slate-500" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.08 1.04l-4.25 4.25a.75.75 0 01-1.08 0L5.21 8.27a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+            </svg>
+          </span>
+        </summary>
+        <p class="mt-3 text-slate-600">Approvals in hours; many loans close in just days, depending on docs and title.</p>
+      </details>
+      <details class="group p-5">
+        <summary class="flex cursor-pointer list-none items-center justify-between">
+          <span class="font-semibold text-slate-800">Which projects qualify?</span>
+          <span class="transition-transform group-open:rotate-180">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-slate-500" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.08 1.04l-4.25 4.25a.75.75 0 01-1.08 0L5.21 8.27a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+            </svg>
+          </span>
+        </summary>
+        <p class="mt-3 text-slate-600">Fix-and-Flip, BRRRR, DSCR rentals, new construction, and bridge loans for 1–4 unit and small multifamily.</p>
+      </details>
+      <details class="group p-5">
+        <summary class="flex cursor-pointer list-none items-center justify-between">
+          <span class="font-semibold text-slate-800">What documents should I upload?</span>
+          <span class="transition-transform group-open:rotate-180">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-slate-500" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.08 1.04l-4.25 4.25a.75.75 0 01-1.08 0L5.21 8.27a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+            </svg>
+          </span>
+        </summary>
+        <p class="mt-3 text-slate-600">Purchase contract, rehab budget, and comps/appraisal if available. You can submit and add documents later.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
 <footer class="bg-slate-800 text-white"><div class="container mx-auto px-6 py-10 grid md:grid-cols-3 gap-8">
 <div><img src="https://i.postimg.cc/5tFPsLvR/Untitled-design.png" alt="SwiftPath Capital Logo" class="h-10 w-auto bg-white p-1 rounded-md"><p class="mt-3 text-slate-400">Equal Housing Opportunity · Not a commitment to lend.</p></div>
 <div><h3 class="font-bold tracking-wide text-[#c5a35a]">Navigation</h3><ul class="mt-3 space-y-2"><li><a href="/#products" class="hover:text-[#c5a35a]">Loan Products</a></li></ul></div>
@@ -87,159 +178,15 @@
 </div>
 <a href="#" id="open-cookie-prefs" class="text-xs underline">Cookie Preferences</a>
 </footer>
-<script></script><script src="assets/hubspot.js"></script>
-<script>
-async function uploadFile(inputId, dealName) {{
-  const el = document.getElementById(inputId);
-  if (!el || !el.files || !el.files[0]) return null;
-  const fd = new FormData();
-  fd.append('file', el.files[0]);
-  fd.append('dealName', dealName);
-  const res = await fetch('/.netlify/functions/upload-to-dropbox', {{ method:'POST', body: fd }});
-  if (!res.ok) throw new Error('Upload failed: '+res.status+' '+await res.text());
-  const data = await res.json();
-  return data.url;
-}}
 
-const loanForm = document.getElementById('loanForm');
-loanForm.addEventListener('submit', async (e)=>{{
-  e.preventDefault();
-  const btn = loanForm.querySelector('button[type="submit"]'); btn.disabled=true; btn.innerText='Uploading...';
-  try {{
-    const dealName = (document.getElementById('fullName').value || 'applicant') + ' - ' + (document.getElementById('propertyAddress').value || 'property');
-    const purchaseUrl = await uploadFile('purchaseContractFile', dealName);
-    const budgetUrl = await uploadFile('rehabBudgetFile', dealName);
-    const compsUrl = await uploadFile('compsFile', dealName);
-
-    btn.innerText='Submitting...';
-    const fields = [
-      {{ name:'full_name', value: document.getElementById('fullName').value.trim() }},
-      {{ name:'email', value: document.getElementById('email').value.trim() }},
-      {{ name:'phone', value: document.getElementById('phone').value.trim() }},
-      {{ name:'mailing_address', value: document.getElementById('mailingAddress').value.trim() }},
-      {{ name:'business_name', value: document.getElementById('businessName').value.trim() }},
-      {{ name:'business_type', value: document.getElementById('businessType').value.trim() }},
-      {{ name:'num_completed_deals', value: document.getElementById('numDeals').value.trim() }},
-      {{ name:'entity_ein', value: document.getElementById('ein').value.trim() }},
-      {{ name:'property_address', value: document.getElementById('propertyAddress').value.trim() }},
-      {{ name:'purchase_price', value: document.getElementById('purchasePrice').value.trim() }},
-      {{ name:'rehab_budget', value: document.getElementById('rehabBudget').value.trim() }},
-      {{ name:'after_repair_value', value: document.getElementById('arv').value.trim() }},
-      {{ name:'wholesaler_involved', value: document.getElementById('wholesaler').value }},
-      {{ name:'loan_purpose', value: document.getElementById('loanPurpose').value }},
-      {{ name:'requested_loan_amount', value: document.getElementById('loanAmount').value.trim() }},
-      {{ name:'timeline_to_close', value: document.getElementById('timeline').value.trim() }},
-      {{ name:'exit_strategy', value: document.getElementById('exitStrategy').value }},
-      {{ name:'loan_details', value: document.getElementById('loanDetails').value.trim() }},
-      {{ name:'purchase_contract_url', value: purchaseUrl || '' }},
-      {{ name:'rehab_budget_url', value: budgetUrl || '' }},
-      {{ name:'comps_appraisal_url', value: compsUrl || '' }}
-    ];
-    if(!window.HUBSPOT_LOAN_GUID) throw new Error('Missing HUBSPOT_LOAN_GUID');
-    await window.__swiftpathHS.submitToHubSpot(window.HUBSPOT_LOAN_GUID, fields, '/thank-you.html');
-  }} catch(err) {{ alert('There was a problem: '+err.message); }}
-  finally {{ btn.disabled=false; btn.innerText='Submit Application'; }}
-}});
-
-</script>
-<!-- SwiftPath HubSpot Hotfix v3 (name split + hutk guard) -->
-<script>
-(function () {
-  try {
-    window.HUBSPOT_PORTAL_ID = "243569048";
-    window.HUBSPOT_LEAD_GUID = "65717a53-a61c-4f85-ae97-8c34b85c5d83";
-    window.HUBSPOT_LOAN_GUID = "6648e233-6873-4546-a9cf-b20d66ff4e8e";
-
-    function getCookie(name){
-      const m = document.cookie.match(new RegExp('(?:^|; )' + name.replace(/([.$?*|{}()\[\]\\/+^])/g, '\\$1') + '=([^;]*)'));
-      return m ? decodeURIComponent(m[1]) : null;
-    }
-
-    function normalizeFields(fields){
-      const out = [];
-      let fullName = null;
-      for (const f of (fields||[])) {
-        if (!f || f.value == null) continue;
-        if (f.name === 'full_name' || f.name === 'name') {
-          fullName = (''+f.value).trim();
-          continue; // we'll expand to firstname/lastname
-        }
-        out.push({ name: f.name, value: ''+f.value });
-      }
-      if (fullName) {
-        const parts = fullName.split(/\s+/);
-        const first = parts.shift() || '';
-        const last = parts.join(' ');
-        if (first) out.push({ name: 'firstname', value: first });
-        if (last)  out.push({ name: 'lastname',  value: last });
-      }
-      return out;
-    }
-
-    window.__swiftpathHS = window.__swiftpathHS || {};
-    window.__swiftpathHS.submitToHubSpot = async function (formGuid, fields, redirectTo) {
-      const portalId = window.HUBSPOT_PORTAL_ID;
-      if (!portalId) throw new Error("Missing HUBSPOT_PORTAL_ID");
-
-      const url = `https://api.hsforms.com/submissions/v3/integration/submit/${portalId}/${formGuid}`;
-      const context = { pageUri: window.location.href, pageName: document.title };
-      const hutk = getCookie('hubspotutk');
-      if (hutk) context.hutk = hutk;
-
-      const payload = { fields: normalizeFields(fields), context: context };
-
-      const res = await fetch(url, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
-      });
-      if (!res.ok) throw new Error("HubSpot returned " + res.status + ": " + await res.text());
-      if (redirectTo) {
-        try { const qs = window.location.search || ""; window.location.assign(redirectTo + qs); }
-        catch (_) { window.location.assign(redirectTo); }
-      }
-    };
-  } catch (e) { console.warn("HubSpot hotfix init error:", e); }
-})();
-</script>
+<!-- Validation, attribution capture, and nicer UX -->
 
 
-<script>
-(function(){
-  function getParam(name){
-    return new URLSearchParams(window.location.search).get(name);
-  }
-  const product = getParam('product');
-  if(!product) return;
-  const map = {
-    "BRRRR Method":"BRRRR",
-    "Rental Properties":"Rental Property",
-    "Bridge Loans":"Bridge Loan"
-  };
-  const normalized = map[product] || product;
 
-  const ids = ['loanType','loanPurpose','purpose','applicationPurpose','product'];
-  let select = null;
-  for(const id of ids){
-    const el = document.getElementById(id);
-    if(el && el.tagName === 'SELECT'){ select = el; break; }
-  }
-  if(select){
-    // try exact by text
-    let opt = Array.from(select.options).find(o => o.text.trim().toLowerCase() === normalized.toLowerCase());
-    if(!opt){
-      // try contains
-      opt = Array.from(select.options).find(o => o.text.toLowerCase().includes(normalized.toLowerCase()));
-    }
-    if(opt){ select.value = opt.value; select.dispatchEvent(new Event('change')); }
-  }
-  // set hidden mirrors if present
-  ['selected_product','lead_product','loan_product'].forEach(id => {
-    const h = document.getElementById(id);
-    if(h) h.value = normalized;
-  });
-})();
-</script>
+
+
+
+
 
 
 <!-- WhatsApp Floating Button -->
@@ -252,21 +199,7 @@ loanForm.addEventListener('submit', async (e)=>{{
 </a>
 
 
-<script>
-// Require consent checkbox to submit
-(function(){
-  const form = document.getElementById('loanForm');
-  if(!form) return;
-  form.addEventListener('submit', function(e){
-    const cb = document.getElementById('consentCheckbox');
-    if(cb && !cb.checked){
-      e.preventDefault();
-      alert('Please agree to the Terms & Privacy Policy to continue.');
-      cb.focus();
-    }
-  }, true);
-})();
-</script>
+
 
 
 <!-- Cookie Banner -->
@@ -282,34 +215,15 @@ loanForm.addEventListener('submit', async (e)=>{{
     </div>
   </div>
 </div>
+
+
+
+<!-- Auto-format & normalize (currency + phone) before submit -->
+
+
+
+<!-- SwiftPath HubSpot Helper v3 - single source of truth -->
 <script>
-(function(){
-  try {
-    var KEY='spc_cookie_consent';
-    var banner=document.getElementById('cookieBanner');
-    var pref=localStorage.getItem(KEY);
-    if(!pref){ banner.classList.remove('hidden'); }
-    function set(val){ localStorage.setItem(KEY,val); banner.classList.add('hidden'); }
-    document.getElementById('cookieAccept')?.addEventListener('click', function(){ set('accepted'); });
-    document.getElementById('cookieDecline')?.addEventListener('click', function(){ set('declined'); });
-
-    // Footer "Cookie Preferences" opener
-    document.getElementById('open-cookie-prefs')?.addEventListener('click', function(e){
-      e.preventDefault(); banner.classList.remove('hidden');
-    });
-
-    // Open privacy modal from banner if available
-    document.getElementById('cookiePrivacyLink')?.addEventListener('click', function(e){
-      e.preventDefault();
-      if (typeof openModal==='function') { openModal('privacyModal'); }
-      else { location.hash = '#privacy'; }
-    });
-  } catch(e){ console.warn('cookie banner error', e); }
-})();
-</script>
-
-<script>
-
 (function(){
   function qs(id){ return document.getElementById(id); }
   function onlyDigits(s){ return (s||'').replace(/\D+/g,''); }
@@ -342,19 +256,22 @@ loanForm.addEventListener('submit', async (e)=>{{
     var base = 'mb-6 rounded-md border p-4 ';
     var cls = (type==='error') ? 'bg-red-50 border-red-200 text-red-700' : 'bg-emerald-50 border-emerald-200 text-emerald-800';
     box.className = base + cls;
-    box.innerHTML = '<p class="font-semibold">'+(title||'')+'</p>' + (details?('<pre class="mt-2 whitespace-pre-wrap text-xs">'+details+'</pre>') : '');
+    var t = title || '';
+    var d = details || '';
+    box.innerHTML = '<p class="font-semibold">'+ t +'</p>' + (d ? ('<pre class="mt-2 whitespace-pre-wrap text-xs">'+ d +'</pre>') : '');
     try{ box.classList.remove('hidden'); }catch(_){}
     try{ box.scrollIntoView({behavior:'smooth', block:'start'}); }catch(_){}
   }
+
   function getCookie(name){
-    var m = document.cookie.match(new RegExp('(?:^|; )' + name.replace(/([.$?*|{}()\\[\\]\\\\/+^])/g, '\\$1') + '=([^;]*)'));
+    var m = document.cookie.match(new RegExp('(?:^|; )' + name.replace(/([.$?*|{}()\[\]\/+^])/g, '\\$1') + '=([^;]*)'));
     return m ? decodeURIComponent(m[1]) : null;
   }
   function normalizeFields(fields){
     var out = []; var fullName = null;
     (fields||[]).forEach(function(f){
       if(!f || f.value == null) return;
-      if(f.name==='full_name' || f.name==='name_full'){
+      if(f.name==='full_name' || f.name==='name' || f.name==='name_full'){
         fullName = (''+f.value).trim(); return;
       }
       out.push({ name:f.name, value: ''+f.value });
@@ -366,6 +283,7 @@ loanForm.addEventListener('submit', async (e)=>{{
     }
     return out;
   }
+
   window.__swiftpathHS = window.__swiftpathHS || {};
   window.__swiftpathHS.submitToHubSpot = async function(formGuid, fields){
     var portalId = '243569048';
@@ -373,6 +291,7 @@ loanForm.addEventListener('submit', async (e)=>{{
     var context = { pageUri: window.location.href, pageName: document.title };
     var hutk = getCookie('hubspotutk'); if(hutk) context.hutk = hutk;
     var payload = { fields: normalizeFields(fields), context: context };
+
     try{
       function mask(arr){
         return (arr||[]).map(function(f){
@@ -385,36 +304,46 @@ loanForm.addEventListener('submit', async (e)=>{{
       }
       showStatus('success', 'Debug: Payload preview', JSON.stringify({url:url, formGuid:formGuid, payload:{fields:mask(payload.fields), context:payload.context}}, null, 2));
     }catch(_){}
+
     var res = await fetch(url, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) });
     var text = await res.text(); var json = null; try{ json = JSON.parse(text); }catch(_){}
     showStatus('success', 'Debug: HubSpot response', (text||'[empty]').slice(0,4000));
+
     if(!res.ok || (json && json.status && (''+json.status).toLowerCase()==='error')){
       var msg = 'HubSpot rejected the submission.';
-      if(json && json.errors){ msg += '\\n' + json.errors.map(function(e){return e.message||e.errorType||JSON.stringify(e);}).join('\\n'); }
-      else { msg += '\\nHTTP ' + res.status + ': ' + text; }
+      if(json && json.errors){ msg += '\n' + json.errors.map(function(e){return e.message||e.errorType||JSON.stringify(e);}).join('\n'); }
+      else { msg += '\nHTTP ' + res.status + ': ' + text; }
       showStatus('error', 'Submission failed', msg);
       throw new Error(msg);
     }
-    showStatus('success', 'SUCCESS (no-redirect build)', 'Would redirect to /thank-you.html');
+    showStatus('success','SUCCESS (test build)','Would redirect to /thank-you.html');
   };
+
   function captureAttribution(){
     function getParam(k){ return new URLSearchParams(window.location.search).get(k) || ''; }
     ['utm_source','utm_medium','utm_campaign','utm_term','utm_content','gclid'].forEach(function(k){
       var el = qs(k); if(el) el.value = getParam(k);
     });
   }
+
   function init(){
-    var form = qs('loanForm'); if(!form){ return; }
+    var form = qs('loanForm'); if(!form) return;
     captureAttribution();
     form.addEventListener('submit', async function(e){
       e.preventDefault();
+      var btn = form.querySelector('button[type="submit"]');
       try {
-        var btn = form.querySelector('button[type="submit"]'); if(btn){ btn.disabled=true; btn.textContent='Submitting…'; }
+        if(btn){ btn.disabled=true; btn.textContent='Submitting…'; }
         var phone = qs('phone'); if(phone) phone.value = normalizePhoneE164(phone.value);
         ['purchasePrice','rehabBudget','arv','loanAmount'].forEach(function(id){
           var el = qs(id); if(el) el.value = normalizeCurrencyForSubmit(el.value);
         });
-        var consent = qs('consentCheckbox'); if(!consent || !consent.checked){ showStatus('error','Please agree to Terms & Privacy.'); if(btn){btn.disabled=false; btn.textContent='Submit Application';} return; }
+        var consent = qs('consentCheckbox');
+        if(!consent || !consent.checked){
+          showStatus('error','Please agree to Terms & Privacy.');
+          if(btn){btn.disabled=false; btn.textContent='Submit Application';}
+          return;
+        }
         var fields = [
           { name:'full_name', value: (qs('fullName')||{}).value || '' },
           { name:'email', value: (qs('email')||{}).value || '' },
@@ -437,19 +366,14 @@ loanForm.addEventListener('submit', async (e)=>{{
           { name:'loan_details_notes', value: (qs('loanDetails')||{}).value || '' },
           { name:'file_upload_link_purchase_contract', value: '' },
           { name:'file_upload_link_rehab_budget', value: '' },
-          { name:'file_upload_link_comps_appraisal', value: '' },
-          { name:'utm_source', value:(qs('utm_source')||{}).value || '' },
-          { name:'utm_medium', value:(qs('utm_medium')||{}).value || '' },
-          { name:'utm_campaign', value:(qs('utm_campaign')||{}).value || '' },
-          { name:'utm_term', value:(qs('utm_term')||{}).value || '' },
-          { name:'utm_content', value:(qs('utm_content')||{}).value || '' },
-          { name:'gclid', value:(qs('gclid')||{}).value || '' }
+          { name:'file_upload_link_comps_appraisal', value: '' }
         ];
         await window.__swiftpathHS.submitToHubSpot('6648e233-6873-4546-a9cf-b20d66ff4e8e', fields);
       } catch(err){
         console.error('Submission error:', err);
+        showStatus('error', 'There was a problem', err && err.message ? err.message : String(err));
       } finally {
-        var btn = form.querySelector('button[type="submit"]'); if(btn){ btn.disabled=false; btn.textContent='Submit Application'; }
+        if(btn){ btn.disabled=false; btn.textContent='Submit Application'; }
       }
     }, true);
     console.log('Loan application inline bundle initialized');
@@ -457,7 +381,6 @@ loanForm.addEventListener('submit', async (e)=>{{
   if(document.readyState !== 'loading') init();
   else document.addEventListener('DOMContentLoaded', init);
 })();
-
 </script>
 </body>
 </html>
