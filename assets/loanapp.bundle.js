@@ -211,23 +211,23 @@
 
 ;
 
-async function uploadFile(inputId, dealName) {{
+async function uploadFile(inputId, dealName) {
   const el = document.getElementById(inputId);
   if (!el || !el.files || !el.files[0]) return null;
   const fd = new FormData();
   fd.append('file', el.files[0]);
   fd.append('dealName', dealName);
-  const res = await fetch('/.netlify/functions/upload-to-dropbox', {{ method:'POST', body: fd }});
+  const res = await fetch('/.netlify/functions/upload-to-dropbox', { method:'POST', body: fd });
   if (!res.ok) throw new Error('Upload failed: '+res.status+' '+await res.text());
   const data = await res.json();
   return data.url;
-}}
+}
 
 const loanForm = document.getElementById('loanForm');
 loanForm.addEventListener('submit', async (e)=>{ e.preventDefault(); e.stopPropagation(); e.stopImmediatePropagation();{
   e.preventDefault();
   const btn = loanForm.querySelector('button[type="submit"]'); btn.disabled=true; btn.innerText='Uploading...';
-  try {{
+  try {
     const dealName = (document.getElementById('fullName').value || 'applicant') + ' - ' + (document.getElementById('propertyAddress').value || 'property');
     const purchaseUrl = await uploadFile('purchaseContractFile', dealName);
     const budgetUrl = await uploadFile('rehabBudgetFile', dealName);
@@ -235,34 +235,34 @@ loanForm.addEventListener('submit', async (e)=>{ e.preventDefault(); e.stopPropa
 
     btn.innerText='Submitting...';
     const fields = [
-{{ name:'full_name', value: document.getElementById('fullName').value.trim() }},
-      {{ name:'email', value: document.getElementById('email').value.trim() }},
-      {{ name:'phone', value: document.getElementById('phone').value.trim() }},
-      {{ name:'mailing_address', value: document.getElementById('mailingAddress').value.trim() }},
-      {{ name:'business_name', value: document.getElementById('businessName').value.trim() },
+{ name:'full_name', value: document.getElementById('fullName').value.trim() },
+      { name:'email', value: document.getElementById('email').value.trim() },
+      { name:'phone', value: document.getElementById('phone').value.trim() },
+      { name:'mailing_address', value: document.getElementById('mailingAddress').value.trim() },
+      { name:'business_name', value: document.getElementById('businessName').value.trim() },
       { name:'name', value: document.getElementById('businessName').value.trim() },},
-      {{ name:'business_type', value: document.getElementById('businessType').value.trim() }},
-      {{ name:'number_of_completed_deals', value: document.getElementById('numDeals').value.trim() }},
-      {{ name:'entity_ein', value: document.getElementById('ein').value.trim() }},
-      {{ name:'property_address', value: document.getElementById('propertyAddress').value.trim() }},
-      {{ name:'purchase_price', value: document.getElementById('purchasePrice').value.trim() }},
-      {{ name:'rehab_budget', value: document.getElementById('rehabBudget').value.trim() }},
-      {{ name:'after_repair_value_arv', value: document.getElementById('arv').value.trim() }},
-      {{ name:'wholesaler_involved', value: document.getElementById('wholesaler').value }},
-      {{ name:'loan_purpose', value: document.getElementById('loanPurpose').value }},
-      {{ name:'requested_loan_amount', value: document.getElementById('loanAmount').value.trim() }},
-      {{ name:'timeline_to_close', value: document.getElementById('timeline').value.trim() }},
-      {{ name:'exit_strategy', value: document.getElementById('exitStrategy').value }},
-      {{ name:'loan_details_notes', value: document.getElementById('loanDetails').value.trim() }},
-      {{ name:'file_upload_link_purchase_contract', value: purchaseUrl || '' }},
-      {{ name:'file_upload_link_rehab_budget', value: budgetUrl || '' }},
-      {{ name:'file_upload_link_comps_appraisal', value: compsUrl || '' }}
+      { name:'business_type', value: document.getElementById('businessType').value.trim() },
+      { name:'number_of_completed_deals', value: document.getElementById('numDeals').value.trim() },
+      { name:'entity_ein', value: document.getElementById('ein').value.trim() },
+      { name:'property_address', value: document.getElementById('propertyAddress').value.trim() },
+      { name:'purchase_price', value: document.getElementById('purchasePrice').value.trim() },
+      { name:'rehab_budget', value: document.getElementById('rehabBudget').value.trim() },
+      { name:'after_repair_value_arv', value: document.getElementById('arv').value.trim() },
+      { name:'wholesaler_involved', value: document.getElementById('wholesaler').value },
+      { name:'loan_purpose', value: document.getElementById('loanPurpose').value },
+      { name:'requested_loan_amount', value: document.getElementById('loanAmount').value.trim() },
+      { name:'timeline_to_close', value: document.getElementById('timeline').value.trim() },
+      { name:'exit_strategy', value: document.getElementById('exitStrategy').value },
+      { name:'loan_details_notes', value: document.getElementById('loanDetails').value.trim() },
+      { name:'file_upload_link_purchase_contract', value: purchaseUrl || '' },
+      { name:'file_upload_link_rehab_budget', value: budgetUrl || '' },
+      { name:'file_upload_link_comps_appraisal', value: compsUrl || '' }
 ];
     if(!window.HUBSPOT_LOAN_GUID) throw new Error('Missing HUBSPOT_LOAN_GUID');
     await window.__swiftpathHS.submitToHubSpot(window.HUBSPOT_LOAN_GUID, fields, '/thank-you.html');
-  }} catch(err) {{ alert('There was a problem: '+err.message); }}
-  finally {{ btn.disabled=false; btn.innerText='Submit Application'; }}
-}});
+  } catch(err) { alert('There was a problem: '+err.message); }
+  finally { btn.disabled=false; btn.innerText='Submit Application'; }
+});
 
 
 ;
