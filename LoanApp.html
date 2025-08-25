@@ -67,6 +67,9 @@ details.group[open] > summary + * {
   <ul id="formErrorsList" class="list-disc ml-5 mt-2 space-y-1"></ul>
 </div>
 
+
+<div id="submitStatus" class="hidden mb-6 rounded-md border p-4" aria-live="polite"></div>
+
 <form id="loanForm" class="max-w-4xl mx-auto bg-gray-50 p-8 rounded-xl shadow-lg" novalidate>
 
   <input type="hidden" id="utm_source" value="">
@@ -362,6 +365,24 @@ details.group[open] > summary + * {
 })();
 </script>
 
+
+<script>
+(function(){
+  function showStatus(type, title, details){
+    var box = document.getElementById('submitStatus');
+    if(!box) return;
+    var base = 'mb-6 rounded-md border p-4 ';
+    var cls = type === 'error' ? 'bg-red-50 border-red-200 text-red-700' : 'bg-emerald-50 border-emerald-200 text-emerald-800';
+    box.className = base + cls;
+    box.innerHTML = '<p class="font-semibold">'+ (title||'') +'</p>' + (details ? '<pre class="mt-2 whitespace-pre-wrap text-xs opacity-80">'+details+'</pre>' : '');
+    box.classList.remove('hidden');
+    // keep the status box in view
+    try { box.scrollIntoView({behavior:'smooth', block:'start'}); } catch(_){}
+  }
+  window.__swiftpathStatus = { showStatus };
+})();
+</script>
+
 <script>
 async function uploadFile(inputId, dealName) {{
   const el = document.getElementById(inputId);
@@ -387,28 +408,29 @@ loanForm.addEventListener('submit', async (e)=>{{
 
     btn.innerText='Submitting...';
     const fields = [
-      {{ name:'full_name', value: document.getElementById('fullName').value.trim() }},
+{{ name:'full_name', value: document.getElementById('fullName').value.trim() }},
       {{ name:'email', value: document.getElementById('email').value.trim() }},
       {{ name:'phone', value: document.getElementById('phone').value.trim() }},
       {{ name:'mailing_address', value: document.getElementById('mailingAddress').value.trim() }},
-      {{ name:'business_name', value: document.getElementById('businessName').value.trim() }},
+      {{ name:'business_name', value: document.getElementById('businessName').value.trim() },
+      { name:'name', value: document.getElementById('businessName').value.trim() },},
       {{ name:'business_type', value: document.getElementById('businessType').value.trim() }},
-      {{ name:'num_completed_deals', value: document.getElementById('numDeals').value.trim() }},
+      {{ name:'number_of_completed_deals', value: document.getElementById('numDeals').value.trim() }},
       {{ name:'entity_ein', value: document.getElementById('ein').value.trim() }},
       {{ name:'property_address', value: document.getElementById('propertyAddress').value.trim() }},
       {{ name:'purchase_price', value: document.getElementById('purchasePrice').value.trim() }},
       {{ name:'rehab_budget', value: document.getElementById('rehabBudget').value.trim() }},
-      {{ name:'after_repair_value', value: document.getElementById('arv').value.trim() }},
+      {{ name:'after_repair_value_arv', value: document.getElementById('arv').value.trim() }},
       {{ name:'wholesaler_involved', value: document.getElementById('wholesaler').value }},
       {{ name:'loan_purpose', value: document.getElementById('loanPurpose').value }},
       {{ name:'requested_loan_amount', value: document.getElementById('loanAmount').value.trim() }},
       {{ name:'timeline_to_close', value: document.getElementById('timeline').value.trim() }},
       {{ name:'exit_strategy', value: document.getElementById('exitStrategy').value }},
-      {{ name:'loan_details', value: document.getElementById('loanDetails').value.trim() }},
-      {{ name:'purchase_contract_url', value: purchaseUrl || '' }},
-      {{ name:'rehab_budget_url', value: budgetUrl || '' }},
-      {{ name:'comps_appraisal_url', value: compsUrl || '' }}
-    ];
+      {{ name:'loan_details_notes', value: document.getElementById('loanDetails').value.trim() }},
+      {{ name:'file_upload_link_purchase_contract', value: purchaseUrl || '' }},
+      {{ name:'file_upload_link_rehab_budget', value: budgetUrl || '' }},
+      {{ name:'file_upload_link_comps_appraisal', value: compsUrl || '' }}
+];
     if(!window.HUBSPOT_LOAN_GUID) throw new Error('Missing HUBSPOT_LOAN_GUID');
     await window.__swiftpathHS.submitToHubSpot(window.HUBSPOT_LOAN_GUID, fields, '/thank-you.html');
   }} catch(err) {{ alert('There was a problem: '+err.message); }}
