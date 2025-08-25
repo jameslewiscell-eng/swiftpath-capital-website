@@ -228,6 +228,35 @@ details.group[open] > summary + * {
 
 
 
+
+<script>
+(function(){
+  // Safety net: if the main bundle didn't initialize, stop the form from hard-submitting
+  function ready(fn){ if(document.readyState!=='loading') fn(); else document.addEventListener('DOMContentLoaded', fn); }
+  ready(function(){
+    var form = document.getElementById('loanForm');
+    if(!form) return;
+    form.addEventListener('submit', function(e){
+      // If our app/bundle is live, it will set up its own submit handler and set a flag.
+      if (window.__swiftpathHS && typeof window.__swiftpathHS.submitToHubSpot === 'function') { return; }
+      e.preventDefault();
+      // Show visible message so you know the bundle is not running
+      var box = document.getElementById('submitStatus');
+      if(!box){
+        box = document.createElement('div');
+        box.id = 'submitStatus';
+        box.className = 'mb-6 rounded-md border p-4 bg-red-50 border-red-200 text-red-700';
+        form.parentNode.insertBefore(box, form);
+      }
+      box.innerHTML = '<p class="font-semibold">Application script not loaded</p>' +
+                      '<p class="text-sm mt-1">The page did not initialize the submission logic. ' +
+                      'Check that <code>/assets/loanapp.bundle.js</code> loads without errors (open DevTools → Network & Console).</p>';
+      try { box.scrollIntoView({behavior:'smooth', block:'start'}); } catch(_){}
+    }, true); // capture so it runs before default
+  });
+})();
+</script>
+
 <script src="/assets/loanapp.bundle.js"></script>
 </body>
 </html>
