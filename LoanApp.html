@@ -61,7 +61,10 @@ details.group[open] > summary + * {
 
 <div id="submitStatus" class="hidden mb-6 rounded-md border p-4" aria-live="polite"></div>
 
-<form id="loanForm" class="max-w-4xl mx-auto bg-white p-8 rounded-xl shadow-lg border border-slate-200" novalidate>
+
+    <div class="grid lg:grid-cols-[1fr_280px] gap-10 items-start">
+      <div>
+        <form id="loanForm" class="bg-white p-8 rounded-xl shadow-sm border border-slate-200" novalidate>
 
   <input type="hidden" id="utm_source" value="">
   <input type="hidden" id="utm_medium" value="">
@@ -77,14 +80,14 @@ details.group[open] > summary + * {
 <div><label class="block mb-1 font-medium" for="phone">Phone</label><input id="phone" type="tel" pattern="^\+?[0-9\s\-()]{7,20}$" placeholder="+1 407-374-3301" class="w-full border border-slate-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-brand-blue/40 focus:border-brand-blue" required autocomplete="tel"></div>
 <div><label class="block mb-1 font-medium" for="mailingAddress">Mailing Address</label><input id="mailingAddress" class="w-full border border-slate-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-brand-blue/40 focus:border-brand-blue" autocomplete="address-line1" placeholder="Street, City, State ZIP"></div>
 </div>
-<h2 class="mt-12 text-2xl font-bold text-slate-800 border-b-2 border-[#c5a35a] pb-2">Business / Investor Profile</h2>
+<h2 class="mt-10 text-2xl font-bold text-slate-800 border-b-2 border-[#c5a35a] pb-2">Business / Investor Profile</h2>
 <div class="grid md:grid-cols-2 gap-6 mt-6">
 <div><label class="block mb-1 font-medium" for="businessName">Business Name</label><input id="businessName" class="w-full border border-slate-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-brand-blue/40 focus:border-brand-blue" autocomplete="organization" placeholder="LLC or Company Name"></div>
 <div><label class="block mb-1 font-medium" for="businessType">Business Type</label><input id="businessType" class="w-full border border-slate-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-brand-blue/40 focus:border-brand-blue" placeholder="LLC, Corp, Sole Prop"></div>
 <div><label class="block mb-1 font-medium" for="numDeals">Completed Investment Deals</label><input id="numDeals" type="number" min="0" class="w-full border border-slate-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-brand-blue/40 focus:border-brand-blue"></div>
 <div><label class="block mb-1 font-medium" for="ein">Entity EIN</label><input id="ein" class="w-full border border-slate-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-brand-blue/40 focus:border-brand-blue"></div>
 </div>
-<h2 class="mt-12 text-2xl font-bold text-slate-800 border-b-2 border-[#c5a35a] pb-2">Property & Loan</h2>
+<h2 class="mt-10 text-2xl font-bold text-slate-800 border-b-2 border-[#c5a35a] pb-2">Property & Loan</h2>
 <div class="grid md:grid-cols-2 gap-6 mt-6">
 <div><label class="block mb-1 font-medium" for="propertyAddress">Property Address</label><input id="propertyAddress" class="w-full border border-slate-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-brand-blue/40 focus:border-brand-blue" required></div>
 <div><label class="block mb-1 font-medium" for="purchasePrice">Purchase Price</label><input id="purchasePrice" class="w-full border border-slate-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-brand-blue/40 focus:border-brand-blue" placeholder="$" required inputmode="decimal" autocomplete="off" placeholder="$250,000"></div>
@@ -97,7 +100,7 @@ details.group[open] > summary + * {
 <div class="md:col-span-2"><label class="block mb-1 font-medium" for="exitStrategy">Exit Strategy</label><select id="exitStrategy" class="w-full border border-slate-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-brand-blue/40 focus:border-brand-blue"><option value="">Select</option><option>Sell after rehab</option><option>Refinance into rental loan</option><option>Other</option></select></div>
 <div class="md:col-span-2"><label class="block mb-1 font-medium" for="loanDetails">Additional Notes</label><textarea id="loanDetails" rows="4" class="w-full border border-slate-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-brand-blue/40 focus:border-brand-blue" placeholder="Tell us about your project..."></textarea></div>
 </div>
-<h2 class="mt-12 text-2xl font-bold text-slate-800 border-b-2 border-[#c5a35a] pb-2">Upload Documents</h2>
+<h2 class="mt-10 text-2xl font-bold text-slate-800 border-b-2 border-[#c5a35a] pb-2">Upload Documents</h2>
 <p class="text-sm text-slate-600 mb-4">Files are securely uploaded to our Dropbox and passed to underwriting.</p>
 <div class="grid md:grid-cols-2 gap-6">
 <div><label class="block mb-1 font-medium" for="purchaseContractFile">Purchase Contract (PDF/Image)</label><input id="purchaseContractFile" type="file" accept=".pdf,image/*" class="w-full border border-slate-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-brand-blue/40 focus:border-brand-blue"></div>
@@ -119,7 +122,17 @@ details.group[open] > summary + * {
   <span>Protected by <span class="font-semibold text-emerald-700">SSL encryption</span>. Your information is kept confidential.</span>
 </div>
 </div>
-</form><aside class="hidden md:block md:col-span-1 sticky top-28 self-start"><div class="bg-white rounded-xl shadow-lg p-5 border border-slate-200"><h3 class="text-slate-800 font-semibold">Need help?</h3><p class="mt-2 text-sm text-slate-600">Questions about your application? We can help you finish in minutes.</p><div class="mt-4 space-y-2"><a href="https://wa.me/14073743301" target="_blank" class="block w-full text-center bg-green-500 hover:bg-green-600 text-white font-semibold py-2 rounded-lg">WhatsApp Us</a><a href="tel:+14073743301" class="block w-full text-center bg-brand-blue hover:bg-brand-blue-dark text-white font-semibold py-2 rounded-lg">Call 407‑374‑3301</a></div><p class="mt-3 text-xs text-slate-500">Same‑day term sheets • Secure processing</p></div></aside></div></div></section></main>
+</form>
+      </div>
+      
+      <aside class="hidden lg:block sticky top-24 space-y-3">
+        <a href="https://wa.me/14073743301" class="block w-full text-center bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-lg px-4 py-3 shadow-sm">WhatsApp Us</a>
+        <a href="tel:+14073743301" class="block w-full text-center bg-slate-800 hover:bg-slate-900 text-white font-medium rounded-lg px-4 py-3 shadow-sm">Call 407-374-3301</a>
+        <p class="text-xs text-slate-500">Same‑day term sheets • Secure processing</p>
+      </aside>
+
+    </div>
+    <aside class="hidden md:block md:col-span-1 sticky top-28 self-start"><div class="bg-white rounded-xl shadow-lg p-5 border border-slate-100"><h3 class="text-slate-800 font-semibold">Need help?</h3><p class="mt-2 text-sm text-slate-600">Questions about your application? We can help you finish in minutes.</p><div class="mt-4 space-y-2"><a href="https://wa.me/14073743301" target="_blank" class="block w-full text-center bg-green-500 hover:bg-green-600 text-white font-semibold py-2 rounded-lg">WhatsApp Us</a><a href="tel:+14073743301" class="block w-full text-center bg-brand-blue hover:bg-brand-blue-dark text-white font-semibold py-2 rounded-lg">Call 407‑374‑3301</a></div><p class="mt-3 text-xs text-slate-500">Same‑day term sheets • Secure processing</p></div></aside></div></div></section></main>
 
 <section id="faq" class="py-16 bg-gray-50">
   <div class="container mx-auto px-6 max-w-4xl">
