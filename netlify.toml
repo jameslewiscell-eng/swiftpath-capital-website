@@ -1,87 +1,45 @@
-# Minimal Netlify config with no redirects
-[build]
-  publish = "."
-  functions = "netlify/functions"
+# netlify.toml  — safe CSP (Report-Only) so styles/scripts load while we tune
 
-[functions]
-  node_bundler = "esbuild"
-
-[[headers]]
-  for = "/*.html"
-  [headers.values]
-    Cache-Control = "public, max-age=0, must-revalidate"
-
-[[headers]]
-  for = "/assets/*"
-  [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
-
-# Security Headers Configuration
 [[headers]]
   for = "/*"
   [headers.values]
-    # Content Security Policy (CSP)
-    Content-Security-Policy = "default-src 'self'; script-src 'self' https://trusted.com; object-src 'none';"
-    # Enforce HTTPS with Strict Transport Security (HSTS)
-    Strict-Transport-Security = "max-age=31536000; includeSubDomains; preload"
-    # Prevent MIME-sniffing
-    X-Content-Type-Options = "nosniff"
-    # Prevent Clickjacking
-    X-Frame-Options = "DENY"
-    # Enable XSS Protection
-    X-XSS-Protection = "1; mode=block"
+  Strict-Transport-Security = "max-age=63072000; includeSubDomains; preload"
+  X-Content-Type-Options    = "nosniff"
+  X-Frame-Options           = "DENY"
+  Referrer-Policy           = "strict-origin-when-cross-origin"
+  Permissions-Policy        = "camera=(), microphone=(), geolocation=()"
 
-# --- Appended security headers & bot redirects (Report-Only) ---
-# NOTE: Existing [[headers]] found; not overwriting. Review your headers to add CSP and HSTS if missing.
+  # TEMP: Do NOT block yet — only report violations to browser console.
+  "Content-Security-Policy-Report-Only" = """
+    default-src 'self';
+    script-src 'self' 'unsafe-inline' 'unsafe-eval'
+      https://www.googletagmanager.com
+      https://www.google-analytics.com https://*.google-analytics.com
+      https://*.g.doubleclick.net
+      https://static.hsappstatic.net https://js.hs-scripts.com https://js.hs-analytics.net
+      https://api.whatsapp.com;
+    style-src 'self' 'unsafe-inline'
+      https://fonts.googleapis.com
+      https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://unpkg.com
+      https://static.hsappstatic.net;
+    img-src 'self' https: data: blob:;
+    font-src 'self' data: https://fonts.gstatic.com;
+    connect-src 'self'
+      https://www.google-analytics.com https://region1.google-analytics.com https://*.g.doubleclick.net
+      https://api.hsforms.com https://forms.hsforms.com https://forms-na1.hsforms.com
+      https://api.whatsapp.com;
+    frame-src 'self' https://www.youtube.com https://player.vimeo.com https://*.hubspot.com https://api.whatsapp.com;
 
-[[redirects]]
-  from = "/wp-admin/*"
-  to = "/404.html"
-  status = 404
-  force = true
+  """
 
-[[redirects]]
-  from = "/xmlrpc.php"
-  to = "/404.html"
-  status = 404
-  force = true
+# (Optional) long-cache static assets if you use /assets/
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+  Cache-Control = "public, max-age=31536000, immutable"
 
-[[redirects]]
-  from = "/*/xmlrpc.php"
-  to = "/404.html"
-  status = 404
-
-[[redirects]]
-  from = "/wp-includes/*"
-  to = "/404.html"
-  status = 404
-
-[[redirects]]
-  from = "/wordpress/*"
-  to = "/404.html"
-  status = 404
-
-[[redirects]]
-  from = "/wp/*"
-  to = "/404.html"
-  status = 404
-
-[[redirects]]
-  from = "/blog/*"
-  to = "/404.html"
-  status = 404
-
-[[redirects]]
-  from = "/shop/*"
-  to = "/404.html"
-  status = 404
-
-[[redirects]]
-  from = "/cms/*"
-  to = "/404.html"
-  status = 404
-
-[[redirects]]
-  from = "/test/*"
-  to = "/404.html"
-  status = 404
+# (Optional) favicon caching
+[[headers]]
+  for = "/favicon.ico"
+  [headers.values]
+  Cache-Control = "public, max-age=31536000, immutable"
