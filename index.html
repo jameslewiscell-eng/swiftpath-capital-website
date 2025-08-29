@@ -293,9 +293,9 @@
             <div class="mt-12 border-t border-slate-700 pt-6 text-center text-sm text-slate-500">
                 <p>&copy; 2025 SwiftPath Capital. All Rights Reserved.</p>
                 <div class="mt-4 space-x-4">
-                    <a href="#" id="open-privacy-modal" class="hover:text-brand-gold transition duration-300">Privacy Policy</a>
+                    <a href="/privacy.html" class="hover:text-brand-gold transition duration-300">Privacy Policy</a>
                     <span>&middot;</span>
-                    <a href="#" id="open-terms-modal" class="hover:text-brand-gold transition duration-300">Terms and Conditions</a>
+                    <a href="/terms.html" class="hover:text-brand-gold transition duration-300">Terms and Conditions</a>
                 </div>
             </div>
         </div>
@@ -307,106 +307,12 @@
 </footer>
 
     <!-- Modals -->
-    <div id="modal-overlay" class="modal-overlay fixed inset-0 bg-black bg-opacity-50 z-50 hidden"></div>
-    <div id="privacy-modal" class="modal-container fixed top-1/2 left-1/2 bg-white w-11/12 max-w-3xl mx-auto rounded-lg shadow-lg z-50 p-6 md:p-8 hidden">
-        <div class="relative">
-            <button id="close-privacy-modal" class="absolute -top-2 -right-2 text-gray-600 hover:text-gray-900">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-            </button>
-            <h2 class="text-2xl font-bold text-slate-800 mb-4">Privacy Policy</h2>
-            <div class="modal-content max-h-[70vh] overflow-y-auto pr-4">
-                <p class="text-sm text-gray-500 mb-4">Effective Date: August 4, 2025</p>
-                <p>This Privacy Policy describes how SwiftPath Capital Corporation ("we," "us," or "our") collects, uses, and discloses your information when you use our website.</p>
-                <h3>1. Information We Collect</h3>
-                <ul><li>Personal and Business Information</li><li>Financial Information</li><li>Property Information</li><li>Communications</li></ul>
-                <h3>2. How We Use Your Information</h3>
-                <ul><li>Process your loan applications</li><li>Determine eligibility</li><li>Communicate with you</li><li>Marketing (opt‑out anytime)</li></ul>
-            </div>
-        </div>
+</div>
     </div>
-    <div id="terms-modal" class="modal-container fixed top-1/2 left-1/2 bg-white w-11/12 max-w-3xl mx-auto rounded-lg shadow-lg z-50 p-6 md:p-8 hidden">
-        <div class="relative">
-            <button id="close-terms-modal" class="absolute -top-2 -right-2 text-gray-600 hover:text-gray-900">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-            </button>
-            <h2 class="text-2xl font-bold text-slate-800 mb-4">Terms and Conditions</h2>
-            <div class="modal-content max-h-[70vh] overflow-y-auto pr-4">
-                <p class="text-sm text-gray-500 mb-4">Last Updated: August 4, 2025</p>
-                <p>Use of this site is subject to terms. Applying does not constitute a commitment to lend. Loans subject to underwriting.</p>
-            </div>
-        </div>
+</div>
     </div>
 
     <!-- Scripts -->
-    <script>
-        // Mobile Menu
-        const mobileMenuButton = document.getElementById('mobile-menu-button');
-        const mobileMenu = document.getElementById('mobile-menu');
-        mobileMenuButton.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
-        document.querySelectorAll('#mobile-menu a').forEach(a => a.addEventListener('click', () => mobileMenu.classList.add('hidden')));
-
-        // Counters
-        function animateCounters(){
-            const counters=document.querySelectorAll('#stats .stat-item p[data-target]');
-            const speed=200;
-            counters.forEach(counter=>{
-                const target=+counter.getAttribute('data-target');
-                const update=()=>{
-                    const count=+counter.innerText.replace(/,/g,'');
-                    const inc=target/speed;
-                    if(count<target){ const next=Math.ceil(count+inc); counter.innerText=next.toLocaleString(); setTimeout(update,15); }
-                    else counter.innerText=target.toLocaleString();
-                };
-                update();
-            });
-        }
-        const statsSection=document.getElementById('stats');
-        const observer=new IntersectionObserver((entries,obs)=>{
-            entries.forEach(entry=>{
-                if(entry.isIntersecting){
-                    animateCounters();
-                    entry.target.querySelectorAll('.stat-item').forEach((it,i)=>{ it.style.animationDelay=`${i*150}ms`; it.classList.add('counter-anim'); });
-                    obs.unobserve(entry.target);
-                }
-            });
-        },{threshold:.5});
-        if(statsSection) observer.observe(statsSection);
-
-        // Modals
-        const modalOverlay=document.getElementById('modal-overlay');
-        const openModal=(m)=>{ if(!m) return; modalOverlay.classList.remove('hidden'); m.classList.remove('hidden'); setTimeout(()=>m.classList.add('active'),10); document.body.style.overflow='hidden'; };
-        const closeModal=(m)=>{ if(!m) return; m.classList.remove('active'); setTimeout(()=>{ modalOverlay.classList.add('hidden'); m.classList.add('hidden'); document.body.style.overflow='auto'; },300); };
-        const openPrivacyBtn=document.getElementById('open-privacy-modal'); const closePrivacyBtn=document.getElementById('close-privacy-modal'); const privacyModal=document.getElementById('privacy-modal');
-        const openTermsBtn=document.getElementById('open-terms-modal'); const closeTermsBtn=document.getElementById('close-terms-modal'); const termsModal=document.getElementById('terms-modal');
-        openPrivacyBtn.addEventListener('click',e=>{e.preventDefault();openModal(privacyModal);}); closePrivacyBtn.addEventListener('click',()=>closeModal(privacyModal));
-        openTermsBtn.addEventListener('click',e=>{e.preventDefault();openModal(termsModal);}); closeTermsBtn.addEventListener('click',()=>closeModal(termsModal));
-        modalOverlay.addEventListener('click',()=>{ closeModal(privacyModal); closeModal(termsModal); });
-
-        // HubSpot lead submit
-        async function submitLeadToHubSpot(fields){
-            if(!window.__swiftpathHS || !window.__swiftpathHS.submitToHubSpot){ alert('HubSpot helper missing'); return; }
-            if(!window.HUBSPOT_PORTAL_ID){ alert('Missing HUBSPOT_PORTAL_ID'); return; }
-            if(!window.HUBSPOT_LEAD_GUID){ alert('Missing HUBSPOT_LEAD_GUID'); return; }
-            await window.__swiftpathHS.submitToHubSpot(window.HUBSPOT_LEAD_GUID, fields, '/thank-you.html');
-        }
-        const leadForm=document.getElementById('leadForm');
-        if(leadForm){
-            leadForm.addEventListener('submit', async (e)=>{
-                e.preventDefault();
-                const btn=leadForm.querySelector('button[type="submit"]'); btn.disabled=true; btn.innerText='Sending...';
-                try{
-                    const fields=[
-                        {name:'full_name', value:document.getElementById('leadName').value.trim()},
-                        {name:'email', value:document.getElementById('leadEmail').value.trim()},
-                        {name:'phone', value:document.getElementById('leadPhone').value.trim()},
-                        {name:'loan_purpose', value:document.getElementById('leadPurpose').value}
-                    ];
-                    await submitLeadToHubSpot(fields);
-                }catch(err){ alert('Problem submitting: '+err.message); }
-                finally{ btn.disabled=false; btn.innerText='Get Pre‑Qualified'; }
-            });
-        }
-    </script>
     <script>
       
       </script>
@@ -562,7 +468,7 @@
 
 
 <!-- Product Detail Modal -->
-<div id="productOverlay" class="fixed inset-0 z-50 hidden bg-black/60"></div>
+<div id="productOverlay" class="fixed inset-0 z-60 hidden bg-black/60"></div>
 <div id="productModal" class="fixed inset-x-0 bottom-0 z-50 hidden md:inset-0 md:items-center md:justify-center">
   <div class="w-full bg-white rounded-t-2xl shadow-xl md:max-w-2xl md:rounded-2xl max-h-[85vh] overflow-y-auto p-6">
     <div class="flex items-center justify-between mb-3">
@@ -704,50 +610,13 @@
 
 <!-- WhatsApp Floating Button -->
 <a href="https://wa.me/14073743301" target="_blank" aria-label="Chat on WhatsApp"
-   class="fixed z-50 bottom-5 right-5 md:bottom-6 md:right-6 rounded-full shadow-lg
+   class="fixed z-40 bottom-5 right-5 md:bottom-6 md:right-6 rounded-full shadow-lg
           bg-green-500 hover:bg-green-600 text-white w-14 h-14 flex items-center justify-center">
   <!-- WA icon (inline SVG) -->
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" aria-hidden="true" class="w-7 h-7">
     <path fill="currentColor" d="M380.9 97.1C339 55.1 283.2 32 224.8 32c-116.2 0-210.8 94.6-210.8 210.8 0 37.1 9.7 73.3 28.2 105.3L0 480l134.9-41.4c30.6 16.7 64.9 25.5 99.9 25.5h.1c116.1 0 210.8-94.6 210.8-210.8 0-58.5-23.2-114.3-64.8-156.2zM224.9 438.6h-.1c-31.1 0-61.6-8.3-88.2-24.1l-6.3-3.7-80.1 24.6 26-78.1-4.1-6.7c-17.8-29-27.2-62.5-27.2-96.6C45 156.7 126.6 75 224.8 75c47.8 0 92.8 18.6 126.5 52.3 33.8 33.8 52.4 78.7 52.4 126.5 0 98.1-81.7 184.8-178.8 184.8zM315 304.7c-4.3-2.1-25.4-12.5-29.3-13.9-3.9-2-6.8-.9-9.6 2.2-2.8 3.1-11 12.6-13.5 15.2-2.5 2.6-5 2-8.5 1-3.5-1-22.4-11-38.6-24.1-14.3-11.7-26.8-26.1-36.3-42.2-2.6-4.3-2.7-7.4.1-11.3 3.2-4.3 7.1-9.9 10-13 3.1-3.3 5.2-3.3 9-.9 3.6 2.2 23.1 10.9 27 12.9 3.9 2 6.6 3 9.4-.7 2.8-3.5 11-12.9 13.5-15.4 2.7-2.5 5.6-2.7 9 .4 3.1 3.1 10.5 12.4 10.5 20.6 0 8.2-4.3 16.3-10.6 22.3z"/>
   </svg>
 </a>
-
-
-<script>
-// --- Modal safety: ensure closed on load; open only via explicit clicks or hash ---
-(function(){
-  function addHidden(id){
-    var el = document.getElementById(id);
-    if (el && !el.classList.contains('hidden')) el.classList.add('hidden');
-  }
-  // Force-closed on load
-  addHidden('modalOverlay');
-  addHidden('privacyModal');
-  addHidden('termsModal');
-  // Hash-based open (optional)
-  function openModal(id){
-    var overlay = document.getElementById('modalOverlay');
-    var el = document.getElementById(id);
-    if(!el || !overlay) return;
-    overlay.classList.remove('hidden');
-    el.classList.remove('hidden');
-    document.documentElement.style.overflow = 'hidden';
-  }
-  if (location.hash === '#privacy') openModal('privacyModal');
-  if (location.hash === '#terms') openModal('termsModal');
-
-  // Attach click handlers to ANY link with these IDs (header/footer)
-  ['open-privacy-modal','open-terms-modal'].forEach(function(id){
-    document.querySelectorAll('#'+id).forEach(function(a){
-      a.addEventListener('click', function(e){
-        e.preventDefault();
-        if (id==='open-privacy-modal') openModal('privacyModal');
-        else openModal('termsModal');
-      });
-    });
-  });
-})();
-</script>
 
 
 <!-- Cookie Banner -->
@@ -796,118 +665,5 @@
 
 
 <!-- Unified Modal Controller (privacy, terms, product) -->
-<script>
-(function(){
-  // Prefer #productOverlay, fall back to #modal-overlay for compatibility
-  var overlay = document.getElementById('productOverlay') || document.getElementById('modal-overlay');
-  var modals = [
-    document.getElementById('privacy-modal'),
-    document.getElementById('terms-modal'),
-    document.getElementById('productModal')
-  ].filter(Boolean);
-
-  function hide(el){ if(!el) return; el.classList.add('hidden'); el.classList.remove('active'); }
-  function show(el){ if(!el) return; el.classList.remove('hidden'); el.classList.add('active'); el.style.removeProperty('display'); }
-
-  function showOverlay(){ if(!overlay) return; overlay.classList.remove('hidden'); }
-  function hideOverlay(){ if(!overlay) return; overlay.classList.add('hidden'); }
-
-  function closeAllModals(){
-    modals.forEach(hide);
-    
-    // Also remove flex classes so Tailwind md:flex cannot override hidden on desktop
-    modals.forEach(function(m){ if(!m) return; m.classList.remove('flex','md:flex','md:items-center','md:justify-center'); });
-    hideOverlay();
-    document.documentElement.style.overflow = '';
-  }
-
-  function openModalById(id){
-    var target = document.getElementById(id);
-    if(!target) return;
-    modals.forEach(function(m){ if(m !== target) hide(m); });
-    showOverlay();
-    show(target);
-    // If product modal, ensure desktop centering layout applies
-    if (target.id === 'productModal') {
-      target.classList.add('md:flex');
-      target.classList.add('md:items-center','md:justify-center');
-    }
-    document.documentElement.style.overflow = 'hidden';
-  }
-
-  // Wire overlay + ESC to close all
-  overlay && overlay.addEventListener('click', closeAllModals);
-  window.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeAllModals(); });
-
-  // Wire header/footer triggers
-  var openPrivacy = document.getElementById('open-privacy-modal');
-  var openTerms = document.getElementById('open-terms-modal');
-  openPrivacy && openPrivacy.addEventListener('click', function(e){ e.preventDefault(); openModalById('privacy-modal'); });
-  openTerms && openTerms.addEventListener('click', function(e){ e.preventDefault(); openModalById('terms-modal'); });
-
-  // Cookie banner "Privacy Policy" link (if present) opens privacy modal
-  var cookiePrivacyLink = document.getElementById('cookiePrivacyLink');
-  cookiePrivacyLink && cookiePrivacyLink.addEventListener('click', function(e){ e.preventDefault(); openModalById('privacy-modal'); });
-
-  // Hash support
-  if (location.hash === '#privacy') openModalById('privacy-modal');
-  if (location.hash === '#terms') openModalById('terms-modal');
-
-  // --- Product modal integration ---
-  // Enhance product open handler to use unified controller
-  function openProductModalUnified(key){
-    // Populate content via existing product script if present
-    try {
-      // Use existing function to fill content if defined; else noop
-      if (typeof window.openProductModal === 'function') {
-        // Temporarily intercept original to only fill, not show
-        // But safer: replicate minimal data push by dispatching a custom event
-        var ev = new CustomEvent('spc:product:open', { detail: { key: key }});
-        window.dispatchEvent(ev);
-      }
-    } catch(_) {}
-
-    // Regardless, ensure modal is visible using unified controller
-    openModalById('productModal');
-  }
-
-  // Intercept existing product-card bindings by attaching our own
-  document.querySelectorAll('#products .group').forEach(function(card){
-    var h = card.querySelector('h3'); if(!h) return;
-    var key = (h.textContent || '').trim();
-    card.classList.add('cursor-pointer');
-    card.setAttribute('role','button');
-    card.setAttribute('tabindex','0');
-    card.addEventListener('click', function(){ openProductModalUnified(key); });
-    card.addEventListener('keypress', function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); openProductModalUnified(key); } });
-  });
-
-  // Expose for close button inside product modal
-  window.closeAllModals = closeAllModals;
-  window.openModalById = openModalById;
-
-  // Make the product modal close button use unified close
-  var productCloseBtn = document.querySelector('#productModal [aria-label=\"Close\"]');
-  productCloseBtn && productCloseBtn.addEventListener('click', function(e){ e.preventDefault(); closeAllModals(); });
-
-  // --- Compatibility tweaks: override legacy helpers if they exist ---
-  // Prevent legacy scripts from forcing inline display:none
-  // We don't remove them, but last-write-wins on our event handlers.
-})();
-</script>
-
-
-<script>
-(function(){
-  var productCloseBtn = document.querySelector('#productModal [aria-label=\"Close\"]');
-  if (productCloseBtn) {
-    productCloseBtn.addEventListener('click', function(e){
-      e.preventDefault();
-      if (typeof window.closeAllModals === 'function') window.closeAllModals();
-    }, { capture: true });
-  }
-})();
-</script>
-
 </body>
 </html>
