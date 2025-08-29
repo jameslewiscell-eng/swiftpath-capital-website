@@ -307,7 +307,7 @@
 </footer>
 
     <!-- Modals -->
-    <div id="modal-overlay" class="modal-overlay fixed inset-0 bg-black bg-opacity-50 z-60 hidden"></div>
+    <div id="modal-overlay" class="modal-overlay fixed inset-0 bg-black bg-opacity-50 z-50 hidden"></div>
     <div id="privacy-modal" class="modal-container fixed top-1/2 left-1/2 bg-white w-11/12 max-w-3xl mx-auto rounded-lg shadow-lg z-50 p-6 md:p-8 hidden">
         <div class="relative">
             <button id="close-privacy-modal" class="absolute -top-2 -right-2 text-gray-600 hover:text-gray-900">
@@ -562,7 +562,7 @@
 
 
 <!-- Product Detail Modal -->
-<div id="productOverlay" class="fixed inset-0 z-60 hidden bg-black/60"></div>
+<div id="productOverlay" class="fixed inset-0 z-50 hidden bg-black/60"></div>
 <div id="productModal" class="fixed inset-x-0 bottom-0 z-50 hidden md:inset-0 md:items-center md:justify-center">
   <div class="w-full bg-white rounded-t-2xl shadow-xl md:max-w-2xl md:rounded-2xl max-h-[85vh] overflow-y-auto p-6">
     <div class="flex items-center justify-between mb-3">
@@ -704,7 +704,7 @@
 
 <!-- WhatsApp Floating Button -->
 <a href="https://wa.me/14073743301" target="_blank" aria-label="Chat on WhatsApp"
-   class="fixed z-40 bottom-5 right-5 md:bottom-6 md:right-6 rounded-full shadow-lg
+   class="fixed z-50 bottom-5 right-5 md:bottom-6 md:right-6 rounded-full shadow-lg
           bg-green-500 hover:bg-green-600 text-white w-14 h-14 flex items-center justify-center">
   <!-- WA icon (inline SVG) -->
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" aria-hidden="true" class="w-7 h-7">
@@ -713,12 +713,49 @@
 </a>
 
 
+<script>
+// --- Modal safety: ensure closed on load; open only via explicit clicks or hash ---
+(function(){
+  function addHidden(id){
+    var el = document.getElementById(id);
+    if (el && !el.classList.contains('hidden')) el.classList.add('hidden');
+  }
+  // Force-closed on load
+  addHidden('modalOverlay');
+  addHidden('privacyModal');
+  addHidden('termsModal');
+  // Hash-based open (optional)
+  function openModal(id){
+    var overlay = document.getElementById('modalOverlay');
+    var el = document.getElementById(id);
+    if(!el || !overlay) return;
+    overlay.classList.remove('hidden');
+    el.classList.remove('hidden');
+    document.documentElement.style.overflow = 'hidden';
+  }
+  if (location.hash === '#privacy') openModal('privacyModal');
+  if (location.hash === '#terms') openModal('termsModal');
+
+  // Attach click handlers to ANY link with these IDs (header/footer)
+  ['open-privacy-modal','open-terms-modal'].forEach(function(id){
+    document.querySelectorAll('#'+id).forEach(function(a){
+      a.addEventListener('click', function(e){
+        e.preventDefault();
+        if (id==='open-privacy-modal') openModal('privacyModal');
+        else openModal('termsModal');
+      });
+    });
+  });
+})();
+</script>
+
+
 <!-- Cookie Banner -->
 <div id="cookieBanner" class="fixed inset-x-0 bottom-0 z-50 bg-gray-900 text-white p-4 shadow-lg hidden">
   <div class="max-w-5xl mx-auto flex flex-col md:flex-row md:items-center gap-3">
     <p class="text-sm leading-snug flex-1">
       We use cookies to improve your experience and to understand site traffic. By clicking <strong>Accept</strong>, you agree to our use of non‑essential cookies.
-      See our <a href="#privacy" id="cookiePrivacyLink" class="underline">Privacy Policy</a>.
+      See our <a href="/privacy.html" id="cookiePrivacyLink" class="underline">Privacy Policy</a>.
     </p>
     <div class="flex gap-2">
       <button id="cookieDecline" class="px-3 py-2 rounded bg-gray-700 hover:bg-gray-600 text-sm">Decline</button>
@@ -759,5 +796,118 @@
 
 
 <!-- Unified Modal Controller (privacy, terms, product) -->
+<script>
+(function(){
+  // Prefer #productOverlay, fall back to #modal-overlay for compatibility
+  var overlay = document.getElementById('productOverlay') || document.getElementById('modal-overlay');
+  var modals = [
+    document.getElementById('privacy-modal'),
+    document.getElementById('terms-modal'),
+    document.getElementById('productModal')
+  ].filter(Boolean);
+
+  function hide(el){ if(!el) return; el.classList.add('hidden'); el.classList.remove('active'); }
+  function show(el){ if(!el) return; el.classList.remove('hidden'); el.classList.add('active'); el.style.removeProperty('display'); }
+
+  function showOverlay(){ if(!overlay) return; overlay.classList.remove('hidden'); }
+  function hideOverlay(){ if(!overlay) return; overlay.classList.add('hidden'); }
+
+  function closeAllModals(){
+    modals.forEach(hide);
+    
+    // Also remove flex classes so Tailwind md:flex cannot override hidden on desktop
+    modals.forEach(function(m){ if(!m) return; m.classList.remove('flex','md:flex','md:items-center','md:justify-center'); });
+    hideOverlay();
+    document.documentElement.style.overflow = '';
+  }
+
+  function openModalById(id){
+    var target = document.getElementById(id);
+    if(!target) return;
+    modals.forEach(function(m){ if(m !== target) hide(m); });
+    showOverlay();
+    show(target);
+    // If product modal, ensure desktop centering layout applies
+    if (target.id === 'productModal') {
+      target.classList.add('md:flex');
+      target.classList.add('md:items-center','md:justify-center');
+    }
+    document.documentElement.style.overflow = 'hidden';
+  }
+
+  // Wire overlay + ESC to close all
+  overlay && overlay.addEventListener('click', closeAllModals);
+  window.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeAllModals(); });
+
+  // Wire header/footer triggers
+  var openPrivacy = document.getElementById('open-privacy-modal');
+  var openTerms = document.getElementById('open-terms-modal');
+  openPrivacy && openPrivacy.addEventListener('click', function(e){ e.preventDefault(); openModalById('privacy-modal'); });
+  openTerms && openTerms.addEventListener('click', function(e){ e.preventDefault(); openModalById('terms-modal'); });
+
+  // Cookie banner "Privacy Policy" link (if present) opens privacy modal
+  var cookiePrivacyLink = document.getElementById('cookiePrivacyLink');
+  cookiePrivacyLink && cookiePrivacyLink.addEventListener('click', function(e){ e.preventDefault(); openModalById('privacy-modal'); });
+
+  // Hash support
+  if (location.hash === '#privacy') openModalById('privacy-modal');
+  if (location.hash === '#terms') openModalById('terms-modal');
+
+  // --- Product modal integration ---
+  // Enhance product open handler to use unified controller
+  function openProductModalUnified(key){
+    // Populate content via existing product script if present
+    try {
+      // Use existing function to fill content if defined; else noop
+      if (typeof window.openProductModal === 'function') {
+        // Temporarily intercept original to only fill, not show
+        // But safer: replicate minimal data push by dispatching a custom event
+        var ev = new CustomEvent('spc:product:open', { detail: { key: key }});
+        window.dispatchEvent(ev);
+      }
+    } catch(_) {}
+
+    // Regardless, ensure modal is visible using unified controller
+    openModalById('productModal');
+  }
+
+  // Intercept existing product-card bindings by attaching our own
+  document.querySelectorAll('#products .group').forEach(function(card){
+    var h = card.querySelector('h3'); if(!h) return;
+    var key = (h.textContent || '').trim();
+    card.classList.add('cursor-pointer');
+    card.setAttribute('role','button');
+    card.setAttribute('tabindex','0');
+    card.addEventListener('click', function(){ openProductModalUnified(key); });
+    card.addEventListener('keypress', function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); openProductModalUnified(key); } });
+  });
+
+  // Expose for close button inside product modal
+  window.closeAllModals = closeAllModals;
+  window.openModalById = openModalById;
+
+  // Make the product modal close button use unified close
+  var productCloseBtn = document.querySelector('#productModal [aria-label=\"Close\"]');
+  productCloseBtn && productCloseBtn.addEventListener('click', function(e){ e.preventDefault(); closeAllModals(); });
+
+  // --- Compatibility tweaks: override legacy helpers if they exist ---
+  // Prevent legacy scripts from forcing inline display:none
+  // We don't remove them, but last-write-wins on our event handlers.
+})();
+</script>
+
+
+<script>
+(function(){
+  var productCloseBtn = document.querySelector('#productModal [aria-label=\"Close\"]');
+  if (productCloseBtn) {
+    productCloseBtn.addEventListener('click', function(e){
+      e.preventDefault();
+      if (typeof window.closeAllModals === 'function') window.closeAllModals();
+    }, { capture: true });
+  }
+})();
+</script>
+
 </body>
 </html>

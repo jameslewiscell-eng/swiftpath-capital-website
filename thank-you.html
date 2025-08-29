@@ -140,7 +140,7 @@
   <div class="max-w-5xl mx-auto flex flex-col md:flex-row md:items-center gap-3">
     <p class="text-sm leading-snug flex-1">
       We use cookies to improve your experience and to understand site traffic. By clicking <strong>Accept</strong>, you agree to our use of non‑essential cookies.
-      See our <a href="#privacy" id="cookiePrivacyLink" class="underline">Privacy Policy</a>.
+      See our <a href="/privacy.html" id="cookiePrivacyLink" class="underline">Privacy Policy</a>.
     </p>
     <div class="flex gap-2">
       <button id="cookieDecline" class="px-3 py-2 rounded bg-gray-700 hover:bg-gray-600 text-sm">Decline</button>
@@ -168,7 +168,7 @@
     document.getElementById('cookiePrivacyLink')?.addEventListener('click', function(e){
       e.preventDefault();
       if (typeof openModal==='function') { openModal('privacyModal'); }
-      else { location.hash = '#privacy'; }
+      else { location.href = '/privacy.html'; }
     });
   } catch(e){ console.warn('cookie banner error', e); }
 })();
