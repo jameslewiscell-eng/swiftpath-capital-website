@@ -292,11 +292,12 @@
             </div>
             <div class="mt-12 border-t border-slate-700 pt-6 text-center text-sm text-slate-500">
                 <p>&copy; 2025 SwiftPath Capital. All Rights Reserved.</p>
-                <div class="mt-4 space-x-4">
-                    <a href="/privacy.html" class="hover:text-brand-gold transition duration-300">Privacy Policy</a>
+                <div class="mt-4 space-x-4"><a href="/privacy.html" class="hover:text-brand-gold transition duration-300">Privacy Policy</a>
                     <span>&middot;</span>
                     <a href="/terms.html" class="hover:text-brand-gold transition duration-300">Terms and Conditions</a>
-                </div>
+                    <span>&middot;</span>
+                    <a href="/esign.html" class="hover:text-brand-gold transition duration-300">E‑Sign Consent</a>
+</div>
             </div>
         </div>
     
@@ -665,5 +666,44 @@
 
 
 <!-- Unified Modal Controller (privacy, terms, product) -->
+
+<script>
+// Stats counter: animates <p data-target="..."> inside #stats when visible
+(function(){
+  try {
+    var stats = document.getElementById('stats');
+    if (!stats) return;
+    var els = stats.querySelectorAll('p[data-target]');
+    if (!els.length) return;
+    var started = false;
+    function format(n){ return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); }
+    function animate(){
+      if (started) return; started = true;
+      els.forEach(function(el){
+        var t = parseFloat(el.getAttribute('data-target')) || 0;
+        var start = parseFloat((el.textContent||'0').replace(/,/g,'')) || 0;
+        var dur = 1200, t0;
+        function step(ts){
+          if(!t0) t0 = ts;
+          var p = Math.min((ts - t0)/dur, 1);
+          var val = Math.floor(start + (t - start) * p);
+          el.textContent = format(val);
+          if(p < 1) requestAnimationFrame(step);
+          else el.textContent = format(t);
+        }
+        requestAnimationFrame(step);
+        el.classList.add('counter-anim');
+      });
+    }
+    if ('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){ if(e.isIntersecting){ animate(); io.disconnect(); } });
+      }, { threshold: 0.25 });
+      io.observe(stats);
+    } else { animate(); }
+  } catch(e){ console.warn('counter error', e); }
+})();
+</script>
+
 </body>
 </html>
