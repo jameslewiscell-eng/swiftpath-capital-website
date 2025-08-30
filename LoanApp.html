@@ -399,5 +399,110 @@ details.group[open] > summary + * {
   else document.addEventListener('DOMContentLoaded', init);
 })();
 </script>
+
+<!-- SwiftPath HubSpot Helper v3 (normalized name split) -->
+<script>
+(function () {
+  try {
+    window.HUBSPOT_PORTAL_ID = "243569048";
+    window.HUBSPOT_LOAN_GUID  = "6648e233-6873-4546-a9cf-b20d66ff4e8e";
+
+    function getCookie(name){
+      const m = document.cookie.match(new RegExp('(?:^|; )' + name.replace(/([.$?*|{}()\[\]\\/+^])/g, '\\$1') + '=([^;]*)'));
+      return m ? decodeURIComponent(m[1]) : null;
+    }
+
+    function normalizeFields(fields){
+      const out = [];
+      let fullName = null;
+      for (const f of (fields||[])) {
+        if (!f || f.value == null) continue;
+        if (f.name === 'full_name' || f.name === 'name' || f.name === 'fullName') {
+          fullName = (''+f.value).trim();
+          continue;
+        }
+        out.push({ name: f.name, value: ''+f.value });
+      }
+      if (fullName) {
+        const parts = fullName.split(/\s+/);
+        const first = parts.shift() || '';
+        const last  = parts.join(' ');
+        if (first) out.push({ name: 'firstname', value: first });
+        if (last)  out.push({ name: 'lastname',  value: last });
+      }
+      return out;
+    }
+
+    window.__swiftpathHS = window.__swiftpathHS || {};
+    window.__swiftpathHS.submitToHubSpot = async function (formGuid, fields, redirectTo) {
+      const portalId = window.HUBSPOT_PORTAL_ID;
+      if (!portalId) throw new Error("Missing HUBSPOT_PORTAL_ID");
+      const url = `https://api.hsforms.com/submissions/v3/integration/submit/${portalId}/${formGuid}`;
+      const context = { pageUri: window.location.href, pageName: document.title };
+      const hutk = getCookie('hubspotutk');
+      if (hutk) context.hutk = hutk;
+
+      const payload = { fields: normalizeFields(fields), context };
+      const res = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+      if (!res.ok) throw new Error("HubSpot returned " + res.status + ": " + await res.text());
+      if (redirectTo) window.location.assign(redirectTo + (window.location.search || ""));
+    };
+  } catch (e) { console.warn("HubSpot helper init error:", e); }
+})();
+</script>
+
+<!-- Loan form submit fix: prevent scroll-to-top, map fields, and submit -->
+<script>
+(function(){
+  function byId(id){ return document.getElementById(id); }
+  function val(id){ return (byId(id)?.value || "").trim(); }
+
+  const form = document.getElementById('loanForm');
+  if (!form) return;
+
+  form.addEventListener('submit', async function(e){
+    e.preventDefault();
+
+    const btn = form.querySelector('button[type="submit"]');
+    const orig = btn ? btn.textContent : '';
+    if (btn){ btn.disabled = true; btn.textContent = 'Submitting…'; }
+
+    // Collect a core set of fields (safe even if some inputs aren't present)
+    const fields = [
+      { name: 'full_name', value: val('fullName') },
+      { name: 'email',     value: val('email') },
+      { name: 'phone',     value: val('phone') },
+      { name: 'mailing_address', value: val('mailingAddress') },
+      { name: 'business_name',   value: val('businessName') },
+      { name: 'business_type',   value: val('businessType') },
+      { name: 'num_deals',       value: val('numDeals') },
+      { name: 'ein',             value: val('ein') },
+      { name: 'property_address', value: val('propertyAddress') },
+      { name: 'purchase_price',   value: val('purchasePrice') },
+      { name: 'rehab_budget',     value: val('rehabBudget') },
+      { name: 'arv',              value: val('arv') },
+      { name: 'wholesaler',       value: val('wholesaler') },
+      { name: 'loan_purpose',     value: val('loanPurpose') },
+      { name: 'loan_amount',      value: val('loanAmount') },
+      { name: 'timeline',         value: val('timeline') },
+      { name: 'exit_strategy',    value: val('exitStrategy') },
+      { name: 'loan_details',     value: val('loanDetails') }
+    ];
+
+    try {
+      await window.__swiftpathHS.submitToHubSpot(window.HUBSPOT_LOAN_GUID, fields, '/thank-you.html');
+    } catch (err) {
+      console.error('Loan submit error:', err);
+      alert('Sorry, something went wrong submitting your application. Please email info@swiftpathcapital.com or try again.');
+      if (btn){ btn.disabled = false; btn.textContent = orig; }
+    }
+  }, { passive:false });
+})();
+</script>
+
 </body>
 </html>
