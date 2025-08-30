@@ -705,5 +705,40 @@
 })();
 </script>
 
+
+<!-- Lead form fix: prevent scroll-to-top and submit to HubSpot -->
+<script>
+(function(){
+  try {
+    var form = document.getElementById('leadForm');
+    if (!form) return;
+    form.addEventListener('submit', async function(e){
+      e.preventDefault(); // stop browser from jumping to top
+      var btn = form.querySelector('button[type="submit"]');
+      var orig = btn ? btn.textContent : '';
+      if (btn){ btn.disabled = true; btn.textContent = 'Submitting…'; }
+
+      var fields = [
+        { name: 'name', value: (document.getElementById('leadName')?.value || '').trim() },
+        { name: 'email', value: (document.getElementById('leadEmail')?.value || '').trim() },
+        { name: 'phone', value: (document.getElementById('leadPhone')?.value || '').trim() },
+        { name: 'lead_purpose', value: (document.getElementById('leadPurpose')?.value || '').trim() }
+      ];
+
+      try {
+        // Uses the already-defined helper + constants from the page
+        await (window.__swiftpathHS && window.__swiftpathHS.submitToHubSpot
+          ? window.__swiftpathHS.submitToHubSpot(window.HUBSPOT_LEAD_GUID, fields, '/thank-you.html')
+          : Promise.reject(new Error('Submit helper missing')));
+      } catch (err) {
+        console.error('Lead form submit error:', err);
+        alert('Sorry, something went wrong submitting the form. Please email info@swiftpathcapital.com or try again.');
+        if (btn){ btn.disabled = false; btn.textContent = orig; }
+      }
+    });
+  } catch (e) { console.warn('lead form fix error', e); }
+})();
+</script>
+
 </body>
 </html>
