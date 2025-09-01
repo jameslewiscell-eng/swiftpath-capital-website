@@ -1,15 +1,11 @@
-// netlify/functions/hs-submit.js (CommonJS version)
-exports.handler = async function(event, context) {
+// netlify/functions/hs-submit.js (CommonJS)
+exports.handler = async function (event, context) {
   try {
     if (event.httpMethod !== 'POST') {
       return { statusCode: 405, body: 'Method Not Allowed' };
     }
     const body = JSON.parse(event.body || '{}');
-    const portalId = body.portalId;
-    const formGuid = body.formGuid;
-    const fields = body.fields || [];
-    const hsContext = body.context || {};
-
+    const { portalId, formGuid, fields = [], context: hsContext = {} } = body || {};
     if (!portalId || !formGuid) {
       return { statusCode: 400, body: 'Missing portalId or formGuid' };
     }
@@ -17,7 +13,7 @@ exports.handler = async function(event, context) {
     const res = await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ fields, context: hsContext })
+      body: JSON.stringify({ fields, context: hsContext }),
     });
     const text = await res.text();
     return { statusCode: res.status, body: text };
