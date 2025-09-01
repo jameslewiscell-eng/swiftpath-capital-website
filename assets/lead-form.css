@@ -1,0 +1,22 @@
+
+/* Lead form specific styles */
+select#leadPurpose {
+  color: #F8FAFC; /* white-ish for placeholder */
+}
+select#leadPurpose option {
+  color: #111827; /* dark for options */
+  background: #ffffff;
+}
+/* Safari/iOS remove gray default look and match font */
+select#leadPurpose,
+select#leadPurpose:focus {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  outline: none;
+}
+/* Generic placeholders */
+input::placeholder, textarea::placeholder {
+  color: #E5E7EB;
+  opacity: 1;
+}
