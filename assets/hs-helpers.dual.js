@@ -1,4 +1,4 @@
-// assets/hs-helpers.dual.js  (v2 with robust field mapping + better diagnostics)
+// assets/hs-helpers.dual.js  (v2.1 – attach hardening + novalidate hint)
 (function(){
   // ---- CONFIG: update if your form GUID changes ----
   const HUBSPOT_PORTAL_ID = "243569048";
@@ -103,9 +103,14 @@
   }
 
   function attach(){
-    const form = byId('leadForm'); if(!form) return;
+    const form = byId('leadForm'); if(!form){ console.warn('[LeadForm] #leadForm not found'); return; }
+    // Safety: disable native validation scroll‑to‑error (we validate in HS)
+    form.setAttribute('novalidate','');
+    // Mark attached for debugging
+    form.dataset.hsAttached = '1';
     form.addEventListener('submit', async function(e){
       e.preventDefault();
+      e.stopPropagation();
       const btn = form.querySelector('button[type="submit"]');
       const orig = btn ? btn.textContent : '';
       if(btn){ btn.disabled = true; btn.textContent = 'Submitting…'; }
@@ -116,13 +121,19 @@
         const qs = window.location.search || '';
         window.location.assign('/thank-you.html' + qs);
       }catch(err){
+        console.error('[LeadForm] Submit failed', err);
         alert('Sorry, something went wrong. Please email info@swiftpathcapital.com or try again.');
       }finally{
         if(btn){ btn.disabled = false; btn.textContent = orig; }
       }
     }, {passive:false});
+    console.log('[LeadForm] handler attached');
   }
 
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', attach);
-  else attach();
+  // Defer-safe attach
+  if(document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', attach, { once: true });
+  } else {
+    attach();
+  }
 })();
