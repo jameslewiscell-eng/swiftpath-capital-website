@@ -4,6 +4,9 @@
   const HUBSPOT_LOAN_GUID = "6648e233-6873-4546-a9cf-b20d66ff4e8e";
   const THANK_YOU_URL = "/thank-you.html";
 
+  const params = new URLSearchParams(location.search);
+  const DEBUG = params.get('debug') === '1';
+
   function byId(id){ return document.getElementById(id); }
   function onlyDigits(s){ return (s||'').replace(/\D+/g,''); }
   function normalizeCurrency(s){
@@ -31,7 +34,7 @@
   function showStatus(type, title, details){
     const el = statusEl();
     const base = 'mb-6 rounded-md border p-4 ';
-    const cls  = (type==='error') ? 'bg-red-50 border-red-200 text-red-700' : 'bg-emerald-50 border-emerald-200 text-emerald-800';
+    const cls  = (type==='error') ? 'bg-red-50 border-red-200 text-red-700' : (type==='warn' ? 'bg-yellow-50 border-yellow-200 text-yellow-800' : 'bg-emerald-50 border-emerald-200 text-emerald-800');
     el.className = base + cls;
     el.innerHTML = '<p class="font-semibold">'+(title||'')+'</p>' + (details?('<pre class="mt-2 whitespace-pre-wrap text-xs">'+details+'</pre>') : '');
     try{ el.scrollIntoView({behavior:'smooth', block:'start'}); }catch{}
@@ -55,6 +58,33 @@
     ['utm_source','utm_medium','utm_campaign','utm_term','utm_content','gclid'].forEach(k=>{
       const el = byId(k); if(el) el.value = p.get(k) || '';
     });
+  }
+  function maskFields(arr){
+    return (arr||[]).map(f=>{
+      const n = (f && f.name ? (''+f.name).toLowerCase() : '');
+      let v = (f && f.value != null ? ''+f.value : '');
+      if(n.includes('email')) v = v.replace(/(^.).*(@.*$)/,'$1***$2');
+      if(n.includes('phone')) v = v.length>4 ? ('***'+v.slice(-4)) : '***';
+      return { name:f.name, value:v };
+    });
+  }
+
+  async function postToHubSpot(fields){
+    const url = `https://api.hsforms.com/submissions/v3/integration/submit/${HUBSPOT_PORTAL_ID}/${HUBSPOT_LOAN_GUID}`;
+    const context = { pageUri: window.location.href, pageName: document.title };
+    const hutk = getCookie('hubspotutk'); if(hutk) context.hutk = hutk;
+
+    if (DEBUG) showStatus('warn','Debug: Payload preview', JSON.stringify({ url, payload: { fields: maskFields(fields), context } }, null, 2));
+
+    const res = await fetch(url, {
+      method:'POST',
+      headers:{ 'Content-Type':'application/json' },
+      body: JSON.stringify({ fields, context })
+    });
+    const text = await res.text();
+    if (DEBUG) showStatus(res.ok ? 'success' : 'error', 'Debug: HubSpot response', `HTTP ${res.status}\\n${text.slice(0,4000)}`);
+    if(!res.ok) throw new Error('HubSpot returned ' + res.status + ': ' + text);
+    return true;
   }
 
   function attach(){
@@ -108,17 +138,12 @@
           { name:'gclid', value: byId('gclid')?.value || '' }
         ]);
 
-        const url = `https://api.hsforms.com/submissions/v3/integration/submit/${HUBSPOT_PORTAL_ID}/${HUBSPOT_LOAN_GUID}`;
-        const context = { pageUri: window.location.href, pageName: document.title };
-        const hutk = getCookie('hubspotutk'); if(hutk) context.hutk = hutk;
-        const res = await fetch(url, {
-          method:'POST',
-          headers:{ 'Content-Type':'application/json' },
-          body: JSON.stringify({ fields, context })
-        });
-        if(!res.ok){
-          const txt = await res.text();
-          throw new Error('HubSpot returned ' + res.status + ': ' + txt);
+        await postToHubSpot(fields);
+
+        if (DEBUG) {
+          showStatus('success', 'Success (Debug Mode)', 'Not redirecting because debug=1. Remove ?debug=1 to enable redirect.');
+          if(btn){ btn.disabled=false; btn.textContent=orig; }
+          return;
         }
         const qs = window.location.search || '';
         window.location.assign(THANK_YOU_URL + qs);
