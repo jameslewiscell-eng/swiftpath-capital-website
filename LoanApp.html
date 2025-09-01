@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Tailwind CDN (make sure your CSP allows https://cdn.tailwindcss.com) -->
   <script src="https://cdn.tailwindcss.com"></script>
   <style>body{font-family:'Inter',sans-serif}</style>
 </head>
@@ -92,7 +93,7 @@
           <div class="mt-8">
             <label class="inline-flex items-start gap-2 text-sm">
               <input id="consentCheckbox" type="checkbox" class="mt-1" required />
-              <span>I agree to the <a href="/terms.html" class="underline">Terms</a>, <a href="/privacy.html" class="underline">Privacy Policy</a>, and <a href="/esign.html" class="underline">E‑Sign Consent</a>.</span>
+              <span>I agree to the <a href="/terms.html" class="underline">Terms</a>, <a href="/privacy.html" class="underline">Privacy Policy</a>, and <a href="/esign.html" class="underline">E-Sign Consent</a>.</span>
             </label>
           </div>
 
@@ -118,13 +119,13 @@
         <h3 class="text-yellow-500 font-semibold">Contact</h3>
         <ul class="mt-2 space-y-1 text-sm">
           <li>Email: <a href="mailto:info@swiftpathcapital.com" class="hover:text-white">info@swiftpathcapital.com</a></li>
-          <li>Phone: <a href="tel:+14073743301" class="hover:text-white">407‑374‑3301</a></li>
+          <li>Phone: <a href="tel:+14073743301" class="hover:text-white">407-374-3301</a></li>
         </ul>
       </div>
     </div>
   </footer>
 
-  <!-- External submit handler (CSP-safe) -->
+  <!-- Single external handler (CSP-safe) -->
   <script src="/assets/loanapp-submit.js" defer></script>
 </body>
 </html>
