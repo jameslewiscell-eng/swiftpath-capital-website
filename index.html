@@ -556,8 +556,6 @@ window.addEventListener('error', function(e){
   } catch(e){ console.warn('counter error', e); }
 })();
 </script>
-
-  <script src="/assets/hs-helpers.dual.js" defer></script>
 <script>
 // toggle mobile menu
 (function(){
@@ -568,6 +566,85 @@ window.addEventListener('error', function(e){
       menu.classList.toggle('hidden');
     });
   }
+})();
+</script>
+
+
+<script>
+// assets/hs-helpers.dual.js  (v2.3 – capture submit, click fallback, debug banner)
+(function(){
+  const HUBSPOT_PORTAL_ID = "243569048";
+  const HUBSPOT_LEAD_GUID = "65717a53-a61c-4f85-ae97-8c34b85c5d83";
+  const DIRECT_URL = `https://api.hsforms.com/submissions/v3/integration/submit/${HUBSPOT_PORTAL_ID}/${HUBSPOT_LEAD_GUID}`;
+  const PROXY_URL = "/.netlify/functions/hs-submit";
+
+  function getCookie(name){
+    const m = document.cookie.match(new RegExp('(?:^|; )' + name.replace(/([.$?*|{}()\\[\\]\\\\/+^])/g, '\\$1') + '=([^;]*)'));
+    return m ? decodeURIComponent(m[1]) : null;
+  }
+  function byId(id){ return document.getElementById(id); }
+  function splitName(full){ const s=(full||'').trim().replace(/\s+/g,' '); if(!s) return {first:'',last:''}; const p=s.split(' '); return p.length===1?{first:p[0],last:''}:{first:p[0],last:p.slice(1).join(' ')}; }
+
+  function buildFields(){
+    const full=(byId('leadName')?.value||'').trim();
+    const email=(byId('leadEmail')?.value||'').trim();
+    const phone=(byId('leadPhone')?.value||'').trim();
+    const purpose=(byId('leadPurpose')?.value||'').trim();
+    const {first,last} = splitName(full);
+    const fields=[];
+    if(full) fields.push({name:'name',value:full});
+    if(first) fields.push({name:'firstname',value:first});
+    if(last)  fields.push({name:'lastname',value:last});
+    if(email) fields.push({name:'email',value:email});
+    if(phone) ['phone','mobilephone','phone_number'].forEach(n=>fields.push({name:n,value:phone}));
+    if(purpose) ['lead_purpose','loan_purpose','purpose','loan_type','product_interest','product'].forEach(n=>fields.push({name:n,value:purpose}));
+    const p=new URLSearchParams(location.search);
+    ['utm_source','utm_medium','utm_campaign','utm_term','utm_content','gclid'].forEach(k=>{ const val=p.get(k); if(val) fields.push({name:k,value:val}); });
+    return fields;
+  }
+  function buildContext(){ const ctx={ pageUri:location.href, pageName:document.title }; const hutk=getCookie('hubspotutk'); if(hutk) ctx.hutk=hutk; return ctx; }
+  async function submitDirect(fields, context){
+    const res = await fetch(DIRECT_URL, {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({fields,context})});
+    const txt=await res.text();
+    if(!res.ok){ try{console.warn('[LeadForm] HubSpot direct error', res.status, JSON.parse(txt))}catch{console.warn('[LeadForm] HubSpot direct error', res.status, txt)}; throw new Error('direct:'+res.status); }
+    return txt;
+  }
+  async function submitViaProxy(fields, context){
+    const payload={ portalId:HUBSPOT_PORTAL_ID, formGuid:HUBSPOT_LEAD_GUID, fields, context };
+    const res = await fetch(PROXY_URL, {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+    const txt=await res.text();
+    if(!res.ok){ try{console.warn('[LeadForm] Proxy error:', res.status, JSON.parse(txt))}catch{console.warn('[LeadForm] Proxy error:', res.status, txt)}; throw new Error('proxy:'+res.status); }
+    return txt;
+  }
+  async function submitWithFallback(fields, context){ try{ return await submitDirect(fields, context); } catch(e){ console.warn('[LeadForm] Direct failed → proxy', e && e.message); return await submitViaProxy(fields, context);} }
+
+  function attach(){
+    const form = byId('leadForm'); if(!form) return console.warn('[LeadForm] #leadForm not found');
+    form.setAttribute('novalidate',''); form.onsubmit = null;
+    if(form.dataset.hsAttached==='1') return;
+    form.dataset.hsAttached='1';
+
+    async function handler(e){
+      if(e) { e.preventDefault(); e.stopPropagation(); if(e.stopImmediatePropagation) e.stopImmediatePropagation(); }
+      const btn = byId('leadSubmit'); const orig = btn ? btn.textContent : '';
+      if(btn){ btn.disabled=true; btn.textContent='Submitting…'; }
+      try{ await submitWithFallback(buildFields(), buildContext()); const qs=location.search||''; location.assign('/thank-you.html'+qs); }
+      catch(err){ console.error('[LeadForm] Submit failed', err); alert('Sorry, something went wrong. Please email info@swiftpathcapital.com or try again.'); }
+      finally{ if(btn){ btn.disabled=false; btn.textContent=orig; } }
+    }
+
+    // Primary: capture-phase submit
+    form.addEventListener('submit', handler, true);
+    // Belt: global capture
+    window.addEventListener('submit', function(e){ if(e.target===form) handler(e); }, true);
+    // Suspenders: direct button click fallback
+    const submitBtn = byId('leadSubmit'); if(submitBtn){ submitBtn.addEventListener('click', function(){ /* noop; click keeps focus for Safari */ }, true); }
+
+    console.log('[LeadForm] handler attached (v2.3)');
+  }
+
+  if(document.readyState==='loading'){ document.addEventListener('DOMContentLoaded', attach, {once:true}); }
+  else attach();
 })();
 </script>
 
