@@ -8,23 +8,16 @@
     <!-- Social Media & Link Sharing Meta Tags -->
     <meta property="og:title" content="SwiftPath Capital: First, Fast, Funded." />
     <meta property="og:description" content="At SwiftPath Capital, we've eliminated the delays of traditional lending. We leverage a cutting-edge digital platform to take you from application to funded in days, not weeks." />
-    <meta property="og:image" content="Images/Logo.PNG" />
+    <meta property="og:image" content="https://i.postimg.cc/5tFPsLvR/Untitled-design.png" />
     <meta property="og:url" content="https://www.swiftpathcapital.com" />
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="SwiftPath Capital: First, Fast, Funded.">
     <meta name="twitter:description" content="At SwiftPath Capital, we've eliminated the delays of traditional lending. We leverage a cutting-edge digital platform to take you from application to funded in days, not weeks.">
-    <meta name="twitter:image" content="Images/Logo.PNG">
+    <meta name="twitter:image" content="https://i.postimg.cc/5tFPsLvR/Untitled-design.png">
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-<script>
-window.addEventListener('error', function(e){
-  var s=document.getElementById('leadDebugState');
-  if(s) s.textContent='error: '+(e && e.message ? e.message : 'script error');
-});
-</script>
-
     
     <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -57,7 +50,6 @@ window.addEventListener('error', function(e){
     gtag('js', new Date());
     gtag('config', 'AW-17093021602');
   </script>
-<style>select option{color:#0f172a;background:#fff}</style>
 </head>
 <body class="bg-gray-50 text-slate-700">
 
@@ -65,10 +57,11 @@ window.addEventListener('error', function(e){
     <header id="header" class="bg-white/80 backdrop-blur-lg sticky top-0 z-40 shadow-sm">
         <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
             <a href="/" class="flex items-center space-x-2">
-                <img src="Images/Logo.PNG" alt="SwiftPath Capital Logo" class="h-[4.5rem] lg:h-[5.25rem] lg:h-24 w-auto">
+                <img src="https://i.postimg.cc/5tFPsLvR/Untitled-design.png" alt="SwiftPath Capital Logo" class="h-12 lg:h-14 lg:h-16 w-auto">
             </a>
             <div class="hidden lg:flex items-center space-x-8">
                 <a href="#advantage" class="text-slate-600 hover:text-brand-blue transition duration-300 font-medium">Our Advantage</a>
+<a href="#contact" class="block py-2 text-slate-600 hover:text-brand-blue transition duration-300 font-medium">Contact Us</a>
 <a href="#contact" class="text-slate-600 hover:text-brand-blue transition duration-300 font-medium">Contact Us</a>
                 <a href="#video" class="text-slate-600 hover:text-brand-blue transition duration-300 font-medium">Weekly Insight</a>
                 <a href="#process" class="text-slate-600 hover:text-brand-blue transition duration-300 font-medium">Our Process</a>
@@ -99,8 +92,7 @@ window.addEventListener('error', function(e){
          style="background-image:url('https://images.unsplash.com/photo-1580587771525-78b9dba3b914?q=80&w=2874&auto=format&fit=crop')">
   <div class="absolute inset-0 bg-slate-900/60"></div>
   <div class="relative container mx-auto px-6 text-center text-white">
-    <img src="Images/Logo.PNG" alt="SwiftPath Capital" class="mx-auto mb-6 h-64 md:h-96 w-auto drop-shadow-lg">
-    <h1 class="text-4xl md:text-6xl font-extrabold leading-tight mb-4">SwiftPath Capital — Real Estate Investment Funding</h1>
+    <h1 class="text-4xl md:text-6xl font-extrabold leading-tight mb-4">Real Estate Investment Funding</h1>
     <p class="text-xl md:text-2xl max-w-3xl mx-auto mb-8">At the Speed of the Deal.</p>
     <div class="flex justify-center gap-4 flex-wrap">
       <a href="#contact" class="inline-block bg-brand-blue hover:bg-brand-blue/90 text-white font-bold py-3 px-8 rounded-lg shadow">
@@ -252,16 +244,16 @@ window.addEventListener('error', function(e){
                     <div class="max-w-3xl mx-auto">
                         <h2 class="text-3xl md:text-4xl font-bold mb-2 text-center">Ready to Fund Your Next Deal?</h2>
                         <p class="text-lg text-blue-100 max-w-2xl mx-auto mb-8 text-center">Fast, free pre‑qualification. No credit impact.</p>
-                        <form id="leadForm" class="grid md:grid-cols-3 gap-4" novalidate novalidate>
+                        <form id="leadForm" class="grid md:grid-cols-3 gap-4">
                             <input id="leadName" class="w-full border border-white/30 bg-white/10 rounded-lg px-3 py-3 placeholder-blue-100" placeholder="Full name" required>
                             <input id="leadEmail" type="email" class="w-full border border-white/30 bg-white/10 rounded-lg px-3 py-3 placeholder-blue-100" placeholder="Email" required>
                             <input id="leadPhone" class="w-full border border-white/30 bg-white/10 rounded-lg px-3 py-3 placeholder-blue-100" placeholder="Phone" required>
                             <div class="md:col-span-3 flex flex-col sm:flex-row gap-3">
-                                <select id="leadPurpose" class="flex-1 border border-white/30 bg-white rounded-lg px-3 py-3">
+                                <select id="leadPurpose" class="flex-1 border border-white/30 bg-white/10 rounded-lg px-3 py-3">
                                     <option value="">Loan type</option><option>Fix-and-Flip</option><option>BRRRR</option><option>Rental</option><option>New Construction</option><option>Bridge</option>
                                 </select>
                                 <a href="/LoanApp.html" class="sm:w-auto w-full border-2 border-white/60 text-white font-bold py-3 px-6 rounded-lg text-center">Full Application</a>
-                                <button id="leadSubmit" id="leadSubmit"  type="submit" class="sm:w-auto w-full bg-brand-gold text-white font-bold py-3 px-8 rounded-lg">Get Pre‑Qualified</button>
+                                <button type="submit" class="sm:w-auto w-full bg-brand-gold text-white font-bold py-3 px-8 rounded-lg">Get Pre‑Qualified</button>
                             </div>
                             <p class="md:col-span-3 text-sm text-blue-100/80 mt-2">By submitting, you agree to our Terms and Privacy Policy.</p>
                         </form>
@@ -277,7 +269,7 @@ window.addEventListener('error', function(e){
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div class="md:col-span-1">
                     <a href="/" class="flex items-center space-x-2">
-                        <img src="Images/Logo.PNG" alt="SwiftPath Capital Logo" class="h-12 lg:h-14 w-auto bg-white p-1 rounded-md">
+                        <img src="https://i.postimg.cc/5tFPsLvR/Untitled-design.png" alt="SwiftPath Capital Logo" class="h-12 lg:h-14 w-auto bg-white p-1 rounded-md">
                     </a>
                     <p class="mt-4 text-slate-400">Your strategic partner in a fast-moving market. First, Fast, Funded.</p>
                 </div>
@@ -300,12 +292,11 @@ window.addEventListener('error', function(e){
             </div>
             <div class="mt-12 border-t border-slate-700 pt-6 text-center text-sm text-slate-500">
                 <p>&copy; 2025 SwiftPath Capital. All Rights Reserved.</p>
-                <div class="mt-4 space-x-4"><a href="/privacy.html" class="hover:text-brand-gold transition duration-300">Privacy Policy</a>
+                <div class="mt-4 space-x-4">
+                    <a href="#" id="open-privacy-modal" class="hover:text-brand-gold transition duration-300">Privacy Policy</a>
                     <span>&middot;</span>
-                    <a href="/terms.html" class="hover:text-brand-gold transition duration-300">Terms and Conditions</a>
-                    <span>&middot;</span>
-                    <a href="/esign.html" class="hover:text-brand-gold transition duration-300">E‑Sign Consent</a>
-</div>
+                    <a href="#" id="open-terms-modal" class="hover:text-brand-gold transition duration-300">Terms and Conditions</a>
+                </div>
             </div>
         </div>
     
@@ -316,15 +307,260 @@ window.addEventListener('error', function(e){
 </footer>
 
     <!-- Modals -->
-</div>
+    <div id="modal-overlay" class="modal-overlay fixed inset-0 bg-black bg-opacity-50 z-60 hidden"></div>
+    <div id="privacy-modal" class="modal-container fixed top-1/2 left-1/2 bg-white w-11/12 max-w-3xl mx-auto rounded-lg shadow-lg z-50 p-6 md:p-8 hidden">
+        <div class="relative">
+            <button id="close-privacy-modal" class="absolute -top-2 -right-2 text-gray-600 hover:text-gray-900">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            <h2 class="text-2xl font-bold text-slate-800 mb-4">Privacy Policy</h2>
+            <div class="modal-content max-h-[70vh] overflow-y-auto pr-4">
+                <p class="text-sm text-gray-500 mb-4">Effective Date: August 4, 2025</p>
+                <p>This Privacy Policy describes how SwiftPath Capital Corporation ("we," "us," or "our") collects, uses, and discloses your information when you use our website.</p>
+                <h3>1. Information We Collect</h3>
+                <ul><li>Personal and Business Information</li><li>Financial Information</li><li>Property Information</li><li>Communications</li></ul>
+                <h3>2. How We Use Your Information</h3>
+                <ul><li>Process your loan applications</li><li>Determine eligibility</li><li>Communicate with you</li><li>Marketing (opt‑out anytime)</li></ul>
+            </div>
+        </div>
     </div>
-</div>
+    <div id="terms-modal" class="modal-container fixed top-1/2 left-1/2 bg-white w-11/12 max-w-3xl mx-auto rounded-lg shadow-lg z-50 p-6 md:p-8 hidden">
+        <div class="relative">
+            <button id="close-terms-modal" class="absolute -top-2 -right-2 text-gray-600 hover:text-gray-900">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            <h2 class="text-2xl font-bold text-slate-800 mb-4">Terms and Conditions</h2>
+            <div class="modal-content max-h-[70vh] overflow-y-auto pr-4">
+                <p class="text-sm text-gray-500 mb-4">Last Updated: August 4, 2025</p>
+                <p>Use of this site is subject to terms. Applying does not constitute a commitment to lend. Loans subject to underwriting.</p>
+            </div>
+        </div>
     </div>
 
     <!-- Scripts -->
     <script>
+        // Mobile Menu
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenuButton.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+        document.querySelectorAll('#mobile-menu a').forEach(a => a.addEventListener('click', () => mobileMenu.classList.add('hidden')));
+
+        // Counters
+        function animateCounters(){
+            const counters=document.querySelectorAll('#stats .stat-item p[data-target]');
+            const speed=200;
+            counters.forEach(counter=>{
+                const target=+counter.getAttribute('data-target');
+                const update=()=>{
+                    const count=+counter.innerText.replace(/,/g,'');
+                    const inc=target/speed;
+                    if(count<target){ const next=Math.ceil(count+inc); counter.innerText=next.toLocaleString(); setTimeout(update,15); }
+                    else counter.innerText=target.toLocaleString();
+                };
+                update();
+            });
+        }
+        const statsSection=document.getElementById('stats');
+        const observer=new IntersectionObserver((entries,obs)=>{
+            entries.forEach(entry=>{
+                if(entry.isIntersecting){
+                    animateCounters();
+                    entry.target.querySelectorAll('.stat-item').forEach((it,i)=>{ it.style.animationDelay=`${i*150}ms`; it.classList.add('counter-anim'); });
+                    obs.unobserve(entry.target);
+                }
+            });
+        },{threshold:.5});
+        if(statsSection) observer.observe(statsSection);
+
+        // Modals
+        const modalOverlay=document.getElementById('modal-overlay');
+        const openModal=(m)=>{ if(!m) return; modalOverlay.classList.remove('hidden'); m.classList.remove('hidden'); setTimeout(()=>m.classList.add('active'),10); document.body.style.overflow='hidden'; };
+        const closeModal=(m)=>{ if(!m) return; m.classList.remove('active'); setTimeout(()=>{ modalOverlay.classList.add('hidden'); m.classList.add('hidden'); document.body.style.overflow='auto'; },300); };
+        const openPrivacyBtn=document.getElementById('open-privacy-modal'); const closePrivacyBtn=document.getElementById('close-privacy-modal'); const privacyModal=document.getElementById('privacy-modal');
+        const openTermsBtn=document.getElementById('open-terms-modal'); const closeTermsBtn=document.getElementById('close-terms-modal'); const termsModal=document.getElementById('terms-modal');
+        openPrivacyBtn.addEventListener('click',e=>{e.preventDefault();openModal(privacyModal);}); closePrivacyBtn.addEventListener('click',()=>closeModal(privacyModal));
+        openTermsBtn.addEventListener('click',e=>{e.preventDefault();openModal(termsModal);}); closeTermsBtn.addEventListener('click',()=>closeModal(termsModal));
+        modalOverlay.addEventListener('click',()=>{ closeModal(privacyModal); closeModal(termsModal); });
+
+        // HubSpot lead submit
+        async function submitLeadToHubSpot(fields){
+            if(!window.__swiftpathHS || !window.__swiftpathHS.submitToHubSpot){ alert('HubSpot helper missing'); return; }
+            if(!window.HUBSPOT_PORTAL_ID){ alert('Missing HUBSPOT_PORTAL_ID'); return; }
+            if(!window.HUBSPOT_LEAD_GUID){ alert('Missing HUBSPOT_LEAD_GUID'); return; }
+            await window.__swiftpathHS.submitToHubSpot(window.HUBSPOT_LEAD_GUID, fields, '/thank-you.html');
+        }
+        const leadForm=document.getElementById('leadForm');
+        if(leadForm){
+            leadForm.addEventListener('submit', async (e)=>{
+                e.preventDefault();
+                const btn=leadForm.querySelector('button[type="submit"]'); btn.disabled=true; btn.innerText='Sending...';
+                try{
+                    const fields=[
+                        {name:'full_name', value:document.getElementById('leadName').value.trim()},
+                        {name:'email', value:document.getElementById('leadEmail').value.trim()},
+                        {name:'phone', value:document.getElementById('leadPhone').value.trim()},
+                        {name:'loan_purpose', value:document.getElementById('leadPurpose').value}
+                    ];
+                    await submitLeadToHubSpot(fields);
+                }catch(err){ alert('Problem submitting: '+err.message); }
+                finally{ btn.disabled=false; btn.innerText='Get Pre‑Qualified'; }
+            });
+        }
+    </script>
+    <script>
       
       </script>
+    <script src="assets/hubspot.js"></script>
+
+<!-- SwiftPath HubSpot Hotfix (inline) -->
+<script>
+(function () {
+  try {
+    // Force correct constants (last-write-wins)
+    window.HUBSPOT_PORTAL_ID = "243569048";
+    window.HUBSPOT_LEAD_GUID = "65717a53-a61c-4f85-ae97-8c34b85c5d83";
+    window.HUBSPOT_LOAN_GUID = "6648e233-6873-4546-a9cf-b20d66ff4e8e";
+
+    // Minimal submit helper (if missing)
+    if (!window.__swiftpathHS) window.__swiftpathHS = {};
+    if (typeof window.__swiftpathHS.submitToHubSpot !== "function") {
+      window.__swiftpathHS.submitToHubSpot = async function (formGuid, fields, redirectTo) {
+        const portalId = window.HUBSPOT_PORTAL_ID;
+        if (!portalId) throw new Error("Missing HUBSPOT_PORTAL_ID");
+        const url = `https://api.hsforms.com/submissions/v3/integration/submit/${portalId}/${formGuid}`;
+        const payload = {
+          fields: (fields || []).map(f => ({ name: f.name, value: f.value })),
+          context: { pageUri: window.location.href, pageName: document.title }
+        };
+        const res = await fetch(url, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+        if (!res.ok) throw new Error("HubSpot returned " + res.status + ": " + await res.text());
+        if (redirectTo) {
+          try { const qs = window.location.search || ""; window.location.assign(redirectTo + qs); }
+          catch (_) { window.location.assign(redirectTo); }
+        }
+      };
+    }
+  } catch (e) {
+    console.warn("HubSpot hotfix init error:", e);
+  }
+})();
+</script>
+
+
+<!-- SwiftPath HubSpot Hotfix v2 (forces helper, adds hutk if present) -->
+<script>
+(function () {
+  try {
+    // Force correct constants (last-write-wins)
+    window.HUBSPOT_PORTAL_ID = "243569048";
+    window.HUBSPOT_LEAD_GUID = "65717a53-a61c-4f85-ae97-8c34b85c5d83";
+    window.HUBSPOT_LOAN_GUID = "6648e233-6873-4546-a9cf-b20d66ff4e8e";
+
+    function getCookie(name){
+      const m = document.cookie.match(new RegExp('(?:^|; )' + name.replace(/([.$?*|{}()\[\]\\/+^])/g, '\\$1') + '=([^;]*)'));
+      return m ? decodeURIComponent(m[1]) : null;
+    }
+
+    // Always override submit helper to avoid older versions
+    window.__swiftpathHS = window.__swiftpathHS || {};
+    window.__swiftpathHS.submitToHubSpot = async function (formGuid, fields, redirectTo) {
+      const portalId = window.HUBSPOT_PORTAL_ID;
+      if (!portalId) throw new Error("Missing HUBSPOT_PORTAL_ID");
+      const url = `https://api.hsforms.com/submissions/v3/integration/submit/${portalId}/${formGuid}`;
+      const context = {
+        pageUri: window.location.href,
+        pageName: document.title
+      };
+      const hutk = getCookie('hubspotutk');
+      if (hutk) context.hutk = hutk; // include only if present; don't send empty
+      const payload = {
+        fields: (fields || []).map(f => ({ name: f.name, value: f.value })),
+        context: context
+      };
+      const res = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+      if (!res.ok) throw new Error("HubSpot returned " + res.status + ": " + await res.text());
+      if (redirectTo) {
+        try { const qs = window.location.search || ""; window.location.assign(redirectTo + qs); }
+        catch (_) { window.location.assign(redirectTo); }
+      }
+    };
+  } catch (e) {
+    console.warn("HubSpot hotfix init error:", e);
+  }
+})();
+</script>
+
+
+<!-- SwiftPath HubSpot Hotfix v3 (name split + hutk guard) -->
+<script>
+(function () {
+  try {
+    window.HUBSPOT_PORTAL_ID = "243569048";
+    window.HUBSPOT_LEAD_GUID = "65717a53-a61c-4f85-ae97-8c34b85c5d83";
+    window.HUBSPOT_LOAN_GUID = "6648e233-6873-4546-a9cf-b20d66ff4e8e";
+
+    function getCookie(name){
+      const m = document.cookie.match(new RegExp('(?:^|; )' + name.replace(/([.$?*|{}()\[\]\\/+^])/g, '\\$1') + '=([^;]*)'));
+      return m ? decodeURIComponent(m[1]) : null;
+    }
+
+    function normalizeFields(fields){
+      const out = [];
+      let fullName = null;
+      for (const f of (fields||[])) {
+        if (!f || f.value == null) continue;
+        if (f.name === 'full_name' || f.name === 'name') {
+          fullName = (''+f.value).trim();
+          continue; // we'll expand to firstname/lastname
+        }
+        out.push({ name: f.name, value: ''+f.value });
+      }
+      if (fullName) {
+        const parts = fullName.split(/\s+/);
+        const first = parts.shift() || '';
+        const last = parts.join(' ');
+        if (first) out.push({ name: 'firstname', value: first });
+        if (last)  out.push({ name: 'lastname',  value: last });
+      }
+      return out;
+    }
+
+    window.__swiftpathHS = window.__swiftpathHS || {};
+    window.__swiftpathHS.submitToHubSpot = async function (formGuid, fields, redirectTo) {
+      const portalId = window.HUBSPOT_PORTAL_ID;
+      if (!portalId) throw new Error("Missing HUBSPOT_PORTAL_ID");
+
+      const url = `https://api.hsforms.com/submissions/v3/integration/submit/${portalId}/${formGuid}`;
+      const context = { pageUri: window.location.href, pageName: document.title };
+      const hutk = getCookie('hubspotutk');
+      if (hutk) context.hutk = hutk;
+
+      const payload = { fields: normalizeFields(fields), context: context };
+
+      const res = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+      if (!res.ok) throw new Error("HubSpot returned " + res.status + ": " + await res.text());
+      if (redirectTo) {
+        try { const qs = window.location.search || ""; window.location.assign(redirectTo + qs); }
+        catch (_) { window.location.assign(redirectTo); }
+      }
+    };
+  } catch (e) { console.warn("HubSpot hotfix init error:", e); }
+})();
+</script>
+
+
 <!-- Product Detail Modal -->
 <div id="productOverlay" class="fixed inset-0 z-60 hidden bg-black/60"></div>
 <div id="productModal" class="fixed inset-x-0 bottom-0 z-50 hidden md:inset-0 md:items-center md:justify-center">
@@ -345,6 +581,7 @@ window.addEventListener('error', function(e){
     <p class="text-xs text-gray-500 mt-2 text-center">Same‑day term sheets available • Dedicated account manager for repeat borrowers</p>
   </div>
 </div>
+
 
 <script>
 // Loan product modal wiring + analytics + "Apply Now"
@@ -464,6 +701,7 @@ window.addEventListener('error', function(e){
 })();
 </script>
 
+
 <!-- WhatsApp Floating Button -->
 <a href="https://wa.me/14073743301" target="_blank" aria-label="Chat on WhatsApp"
    class="fixed z-40 bottom-5 right-5 md:bottom-6 md:right-6 rounded-full shadow-lg
@@ -474,12 +712,13 @@ window.addEventListener('error', function(e){
   </svg>
 </a>
 
+
 <!-- Cookie Banner -->
 <div id="cookieBanner" class="fixed inset-x-0 bottom-0 z-50 bg-gray-900 text-white p-4 shadow-lg hidden">
   <div class="max-w-5xl mx-auto flex flex-col md:flex-row md:items-center gap-3">
     <p class="text-sm leading-snug flex-1">
       We use cookies to improve your experience and to understand site traffic. By clicking <strong>Accept</strong>, you agree to our use of non‑essential cookies.
-      See our <a href="/privacy.html" id="cookiePrivacyLink" class="underline">Privacy Policy</a>.
+      See our <a href="#privacy" id="cookiePrivacyLink" class="underline">Privacy Policy</a>.
     </p>
     <div class="flex gap-2">
       <button id="cookieDecline" class="px-3 py-2 rounded bg-gray-700 hover:bg-gray-600 text-sm">Decline</button>
@@ -502,6 +741,7 @@ window.addEventListener('error', function(e){
 })();
 </script>
 
+
 <script>
 (function(){
   const PHONE_DISPLAY="407-374-3301";
@@ -517,332 +757,7 @@ window.addEventListener('error', function(e){
 })();
 </script>
 
+
 <!-- Unified Modal Controller (privacy, terms, product) -->
-
-<script>
-// Stats counter: animates <p data-target="..."> inside #stats when visible
-(function(){
-  try {
-    var stats = document.getElementById('stats');
-    if (!stats) return;
-    var els = stats.querySelectorAll('p[data-target]');
-    if (!els.length) return;
-    var started = false;
-    function format(n){ return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); }
-    function animate(){
-      if (started) return; started = true;
-      els.forEach(function(el){
-        var t = parseFloat(el.getAttribute('data-target')) || 0;
-        var start = parseFloat((el.textContent||'0').replace(/,/g,'')) || 0;
-        var dur = 1200, t0;
-        function step(ts){
-          if(!t0) t0 = ts;
-          var p = Math.min((ts - t0)/dur, 1);
-          var val = Math.floor(start + (t - start) * p);
-          el.textContent = format(val);
-          if(p < 1) requestAnimationFrame(step);
-          else el.textContent = format(t);
-        }
-        requestAnimationFrame(step);
-        el.classList.add('counter-anim');
-      });
-    }
-    if ('IntersectionObserver' in window){
-      var io = new IntersectionObserver(function(entries){
-        entries.forEach(function(e){ if(e.isIntersecting){ animate(); io.disconnect(); } });
-      }, { threshold: 0.25 });
-      io.observe(stats);
-    } else { animate(); }
-  } catch(e){ console.warn('counter error', e); }
-})();
-</script>
-<script>
-// toggle mobile menu
-(function(){
-  var btn = document.getElementById('mobile-menu-button');
-  var menu = document.getElementById('mobile-menu');
-  if (btn && menu) {
-    btn.addEventListener('click', function(){
-      menu.classList.toggle('hidden');
-    });
-  }
-})();
-</script>
-
-
-<script>
-// assets/hs-helpers.dual.js  (v2.3 – capture submit, click fallback, debug banner)
-(function(){
-  const HUBSPOT_PORTAL_ID = "243569048";
-  const HUBSPOT_LEAD_GUID = "65717a53-a61c-4f85-ae97-8c34b85c5d83";
-  const DIRECT_URL = `https://api.hsforms.com/submissions/v3/integration/submit/${HUBSPOT_PORTAL_ID}/${HUBSPOT_LEAD_GUID}`;
-  const PROXY_URL = "/.netlify/functions/hs-submit";
-
-  function getCookie(name){
-    const m = document.cookie.match(new RegExp('(?:^|; )' + name.replace(/([.$?*|{}()\\[\\]\\\\/+^])/g, '\\$1') + '=([^;]*)'));
-    return m ? decodeURIComponent(m[1]) : null;
-  }
-  function byId(id){ return document.getElementById(id); }
-  function splitName(full){ const s=(full||'').trim().replace(/\s+/g,' '); if(!s) return {first:'',last:''}; const p=s.split(' '); return p.length===1?{first:p[0],last:''}:{first:p[0],last:p.slice(1).join(' ')}; }
-
-  function buildFields(){
-    const full=(byId('leadName')?.value||'').trim();
-    const email=(byId('leadEmail')?.value||'').trim();
-    const phone=(byId('leadPhone')?.value||'').trim();
-    const purpose=(byId('leadPurpose')?.value||'').trim();
-    const {first,last} = splitName(full);
-    const fields=[];
-    if(full) fields.push({name:'name',value:full});
-    if(first) fields.push({name:'firstname',value:first});
-    if(last)  fields.push({name:'lastname',value:last});
-    if(email) fields.push({name:'email',value:email});
-    if(phone) ['phone','mobilephone','phone_number'].forEach(n=>fields.push({name:n,value:phone}));
-    if(purpose) ['lead_purpose','loan_purpose','purpose','loan_type','product_interest','product'].forEach(n=>fields.push({name:n,value:purpose}));
-    const p=new URLSearchParams(location.search);
-    ['utm_source','utm_medium','utm_campaign','utm_term','utm_content','gclid'].forEach(k=>{ const val=p.get(k); if(val) fields.push({name:k,value:val}); });
-    return fields;
-  }
-  function buildContext(){ const ctx={ pageUri:location.href, pageName:document.title }; const hutk=getCookie('hubspotutk'); if(hutk) ctx.hutk=hutk; return ctx; }
-  async function submitDirect(fields, context){
-    const res = await fetch(DIRECT_URL, {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({fields,context})});
-    const txt=await res.text();
-    if(!res.ok){ try{console.warn('[LeadForm] HubSpot direct error', res.status, JSON.parse(txt))}catch{console.warn('[LeadForm] HubSpot direct error', res.status, txt)}; throw new Error('direct:'+res.status); }
-    return txt;
-  }
-  async function submitViaProxy(fields, context){
-    const payload={ portalId:HUBSPOT_PORTAL_ID, formGuid:HUBSPOT_LEAD_GUID, fields, context };
-    const res = await fetch(PROXY_URL, {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
-    const txt=await res.text();
-    if(!res.ok){ try{console.warn('[LeadForm] Proxy error:', res.status, JSON.parse(txt))}catch{console.warn('[LeadForm] Proxy error:', res.status, txt)}; throw new Error('proxy:'+res.status); }
-    return txt;
-  }
-  async function submitWithFallback(fields, context){ try{ return await submitDirect(fields, context); } catch(e){ console.warn('[LeadForm] Direct failed → proxy', e && e.message); return await submitViaProxy(fields, context);} }
-
-  function attach(){
-    const form = byId('leadForm'); if(!form) return console.warn('[LeadForm] #leadForm not found');
-    form.setAttribute('novalidate',''); form.onsubmit = null;
-    if(form.dataset.hsAttached==='1') return;
-    form.dataset.hsAttached='1';
-
-    async function handler(e){
-      if(e) { e.preventDefault(); e.stopPropagation(); if(e.stopImmediatePropagation) e.stopImmediatePropagation(); }
-      const btn = byId('leadSubmit'); const orig = btn ? btn.textContent : '';
-      if(btn){ btn.disabled=true; btn.textContent='Submitting…'; }
-      try{ await submitWithFallback(buildFields(), buildContext()); const qs=location.search||''; location.assign('/thank-you.html'+qs); }
-      catch(err){ console.error('[LeadForm] Submit failed', err); alert('Sorry, something went wrong. Please email info@swiftpathcapital.com or try again.'); }
-      finally{ if(btn){ btn.disabled=false; btn.textContent=orig; } }
-    }
-
-    // Primary: capture-phase submit
-    form.addEventListener('submit', handler, true);
-    // Belt: global capture
-    window.addEventListener('submit', function(e){ if(e.target===form) handler(e); }, true);
-    // Suspenders: direct button click fallback
-    const submitBtn = byId('leadSubmit'); if(submitBtn){ submitBtn.addEventListener('click', function(){ /* noop; click keeps focus for Safari */ }, true); }
-
-    console.log('[LeadForm] handler attached (v2.3)');
-  }
-
-  if(document.readyState==='loading'){ document.addEventListener('DOMContentLoaded', attach, {once:true}); }
-  else attach();
-})();
-</script>
-
-
-<!-- SwiftPath HubSpot Hotfix (inline, yesterday-style) -->
-<script>
-(function () {
-  try {
-    // Force correct constants (last-write-wins)
-    window.HUBSPOT_PORTAL_ID = "243569048";
-    window.HUBSPOT_LEAD_GUID = "65717a53-a61c-4f85-ae97-8c34b85c5d83";
-
-    // Minimal submit helper
-    window.__swiftpathHS = window.__swiftpathHS || {};
-    window.__swiftpathHS.submitToHubSpot = async function (formGuid, fields, redirectTo) {
-      var portalId = window.HUBSPOT_PORTAL_ID;
-      if (!portalId) throw new Error("Missing HUBSPOT_PORTAL_ID");
-      var url = "https://api.hsforms.com/submissions/v3/integration/submit/" + portalId + "/" + formGuid;
-      var payload = {
-        fields: (fields || []).map(function(f){ return { name: f.name, value: f.value }; }),
-        context: { pageUri: window.location.href, pageName: document.title }
-      };
-      var res = await fetch(url, { method:"POST", headers:{ "Content-Type":"application/json" }, body: JSON.stringify(payload) });
-      if (!res.ok) throw new Error("HubSpot returned " + res.status + ": " + await res.text());
-      if (redirectTo) {
-        try { var qs = window.location.search || ""; window.location.assign(redirectTo + qs); }
-        catch (_) { window.location.assign(redirectTo); }
-      }
-    };
-  } catch (e) { console.warn("HubSpot hotfix init error:", e); }
-})();
-</script>
-
-<!-- SwiftPath HubSpot Hotfix v2 (adds hutk if present, yesterday-style) -->
-<script>
-(function () {
-  try {
-    function getCookie(name){
-      var m = document.cookie.match(new RegExp('(?:^|; )' + name.replace(/([.$?*|{}()\\[\\]\\/\\+^])/g, '\\\\$1') + '=([^;]*)'));
-      return m ? decodeURIComponent(m[1]) : null;
-    }
-
-    // Override submit helper to include hutk when available
-    window.__swiftpathHS = window.__swiftpathHS || {};
-    var prev = window.__swiftpathHS.submitToHubSpot;
-    window.__swiftpathHS.submitToHubSpot = async function (formGuid, fields, redirectTo) {
-      var portalId = window.HUBSPOT_PORTAL_ID;
-      if (!portalId) throw new Error("Missing HUBSPOT_PORTAL_ID");
-      var hutk = getCookie('hubspotutk');
-      var url = "https://api.hsforms.com/submissions/v3/integration/submit/" + portalId + "/" + formGuid;
-      var payload = {
-        fields: (fields || []).map(function(f){ return { name: f.name, value: f.value }; }),
-        context: { pageUri: window.location.href, pageName: document.title }
-      };
-      if (hutk) payload.context.hutk = hutk;
-      var res = await fetch(url, { method:"POST", headers:{ "Content-Type":"application/json" }, body: JSON.stringify(payload) });
-      if (!res.ok) throw new Error("HubSpot returned " + res.status + ": " + await res.text());
-      if (redirectTo) {
-        try { var qs = window.location.search || ""; window.location.assign(redirectTo + qs); }
-        catch (_) { window.location.assign(redirectTo); }
-      }
-    };
-  } catch (e) { console.warn("HubSpot hotfix v2 init error:", e); }
-})();
-</script>
-
-<!-- Attach submit handler exactly like yesterday's working flow -->
-<script>
-(function(){
-  function byId(id){ return document.getElementById(id); }
-  function splitName(full){
-    var s=(full||'').trim().replace(/\s+/g,' ');
-    if(!s) return {first:'',last:''};
-    var parts=s.split(' ');
-    if(parts.length===1) return {first:parts[0], last:''};
-    return {first:parts[0], last:parts.slice(1).join(' ')};
-  }
-  function buildFields(){
-    var full=(byId('leadName')?.value||'').trim();
-    var email=(byId('leadEmail')?.value||'').trim();
-    var phone=(byId('leadPhone')?.value||'').trim();
-    var purpose=(byId('leadPurpose')?.value||'').trim();
-    var names=splitName(full);
-    var fields=[];
-    if(full) fields.push({name:'name',value:full});
-    if(names.first) fields.push({name:'firstname',value:names.first});
-    if(names.last) fields.push({name:'lastname',value:names.last});
-    if(email) fields.push({name:'email',value:email});
-    if(phone){ ['phone','mobilephone','phone_number'].forEach(function(n){ fields.push({name:n,value:phone}); }); }
-    if(purpose){ ['lead_purpose','loan_purpose','purpose','loan_type','product_interest','product'].forEach(function(n){ fields.push({name:n,value:purpose}); }); }
-    // UTM passthrough
-    var p=new URLSearchParams(location.search);
-    ['utm_source','utm_medium','utm_campaign','utm_term','utm_content','gclid'].forEach(function(k){ var v=p.get(k); if(v) fields.push({name:k,value:v}); });
-    return fields;
-  }
-
-  function attach(){
-    var form=byId('leadForm'); if(!form) return;
-    form.setAttribute('novalidate','');
-    // capture-phase to beat native validation scroll
-    form.addEventListener('submit', async function(e){
-      e.preventDefault(); e.stopPropagation();
-      var btn=byId('leadSubmit'); var orig=btn?btn.textContent:'';
-      if(btn){ btn.disabled=true; btn.textContent='Submitting…'; }
-      try{
-        await window.__swiftpathHS.submitToHubSpot(window.HUBSPOT_LEAD_GUID, buildFields(), '/thank-you.html');
-      }catch(err){
-        console.error('HubSpot submit failed', err);
-        alert('Sorry, something went wrong. Please try again or email info@swiftpathcapital.com.');
-      }finally{
-        if(btn){ btn.disabled=false; btn.textContent=orig; }
-      }
-    }, true);
-  }
-
-  if(document.readyState==='loading'){ document.addEventListener('DOMContentLoaded', attach, {once:true}); }
-  else attach();
-})();
-</script>
-
-
-<!-- Inline HubSpot submit handler (final) -->
-<script>
-(function(){
-  try{
-    var PORTAL = "243569048";
-    var FORM   = "65717a53-a61c-4f85-ae97-8c34b85c5d83"; // Lead / Get Pre‑Qualified
-    function byId(id){ return document.getElementById(id); }
-    function getCookie(name){
-      var m = document.cookie.match(new RegExp('(?:^|; )' + name.replace(/([.$?*|{}()\[\]\\/+^])/g, '\\$1') + '=([^;]*)'));
-      return m ? decodeURIComponent(m[1]) : null;
-    }
-    function splitName(full){
-      var s=(full||'').trim().replace(/\s+/g,' ');
-      if(!s) return {first:'',last:''};
-      var parts=s.split(' ');
-      if(parts.length===1) return {first:parts[0], last:''};
-      return {first:parts[0], last:parts.slice(1).join(' ')};
-    }
-    function buildFields(){
-      var full=(byId('leadName')?.value||'').trim();
-      var email=(byId('leadEmail')?.value||'').trim();
-      var phone=(byId('leadPhone')?.value||'').trim();
-      var purpose=(byId('leadPurpose')?.value||'').trim();
-      var names=splitName(full);
-      var fields=[];
-      if(full) fields.push({name:'name',value:full});
-      if(names.first) fields.push({name:'firstname',value:names.first});
-      if(names.last)  fields.push({name:'lastname', value:names.last});
-      if(email) fields.push({name:'email',value:email});
-      if(phone){ ['phone','mobilephone','phone_number'].forEach(function(n){ fields.push({name:n,value:phone}); }); }
-      if(purpose){ ['lead_purpose','loan_purpose','purpose','loan_type','product_interest','product'].forEach(function(n){ fields.push({name:n,value:purpose}); }); }
-      var p=new URLSearchParams(location.search);
-      ['utm_source','utm_medium','utm_campaign','utm_term','utm_content','gclid'].forEach(function(k){ var v=p.get(k); if(v) fields.push({name:k,value:v}); });
-      return fields;
-    }
-    async function submitHS(fields){
-      var url = "https://api.hsforms.com/submissions/v3/integration/submit/"+PORTAL+"/"+FORM;
-      var ctx = { pageUri: location.href, pageName: document.title };
-      var hutk = getCookie('hubspotutk'); if(hutk) ctx.hutk = hutk;
-      var res = await fetch(url, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({fields:fields, context: ctx}) });
-      var txt = await res.text();
-      if(!res.ok) throw new Error("HubSpot "+res.status+": "+txt);
-      return txt;
-    }
-    function attach(){
-      var form = byId('leadForm'); if(!form) return;
-      form.setAttribute('novalidate','');
-      if(form.dataset.hsAttached === '1') return;
-      form.dataset.hsAttached = '1';
-      async function handler(e){
-        if(e){ e.preventDefault(); e.stopPropagation(); if(e.stopImmediatePropagation) e.stopImmediatePropagation(); }
-        var btn = byId('leadSubmit'); var orig = btn ? btn.textContent : '';
-        if(btn){ btn.disabled = true; btn.textContent = 'Submitting…'; }
-        try{
-          await submitHS(buildFields());
-          var qs = location.search || '';
-          location.assign('/thank-you.html' + qs);
-        }catch(err){
-          console.error('HubSpot submit failed', err);
-          alert('Sorry, something went wrong. Please email info@swiftpathcapital.com or try again.');
-        }finally{
-          if(btn){ btn.disabled=false; btn.textContent=orig; }
-        }
-      }
-      // Capture-phase submit wins on mobile Safari
-      form.addEventListener('submit', handler, true);
-      // Global capture fail-safe
-      window.addEventListener('submit', function(e){ if(e.target===form) handler(e); }, true);
-      // Button click fallback
-      var submitBtn = byId('leadSubmit'); if(submitBtn){ submitBtn.addEventListener('click', function(){ /* keep focus */ }, true); }
-      console.log('[LeadForm] handler attached (inline final)');
-    }
-    if(document.readyState === 'loading'){ document.addEventListener('DOMContentLoaded', attach, {once:true}); }
-    else attach();
-  }catch(e){ console.warn('inline handler init error', e); }
-})();
-</script>
-
 </body>
 </html>
