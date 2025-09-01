@@ -1,12 +1,20 @@
-# netlify.toml — UPDATED for Tailwind + HubSpot + Calendly
+# netlify.toml — SwiftPath Capital (clean, working config)
+
+[build]
+  publish = "."
+
+[functions]
+  directory = "netlify/functions"
+
+# Global security headers (CSP allows Tailwind CDN, GTM/GA, Calendly; connect-src allows HubSpot + self for proxy)
 [[headers]]
   for = "/*"
   [headers.values]
   Strict-Transport-Security = "max-age=31536000; includeSubDomains; preload"
-  X-Content-Type-Options = "nosniff"
-  Referrer-Policy = "strict-origin-when-cross-origin"
-  Permissions-Policy = "camera=(), microphone=(), geolocation=()"
-  Content-Security-Policy = """
+  X-Content-Type-Options    = "nosniff"
+  Referrer-Policy           = "strict-origin-when-cross-origin"
+  Permissions-Policy        = "camera=(), microphone=(), geolocation=()"
+  Content-Security-Policy   = """
     default-src 'self';
     script-src 'self' https://cdn.tailwindcss.com https://www.googletagmanager.com https://assets.calendly.com;
     connect-src 'self' https://api.hsforms.com https://www.googletagmanager.com https://www.google-analytics.com https://region1.google-analytics.com;
@@ -14,26 +22,10 @@
     font-src 'self' https://fonts.gstatic.com;
     img-src 'self' data: https://images.unsplash.com https://i.postimg.cc;
     frame-src https://www.youtube.com https://www.youtube-nocookie.com https://calendly.com;
+    form-action 'self' https://api.hsforms.com;
     object-src 'none';
     base-uri 'self';
-    form-action 'self' https://api.hsforms.com;
     upgrade-insecure-requests;
   """
 
-# Optional: page-specific tighten for LoanApp
-[[headers]]
-  for = "/LoanApp.html"
-  [headers.values]
-  Content-Security-Policy = """
-    default-src 'self';
-    script-src 'self' https://cdn.tailwindcss.com https://www.googletagmanager.com;
-    connect-src 'self' https://api.hsforms.com https://www.googletagmanager.com https://www.google-analytics.com https://region1.google-analytics.com;
-    style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
-    font-src 'self' https://fonts.gstatic.com;
-    img-src 'self' data: https://images.unsplash.com https://i.postimg.cc;
-    frame-src 'self';
-    object-src 'none';
-    base-uri 'self';
-    form-action 'self' https://api.hsforms.com;
-    upgrade-insecure-requests;
-  """
+# (Optional) You can tighten CSP on specific pages if needed, but the global one above is sufficient.
