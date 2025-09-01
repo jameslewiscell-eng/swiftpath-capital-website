@@ -252,7 +252,7 @@ window.addEventListener('error', function(e){
                     <div class="max-w-3xl mx-auto">
                         <h2 class="text-3xl md:text-4xl font-bold mb-2 text-center">Ready to Fund Your Next Deal?</h2>
                         <p class="text-lg text-blue-100 max-w-2xl mx-auto mb-8 text-center">Fast, free pre‑qualification. No credit impact.</p>
-                        <form id="leadForm" class="grid md:grid-cols-3 gap-4" novalidate>
+                        <form id="leadForm" class="grid md:grid-cols-3 gap-4" novalidate novalidate>
                             <input id="leadName" class="w-full border border-white/30 bg-white/10 rounded-lg px-3 py-3 placeholder-blue-100" placeholder="Full name" required>
                             <input id="leadEmail" type="email" class="w-full border border-white/30 bg-white/10 rounded-lg px-3 py-3 placeholder-blue-100" placeholder="Email" required>
                             <input id="leadPhone" class="w-full border border-white/30 bg-white/10 rounded-lg px-3 py-3 placeholder-blue-100" placeholder="Phone" required>
@@ -261,7 +261,7 @@ window.addEventListener('error', function(e){
                                     <option value="">Loan type</option><option>Fix-and-Flip</option><option>BRRRR</option><option>Rental</option><option>New Construction</option><option>Bridge</option>
                                 </select>
                                 <a href="/LoanApp.html" class="sm:w-auto w-full border-2 border-white/60 text-white font-bold py-3 px-6 rounded-lg text-center">Full Application</a>
-                                <button id="leadSubmit" type="submit" class="sm:w-auto w-full bg-brand-gold text-white font-bold py-3 px-8 rounded-lg">Get Pre‑Qualified</button>
+                                <button id="leadSubmit" id="leadSubmit"  type="submit" class="sm:w-auto w-full bg-brand-gold text-white font-bold py-3 px-8 rounded-lg">Get Pre‑Qualified</button>
                             </div>
                             <p class="md:col-span-3 text-sm text-blue-100/80 mt-2">By submitting, you agree to our Terms and Privacy Policy.</p>
                         </form>
