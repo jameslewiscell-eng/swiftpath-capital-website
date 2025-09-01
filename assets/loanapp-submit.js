@@ -4,9 +4,6 @@
   const HUBSPOT_LOAN_GUID = "6648e233-6873-4546-a9cf-b20d66ff4e8e";
   const THANK_YOU_URL = "/thank-you.html";
 
-  const params = new URLSearchParams(location.search);
-  const DEBUG = params.get('debug') === '1';
-
   function byId(id){ return document.getElementById(id); }
   function onlyDigits(s){ return (s||'').replace(/\D+/g,''); }
   function normalizeCurrency(s){
@@ -21,33 +18,15 @@
     if(d.length>10 && d[0] !== '0') return '+'+d;
     return d;
   }
-  function statusEl(){
-    let el = byId('submitStatus');
-    if(!el){
-      el = document.createElement('div');
-      el.id = 'submitStatus';
-      const form = byId('loanForm');
-      if(form && form.parentNode){ form.parentNode.insertBefore(el, form); }
-    }
-    return el;
-  }
-  function showStatus(type, title, details){
-    const el = statusEl();
-    const base = 'mb-6 rounded-md border p-4 ';
-    const cls  = (type==='error') ? 'bg-red-50 border-red-200 text-red-700' : (type==='warn' ? 'bg-yellow-50 border-yellow-200 text-yellow-800' : 'bg-emerald-50 border-emerald-200 text-emerald-800');
-    el.className = base + cls;
-    el.innerHTML = '<p class="font-semibold">'+(title||'')+'</p>' + (details?('<pre class="mt-2 whitespace-pre-wrap text-xs">'+details+'</pre>') : '');
-    try{ el.scrollIntoView({behavior:'smooth', block:'start'}); }catch{}
-  }
   function getCookie(name){
-    const m = document.cookie.match(new RegExp('(?:^|; )' + name.replace(/([.$?*|{}()\\[\\]\\\\/+^])/g, '\\\\$1') + '=([^;]*)'));
+    const m = document.cookie.match(new RegExp('(?:^|; )' + name.replace(/([.$?*|{}()\[\]\\/+^])/g, '\\$1') + '=([^;]*)'));
     return m ? decodeURIComponent(m[1]) : null;
   }
   function normalizeFields(fields){
     const out=[], full = (byId('fullName')?.value||'').trim();
     for(const f of fields){ if(f && f.value!=null) out.push({name:f.name, value:''+f.value}); }
     if(full){
-      const parts = full.split(/\\s+/); const first = parts.shift()||''; const last = parts.join(' ');
+      const parts = full.split(/\s+/); const first = parts.shift()||''; const last = parts.join(' ');
       if(first) out.push({name:'firstname', value:first});
       if(last)  out.push({name:'lastname',  value:last});
     }
@@ -58,33 +37,6 @@
     ['utm_source','utm_medium','utm_campaign','utm_term','utm_content','gclid'].forEach(k=>{
       const el = byId(k); if(el) el.value = p.get(k) || '';
     });
-  }
-  function maskFields(arr){
-    return (arr||[]).map(f=>{
-      const n = (f && f.name ? (''+f.name).toLowerCase() : '');
-      let v = (f && f.value != null ? ''+f.value : '');
-      if(n.includes('email')) v = v.replace(/(^.).*(@.*$)/,'$1***$2');
-      if(n.includes('phone')) v = v.length>4 ? ('***'+v.slice(-4)) : '***';
-      return { name:f.name, value:v };
-    });
-  }
-
-  async function postToHubSpot(fields){
-    const url = `https://api.hsforms.com/submissions/v3/integration/submit/${HUBSPOT_PORTAL_ID}/${HUBSPOT_LOAN_GUID}`;
-    const context = { pageUri: window.location.href, pageName: document.title };
-    const hutk = getCookie('hubspotutk'); if(hutk) context.hutk = hutk;
-
-    if (DEBUG) showStatus('warn','Debug: Payload preview', JSON.stringify({ url, payload: { fields: maskFields(fields), context } }, null, 2));
-
-    const res = await fetch(url, {
-      method:'POST',
-      headers:{ 'Content-Type':'application/json' },
-      body: JSON.stringify({ fields, context })
-    });
-    const text = await res.text();
-    if (DEBUG) showStatus(res.ok ? 'success' : 'error', 'Debug: HubSpot response', `HTTP ${res.status}\\n${text.slice(0,4000)}`);
-    if(!res.ok) throw new Error('HubSpot returned ' + res.status + ': ' + text);
-    return true;
   }
 
   function attach(){
@@ -99,7 +51,7 @@
 
       try{
         if(!byId('consentCheckbox')?.checked){
-          showStatus('error','Please agree to Terms & Privacy.');
+          alert('Please agree to Terms & Privacy.');
           if(btn){ btn.disabled=false; btn.textContent=orig; }
           return;
         }
@@ -138,18 +90,24 @@
           { name:'gclid', value: byId('gclid')?.value || '' }
         ]);
 
-        await postToHubSpot(fields);
+        const url = `https://api.hsforms.com/submissions/v3/integration/submit/${HUBSPOT_PORTAL_ID}/${HUBSPOT_LOAN_GUID}`;
+        const context = { pageUri: window.location.href, pageName: document.title };
+        const hutk = getCookie('hubspotutk'); if(hutk) context.hutk = hutk;
 
-        if (DEBUG) {
-          showStatus('success', 'Success (Debug Mode)', 'Not redirecting because debug=1. Remove ?debug=1 to enable redirect.');
-          if(btn){ btn.disabled=false; btn.textContent=orig; }
-          return;
+        const res = await fetch(url, {
+          method:'POST',
+          headers:{ 'Content-Type':'application/json' },
+          body: JSON.stringify({ fields, context })
+        });
+        if(!res.ok){
+          const txt = await res.text();
+          throw new Error('HubSpot returned ' + res.status + ': ' + txt);
         }
         const qs = window.location.search || '';
         window.location.assign(THANK_YOU_URL + qs);
       } catch(err){
         console.error('Submission error:', err);
-        showStatus('error','There was a problem', err && err.message ? err.message : String(err));
+        alert('There was a problem submitting. Please try again or email info@swiftpathcapital.com.');
         if(btn){ btn.disabled=false; btn.textContent=orig; }
       }
     }, {passive:false});
