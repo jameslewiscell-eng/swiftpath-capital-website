@@ -1,7 +1,4 @@
-# netlify.toml — SwiftPath Capital (updated)
-# This file controls HTTP response headers and other site settings.
-
-# -------- Global security headers (apply to all paths) --------
+# netlify.toml — UPDATED for Tailwind + HubSpot + Calendly
 [[headers]]
   for = "/*"
   [headers.values]
@@ -11,20 +8,19 @@
   Permissions-Policy = "camera=(), microphone=(), geolocation=()"
   Content-Security-Policy = """
     default-src 'self';
-    script-src 'self' https://cdn.tailwindcss.com https://www.googletagmanager.com;
-    connect-src 'self' https://api.hsforms.com https://www.google-analytics.com https://region1.google-analytics.com https://www.googletagmanager.com;
-    style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+    script-src 'self' https://cdn.tailwindcss.com https://www.googletagmanager.com https://assets.calendly.com;
+    connect-src 'self' https://api.hsforms.com https://www.googletagmanager.com https://www.google-analytics.com https://region1.google-analytics.com;
+    style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://assets.calendly.com;
     font-src 'self' https://fonts.gstatic.com;
     img-src 'self' data: https://images.unsplash.com https://i.postimg.cc;
-    frame-src https://www.youtube.com https://www.youtube-nocookie.com;
+    frame-src https://www.youtube.com https://www.youtube-nocookie.com https://calendly.com;
     object-src 'none';
     base-uri 'self';
     form-action 'self' https://api.hsforms.com;
-    frame-ancestors 'self';
     upgrade-insecure-requests;
   """
 
-# -------- Optional: page-specific tightening for the loan app page --------
+# Optional: page-specific tighten for LoanApp
 [[headers]]
   for = "/LoanApp.html"
   [headers.values]

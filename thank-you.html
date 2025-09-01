@@ -186,6 +186,20 @@
     </div>
   </div>
 </footer>
+
+<script>
+// append UTMs to Calendly url
+(function(){
+  try{
+    var qs = window.location.search || "";
+    var el = document.querySelector(".calendly-inline-widget");
+    if (el && qs && el.dataset && el.dataset.url && !el.dataset.url.includes("?")) {
+      el.dataset.url = el.dataset.url + qs;
+    }
+  }catch(e){}
+})();
+</script>
+
 </body>
 
 </html>
