@@ -648,5 +648,201 @@ window.addEventListener('error', function(e){
 })();
 </script>
 
+
+<!-- SwiftPath HubSpot Hotfix (inline, yesterday-style) -->
+<script>
+(function () {
+  try {
+    // Force correct constants (last-write-wins)
+    window.HUBSPOT_PORTAL_ID = "243569048";
+    window.HUBSPOT_LEAD_GUID = "65717a53-a61c-4f85-ae97-8c34b85c5d83";
+
+    // Minimal submit helper
+    window.__swiftpathHS = window.__swiftpathHS || {};
+    window.__swiftpathHS.submitToHubSpot = async function (formGuid, fields, redirectTo) {
+      var portalId = window.HUBSPOT_PORTAL_ID;
+      if (!portalId) throw new Error("Missing HUBSPOT_PORTAL_ID");
+      var url = "https://api.hsforms.com/submissions/v3/integration/submit/" + portalId + "/" + formGuid;
+      var payload = {
+        fields: (fields || []).map(function(f){ return { name: f.name, value: f.value }; }),
+        context: { pageUri: window.location.href, pageName: document.title }
+      };
+      var res = await fetch(url, { method:"POST", headers:{ "Content-Type":"application/json" }, body: JSON.stringify(payload) });
+      if (!res.ok) throw new Error("HubSpot returned " + res.status + ": " + await res.text());
+      if (redirectTo) {
+        try { var qs = window.location.search || ""; window.location.assign(redirectTo + qs); }
+        catch (_) { window.location.assign(redirectTo); }
+      }
+    };
+  } catch (e) { console.warn("HubSpot hotfix init error:", e); }
+})();
+</script>
+
+<!-- SwiftPath HubSpot Hotfix v2 (adds hutk if present, yesterday-style) -->
+<script>
+(function () {
+  try {
+    function getCookie(name){
+      var m = document.cookie.match(new RegExp('(?:^|; )' + name.replace(/([.$?*|{}()\\[\\]\\/\\+^])/g, '\\\\$1') + '=([^;]*)'));
+      return m ? decodeURIComponent(m[1]) : null;
+    }
+
+    // Override submit helper to include hutk when available
+    window.__swiftpathHS = window.__swiftpathHS || {};
+    var prev = window.__swiftpathHS.submitToHubSpot;
+    window.__swiftpathHS.submitToHubSpot = async function (formGuid, fields, redirectTo) {
+      var portalId = window.HUBSPOT_PORTAL_ID;
+      if (!portalId) throw new Error("Missing HUBSPOT_PORTAL_ID");
+      var hutk = getCookie('hubspotutk');
+      var url = "https://api.hsforms.com/submissions/v3/integration/submit/" + portalId + "/" + formGuid;
+      var payload = {
+        fields: (fields || []).map(function(f){ return { name: f.name, value: f.value }; }),
+        context: { pageUri: window.location.href, pageName: document.title }
+      };
+      if (hutk) payload.context.hutk = hutk;
+      var res = await fetch(url, { method:"POST", headers:{ "Content-Type":"application/json" }, body: JSON.stringify(payload) });
+      if (!res.ok) throw new Error("HubSpot returned " + res.status + ": " + await res.text());
+      if (redirectTo) {
+        try { var qs = window.location.search || ""; window.location.assign(redirectTo + qs); }
+        catch (_) { window.location.assign(redirectTo); }
+      }
+    };
+  } catch (e) { console.warn("HubSpot hotfix v2 init error:", e); }
+})();
+</script>
+
+<!-- Attach submit handler exactly like yesterday's working flow -->
+<script>
+(function(){
+  function byId(id){ return document.getElementById(id); }
+  function splitName(full){
+    var s=(full||'').trim().replace(/\s+/g,' ');
+    if(!s) return {first:'',last:''};
+    var parts=s.split(' ');
+    if(parts.length===1) return {first:parts[0], last:''};
+    return {first:parts[0], last:parts.slice(1).join(' ')};
+  }
+  function buildFields(){
+    var full=(byId('leadName')?.value||'').trim();
+    var email=(byId('leadEmail')?.value||'').trim();
+    var phone=(byId('leadPhone')?.value||'').trim();
+    var purpose=(byId('leadPurpose')?.value||'').trim();
+    var names=splitName(full);
+    var fields=[];
+    if(full) fields.push({name:'name',value:full});
+    if(names.first) fields.push({name:'firstname',value:names.first});
+    if(names.last) fields.push({name:'lastname',value:names.last});
+    if(email) fields.push({name:'email',value:email});
+    if(phone){ ['phone','mobilephone','phone_number'].forEach(function(n){ fields.push({name:n,value:phone}); }); }
+    if(purpose){ ['lead_purpose','loan_purpose','purpose','loan_type','product_interest','product'].forEach(function(n){ fields.push({name:n,value:purpose}); }); }
+    // UTM passthrough
+    var p=new URLSearchParams(location.search);
+    ['utm_source','utm_medium','utm_campaign','utm_term','utm_content','gclid'].forEach(function(k){ var v=p.get(k); if(v) fields.push({name:k,value:v}); });
+    return fields;
+  }
+
+  function attach(){
+    var form=byId('leadForm'); if(!form) return;
+    form.setAttribute('novalidate','');
+    // capture-phase to beat native validation scroll
+    form.addEventListener('submit', async function(e){
+      e.preventDefault(); e.stopPropagation();
+      var btn=byId('leadSubmit'); var orig=btn?btn.textContent:'';
+      if(btn){ btn.disabled=true; btn.textContent='Submitting…'; }
+      try{
+        await window.__swiftpathHS.submitToHubSpot(window.HUBSPOT_LEAD_GUID, buildFields(), '/thank-you.html');
+      }catch(err){
+        console.error('HubSpot submit failed', err);
+        alert('Sorry, something went wrong. Please try again or email info@swiftpathcapital.com.');
+      }finally{
+        if(btn){ btn.disabled=false; btn.textContent=orig; }
+      }
+    }, true);
+  }
+
+  if(document.readyState==='loading'){ document.addEventListener('DOMContentLoaded', attach, {once:true}); }
+  else attach();
+})();
+</script>
+
+
+<!-- Inline HubSpot submit handler (final) -->
+<script>
+(function(){
+  try{
+    var PORTAL = "243569048";
+    var FORM   = "65717a53-a61c-4f85-ae97-8c34b85c5d83"; // Lead / Get Pre‑Qualified
+    function byId(id){ return document.getElementById(id); }
+    function getCookie(name){
+      var m = document.cookie.match(new RegExp('(?:^|; )' + name.replace(/([.$?*|{}()\[\]\\/+^])/g, '\\$1') + '=([^;]*)'));
+      return m ? decodeURIComponent(m[1]) : null;
+    }
+    function splitName(full){
+      var s=(full||'').trim().replace(/\s+/g,' ');
+      if(!s) return {first:'',last:''};
+      var parts=s.split(' ');
+      if(parts.length===1) return {first:parts[0], last:''};
+      return {first:parts[0], last:parts.slice(1).join(' ')};
+    }
+    function buildFields(){
+      var full=(byId('leadName')?.value||'').trim();
+      var email=(byId('leadEmail')?.value||'').trim();
+      var phone=(byId('leadPhone')?.value||'').trim();
+      var purpose=(byId('leadPurpose')?.value||'').trim();
+      var names=splitName(full);
+      var fields=[];
+      if(full) fields.push({name:'name',value:full});
+      if(names.first) fields.push({name:'firstname',value:names.first});
+      if(names.last)  fields.push({name:'lastname', value:names.last});
+      if(email) fields.push({name:'email',value:email});
+      if(phone){ ['phone','mobilephone','phone_number'].forEach(function(n){ fields.push({name:n,value:phone}); }); }
+      if(purpose){ ['lead_purpose','loan_purpose','purpose','loan_type','product_interest','product'].forEach(function(n){ fields.push({name:n,value:purpose}); }); }
+      var p=new URLSearchParams(location.search);
+      ['utm_source','utm_medium','utm_campaign','utm_term','utm_content','gclid'].forEach(function(k){ var v=p.get(k); if(v) fields.push({name:k,value:v}); });
+      return fields;
+    }
+    async function submitHS(fields){
+      var url = "https://api.hsforms.com/submissions/v3/integration/submit/"+PORTAL+"/"+FORM;
+      var ctx = { pageUri: location.href, pageName: document.title };
+      var hutk = getCookie('hubspotutk'); if(hutk) ctx.hutk = hutk;
+      var res = await fetch(url, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({fields:fields, context: ctx}) });
+      var txt = await res.text();
+      if(!res.ok) throw new Error("HubSpot "+res.status+": "+txt);
+      return txt;
+    }
+    function attach(){
+      var form = byId('leadForm'); if(!form) return;
+      form.setAttribute('novalidate','');
+      if(form.dataset.hsAttached === '1') return;
+      form.dataset.hsAttached = '1';
+      async function handler(e){
+        if(e){ e.preventDefault(); e.stopPropagation(); if(e.stopImmediatePropagation) e.stopImmediatePropagation(); }
+        var btn = byId('leadSubmit'); var orig = btn ? btn.textContent : '';
+        if(btn){ btn.disabled = true; btn.textContent = 'Submitting…'; }
+        try{
+          await submitHS(buildFields());
+          var qs = location.search || '';
+          location.assign('/thank-you.html' + qs);
+        }catch(err){
+          console.error('HubSpot submit failed', err);
+          alert('Sorry, something went wrong. Please email info@swiftpathcapital.com or try again.');
+        }finally{
+          if(btn){ btn.disabled=false; btn.textContent=orig; }
+        }
+      }
+      // Capture-phase submit wins on mobile Safari
+      form.addEventListener('submit', handler, true);
+      // Global capture fail-safe
+      window.addEventListener('submit', function(e){ if(e.target===form) handler(e); }, true);
+      // Button click fallback
+      var submitBtn = byId('leadSubmit'); if(submitBtn){ submitBtn.addEventListener('click', function(){ /* keep focus */ }, true); }
+      console.log('[LeadForm] handler attached (inline final)');
+    }
+    if(document.readyState === 'loading'){ document.addEventListener('DOMContentLoaded', attach, {once:true}); }
+    else attach();
+  }catch(e){ console.warn('inline handler init error', e); }
+})();
+</script>
+
 </body>
 </html>
