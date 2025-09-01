@@ -1,31 +1,38 @@
-# netlify.toml — SwiftPath Capital (clean, working config)
+# netlify.toml — CSP (REPORT-ONLY) for testing
 
-[build]
-  publish = "."
-
-[functions]
-  directory = "netlify/functions"
-
-# Global security headers (CSP allows Tailwind CDN, GTM/GA, Calendly; connect-src allows HubSpot + self for proxy)
 [[headers]]
   for = "/*"
   [headers.values]
-  Strict-Transport-Security = "max-age=31536000; includeSubDomains; preload"
+  Strict-Transport-Security = "max-age=63072000; includeSubDomains; preload"
   X-Content-Type-Options    = "nosniff"
+  X-Frame-Options           = "DENY"
   Referrer-Policy           = "strict-origin-when-cross-origin"
-  Permissions-Policy        = "camera=(), microphone=(), geolocation=()"
-  Content-Security-Policy   = """
+  Permissions-Policy        = "geolocation=(), microphone=(), camera=()"
+
+  Content-Security-Policy-Report-Only = """
     default-src 'self';
-    script-src 'self' https://cdn.tailwindcss.com https://www.googletagmanager.com https://assets.calendly.com;
-    connect-src 'self' https://api.hsforms.com https://www.googletagmanager.com https://www.google-analytics.com https://region1.google-analytics.com;
-    style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://assets.calendly.com;
-    font-src 'self' https://fonts.gstatic.com;
-    img-src 'self' data: https://images.unsplash.com https://i.postimg.cc;
-    frame-src https://www.youtube.com https://www.youtube-nocookie.com https://calendly.com;
-    form-action 'self' https://api.hsforms.com;
-    object-src 'none';
     base-uri 'self';
+    object-src 'none';
+    frame-ancestors 'none';
+    form-action 'self';
+
+    script-src 'self'
+      'unsafe-inline'
+      https://cdn.tailwindcss.com
+      https://www.googletagmanager.com;
+
+    style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+
+    img-src 'self' https: data: blob:;
+
+    font-src 'self' https://fonts.gstatic.com data:;
+
+    connect-src 'self'
+      https://api.hsforms.com
+      https://www.google-analytics.com
+      https://region1.google-analytics.com;
+
+    frame-src https://www.youtube.com https://youtu.be;
+
     upgrade-insecure-requests;
   """
-
-# (Optional) You can tighten CSP on specific pages if needed, but the global one above is sufficient.
