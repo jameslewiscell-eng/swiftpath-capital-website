@@ -1,11 +1,15 @@
-// netlify/functions/hs-submit.js
-export async function handler(event, context) {
+// netlify/functions/hs-submit.js (CommonJS version)
+exports.handler = async function(event, context) {
   try {
     if (event.httpMethod !== 'POST') {
       return { statusCode: 405, body: 'Method Not Allowed' };
     }
     const body = JSON.parse(event.body || '{}');
-    const { portalId, formGuid, fields, context: hsContext } = body || {};
+    const portalId = body.portalId;
+    const formGuid = body.formGuid;
+    const fields = body.fields || [];
+    const hsContext = body.context || {};
+
     if (!portalId || !formGuid) {
       return { statusCode: 400, body: 'Missing portalId or formGuid' };
     }
@@ -20,4 +24,4 @@ export async function handler(event, context) {
   } catch (err) {
     return { statusCode: 500, body: 'Proxy error: ' + (err && err.message ? err.message : String(err)) };
   }
-}
+};
