@@ -35,6 +35,18 @@
     gtag('js', new Date());
     gtag('config', 'AW-17093021602');
   </script>
+
+  <!-- Google Ads conversion event for Thank You page -->
+  <script>
+    window.addEventListener('load', function () {
+      if (window.location.href.includes('/thank-you.html')) {
+        gtag('event', 'conversion', {
+          'send_to': 'AW-17093021602/Y5GwCPyK8SIbEKKfy9Y_'
+        });
+      }
+    });
+  </script>
+
 </head>
 <body class="bg-gray-50 text-slate-800">
   <main class="container mx-auto px-6 py-16">
