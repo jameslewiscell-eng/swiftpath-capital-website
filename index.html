@@ -250,27 +250,7 @@
             <form id="leadForm" class="grid md:grid-cols-3 gap-4" novalidate>
               <input id="leadName" class="w-full border border-white/30 bg-white/10 rounded-lg px-3 py-3 placeholder-blue-100" placeholder="Full name" required>
               <input id="leadEmail" type="email" class="w-full border border-white/30 bg-white/10 rounded-lg px-3 py-3 placeholder-blue-100" placeholder="Email" required>
-              
-              
-              <!-- SMS Verification UI -->
-              <div class="md:col-span-3 grid grid-cols-1 sm:grid-cols-3 gap-3 items-start">
-                <div class="sm:col-span-2">
-                  <label class="block text-sm mb-1">Phone (SMS verification required)</label>
-                  <!-- ensure phone field has correct id -->
-                  <input id="leadPhone" class="w-full border border-white/30 bg-white/10 rounded-lg px-3 py-3 placeholder-blue-100" placeholder="+13214304434" required>
-                </div>
-                <div class="flex flex-col gap-2">
-                  <button type="button" id="sendCodeBtn" class="border-2 border-white/60 text-white font-semibold py-2 px-3 rounded">Send code</button>
-                  <div id="otpWrap" style="display:none">
-                    <div class="flex gap-2 items-center">
-                      <input id="otpCode" inputmode="numeric" maxlength="8" class="w-28 border border-white/30 bg-white/10 rounded px-2 py-2 placeholder-blue-100" placeholder="Code">
-                      <button type="button" id="checkCodeBtn" class="border-2 border-white/60 text-white font-semibold py-2 px-3 rounded">Verify</button>
-                    </div>
-                    <span id="vStatus" class="text-xs text-blue-100/90"></span>
-                  </div>
-                </div>
-              </div>
-    
+              <input id="leadPhone" class="w-full border border-white/30 bg-white/10 rounded-lg px-3 py-3 placeholder-blue-100" placeholder="Phone" required>
               <div class="md:col-span-3 flex flex-col sm:flex-row gap-3">
                 <select id="leadPurpose" class="flex-1 border border-white/30 bg-white rounded-lg px-3 py-3 text-slate-900" required aria-label="Loan type">
                   <option value="" disabled selected>Loan type</option>
@@ -316,7 +296,7 @@
           <h3 class="font-bold tracking-wide text-brand-gold">Contact Us</h3>
           <ul class="mt-4 space-y-2 text-slate-300">
             <li>Email: <a href="mailto:info@swiftpathcapital.com" class="hover:text-brand-gold transition">info@swiftpathcapital.com</a></li>
-            <li>Phone: <a href="tel:+13214304434" class="hover:text-brand-gold transition">321-430-4434</a></li>
+            <li>Phone: <a href="tel:+14073743301" class="hover:text-brand-gold transition">407-374-3301</a></li>
           </ul>
         </div>
       </div>
@@ -333,7 +313,7 @@
     </div>
 
     <div class="mt-2 text-sm text-center">
-      <a class="underline text-green-600" href="https://wa.me/13214304434" target="_blank" rel="noopener">Chat on WhatsApp</a>
+      <a class="underline text-green-600" href="https://wa.me/14073743301" target="_blank" rel="noopener">Chat on WhatsApp</a>
     </div>
   
     <div class="mt-2 text-center">
@@ -353,14 +333,14 @@
       <div class="mt-6 flex flex-col sm:flex-row gap-3">
         <a id="productApplyBtn" href="/LoanApp.html" class="flex-1 bg-brand-gold text-white font-semibold py-3 px-5 rounded-lg text-center" data-product="">Apply for this Product</a>
         <a id="productAdvisorBtn" href="mailto:info@swiftpathcapital.com" class="flex-1 text-brand-blue underline text-center">Talk to an Advisor (Email)</a>
-        <a id="productAdvisorWA" href="https://wa.me/13214304434" target="_blank" class="flex-1 text-green-600 underline text-center">WhatsApp Us</a>
+        <a id="productAdvisorWA" href="https://wa.me/14073743301" target="_blank" class="flex-1 text-green-600 underline text-center">WhatsApp Us</a>
       </div>
       <p class="text-xs text-gray-500 mt-2 text-center">Same‑day term sheets available • Dedicated account manager for repeat borrowers</p>
     </div>
   </div>
 
   <!-- WhatsApp Floating Button -->
-  <a href="https://wa.me/13214304434" target="_blank" aria-label="Chat on WhatsApp"
+  <a href="https://wa.me/14073743301" target="_blank" aria-label="Chat on WhatsApp"
      class="fixed z-40 bottom-5 right-5 md:bottom-6 md:right-6 rounded-full shadow-lg
             bg-green-500 hover:bg-green-600 text-white w-14 h-14 flex items-center justify-center">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" aria-hidden="true" class="w-7 h-7">
@@ -560,22 +540,5 @@
   <!-- Load HubSpot submission logic externally for CSP compatibility -->
   <script src="/assets/lead-form.js?v=2.5" defer></script>
 
-
-  <script src="/assets/phone-verify-ui.js"></script>
-  <script>
-    // Block submit unless phone is verified
-    (function(){
-      var f = document.getElementById('leadForm');
-      if (f) {
-        f.addEventListener('submit', function(e){
-          if (!(window.__phoneVerified && window.__phoneVerified())){
-            e.preventDefault();
-            alert('Please verify your phone number via SMS before submitting.');
-          }
-        }, true);
-      }
-    })();
-  </script>
-    
 </body>
 </html>
