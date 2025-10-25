@@ -1,4 +1,6 @@
 User-agent: *
+Allow: /
+
 Disallow: /thank-you.html
 
 Sitemap: https://swiftpathcapital.com/sitemap.xml
