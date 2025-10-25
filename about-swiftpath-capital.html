@@ -22,7 +22,7 @@
   <meta name="twitter:image" content="https://swiftpathcapital.com/Images/social-swiftpath-1200x630.png" />
 
   <!-- Organization Schema -->
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"SwiftPath Capital Corporation","url":"https://swiftpathcapital.com/","logo":"https://swiftpathcapital.com/Images/Logo.PNG","description":"Private lending and business-purpose funding for real estate investors.","address":{"@type":"PostalAddress","streetAddress":"333 N Wilmot Rd, Suite 340","addressLocality":"Tucson","addressRegion":"AZ","postalCode":"85711","addressCountry":"US"},"contactPoint":[{"@type":"ContactPoint","telephone":"+1-321-430-4434","contactType":"customer support","areaServed":"US"}],"sameAs":["https://www.instagram.com/swiftpathcapital","https://youtube.com/@swiftpath"]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"SwiftPath Capital Corporation","url":"https://swiftpathcapital.com/","logo":"https://swiftpathcapital.com/Images/Logo.PNG","description":"Private lending and business-purpose funding for real estate investors.","address":{"@type":"PostalAddress","streetAddress":"333 N Wilmot Rd, STE 340","addressLocality":"Tucson","addressRegion":"AZ","postalCode":"85711","addressCountry":"US"},"contactPoint":[{"@type":"ContactPoint","telephone":"+1-321-430-4434","contactType":"customer support","areaServed":"US"}],"sameAs":["https://www.instagram.com/swiftpathcapital","https://youtube.com/@swiftpath"]}</script>
 
   <!-- Breadcrumbs Schema -->
   <script type="application/ld+json">
@@ -36,130 +36,239 @@
   }
   </script>
 
+  <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    /* simple, conflict-free styles (works even without your main CSS) */
-    :root { --ink:#0b2447; --muted:#5b6a82; --line:#e6ecf5; --accent:#0e5fd8; }
-    * { box-sizing:border-box }
-    body { margin:0; font-family: system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif; color:var(--ink); line-height:1.6; }
-    a { color:var(--accent); }
-    .wrap { max-width:1120px; margin:0 auto; padding:22px; }
-    header.site { border-bottom:1px solid var(--line); }
-    .brand { display:flex; align-items:center; gap:10px; text-decoration:none; color:var(--ink); font-weight:700; }
-    .brand img { height:40px; width:auto; }
-    nav a { text-decoration:none; color:var(--muted); margin-left:16px; }
-    nav a:hover { color:var(--ink); text-decoration:underline; }
-
-    .hero { padding:34px 0 10px; }
-    .hero h1 { margin:0 0 8px; font-size: clamp(28px,4vw,40px); }
-    .lead { color:var(--muted); max-width:850px; }
-
-    .grid { display:grid; gap:24px; grid-template-columns:1fr; }
-    @media (min-width: 900px){ .grid-2 { grid-template-columns: 1.25fr 1fr; } }
-
-    h2 { margin:26px 0 8px; font-size: clamp(22px,3vw,28px); }
-    h3 { margin:18px 0 6px; font-size:1.1rem; }
-    .card { border:1px solid var(--line); border-radius:12px; padding:18px; background:#fff; }
-    .pill { display:inline-block; border:1px solid var(--line); border-radius:999px; padding:6px 10px; margin:4px 6px 0 0; color:#334155; font-size:.9rem; }
-    .muted { color:var(--muted); }
-    .cta { display:inline-block; margin-top:14px; background:var(--accent); color:#fff; padding:12px 18px; border-radius:10px; text-decoration:none; }
-    .cta:hover { filter:brightness(.95); }
-    .values li { margin:6px 0; }
-    .founder { display:flex; gap:18px; align-items:flex-start; }
-    .founder img { width:130px; height:130px; object-fit:cover; border-radius:12px; border:1px solid var(--line); }
-    @media (max-width: 640px){ .founder { flex-direction:column; } }
-    footer { margin:42px 0 24px; padding-top:18px; border-top:1px solid var(--line); color:var(--muted); font-size:.95rem; }
+    :root{
+      --brand-blue:#1e40af;
+      --brand-gold:#d4af37;
+    }
+    .brand-blue{color:var(--brand-blue)}
+    .brand-gold{color:var(--brand-gold)}
+    .btn-gold{background:var(--brand-gold)}
+    .btn-gold:hover{filter:brightness(.95)}
   </style>
-
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is a hard money loan for real estate investors?","acceptedAnswer":{"@type":"Answer","text":"A business‑purpose loan secured by investment property. SwiftPath Capital works with national lending partners to help investors fund purchases, rehab, and bridge financing quickly."}},{"@type":"Question","name":"Do you fund owner‑occupied homes or consumer personal loans?","acceptedAnswer":{"@type":"Answer","text":"No. SwiftPath Capital only supports business‑purpose loans for investment properties (DSCR, fix‑and‑flip, and bridge)."}},{"@type":"Question","name":"Which projects are a good fit for SwiftPath Capital?","acceptedAnswer":{"@type":"Answer","text":"Rental portfolios using DSCR, fix‑and‑flip projects, and short‑term bridge scenarios. We emphasize speed, reliable draws, and clear communication for investors."}},{"@type":"Question","name":"Who are your lending partners?","acceptedAnswer":{"@type":"Answer","text":"We work with national partners including Kiavi, RCN Capital, F Street, and Lima One to match programs to investor goals."}},{"@type":"Question","name":"How fast can I get pre‑qualified?","acceptedAnswer":{"@type":"Answer","text":"Most investors can get a quick pre‑qualification after submitting the application on our site and completing SMS verification."}}]}</script>
 </head>
-<body>
-
-  <!-- Header -->
-  <header class="site">
-    <div class="wrap" style="display:flex; align-items:center; justify-content:space-between;">
-      <a class="brand" href="/"><img src="/Images/Logo.PNG" alt="SwiftPath Capital logo"><span>SwiftPath Capital</span></a>
-      <nav aria-label="Primary navigation">
-        <a href="/">Home</a>
-        <a href="/LoanApp.html">Apply</a>
-        <a href="/thank-you.html">Schedule</a>
-        <a href="/about-swiftpath-capital.html" aria-current="page">About</a>
-        <a href="tel:+13214304434">Call: 321-430-4434</a>
-      </nav>
+<body class="bg-white text-slate-800">
+  <!-- Header (clean + consistent) -->
+  <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-40 shadow-sm">
+    <nav class="container mx-auto max-w-6xl px-6 py-3 flex justify-between items-center">
+      <a href="/" class="flex items-center gap-3">
+        <img src="/Images/Logo.PNG" alt="SwiftPath Capital Logo" class="h-[9rem] lg:h-48 w-auto" />
+        <span class="sr-only">SwiftPath Capital</span>
+      </a>
+      <button id="navToggle" class="lg:hidden p-2 rounded-md border text-slate-700" aria-label="Toggle navigation">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+      <div id="navLinks" class="hidden lg:flex items-center gap-8">
+        <a href="/" class="text-slate-700 hover:text-blue-700 font-medium">Home</a>
+        <a href="/LoanApp.html" class="text-slate-700 hover:text-blue-700 font-medium">Apply</a>
+        <a href="/thank-you.html" class="text-slate-700 hover:text-blue-700 font-medium">Schedule</a>
+        <a href="/about-swiftpath-capital.html" class="text-slate-900 font-semibold">About</a>
+        <a href="tel:+13214304434" class="inline-flex items-center gap-2 rounded-lg border px-3 py-2 text-slate-700 hover:bg-slate-50">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path d="M2 3a1 1 0 011-1h2a1 1 0 011 .76l.8 3.2a1 1 0 01-.27.98l-1.2 1.2a16 16 0 007.2 7.2l1.2-1.2a1 1 0 01.98-.27l3.2.8a1 1 0 01.76 1V17a1 1 0 01-1 1h-1C8.82 18 2 11.18 2 3V3z"/></svg>
+          321‑430‑4434
+        </a>
+      </div>
+    </nav>
+    <!-- Mobile menu -->
+    <div id="navMenu" class="lg:hidden hidden border-t bg-white/95 backdrop-blur-md">
+      <div class="container mx-auto max-w-6xl px-6 py-3 flex flex-col gap-3">
+        <a href="/" class="text-slate-700">Home</a>
+        <a href="/LoanApp.html" class="text-slate-700">Apply</a>
+        <a href="/thank-you.html" class="text-slate-700">Schedule</a>
+        <a href="/about-swiftpath-capital.html" class="font-semibold">About</a>
+        <a href="tel:+13214304434" class="text-slate-700">Call 321‑430‑4434</a>
+      </div>
     </div>
   </header>
 
-  <main class="wrap">
-    <!-- Hero -->
-    <section class="hero">
-      <h1>About SwiftPath Capital</h1>
-      <p class="lead">SwiftPath Capital Corporation is a Tucson-based private lending and funding firm helping <strong>real estate investors</strong> and business owners secure <strong>business-purpose financing</strong>—across DSCR, fix-and-flip, and bridge loans. We are not a consumer personal loan provider or an owner-occupied mortgage lender.</p>
-    </section>
-
-    <!-- Who we are / Founder -->
-    <section class="grid grid-2">
-      <div>
-        <h2>Who We Are</h2>
-        <p>Founded by <strong>James Lewis</strong>, SwiftPath Capital brings more than two decades of experience in real estate investing, mortgage origination, and business development. Our focus is simple: deliver capital with <strong>speed</strong>, <strong>integrity</strong>, and <strong>leadership</strong>.</p>
-
-        <h2>Our Story</h2>
-        <div class="founder">
-          <img src="/Images/headshot.JPG" alt="James Lewis, Founder of SwiftPath Capital" loading="lazy" />
-          <p>Since 2000, James has been involved in property acquisitions, mortgage origination, and private lending operations. SwiftPath Capital was built on leadership, problem-solving, and strong relationships with investors and funding partners. We operate with a fiduciary mindset—aligning loan products to client goals so our clients can win and scale.</p>
+  <!-- HERO (clean, brand-forward) -->
+  <section class="relative">
+    <div class="absolute inset-0">
+      <!-- soft gradient background -->
+      <div class="h-full w-full bg-gradient-to-br from-slate-50 via-white to-slate-100"></div>
+    </div>
+    <div class="relative container mx-auto max-w-6xl px-6 py-10 lg:py-14">
+      <div class="flex flex-col lg:flex-row items-center gap-10">
+        <div class="flex-1">
+          <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight">
+            About <span class="brand-blue">SwiftPath</span> <span class="brand-gold">Capital</span>
+          </h1>
+          <p class="mt-4 text-lg text-slate-600 max-w-2xl">
+            Tucson‑based private lending for real estate investors. We move deals from <em>first</em> to <em>funded</em>—DSCR, fix‑and‑flip, and bridge—through trusted national partners.
+          </p>
+          <div class="mt-6 flex flex-wrap gap-3">
+            <a href="/LoanApp.html" class="btn-gold text-slate-900 font-semibold px-5 py-3 rounded-xl">Start Your Application</a>
+            <a href="tel:+13214304434" class="inline-flex items-center gap-2 rounded-xl border px-5 py-3 text-slate-800 hover:bg-slate-50">Call 321‑430‑4434</a>
+          </div>
+          <p class="mt-3 text-sm text-slate-500">Business‑purpose lending only. Not consumer personal loans or owner‑occupied mortgages.</p>
         </div>
-
-        <h2>Our Lending Partners</h2>
-        <div class="card" role="list" aria-label="Lending partners">
-          <span class="pill" role="listitem">Kiavi</span>
-          <span class="pill" role="listitem">RCN Capital</span>
-          <span class="pill" role="listitem">F Street</span>
-          <span class="pill" role="listitem">Lima One Capital</span>
+        <div class="flex-1">
+          <div class="rounded-2xl border shadow-sm p-6 bg-white">
+            <h2 class="text-xl font-semibold mb-2">At a Glance</h2>
+            <ul class="text-slate-600 space-y-2">
+              <li>Founded by <strong>James Lewis</strong></li>
+              <li>Nationwide lending partners: Kiavi · RCN Capital · F Street · Lima One</li>
+              <li>Fast, reliable pre‑quals and clear communication</li>
+            </ul>
+          </div>
         </div>
-        <p class="muted">Through these partners we offer investment property loans, DSCR financing, fix-and-flip loans, and bridge programs nationwide.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAIN CONTENT -->
+  <main class="container mx-auto max-w-6xl px-6 py-10">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div class="lg:col-span-2 space-y-8">
+        <section>
+          <h2 class="text-2xl font-bold">Who We Are</h2>
+          <p class="mt-2 text-slate-700">Founded by <strong>James Lewis</strong>, SwiftPath Capital brings more than two decades of experience in real estate investing, mortgage origination, and business development. Our focus is simple: deliver capital with <strong>speed</strong>, <strong>integrity</strong>, and <strong>leadership</strong>.</p>
+        </section>
+
+        <section class="flex flex-col sm:flex-row gap-6 items-start">
+          <img src="/Images/headshot.JPG" alt="James Lewis, Founder of SwiftPath Capital" class="w-40 h-40 object-cover rounded-xl border">
+          <div>
+            <h2 class="text-2xl font-bold">Our Story</h2>
+            <p class="mt-2 text-slate-700">Since 2000, James has been involved in property acquisitions, mortgage origination, and private lending operations. SwiftPath Capital was built on leadership, problem‑solving, and strong relationships with investors and funding partners. We operate with a fiduciary mindset—aligning loan products to client goals so our clients can win and scale.</p>
+          </div>
+        </section>
+
+        <section>
+          <h2 class="text-2xl font-bold">Our Core Values</h2>
+          <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="rounded-xl border p-5">
+              <h3 class="font-semibold">Leadership Is the Root of All Success</h3>
+              <p class="text-slate-700 mt-1">Leadership builds culture, ethics, and performance. We invest in people and lead with integrity.</p>
+            </div>
+            <div class="rounded-xl border p-5">
+              <h3 class="font-semibold">We Believe in Creating Solutions</h3>
+              <p class="text-slate-700 mt-1">Every deal has challenges. We stay proactive, creative, and focused on getting it done.</p>
+            </div>
+            <div class="rounded-xl border p-5">
+              <h3 class="font-semibold">We Believe in People</h3>
+              <p class="text-slate-700 mt-1">Technology supports us; people define us. We treat clients, employees, and partners with fairness and respect.</p>
+            </div>
+            <div class="rounded-xl border p-5">
+              <h3 class="font-semibold">Time Is Money</h3>
+              <p class="text-slate-700 mt-1"><em>First. Fast. Funded.</em> Speed matters—from pre‑qual to draw and close.</p>
+            </div>
+            <div class="rounded-xl border p-5">
+              <h3 class="font-semibold">Our Clients Must Win</h3>
+              <p class="text-slate-700 mt-1">We align products and terms with client goals to create wins that scale.</p>
+            </div>
+            <div class="rounded-xl border p-5">
+              <h3 class="font-semibold">Technology Must Be Ingrained</h3>
+              <p class="text-slate-700 mt-1">We integrate modern tools to accelerate approvals and deliver a seamless experience.</p>
+            </div>
+          </div>
+        </section>
       </div>
 
-      <aside>
-        <div class="card">
-          <h3>What We Do</h3>
-          <ul>
+      <aside class="space-y-6">
+        <section class="rounded-2xl border p-6">
+          <h2 class="text-xl font-semibold">What We Do</h2>
+          <ul class="mt-2 text-slate-700 space-y-2">
             <li>Investment property loans for rentals (DSCR)</li>
-            <li>Fix-and-flip financing</li>
-            <li>Short-term bridge loans</li>
+            <li>Fix‑and‑flip financing</li>
+            <li>Short‑term bridge loans</li>
             <li>Business credit access programs</li>
           </ul>
-          <a class="cta" href="/LoanApp.html">Apply Now</a>
-        </div>
-      </aside>
-    </section>
+          <a class="mt-4 inline-block btn-gold text-slate-900 font-semibold px-5 py-3 rounded-xl" href="/LoanApp.html">Apply Now</a>
+        </section>
 
-    <!-- Values -->
-    <section>
-      <h2>Our Core Values</h2>
-      <ul class="values">
-        <li><strong>Leadership Is the Root of All Success</strong> — Leadership builds culture, ethics, and performance. We invest in people and lead with integrity.</li>
-        <li><strong>We Believe in Creating Solutions</strong> — Every deal has challenges. We stay proactive, creative, and focused on getting it done.</li>
-        <li><strong>We Believe in People</strong> — Technology supports us; people define us. We treat clients, employees, and partners with fairness and respect.</li>
-        <li><strong>Time Is Money</strong> — Speed matters. Our operating philosophy is <em>First. Fast. Funded.</em></li>
-        <li><strong>Our Clients Must Win</strong> — We act with a fiduciary mindset to align products and terms with client goals.</li>
-        <li><strong>Technology Must Be Ingrained</strong> — We integrate modern tools to accelerate approvals and deliver a seamless experience.</li>
-      </ul>
+        <section class="rounded-2xl border p-6">
+          <h2 class="text-xl font-semibold">Lending Partners</h2>
+          <div class="mt-3 flex flex-wrap gap-2">
+            <span class="px-3 py-1 rounded-full border text-slate-700">Kiavi</span>
+            <span class="px-3 py-1 rounded-full border text-slate-700">RCN Capital</span>
+            <span class="px-3 py-1 rounded-full border text-slate-700">F Street</span>
+            <span class="px-3 py-1 rounded-full border text-slate-700">Lima One Capital</span>
+          </div>
+          <p class="text-slate-500 text-sm mt-3">Through these partners we offer investment property loans, DSCR financing, fix‑and‑flip loans, and bridge programs nationwide.</p>
+        </section>
+      </aside>
+    </div>
+    <!-- YOUTUBE SECTION -->
+    <section class="mt-12">
+      <div class="container mx-auto max-w-5xl px-6 py-8 text-center rounded-2xl border bg-white">
+        <h2 class="text-3xl font-bold mb-2">Watch SwiftPath on YouTube</h2>
+        <p class="text-slate-600 mb-6">
+          Insights, education, and updates from SwiftPath Capital. Subscribe for investor tools, loan breakdowns, and funding tips.
+        </p>
+        <div class="rounded-2xl overflow-hidden shadow-xl border">
+          <div class="aspect-video w-full">
+            <iframe 
+              src="https://www.youtube.com/embed?listType=playlist&list=UUBkefGsZrkhSZt5Q4-zRpAQ&origin=https://swiftpathcapital.com&rel=0&modestbranding=1" 
+              title="SwiftPath Capital YouTube" 
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+              allowfullscreen 
+              class="w-full h-full"></iframe>
+          </div>
+        </div>
+        
+      </div>
     </section>
 
     <!-- CTA -->
-    <section>
-      <h2>Looking Forward</h2>
-      <p>SwiftPath Capital is more than a lender—we’re a partner in growth. By combining leadership, technology, and a strong network of national funding partners, we help investors move faster and smarter with confidence.</p>
-      <p><a class="cta" href="/LoanApp.html">Start Your Application</a> or <a class="cta" href="tel:+13214304434">Call 321-430-4434</a></p>
+    <section class="mt-12 rounded-2xl border p-6 bg-slate-50">
+      <div class="flex flex-col lg:flex-row items-center justify-between gap-4">
+        <div>
+          <h2 class="text-2xl font-bold">Looking Forward</h2>
+          <p class="text-slate-700 mt-1">SwiftPath Capital is more than a lender—we’re a partner in growth. By combining leadership, technology, and a strong network of national funding partners, we help investors move faster and smarter with confidence.</p>
+        </div>
+        <div class="flex gap-3">
+          <a class="btn-gold text-slate-900 font-semibold px-5 py-3 rounded-xl" href="/LoanApp.html">Start Your Application</a>
+          <a class="inline-flex items-center gap-2 rounded-xl border px-5 py-3 text-slate-800 hover:bg-slate-100" href="tel:+13214304434">Call 321‑430‑4434</a>
+        </div>
+      </div>
     </section>
   </main>
 
-  <footer class="wrap" role="contentinfo">
-    <div>
-      <strong>SwiftPath Capital Corporation</strong><br />
-      333 N Wilmot Rd, Suite 340, Tucson, AZ 85711<br />
-      <a class="muted" href="tel:+13214304434">321-430-4434</a> · <a class="muted" href="mailto:info@swiftpathcapital.com">info@swiftpathcapital.com</a>
+  <!-- Footer -->
+  <footer class="border-t">
+    <div class="container mx-auto max-w-6xl px-6 py-8 text-slate-600">
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div>
+          <strong class="text-slate-800">SwiftPath Capital Corporation</strong><br/>
+          333 N Wilmot Rd, STE 340, Tucson, AZ 85711<br/>
+          <a href="tel:+13214304434" class="hover:text-slate-800">321‑430‑4434</a> · 
+          <a href="mailto:info@swiftpathcapital.com" class="hover:text-slate-800">info@swiftpathcapital.com</a>
+        </div>
+        <img src="/Images/Logo.PNG" alt="SwiftPath Capital Logo" class="h-24 lg:h-28 w-auto rounded-md">
+      </div>
+      
+      <div class="mt-6 flex gap-4">
+        <a href="https://www.instagram.com/swiftpathcapital?igsh=MWFuaWRvZDA0NXk3Mg%3D%3D&utm_source=qr" 
+           target="_blank" rel="noopener" 
+           class="text-slate-600 hover:text-blue-700" aria-label="Instagram">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-6 w-6">
+            <path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2zm0 1.5A4.25 4.25 0 0 0 3.5 7.75v8.5A4.25 4.25 0 0 0 7.75 20.5h8.5A4.25 4.25 0 0 0 20.5 16.25v-8.5A4.25 4.25 0 0 0 16.25 3.5h-8.5zm4.25 3a5.75 5.75 0 1 1 0 11.5a5.75 5.75 0 0 1 0-11.5zm5.25-.75a.75.75 0 1 1 0 1.5a.75.75 0 0 1 0-1.5z"/>
+          </svg>
+        </a>
+        <a href="https://youtube.com/@swiftpath?si=VjkzUc1Fd2U7gkir" 
+           target="_blank" rel="noopener" 
+           class="text-slate-600 hover:text-blue-700" aria-label="YouTube">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-6 w-6">
+            <path d="M10 15l5.19-3L10 9v6zm11-3c0-1.64-.13-3.28-.38-4.92a2.89 2.89 0 0 0-2.06-2.06C16.92 4.77 14.92 4.6 12 4.6s-4.92.17-6.56.42A2.89 2.89 0 0 0 3.38 7.08 40.2 40.2 0 0 0 3 12c0 1.64.13 3.28.38 4.92a2.89 2.89 0 0 0 2.06 2.06c1.64.25 3.64.42 6.56.42s4.92-.17 6.56-.42a2.89 2.89 0 0 0 2.06-2.06c.25-1.64.38-3.28.38-4.92z"/>
+          </svg>
+        </a>
+      </div>
+
+<p class="text-sm text-slate-500 mt-4">Business‑purpose lending only. Not a provider of consumer personal loans or owner‑occupied mortgages.</p>
     </div>
-    <p class="muted" style="margin-top:10px;">Business-purpose lending only. Not a provider of consumer personal loans or owner-occupied mortgages.</p>
   </footer>
 
+  <script>
+    // Mobile menu toggle
+    const navToggle = document.getElementById('navToggle');
+    const navMenu = document.getElementById('navMenu');
+    const navLinks = document.getElementById('navLinks');
+    if (navToggle){
+      navToggle.addEventListener('click', () => {
+        navMenu.classList.toggle('hidden');
+      });
+    }
+  </script>
 </body>
 </html>
