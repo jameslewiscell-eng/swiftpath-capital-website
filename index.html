@@ -342,7 +342,7 @@ select option{ color:#0f172a; background:#fff; }
 <!-- Product Detail Modal -->
 <div class="fixed inset-0 z-60 hidden bg-black/60" id="productOverlay"></div>
 <div class="fixed inset-x-0 bottom-0 z-50 hidden md:inset-0 md:items-center md:justify-center" id="productModal">
-<div class="w-full bg-white rounded-t-2xl shadow-xl md:max-w-2xl md:rounded-2xl max-h-[85vh] overflow-y-auto p-6">
+<div class="w-full bg-white rounded-t-2xl shadow-xl md:max-w-2xl md:rounded-2xl max-h-[85vh] overflow-y-auto p-6 modal-container">
 <div class="flex items-center justify-between mb-3">
 <h2 class="text-2xl font-bold" id="productTitle">Loan Product</h2>
 <button aria-label="Close" class="p-2 rounded hover:bg-gray-100" onclick="closeProductModal()" type="button">✕</button>
@@ -455,203 +455,60 @@ select option{ color:#0f172a; background:#fff; }
     })();
   </script>
 <script src="/assets/verify-gatekeeper.js"></script>
+
+
 <script>
 (function(){
-  function lockScroll() {
-    document.documentElement.classList.add('overflow-hidden');
-    document.body.classList.add('overflow-hidden', 'touch-none');
-  }
-  function unlockScroll() {
-    document.documentElement.classList.remove('overflow-hidden');
-    document.body.classList.remove('overflow-hidden', 'touch-none');
-  }
-  window.openProductModal = function(){
-    var overlay = document.getElementById('productOverlay');
-    var modal = document.getElementById('productModal');
-    if(!overlay || !modal) return;
-    overlay.classList.remove('hidden');
-    modal.classList.remove('hidden');
-    // animate in
-    try {
-      var box = modal.querySelector('.modal-container');
-      if (box) requestAnimationFrame(function(){ box.classList.add('active'); });
-    } catch(e){}
-    lockScroll();
-  };
-  window.closeProductModal = function(){
-    var overlay = document.getElementById('productOverlay');
-    var modal = document.getElementById('productModal');
-    if(!overlay || !modal) return;
-    // animate out
-    try {
-      var box = modal.querySelector('.modal-container');
-      if (box) box.classList.remove('active');
-    } catch(e){}
-    overlay.classList.add('hidden');
-    modal.classList.add('hidden');
-    unlockScroll();
-  };
-  // Close on overlay click
-  document.addEventListener('click', function(e){
-    var overlay = document.getElementById('productOverlay');
-    var modal = document.getElementById('productModal');
-    if (!overlay || !modal) return;
-    if (!modal.classList.contains('hidden') && e.target === overlay) {
-      closeProductModal();
-    }
-  });
-  // Close on ESC
-  document.addEventListener('keydown', function(e){
-    if (e.key === 'Escape') {
-      closeProductModal();
-    }
-  });
-})();
-</script>
-<script>
-(function(){
-  function $(sel, root){ return (root||document).querySelector(sel); }
-  function $all(sel, root){ return Array.prototype.slice.call((root||document).querySelectorAll(sel)); }
+  const overlay = document.getElementById('productOverlay');
+  const modal = document.getElementById('productModal');
+  const titleEl = document.getElementById('productTitle');
+  const bodyEl = document.getElementById('productBody');
+  const applyBtn = document.getElementById('productApplyBtn');
+  const htmlEl = document.documentElement;
+  const bodyEl = document.body;
 
-  // Ensure helpers exist
-  if (typeof window.openProductModal !== 'function') {
-    window.openProductModal = function(){
-      var overlay = $('#productOverlay');
-      var modal = $('#productModal');
-      if(!overlay || !modal) return;
-      overlay.classList.remove('hidden');
-      modal.classList.remove('hidden');
-      var box = modal.querySelector('.modal-container');
-      if (box) requestAnimationFrame(function(){ box.classList.add('active'); });
-      document.documentElement.classList.add('overflow-hidden');
-      document.body.classList.add('overflow-hidden', 'touch-none');
-    };
-  }
-  if (typeof window.closeProductModal !== 'function') {
-    window.closeProductModal = function(){
-      var overlay = $('#productOverlay');
-      var modal = $('#productModal');
-      if(!overlay || !modal) return;
-      var box = modal.querySelector('.modal-container');
-      if (box) box.classList.remove('active');
-      overlay.classList.add('hidden');
-      modal.classList.add('hidden');
-      document.documentElement.classList.remove('overflow-hidden');
-      document.body.classList.remove('overflow-hidden', 'touch-none');
-    };
-  }
+  if (!overlay || !modal) return;
 
-  // 1) Generic click delegation for elements intended to open the modal
-  document.addEventListener('click', function(e){
-    var el = e.target;
-    // bubble up to clickable ancestor
-    while (el && el !== document) {
-      if (
-        el.matches('[data-open="productModal"]') ||
-        el.matches('.open-product-modal') ||
-        el.matches('[data-modal-target="#productModal"]') ||
-        el.matches('a[href="#productModal"]') ||
-        el.matches('button[href="#productModal"]') ||
-        el.hasAttribute('data-product') // product tiles
-      ) {
-        e.preventDefault();
-        try {
-          var title = (el.getAttribute('data-product') || el.textContent || '').trim();
-          if (!title) {
-            // try to find a heading inside the tile
-            var h = el.querySelector('h3, h2');
-            if (h) title = h.textContent.trim();
-          }
-          var t = $('#productTitle');
-          if (t && title) t.textContent = title;
-          var applyBtn = $('#productApplyBtn');
-          if (applyBtn && title) applyBtn.setAttribute('data-product', title);
-        } catch(_) {}
-        openProductModal();
-        return;
-      }
-      el = el.parentElement;
-    }
-  }, true);
-
-  // 2) Wire the product grid cards to open the modal (fallback if no explicit triggers exist)
-  var productCards = $all('#products .group, #products [data-product]');
-  productCards.forEach(function(card){
-    if (!card.getAttribute('tabindex')) card.setAttribute('tabindex','0');
-    card.style.cursor = 'pointer';
-    card.addEventListener('click', function(e){
-      // Avoid triggering when clicking actual links inside
-      if (e.target.closest('a')) return;
-      try {
-        var title = (card.getAttribute('data-product') || (card.querySelector('h3') && card.querySelector('h3').textContent) || 'Loan Product').trim();
-        var t = $('#productTitle'); if (t) t.textContent = title;
-        var applyBtn = $('#productApplyBtn'); if (applyBtn) applyBtn.setAttribute('data-product', title);
-      } catch(_){}
-      openProductModal();
-    });
-    // Keyboard accessibility
-    card.addEventListener('keydown', function(e){
-      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); card.click(); }
-    });
-  });
-
-  // 3) Close handlers
-  document.addEventListener('keydown', function(e){ if (e.key === 'Escape') closeProductModal(); });
-  var overlay = $('#productOverlay');
-  if (overlay) overlay.addEventListener('click', function(e){ if (e.target === overlay) closeProductModal(); });
-  $all('[aria-label="Close"], .modal-close').forEach(function(btn){ btn.onclick = closeProductModal; });
-})();
-</script>
-<script>
-    // Product modal
-    (function(){
-      const overlay = document.getElementById('productOverlay');
-      const modal = document.getElementById('productModal');
-      const titleEl = document.getElementById('productTitle');
-      const bodyEl = document.getElementById('productBody');
-      const applyBtn = document.getElementById('productApplyBtn');
-      const htmlEl = document.documentElement;
-
-      const copy = {
-        "Fix-and-Flip": {
-          title: "Fix-and-Flip",
-          html: `<p><strong>Best for:</strong> Buying discounted homes that need cosmetic or structural rehab and reselling for profit.</p>
-                 <ul><li><strong>Typical projects:</strong> cosmetic updates, heavy rehab, value-add flips</li>
-                     <li><strong>Why it fits:</strong> funds purchase + rehab draws; interest-only; quick closings</li></ul>
-                 <p class="mt-3"><strong>Investor story:</strong> “Maria buys outdated SFRs in Dallas, completes 6–8 week rehabs, and lists immediately. Speed and draw reliability are critical.”</p>
-                 <p class="mt-3"><strong>What you'll need:</strong></p>
-                 <ul><li>Entity docs (LLC)</li><li>Purchase contract</li><li>Scope & rehab budget</li><li>Experience summary (if any)</li></ul>`
-        },
-        "BRRRR Method": {
-          title: "BRRRR (Buy, Rehab, Rent, Refinance, Repeat)",
-          html: `<p><strong>Best for:</strong> Building a rental portfolio by renovating, renting, then refinancing into long-term DSCR/agency debt.</p>
-                 <ul><li><strong>Typical projects:</strong> SFR & small multifamily value-add rentals</li>
-                     <li><strong>Why it fits:</strong> short-term rehab funds that transition to long-term once stabilized</li></ul>
-                 <p class="mt-3"><strong>Investor story:</strong> “Andre renovates duplexes, leases quickly, then refinances to recycle capital.”</p>
-                 <p class="mt-3"><strong>What you'll need:</strong></p>
-                 <ul><li>Entity docs</li><li>Purchase contract</li><li>Rehab budget</li><li>Projected rents / comp set</li></ul>`
-        },
-        "Rental Properties": {
-          title: "Rental Properties (DSCR)",
-          html: `<p><strong>Best for:</strong> Long‑term or short‑term rentals qualified by property cash flow (DSCR).</p>
-                 <ul><li><strong>Typical projects:</strong> turnkey or light value‑add SFR/2‑4/STR</li>
-                     <li><strong>Why it fits:</strong> underwriting focuses on DSCR vs personal income</li></ul>
-                 <p class="mt-3"><strong>Investor story:</strong> “Tanya acquires STRs near national parks; DSCR lets her scale without W‑2 constraints.”</p>
-                 <p class="mt-3"><strong>What you'll need:</strong></p>
-                 <ul><li>Lease / projected rent</li><li>Property insurance quote</li><li>Entity docs</li></ul>`
-        },
-        "New Construction": {
-          title: "New Construction",
-          html: `<p><strong>Best for:</strong> Ground‑up builders needing acquisition + vertical financing with milestone draws.</p>
-                 <ul><li><strong>Typical projects:</strong> infill spec homes, scattered lots, small tracts</li>
-                     <li><strong>Why it fits:</strong> funded draws tied to inspections; interest-only during build</li></ul>
-                 <p class="mt-3"><strong>Investor story:</strong> “Chris develops 4 spec homes/yr on infill lots with a GC and pre-sold plans.”</p>
-                 <p class="mt-3"><strong>What you'll need:</strong></p>
-                 <ul><li>Plans & permits</li><li>Budget & schedule</li><li>GC agreement / resume</li></ul>`
-        },
-        "DSCR (Debt Service Coverage Ratio)": {
-          title: "DSCR (Debt Service Coverage Ratio)",
-          html: `<p><strong>Best for:</strong> Rental properties qualified primarily by property cash flow.</p>
+  const copy = {
+    "Fix-and-Flip": {
+      title: "Fix-and-Flip",
+      html: `<p><strong>Best for:</strong> Buying discounted homes that need cosmetic or structural rehab and reselling for profit.</p>
+             <ul><li><strong>Typical projects:</strong> cosmetic updates, heavy rehab, value-add flips</li>
+                 <li><strong>Why it fits:</strong> funds purchase + rehab draws; interest-only; quick closings</li></ul>
+             <p class="mt-3"><strong>Investor story:</strong> “Maria buys outdated SFRs in Dallas, completes 6–8 week rehabs, and lists immediately. Speed and draw reliability are critical.”</p>
+             <p class="mt-3"><strong>What you'll need:</strong></p>
+             <ul><li>Entity docs (LLC)</li><li>Purchase contract</li><li>Scope & rehab budget</li><li>Experience summary (if any)</li></ul>`
+    },
+    "BRRRR Method": {
+      title: "BRRRR (Buy, Rehab, Rent, Refinance, Repeat)",
+      html: `<p><strong>Best for:</strong> Building a rental portfolio by renovating, renting, then refinancing into long-term DSCR/agency debt.</p>
+             <ul><li><strong>Typical projects:</strong> SFR & small multifamily value-add rentals</li>
+                 <li><strong>Why it fits:</strong> short-term rehab funds that transition to long-term once stabilized</li></ul>
+             <p class="mt-3"><strong>Investor story:</strong> “Andre renovates duplexes, leases quickly, then refinances to recycle capital.”</p>
+             <p class="mt-3"><strong>What you'll need:</strong></p>
+             <ul><li>Entity docs</li><li>Purchase contract</li><li>Rehab budget</li><li>Projected rents / comp set</li></ul>`
+    },
+    "Rental Properties": {
+      title: "Rental Properties (DSCR)",
+      html: `<p><strong>Best for:</strong> Long‑term or short‑term rentals qualified by property cash flow (DSCR).</p>
+             <ul><li><strong>Typical projects:</strong> turnkey or light value‑add SFR/2‑4/STR</li>
+                 <li><strong>Why it fits:</strong> underwriting focuses on DSCR vs personal income</li></ul>
+             <p class="mt-3"><strong>Investor story:</strong> “Tanya acquires STRs near national parks; DSCR lets her scale without W‑2 constraints.”</p>
+             <p class="mt-3"><strong>What you'll need:</strong></p>
+             <ul><li>Lease / projected rent</li><li>Property insurance quote</li><li>Entity docs</li></ul>`
+    },
+    "New Construction": {
+      title: "New Construction",
+      html: `<p><strong>Best for:</strong> Ground‑up builders needing acquisition + vertical financing with milestone draws.</p>
+             <ul><li><strong>Typical projects:</strong> infill spec homes, scattered lots, small tracts</li>
+                 <li><strong>Why it fits:</strong> funded draws tied to inspections; interest-only during build</li></ul>
+             <p class="mt-3"><strong>Investor story:</strong> “Chris develops 4 spec homes/yr on infill lots with a GC and pre-sold plans.”</p>
+             <p class="mt-3"><strong>What you'll need:</strong></p>
+             <ul><li>Plans & permits</li><li>Budget & schedule</li><li>GC agreement / resume</li></ul>`
+    },
+    "DSCR (Debt Service Coverage Ratio)": {
+      title: "DSCR (Debt Service Coverage Ratio)",
+      html: `<p><strong>Best for:</strong> Rental properties qualified primarily by property cash flow.</p>
 <p><strong>What is DSCR?</strong> Debt Service Coverage Ratio measures a property’s ability to cover its debt from Net Operating Income (NOI).</p>
 <p><strong>Formula:</strong> DSCR = NOI ÷ Annual Debt Service. Typical approvals start around <strong>1.0×–1.25×</strong> depending on LTV/credit.</p>
 <ul>
@@ -667,79 +524,77 @@ select option{ color:#0f172a; background:#fff; }
   <li>Photo ID and credit authorization</li>
 </ul>
 <p class="mt-3"><strong>Fast Path to Term Sheet:</strong> address & expected rent, purchase price/current value, desired loan amount, borrower/entity name.</p>`
-        },
-        "Bridge Loans": {
-          title: "Bridge Loans",
-          html: `<p><strong>Best for:</strong> Short‑term capital to seize opportunities: buy before you sell, auctions, or unlock trapped equity.</p>
-                 <ul><li><strong>Typical projects:</strong> quick acquisitions, gap funding</li>
-                     <li><strong>Why it fits:</strong> asset‑based, light documentation, rapid approvals</li></ul>
-                 <p class="mt-3"><strong>Investor story:</strong> “Alex wins courthouse auctions using reliable same‑week funding.”</p>
-                 <p class="mt-3"><strong>What you'll need:</strong></p>
-                 <ul><li>Purchase details</li><li>Exit strategy</li><li>Entity docs</li></ul>`
-        }
-      };
-
-      function openProductModal(key){
-        const data = copy[key];
-        if(!data) return;
-        titleEl.textContent = data.title;
-        bodyEl.innerHTML = data.html;
-        const url = '/LoanApp.html?product=' + encodeURIComponent(key);
-        applyBtn.href = url;
-        applyBtn.dataset.product = key;
-        document.getElementById('productOverlay').classList.remove('hidden');
-        modal.classList.remove('hidden');
-        htmlEl.style.overflow = 'hidden';
-        window.dataLayer = window.dataLayer || [];
-        window.dataLayer.push({ event: 'product_modal_open', product: key });
-      }
-      window.closeProductModal = function(){
-        document.getElementById('productOverlay').classList.add('hidden');
-        modal.classList.add('hidden');
-        htmlEl.style.overflow = '';
-      };
-      document.getElementById('productOverlay')?.addEventListener('click', closeProductModal);
-      window.addEventListener('keydown', (e)=>{ if(e.key==='Escape') closeProductModal(); });
-      document.querySelectorAll('#products .group').forEach(card => {
-        const h = card.querySelector('h3'); if(!h) return;
-        const key = h.textContent.trim();
-        card.classList.add('cursor-pointer'); card.setAttribute('role','button'); card.setAttribute('tabindex','0');
-        card.addEventListener('click', ()=> openProductModal(key));
-        card.addEventListener('keypress', (e)=>{ if(e.key==='Enter' || e.key===' ') { e.preventDefault(); openProductModal(key); } });
-      });
-      document.getElementById('productApplyBtn')?.addEventListener('click', function(){
-        window.dataLayer = window.dataLayer || [];
-        window.dataLayer.push({ event: 'product_apply_click', product: this.dataset.product || '' });
-      });
-    })();
-  </script>
-<script>
-// Unified scroll lock/unlock so the page always re-enables scroll after closing the modal.
-(function(){
-  try {
-    var originalClose = window.closeProductModal;
-    window.closeProductModal = function(){
-      try { if (typeof originalClose === 'function') originalClose.apply(this, arguments); } catch(e){}
-      // Always remove any scroll locks/classes no matter which open() added them
-      var de = document.documentElement, b = document.body;
-      de.classList.remove('overflow-hidden');
-      b.classList.remove('overflow-hidden','touch-none');
-      de.style.overflow = '';
-    };
-    var originalOpen = window.openProductModal;
-    if (typeof originalOpen === 'function') {
-      window.openProductModal = function(){
-        var res;
-        try { res = originalOpen.apply(this, arguments); } catch(e){}
-        // Ensure scroll is locked consistently
-        var de = document.documentElement, b = document.body;
-        de.classList.add('overflow-hidden');
-        b.classList.add('overflow-hidden','touch-none');
-        return res;
-      };
+    },
+    "Bridge Loans": {
+      title: "Bridge Loans",
+      html: `<p><strong>Best for:</strong> Short‑term capital to seize opportunities: buy before you sell, auctions, or unlock trapped equity.</p>
+             <ul><li><strong>Typical projects:</strong> quick acquisitions, gap funding</li>
+                 <li><strong>Why it fits:</strong> asset‑based, light documentation, rapid approvals</li></ul>
+             <p class="mt-3"><strong>Investor story:</strong> “Alex wins courthouse auctions using reliable same‑week funding.”</p>
+             <p class="mt-3"><strong>What you'll need:</strong></p>
+             <ul><li>Purchase details</li><li>Exit strategy</li><li>Entity docs</li></ul>`
     }
-  } catch(e){ console.warn('scroll lock patch error', e); }
+  };
+
+  function lockScroll(){
+    htmlEl.classList.add('overflow-hidden');
+    bodyEl.classList.add('overflow-hidden', 'touch-none');
+    htmlEl.style.overflow = 'hidden';
+  }
+  function unlockScroll(){
+    htmlEl.classList.remove('overflow-hidden');
+    bodyEl.classList.remove('overflow-hidden', 'touch-none');
+    htmlEl.style.overflow = '';
+  }
+
+  window.openProductModal = function(key){
+    if (typeof key === 'string' && copy[key]) {
+      const data = copy[key];
+      titleEl.textContent = data.title;
+      bodyEl.innerHTML = data.html;
+      const url = '/LoanApp.html?product=' + encodeURIComponent(key);
+      if (applyBtn) { applyBtn.href = url; applyBtn.dataset.product = key; }
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({ event: 'product_modal_open', product: key });
+    }
+    overlay.classList.remove('hidden');
+    modal.classList.remove('hidden');
+    const box = modal.querySelector('.modal-container');
+    if (box) requestAnimationFrame(function(){ box.classList.add('active'); });
+    lockScroll();
+  };
+
+  window.closeProductModal = function(){
+    const box = modal.querySelector('.modal-container');
+    if (box) box.classList.remove('active');
+    overlay.classList.add('hidden');
+    modal.classList.add('hidden');
+    unlockScroll();
+  };
+
+  // Delegation: click cards to open modal with their title
+  document.querySelectorAll('#products .group').forEach(function(card){
+    const h = card.querySelector('h3');
+    if (!h) return;
+    const key = h.textContent.trim();
+    card.classList.add('cursor-pointer'); card.setAttribute('role','button'); card.setAttribute('tabindex','0');
+    card.addEventListener('click', function(e){
+      if (e.target.closest('a')) return; // ignore inner links
+      openProductModal(key);
+    });
+    card.addEventListener('keypress', function(e){
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openProductModal(key); }
+    });
+  });
+
+  // Close on overlay click & ESC
+  overlay.addEventListener('click', function(e){ if (e.target === overlay) closeProductModal(); });
+  window.addEventListener('keydown', function(e){ if (e.key === 'Escape') closeProductModal(); });
+
+  // Close buttons
+  document.querySelectorAll('[aria-label="Close"], .modal-close').forEach(function(btn){ btn.onclick = closeProductModal; });
 })();
 </script>
+
 </body>
 </html>
