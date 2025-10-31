@@ -5,16 +5,23 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>SwiftPath Capital - First, Fast, Funded</title>
-<!-- Social Media & Link Sharing Meta Tags -->
-<meta content="SwiftPath Capital: First, Fast, Funded." property="og:title">
-<meta content="At SwiftPath Capital, we've eliminated the delays of traditional lending. We leverage a cutting-edge digital platform to take you from application to funded in days, not weeks." property="og:description">
-<meta content="https://swiftpathcapital.com/Images/social-swiftpath-1200x630.png" property="og:image"/>
-<meta content="https://www.swiftpathcapital.com" property="og:url"/>
+<!-- Canonical -->
+<link href="https://swiftpathcapital.com/" rel="canonical"/>
+<!-- Search/Share Meta -->
+<meta content="SwiftPath Capital provides business-purpose real estate investor financing — DSCR, fix-and-flip, and bridge loans — fast and transparent. Not a personal loan provider." name="description"/>
+<meta content="SwiftPath Capital: First, Fast, Funded." property="og:title"/>
+<meta content="Private lending for real estate investors. We take you from application to funded in days, not weeks." property="og:description"/>
+<meta content="Images/Logo.PNG" property="og:image"/>
+<meta content="https://swiftpathcapital.com/" property="og:url"/>
 <meta content="website" property="og:type"/>
 <meta content="summary_large_image" name="twitter:card"/>
 <meta content="SwiftPath Capital: First, Fast, Funded." name="twitter:title"/>
-<meta content="At SwiftPath Capital, we've eliminated the delays of traditional lending. We leverage a cutting-edge digital platform to take you from application to funded in days, not weeks." name="twitter:description"/>
-<meta content="https://swiftpathcapital.com/Images/social-swiftpath-1200x630.png" name="twitter:image"/>
+<meta content="Private lending for real estate investors — DSCR, fix-and-flip, bridge. Fast, transparent funding." name="twitter:description"/>
+<meta content="Images/Logo.PNG" name="twitter:image"/>
+<!-- Organization Schema -->
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"SwiftPath Capital Corporation","url":"https://swiftpathcapital.com/","logo":"https://swiftpathcapital.com/Images/Logo.PNG","description":"Tucson-based private lending and business-purpose funding for real estate investors — DSCR, fix-and-flip, and bridge financing. Not a consumer/personal lender.","founder":{"@type":"Person","name":"James Lewis","jobTitle":"Founder & CEO","url":"https://www.linkedin.com/in/jlewismanager/"},"address":{"@type":"PostalAddress","streetAddress":"333 N Wilmot Rd, STE 340","addressLocality":"Tucson","addressRegion":"AZ","postalCode":"85711","addressCountry":"US"},"contactPoint":{"@type":"ContactPoint","telephone":"+1-321-430-4434","contactType":"customer support","areaServed":"US"},"sameAs":["https://www.linkedin.com/company/swiftpathcapital/","https://www.linkedin.com/in/jlewismanager/","https://www.instagram.com/swiftpathcapital","https://youtube.com/@swiftpath"],"knowsAbout":["real estate investment loans","business-purpose lending","DSCR loans","fix and flip loans","bridge loans","private lending"]}</script>
+<!-- LocalBusiness Schema -->
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LocalBusiness","name":"SwiftPath Capital Corporation","image":"https://swiftpathcapital.com/Images/Logo.PNG","url":"https://swiftpathcapital.com/","telephone":"+1-321-430-4434","priceRange":"$$","address":{"@type":"PostalAddress","streetAddress":"333 N Wilmot Rd, STE 340","addressLocality":"Tucson","addressRegion":"AZ","postalCode":"85711","addressCountry":"US"},"geo":{"@type":"GeoCoordinates","latitude":32.216213,"longitude":-110.857441},"openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday"],"opens":"09:00","closes":"18:00"}],"department":[{"@type":"FinancialService","name":"Real Estate Investor Lending","description":"Private loans for real estate investors including DSCR, fix-and-flip, and bridge programs.","areaServed":"US"},{"@type":"FinancialService","name":"Business Credit Access","description":"Programs providing business-purpose funding through partnerships with Capwell Funding and national lenders.","areaServed":"US"}]}</script>
 <!-- Tailwind CSS -->
 <script src="https://cdn.tailwindcss.com"></script>
 <!-- Google Fonts: Inter -->
@@ -38,9 +45,10 @@
     .modal-overlay{transition:opacity .3s ease}
     .modal-container{transition:transform .3s ease,opacity .3s ease;transform:translateY(20px) scale(.95);opacity:0}
     .modal-container.active{transform:translateY(0) scale(1);opacity:1}
-    /* Ensure select and its options are readable on blue panel */
     select { color:#0f172a; background:#fff; }
-    select option{ color:#0f172a; background:#fff; }
+    input { color:#0f172a; background:#fff; caret-color:#0f172a; }
+input::placeholder{ color:rgba(30,41,59,.6); }
+select option{ color:#0f172a; background:#fff; }
   </style>
 <!-- Google Ads global site tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=AW-17093021602"></script>
@@ -50,13 +58,22 @@
     gtag('js', new Date());
     gtag('config', 'AW-17093021602');
   </script>
-</meta></meta><meta content="1200" property="og:image:width"/><meta content="630" property="og:image:height"/></head>
+<meta content="Tucson, Arizona, USA" name="geo.placename">
+<meta content="32.216213;-110.887430" name="geo.position">
+<meta content="32.216213, -110.887430" name="ICBM">
+<meta content="333 N Wilmot Rd, STE 340" name="business:contact_data:street_address"/>
+<meta content="Tucson" name="business:contact_data:locality"/>
+<meta content="AZ" name="business:contact_data:region"/>
+<meta content="85711" name="business:contact_data:postal_code"/>
+<meta content="USA" name="business:contact_data:country_name"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"SwiftPath Capital Corporation","url":"https://swiftpathcapital.com/","logo":"https://swiftpathcapital.com/Images/Logo.PNG","sameAs":["https://www.instagram.com/swiftpathcapital","https://youtube.com/@swiftpath"],"knowsAbout":["hard money loans for fix and flip","DSCR loans for rental portfolios","short-term bridge financing","business-purpose real estate lending"],"makesOffer":[{"@type":"Offer","itemOffered":{"@type":"Service","name":"Fix-and-Flip Financing"},"areaServed":"US"},{"@type":"Offer","itemOffered":{"@type":"Service","name":"DSCR Rental Loans"},"areaServed":"US"},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Bridge Loans"},"areaServed":"US"}]}</script>
+</meta></meta></meta></head>
 <body class="bg-gray-50 text-slate-700">
 <!-- Header -->
-<header class="bg-white/80 backdrop-blur-lg sticky top-0 z-40 shadow-sm" id="header">
+<header class="/80 backdrop-blur-lg sticky top-0 z-40 shadow-sm" id="header">
 <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
 <a class="flex items-center space-x-2" href="/">
-<img alt="SwiftPath Capital Logo" class="h-[4.5rem] lg:h-24 w-auto" src="Images/Logo.PNG"/>
+<img alt="SwiftPath Capital Logo" class="h-[9rem] lg:h-48 w-auto" src="Images/Logo.PNG"/>
 </a>
 <div class="hidden lg:flex items-center space-x-8">
 <a class="text-slate-600 hover:text-brand-blue transition duration-300 font-medium" href="#advantage">Our Advantage</a>
@@ -64,6 +81,8 @@
 <a class="text-slate-600 hover:text-brand-blue transition duration-300 font-medium" href="#video">Weekly Insight</a>
 <a class="text-slate-600 hover:text-brand-blue transition duration-300 font-medium" href="#process">Our Process</a>
 <a class="text-slate-600 hover:text-brand-blue transition duration-300 font-medium" href="#products">Loan Products</a>
+<!-- NEW: About link -->
+<a class="text-slate-600 hover:text-brand-blue transition duration-300 font-medium" href="/about-swiftpath-capital.html">About</a>
 <a class="text-slate-600 hover:text-brand-blue transition duration-300 font-medium" href="/LoanApp.html">Apply</a>
 <a class="bg-brand-gold text-white font-bold py-2 px-5 rounded-lg shadow-md hover:bg-brand-gold-dark transition duration-300" href="#contact">
           Get Pre-Qualified
@@ -81,6 +100,8 @@
 <a class="block text-slate-600 hover:text-brand-blue transition duration-300 font-medium" href="#video">Weekly Insight</a>
 <a class="block text-slate-600 hover:text-brand-blue transition duration-300 font-medium" href="#process">Our Process</a>
 <a class="block text-slate-600 hover:text-brand-blue transition duration-300 font-medium" href="#products">Loan Products</a>
+<!-- NEW: About link (mobile) -->
+<a class="block text-slate-600 hover:text-brand-blue transition duration-300 font-medium" href="/about-swiftpath-capital.html">About</a>
 <a class="block text-slate-600 hover:text-brand-blue transition duration-300 font-medium" href="/LoanApp.html">Apply</a>
 <a class="block bg-brand-gold text-white text-center font-bold py-2 px-5 rounded-lg shadow-md hover:bg-brand-gold-dark transition duration-300 mt-2" href="#contact">Get Pre-Qualified</a>
 </div>
@@ -94,13 +115,13 @@
 <h1 class="text-4xl md:text-6xl font-extrabold leading-tight mb-4">SwiftPath Capital — Real Estate Investment Funding</h1>
 <p class="text-xl md:text-2xl max-w-3xl mx-auto mb-8">At the Speed of the Deal.</p>
 <div class="flex justify-center gap-4 flex-wrap">
-<a class="inline-block bg-brand-blue hover:bg-brand-blue/90 text-white font-bold py-3 px-8 rounded-lg shadow" href="#contact">Get Pre‑Qualified Now</a>
-<a class="inline-block bg-white/90 hover:bg-white text-slate-900 font-bold py-3 px-8 rounded-lg shadow" href="#products">See Our Loan Products</a>
+<a class="inline-block bg-brand-blue hover:bg-brand-blue/90 text-white font-bold py-3 px-8 rounded-lg shadow" href="#contact">Get Pre-Qualified Now</a>
+<a class="inline-block bg-white hover:bg-white/90 text-slate-900 font-bold py-3 px-8 rounded-lg shadow" href="#products">See Our Loan Products</a>
 </div>
 </div>
 </section>
 <!-- Advantage -->
-<section class="py-20 bg-white" id="advantage">
+<section class="py-20" id="advantage">
 <div class="container mx-auto px-6">
 <div class="text-center mb-12">
 <h2 class="text-3xl md:text-4xl font-bold text-slate-800">First, Fast, Funded: Our Promise to You</h2>
@@ -126,7 +147,7 @@
 <svg class="h-8 w-8" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" stroke-linecap="round" stroke-linejoin="round"></path></svg>
 </div>
 <h3 class="text-xl font-bold text-slate-800 mb-2">Certainty to Compete</h3>
-<p class="text-slate-600">Move forward with the confidence of a cash buyer with reliable pre‑qualifications.</p>
+<p class="text-slate-600">Move forward with the confidence of a cash buyer with reliable pre-qualifications.</p>
 </div>
 <div class="bg-gray-50 p-8 rounded-xl shadow-sm hover:shadow-lg transition-shadow duration-300">
 <div class="bg-brand-blue/10 text-brand-blue rounded-full w-16 h-16 flex items-center justify-center mb-5">
@@ -146,10 +167,7 @@
 <p class="mt-4 text-lg text-slate-600 max-w-2xl mx-auto">A quick, educational tip to help you succeed in today's market. A new video drops every week!</p>
 </div>
 <div class="max-w-xs mx-auto">
-<div class="relative w-full rounded-2xl overflow-hidden shadow-2xl" style="padding-top: 177.77%;">
-<iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" class="absolute top-0 left-0 w-full h-full" frameborder="0" src="https://www.youtube.com/embed/EFMf7gwbSuA" title="YouTube video player"></iframe>
-</div>
-</div>
+<div class="relative w-full rounded-2xl overflow-hidden shadow-2xl bg-black" style="padding-top: 177.77%;"><iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" class="absolute top-0 left-0 w-full h-full" frameborder="0" src="https://www.youtube.com/embed/videoseries?list=UUBkefGsZrkhSZt5Q4-zRpAQ&amp;autoplay=1&amp;mute=1&amp;playsinline=1&amp;rel=0&amp;modestbranding=1&amp;controls=1" title="SwiftPath Capital • Weekly Insight"></iframe></div></div>
 </div>
 </section>
 <!-- Stats -->
@@ -210,7 +228,7 @@
 </div>
 </section>
 <!-- Products -->
-<section class="py-20 bg-white" id="products">
+<section class="py-20" id="products">
 <div class="container mx-auto px-6">
 <div class="text-center mb-12">
 <h2 class="text-3xl md:text-4xl font-bold text-slate-800">Financing for Every Real Estate Investor</h2>
@@ -219,26 +237,42 @@
 <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
 <div class="group border border-gray-200 rounded-xl p-8 hover:border-brand-blue hover:shadow-2xl transition-all duration-300"><h3 class="text-xl font-bold text-slate-800 mb-2">Fix-and-Flip</h3><p class="text-slate-600">Acquire and renovate properties with speed and confidence.</p></div>
 <div class="group border border-gray-200 rounded-xl p-8 hover:border-brand-blue hover:shadow-2xl transition-all duration-300"><h3 class="text-xl font-bold text-slate-800 mb-2">BRRRR Method</h3><p class="text-slate-600">Buy, Rehab, Rent, Refinance, and Repeat with one partner.</p></div>
-<div class="group border border-gray-200 rounded-xl p-8 hover:border-brand-blue hover:shadow-2xl transition-all duration-300"><h3 class="text-xl font-bold text-slate-800 mb-2">Rental Properties</h3><p class="text-slate-600">Grow your portfolio of long‑term and short‑term rentals.</p></div>
-<div class="group border border-gray-200 rounded-xl p-8 hover:border-brand-blue hover:shadow-2xl transition-all duration-300"><h3 class="text-xl font-bold text-slate-800 mb-2">New Construction</h3><p class="text-slate-600">Ground‑up projects funded on your timeline.</p></div>
-<div class="group border border-gray-200 rounded-xl p-8 hover:border-brand-blue hover:shadow-2xl transition-all duration-300"><h3 class="text-xl font-bold text-slate-800 mb-2">DSCR (Debt Service Coverage Ratio)</h3><p class="text-slate-600">Qualifies based on property cash flow (DSCR) — not your personal DTI. 30‑year options available.</p></div>
+<div class="group border border-gray-200 rounded-xl p-8 hover:border-brand-blue hover:shadow-2xl transition-all duration-300"><h3 class="text-xl font-bold text-slate-800 mb-2">Rental Properties</h3><p class="text-slate-600">Grow your portfolio of long-term and short-term rentals.</p></div>
+<div class="group border border-gray-200 rounded-xl p-8 hover:border-brand-blue hover:shadow-2xl transition-all duration-300"><h3 class="text-xl font-bold text-slate-800 mb-2">New Construction</h3><p class="text-slate-600">Ground-up projects funded on your timeline.</p></div>
+<div class="group border border-gray-200 rounded-xl p-8 hover:border-brand-blue hover:shadow-2xl transition-all duration-300"><h3 class="text-xl font-bold text-slate-800 mb-2">DSCR (Debt Service Coverage Ratio)</h3><p class="text-slate-600">Qualifies based on property cash flow (DSCR) — not your personal DTI. 30-year options available.</p></div>
 <div class="group border border-gray-200 rounded-xl p-8 hover:border-brand-blue hover:shadow-2xl transition-all duration-300"><h3 class="text-xl font-bold text-slate-800 mb-2">Bridge Loans</h3><p class="text-slate-600">Bridge the gap between transactions and seize opportunities.</p></div>
 </div>
 </div>
 </section>
-<!-- Contact / CTA with HubSpot form -->
+<!-- Contact / CTA with HubSpot form (unchanged ids/classes for Twilio UI) -->
 <section class="bg-gray-100" id="contact">
 <div class="container mx-auto px-6 py-20">
 <div class="bg-brand-blue rounded-2xl shadow-xl p-10 md:p-16 text-white">
 <div class="max-w-3xl mx-auto">
 <h2 class="text-3xl md:text-4xl font-bold mb-2 text-center">Ready to Fund Your Next Deal?</h2>
-<p class="text-lg text-blue-100 max-w-2xl mx-auto mb-8 text-center">Fast, free pre‑qualification. No credit impact.</p>
+<p class="text-lg text-blue-100 max-w-2xl mx-auto mb-8 text-center">Fast, free pre-qualification. No credit impact.</p>
 <form class="grid md:grid-cols-3 gap-4" id="leadForm" novalidate="">
-<input class="w-full border border-white/30 bg-white/10 rounded-lg px-3 py-3 placeholder-blue-100" id="leadName" placeholder="Full name" required=""/>
-<input class="w-full border border-white/30 bg-white/10 rounded-lg px-3 py-3 placeholder-blue-100" id="leadEmail" placeholder="Email" required="" type="email"/>
-<input class="w-full border border-white/30 bg-white/10 rounded-lg px-3 py-3 placeholder-blue-100" id="leadPhone" placeholder="Phone" required=""/>
+<input class="w-full border border-white/30 /10 rounded-lg px-3 py-3 placeholder-blue-100" id="leadName" placeholder="Full name" required=""/>
+<input class="w-full border border-white/30 /10 rounded-lg px-3 py-3 placeholder-blue-100" id="leadEmail" placeholder="Email" required="" type="email"/>
+<!-- SMS Verification UI -->
+<div class="md:col-span-3 grid grid-cols-1 sm:grid-cols-3 gap-3 items-start">
+<div class="sm:col-span-2">
+<label class="block text-sm mb-1">Phone (SMS verification required)</label>
+<input class="w-full border border-white/30 /10 rounded-lg px-3 py-3 placeholder-blue-100" id="leadPhone" placeholder="+13214304434" required=""/>
+</div>
+<div class="flex flex-col gap-2">
+<button class="border-2 border-white/60 text-white font-semibold py-2 px-3 rounded" id="sendCodeBtn" type="button">Send code</button>
+<div id="otpWrap" style="display:none">
+<div class="flex gap-2 items-center">
+<input class="w-28 border border-white/30 /10 rounded px-2 py-2 placeholder-blue-100 bg-white text-slate-900 placeholder-slate-400 caret-slate-900" id="otpCode" inputmode="numeric" maxlength="8" placeholder="Code"/>
+<button class="border-2 border-white/60 text-white font-semibold py-2 px-3 rounded" id="checkCodeBtn" type="button">Verify</button>
+</div>
+<span class="text-xs text-blue-100/90" id="vStatus"></span>
+</div>
+</div>
+</div>
 <div class="md:col-span-3 flex flex-col sm:flex-row gap-3">
-<select aria-label="Loan type" class="flex-1 border border-white/30 bg-white rounded-lg px-3 py-3 text-slate-900" id="leadPurpose" required="">
+<select aria-label="Loan type" class="flex-1 border border-white/30 rounded-lg px-3 py-3 text-slate-900" id="leadPurpose" required="">
 <option disabled="" selected="" value="">Loan type</option>
 <option>Fix-and-Flip</option>
 <option>BRRRR</option>
@@ -247,7 +281,7 @@
 <option>Bridge</option>
 </select>
 <a class="sm:w-auto w-full border-2 border-white/60 text-white font-bold py-3 px-6 rounded-lg text-center" href="/LoanApp.html">Full Application</a>
-<button class="sm:w-auto w-full bg-brand-gold text-white font-bold py-3 px-8 rounded-lg" id="leadSubmit" type="submit">Get Pre‑Qualified</button>
+<button class="sm:w-auto w-full bg-brand-gold text-white font-bold py-3 px-8 rounded-lg" id="leadSubmit" type="submit">Get Pre-Qualified</button>
 </div>
 <p class="md:col-span-3 text-sm text-blue-100/80 mt-2">By submitting, you agree to our Terms and Privacy Policy.</p>
 </form>
@@ -263,7 +297,7 @@
 <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
 <div class="md:col-span-1">
 <a class="flex items-center space-x-2" href="/">
-<img alt="SwiftPath Capital Logo" class="h-12 lg:h-14 w-auto bg-white p-1 rounded-md" src="Images/Logo.PNG"/>
+<img alt="SwiftPath Capital Logo" class="h-24 lg:h-28 w-auto rounded-md" src="Images/Logo.PNG"/>
 </a>
 <p class="mt-4 text-slate-400">Your strategic partner in a fast-moving market. First, Fast, Funded.</p>
 </div>
@@ -273,6 +307,8 @@
 <li><a class="hover:text-brand-gold transition duration-300" href="#advantage">Our Advantage</a></li>
 <li><a class="hover:text-brand-gold transition duration-300" href="#process">Our Process</a></li>
 <li><a class="hover:text-brand-gold transition duration-300" href="#products">Loan Products</a></li>
+<!-- NEW: About in footer -->
+<li><a class="hover:text-brand-gold transition duration-300" href="/about-swiftpath-capital.html">About</a></li>
 <li><a class="hover:text-brand-gold transition duration-300" href="/LoanApp.html">Apply</a></li>
 </ul>
 </div>
@@ -280,7 +316,8 @@
 <h3 class="font-bold tracking-wide text-brand-gold">Contact Us</h3>
 <ul class="mt-4 space-y-2 text-slate-300">
 <li>Email: <a class="hover:text-brand-gold transition" href="mailto:info@swiftpathcapital.com">info@swiftpathcapital.com</a></li>
-<li>Phone: <a class="hover:text-brand-gold transition" href="tel:+14073743301">407-374-3301</a></li>
+<li>Phone: <a class="hover:text-brand-gold transition" href="tel:+13214304434">321-430-4434</a>
+<p class="text-sm text-slate-600 mt-1">333 N Wilmot Rd STE 340 Tucson AZ 85711</p></li>
 </ul>
 </div>
 </div>
@@ -291,18 +328,21 @@
 <span>·</span>
 <a class="hover:text-brand-gold transition duration-300" href="/terms.html">Terms and Conditions</a>
 <span>·</span>
-<a class="hover:text-brand-gold transition duration-300" href="/esign.html">E‑Sign Consent</a>
+<a class="hover:text-brand-gold transition duration-300" href="/esign.html">E-Sign Consent</a>
 </div>
 </div>
 </div>
 <div class="mt-2 text-sm text-center">
-<a class="underline text-green-600" href="https://wa.me/14073743301" rel="noopener" target="_blank">Chat on WhatsApp</a>
+<a class="underline text-green-600" href="https://wa.me/13214304434" rel="noopener" target="_blank">Chat on WhatsApp</a>
+</div>
+<div class="mt-2 text-center">
+<p class="text-xs text-slate-400">SwiftPath Capital provides <strong>business-purpose loans only</strong>; we do not offer consumer/personal loans.</p>
 </div>
 </footer>
 <!-- Product Detail Modal -->
-<div class="fixed inset-0 z-60 hidden bg-black/60" id="productOverlay"></div>
-<div class="fixed inset-x-0 bottom-0 z-50 hidden md:inset-0 md:items-center md:justify-center" id="productModal">
-<div class="w-full bg-white rounded-t-2xl shadow-xl md:max-w-2xl md:rounded-2xl max-h-[85vh] overflow-y-auto p-6">
+<div class="fixed inset-0 z-40 hidden bg-slate-900/70" id="productOverlay"></div>
+<div class="fixed inset-0 z-60 hidden flex items-start justify-center overflow-y-auto p-4 md:p-6" id="productModal">
+<div class="w-full max-w-3xl bg-white text-slate-900 rounded-2xl shadow-2xl overflow-y-auto max-h-[90vh] p-6 md:p-8">
 <div class="flex items-center justify-between mb-3">
 <h2 class="text-2xl font-bold" id="productTitle">Loan Product</h2>
 <button aria-label="Close" class="p-2 rounded hover:bg-gray-100" onclick="closeProductModal()" type="button">✕</button>
@@ -311,13 +351,13 @@
 <div class="mt-6 flex flex-col sm:flex-row gap-3">
 <a class="flex-1 bg-brand-gold text-white font-semibold py-3 px-5 rounded-lg text-center" data-product="" href="/LoanApp.html" id="productApplyBtn">Apply for this Product</a>
 <a class="flex-1 text-brand-blue underline text-center" href="mailto:info@swiftpathcapital.com" id="productAdvisorBtn">Talk to an Advisor (Email)</a>
-<a class="flex-1 text-green-600 underline text-center" href="https://wa.me/14073743301" id="productAdvisorWA" target="_blank">WhatsApp Us</a>
+<a class="flex-1 text-green-600 underline text-center" href="https://wa.me/13214304434" id="productAdvisorWA" target="_blank">WhatsApp Us</a>
 </div>
-<p class="text-xs text-gray-500 mt-2 text-center">Same‑day term sheets available • Dedicated account manager for repeat borrowers</p>
+<p class="text-xs text-gray-500 mt-2 text-center">Same-day term sheets available • Dedicated account manager for repeat borrowers</p>
 </div>
 </div>
 <!-- WhatsApp Floating Button -->
-<a aria-label="Chat on WhatsApp" class="fixed z-40 bottom-5 right-5 md:bottom-6 md:right-6 rounded-full shadow-lg bg-green-500 hover:bg-green-600 text-white w-14 h-14 flex items-center justify-center" href="https://wa.me/14073743301" target="_blank">
+<a aria-label="Chat on WhatsApp" class="fixed z-40 bottom-5 right-5 md:bottom-6 md:right-6 rounded-full shadow-lg bg-green-500 hover:bg-green-600 text-white w-14 h-14 flex items-center justify-center" href="https://wa.me/13214304434" target="_blank">
 <svg aria-hidden="true" class="w-7 h-7" viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg">
 <path d="M380.9 97.1C339 55.1 283.2 32 224.8 32c-116.2 0-210.8 94.6-210.8 210.8 0 37.1 9.7 73.3 28.2 105.3L0 480l134.9-41.4c30.6 16.7 64.9 25.5 99.9 25.5h.1c116.1 0 210.8-94.6 210.8-210.8 0-58.5-23.2-114.3-64.8-156.2zM224.9 438.6h-.1c-31.1 0-61.6-8.3-88.2-24.1l-6.3-3.7-80.1 24.6 26-78.1-4.1-6.7c-17.8-29-27.2-62.5-27.2-96.6C45 156.7 126.6 75 224.8 75c47.8 0 92.8 18.6 126.5 52.3 33.8 33.8 52.4 78.7 52.4 126.5 0 98.1-81.7 184.8-178.8 184.8zM315 304.7c-4.3-2.1-25.4-12.5-29.3-13.9-3.9-2-6.8-.9-9.6 2.2-2.8 3.1-11 12.6-13.5 15.2-2.5 2.6-5 2-8.5 1-3.5-1-22.4-11-38.6-24.1-14.3-11.7-26.8-26.1-36.3-42.2-2.6-4.3-2.7-7.4.1-11.3 3.2-4.3 7.1-9.9 10-13 3.1-3.3 5.2-3.3 9-.9 3.6 2.2 23.1 10.9 27 12.9 3.9 2 6.6 3 9.4-.7 2.8-3.5 11-12.9 13.5-15.4 2.7-2.5 5.6-2.7 9 .4 3.1 3.1 10.5 12.4 10.5 20.6 0 8.2-4.3 16.3-10.6 22.3z" fill="currentColor"></path>
 </svg>
@@ -326,7 +366,7 @@
 <div class="fixed inset-x-0 bottom-0 z-50 bg-gray-900 text-white p-4 shadow-lg hidden" id="cookieBanner">
 <div class="max-w-5xl mx-auto flex flex-col md:flex-row md:items-center gap-3">
 <p class="text-sm leading-snug flex-1">
-        We use cookies to improve your experience and to understand site traffic. By clicking <strong>Accept</strong>, you agree to our use of non‑essential cookies.
+        We use cookies to improve your experience and to understand site traffic. By clicking <strong>Accept</strong>, you agree to our use of non-essential cookies.
         See our <a class="underline" href="/privacy.html" id="cookiePrivacyLink">Privacy Policy</a>.
       </p>
 <div class="flex gap-2">
@@ -335,7 +375,7 @@
 </div>
 </div>
 </div>
-<!-- Scripts -->
+<!-- Scripts (all your functional code preserved) -->
 <script>
     // Cookie preferences
     (function(){
@@ -429,16 +469,16 @@
         },
         "Rental Properties": {
           title: "Rental Properties (DSCR)",
-          html: `<p><strong>Best for:</strong> Long‑term or short‑term rentals qualified by property cash flow (DSCR).</p>
-                 <ul><li><strong>Typical projects:</strong> turnkey or light value‑add SFR/2‑4/STR</li>
+          html: `<p><strong>Best for:</strong> Long-term or short-term rentals qualified by property cash flow (DSCR).</p>
+                 <ul><li><strong>Typical projects:</strong> turnkey or light value-add SFR/2-4/STR</li>
                      <li><strong>Why it fits:</strong> underwriting focuses on DSCR vs personal income</li></ul>
-                 <p class="mt-3"><strong>Investor story:</strong> “Tanya acquires STRs near national parks; DSCR lets her scale without W‑2 constraints.”</p>
+                 <p class="mt-3"><strong>Investor story:</strong> “Tanya acquires STRs near national parks; DSCR lets her scale without W-2 constraints.”</p>
                  <p class="mt-3"><strong>What you'll need:</strong></p>
                  <ul><li>Lease / projected rent</li><li>Property insurance quote</li><li>Entity docs</li></ul>`
         },
         "New Construction": {
           title: "New Construction",
-          html: `<p><strong>Best for:</strong> Ground‑up builders needing acquisition + vertical financing with milestone draws.</p>
+          html: `<p><strong>Best for:</strong> Ground-up builders needing acquisition + vertical financing with milestone draws.</p>
                  <ul><li><strong>Typical projects:</strong> infill spec homes, scattered lots, small tracts</li>
                      <li><strong>Why it fits:</strong> funded draws tied to inspections; interest-only during build</li></ul>
                  <p class="mt-3"><strong>Investor story:</strong> “Chris develops 4 spec homes/yr on infill lots with a GC and pre-sold plans.”</p>
@@ -451,8 +491,8 @@
 <p><strong>What is DSCR?</strong> Debt Service Coverage Ratio measures a property’s ability to cover its debt from Net Operating Income (NOI).</p>
 <p><strong>Formula:</strong> DSCR = NOI ÷ Annual Debt Service. Typical approvals start around <strong>1.0×–1.25×</strong> depending on LTV/credit.</p>
 <ul>
-  <li><strong>Why investors like it:</strong> Qualification focuses on the property (cash flow), not personal DTI; 30‑year options; entity borrowing allowed.</li>
-  <li><strong>Use cases:</strong> Long‑term rentals and many STRs once stabilized.</li>
+  <li><strong>Why investors like it:</strong> Qualification focuses on the property (cash flow), not personal DTI; 30-year options; entity borrowing allowed.</li>
+  <li><strong>Use cases:</strong> Long-term rentals and many STRs once stabilized.</li>
 </ul>
 <p class="mt-3"><strong>Typical Docs Required</strong></p>
 <ul>
@@ -466,10 +506,10 @@
         },
         "Bridge Loans": {
           title: "Bridge Loans",
-          html: `<p><strong>Best for:</strong> Short‑term capital to seize opportunities: buy before you sell, auctions, or unlock trapped equity.</p>
+          html: `<p><strong>Best for:</strong> Short-term capital to seize opportunities: buy before you sell, auctions, or unlock trapped equity.</p>
                  <ul><li><strong>Typical projects:</strong> quick acquisitions, gap funding</li>
-                     <li><strong>Why it fits:</strong> asset‑based, light documentation, rapid approvals</li></ul>
-                 <p class="mt-3"><strong>Investor story:</strong> “Alex wins courthouse auctions using reliable same‑week funding.”</p>
+                     <li><strong>Why it fits:</strong> asset-based, light documentation, rapid approvals</li></ul>
+                 <p class="mt-3"><strong>Investor story:</strong> “Alex wins courthouse auctions using reliable same-week funding.”</p>
                  <p class="mt-3"><strong>What you'll need:</strong></p>
                  <ul><li>Purchase details</li><li>Exit strategy</li><li>Entity docs</li></ul>`
         }
@@ -509,7 +549,23 @@
       });
     })();
   </script>
-<!-- Load HubSpot submission logic externally for CSP compatibility -->
+<!-- Lead Form + Twilio phone verification (unchanged) -->
 <script defer="" src="/assets/lead-form.js?v=2.5"></script>
+<script src="/assets/phone-verify-ui.js"></script>
+<script>
+    (function(){
+      var f = document.getElementById('leadForm');
+      if (f) {
+        f.addEventListener('submit', function(e){
+          if (!(window.__phoneVerified && window.__phoneVerified())){
+            e.preventDefault();
+            alert('Please verify your phone number via SMS before submitting.');
+          }
+        }, true);
+      }
+    })();
+  </script>
+<script src="/assets/verify-gatekeeper.js"></script>
+
 </body>
 </html>
