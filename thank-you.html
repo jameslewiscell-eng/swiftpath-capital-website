@@ -4,100 +4,86 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Thank You — SwiftPath Capital</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-  <style>body{font-family:'Inter',sans-serif}</style>
 
-        <div class="text-center mt-6">
-          <a id="calendly-fallback" href="https://calendly.com/swiftpathcapital-info/book-a-call" class="inline-block mt-3 px-5 py-3 rounded-lg bg-slate-900 text-white">
-            Open Calendly in a new tab
-          </a>
-        </div>
-      </div>
-
-    </div>
-  </main>
+  <!-- Google tag (gtag.js) - base tag only for Page Load conversion -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17093021602"></script>
   <script>
-    // Example: if you use Calendly, swap the link above and optionally read UTMs here
-    // const params = new URLSearchParams(location.search);
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'AW-17093021602'); // page_view; Google Ads will trigger page-load conversion by URL rule
   </script>
 
-<!-- WhatsApp Floating Button -->
-<a href="https://wa.me/13214304434" rel="noopener" target="_blank" aria-label="Chat on WhatsApp"
-   class="fixed z-50 bottom-5 right-5 md:bottom-6 md:right-6 rounded-full shadow-lg
-          bg-green-500 hover:bg-green-600 text-white w-14 h-14 flex items-center justify-center">
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" aria-hidden="true" class="w-7 h-7">
-    <path fill="currentColor" d="M380.9 97.1C339 55.1 283.2 32 224.8 32c-116.2 0-210.8 94.6-210.8 210.8 0 37.1 9.7 73.3 28.2 105.3L0 480l134.9-41.4c30.6 16.7 64.9 25.5 99.9 25.5h.1c116.1 0 210.8-94.6 210.8-210.8 0-58.5-23.2-114.3-64.8-156.2zM224.9 438.6h-.1c-31.1 0-61.6-8.3-88.2-24.1l-6.3-3.7-80.1 24.6 26-78.1-4.1-6.7c-17.8-29-27.2-62.5-27.2-96.6C45 156.7 126.6 75 224.8 75c47.8 0 92.8 18.6 126.5 52.3 33.8 33.8 52.4 78.7 52.4 126.5 0 98.1-81.7 184.8-178.8 184.8zM315 304.7c-4.3-2.1-25.4-12.5-29.3-13.9-3.9-.9-6.8-.5-9.8 2.6-2.9 3.1-11.4 11.1-11.4 27s11.7 31.3 13.3 33.5c1.6 2.2 22.3 35.6 54.5 48.6 32.2 13 38.7 8.9 45.7 8.4 7-.5 23.2-9.5 26.5-18.6 3.3-9.1 3.3-17.1 2.3-18.8-1-1.7-3.6-2.6-7.5-4.6z"/>
-  </svg>
-</a>
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
 
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
-<!-- Cookie Banner -->
-<div id="cookieBanner" class="fixed inset-x-0 bottom-0 z-50 bg-gray-900 text-white p-4 shadow-lg hidden">
-  <div class="max-w-5xl mx-auto flex flex-col md:flex-row md:items-center gap-3">
-    <p class="text-sm leading-snug flex-1">
-      We use cookies to improve your experience and to understand site traffic. By clicking <strong>Accept</strong>, you agree to our use of non‑essential cookies.
-      See our <a href="/privacy.html" id="cookiePrivacyLink" class="underline">Privacy Policy</a>.
-    </p>
-    <div class="flex gap-2">
-      <button id="cookieDecline" class="px-3 py-2 rounded bg-gray-700 hover:bg-gray-600 text-sm">Decline</button>
-      <button id="cookieAccept" class="px-3 py-2 rounded bg-yellow-400 text-gray-900 font-semibold text-sm">Accept</button>
+  <style>
+    body{font-family:'Inter',sans-serif}
+    .calendly-inline-widget{min-width:320px; height:780px;}
+  </style>
+
+  <!-- Calendly embed assets -->
+  <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
+  <script src="https://assets.calendly.com/assets/external/widget.js" async></script>
+</head>
+<body class="bg-white text-slate-800">
+  <main class="max-w-5xl mx-auto px-6 py-10">
+    <h1 class="text-3xl md:text-4xl font-extrabold text-center">You're all set — schedule your call</h1>
+    <p class="mt-3 text-center text-slate-600">Pick a time that works for you below. If the calendar doesn’t appear, use the button underneath.</p>
+
+    <!-- Calendly Inline Embed -->
+    <div class="mt-8 rounded-xl overflow-hidden shadow-lg ring-1 ring-slate-200">
+      <div class="calendly-inline-widget"
+           data-url="https://calendly.com/swiftpathcapital-info/book-a-call"></div>
     </div>
-  </div>
-</div>
-<script>
-(function(){
-  try {
-    var KEY='spc_cookie_consent';
-    var banner=document.getElementById('cookieBanner');
-    var pref=localStorage.getItem(KEY);
-    if(!pref){ banner.classList.remove('hidden'); }
-    function set(val){ localStorage.setItem(KEY,val); banner.classList.add('hidden'); }
-    document.getElementById('cookieAccept')?.addEventListener('click', function(){ set('accepted'); });
-    document.getElementById('cookieDecline')?.addEventListener('click', function(){ set('declined'); });
 
-    // Footer "Cookie Preferences" opener
-    document.getElementById('open-cookie-prefs')?.addEventListener('click', function(e){
-      e.preventDefault(); banner.classList.remove('hidden');
-    });
-
-    // Open privacy modal from banner if available
-    document.getElementById('cookiePrivacyLink')?.addEventListener('click', function(e){
-      e.preventDefault();
-      if (typeof openModal==='function') { openModal('privacyModal'); }
-      else { location.href = '/privacy.html'; }
-    });
-  } catch(e){ console.warn('cookie banner error', e); }
-})();
-</script>
-
-
-<footer class="bg-slate-800 text-white mt-16">
-  <div class="container mx-auto px-6 py-10 text-center">
-    <div class="space-x-3">
-      <a href="/privacy.html" class="hover:text-brand-gold transition">Privacy Policy</a>
-      <span>&middot;</span>
-      <a href="/terms.html" class="hover:text-brand-gold transition">Terms and Conditions</a>
-      <span>&middot;</span>
-      <a href="/esign.html" class="hover:text-brand-gold transition">E‑Sign Consent</a>
+    <!-- Fallback link -->
+    <div class="text-center mt-6">
+      <a id="calendly-fallback"
+         href="https://calendly.com/swiftpathcapital-info/book-a-call"
+         class="inline-block px-5 py-3 rounded-lg bg-slate-900 text-white hover:bg-slate-700">
+        Open Calendly in a new tab
+      </a>
     </div>
-  </div>
-</footer>
+  </main>
 
-<script>
-// append UTMs to Calendly url
-(function(){
-  try{
-    var qs = window.location.search || "";
-    var el = document.querySelector(".calendly-inline-widget");
-    if (el && qs && el.dataset && el.dataset.url && !el.dataset.url.includes("?")) {
-      el.dataset.url = el.dataset.url + qs;
-    }
-  }catch(e){}
-})();
-</script>
+  <!-- WhatsApp Floating Button -->
+  <a href="https://wa.me/13214304434" rel="noopener" target="_blank" aria-label="Chat on WhatsApp"
+     class="fixed z-50 bottom-5 right-5 md:bottom-6 md:right-6 rounded-full shadow-lg
+            bg-green-500 hover:bg-green-600 text-white w-14 h-14 flex items-center justify-center">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" aria-hidden="true" class="w-7 h-7">
+      <path fill="currentColor" d="M380.9 97.1C339 55.1 283.2 32 224.8 32c-116.2 0-210.8 94.6-210.8 210.8 0 37.1 9.7 73.3 28.2 105.3L0 480l134.9-41.4c30.6 16.7 64.9 25.5 99.9 25.5h.1c116.1 0 210.8-94.6 210.8-210.8 0 58.5-23.2-114.3-64.8-156.2zM224.9 438.6h-.1c-31.1 0-61.6-8.3-88.2-24.1l-6.3-3.7-80.1 24.6 26-78.1-4.1-6.7c-17.8-29-27.2-62.5-27.2-96.6C45 156.7 126.6 75 224.8 75c47.8 0 92.8 18.6 126.5 52.3 33.8 33.8 52.4 78.7 52.4 126.5 0 98.1-81.7 184.8-178.8 184.8zM315 304.7c-4.3-2.1-25.4-12.5-29.3-13.9-3.9-.9-6.8-.5-9.8 2.6-2.9 3.1-11.4 11.1-11.4 27s11.7 31.3 13.3 33.5c1.6 2.2 22.3 35.6 54.5 48.6 32.2 13 38.7 8.9 45.7 8.4 7-.5 23.2-9.5 26.5-18.6 3.3-9.1 3.3-17.1 2.3-18.8-1-1.7-3.6-2.6-7.5-4.6z"/>
+    </svg>
+  </a>
 
+  <!-- Footer -->
+  <footer class="bg-slate-800 text-white mt-16">
+    <div class="container mx-auto px-6 py-10 text-center">
+      <div class="space-x-3">
+        <a href="/privacy.html" class="hover:text-brand-gold transition">Privacy Policy</a>
+        <span>&middot;</span>
+        <a href="/terms.html" class="hover:text-brand-gold transition">Terms and Conditions</a>
+        <span>&middot;</span>
+        <a href="/esign.html" class="hover:text-brand-gold transition">E-Sign Consent</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Append UTMs to Calendly URL -->
+  <script>
+    (function(){
+      try{
+        var qs = window.location.search || "";
+        var el = document.querySelector(".calendly-inline-widget");
+        if (el && qs && el.dataset && el.dataset.url && !el.dataset.url.includes("?")) {
+          el.dataset.url = el.dataset.url + qs;
+        }
+      }catch(e){}
+    })();
+  </script>
 </body>
-
 </html>
