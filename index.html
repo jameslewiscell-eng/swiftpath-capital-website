@@ -15,9 +15,9 @@
 <meta content="https://swiftpathcapital.com/" property="og:url"/>
 <meta content="website" property="og:type"/>
 <meta content="summary_large_image" name="twitter:card"/>
-<meta content="SwiftPath Capital: First, Fast, Funded." name="twitter:title">
-<meta content="Private lending for real estate investors — DSCR, fix-and-flip, bridge. Fast, transparent funding." name="twitter:description">
-<meta content="Images/Logo.PNG" name="twitter:image">
+<meta content="SwiftPath Capital: First, Fast, Funded." name="twitter:title"/>
+<meta content="Private lending for real estate investors — DSCR, fix-and-flip, bridge. Fast, transparent funding." name="twitter:description"/>
+<meta content="Images/Logo.PNG" name="twitter:image"/>
 <!-- Organization Schema -->
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"SwiftPath Capital Corporation","url":"https://swiftpathcapital.com/","logo":"https://swiftpathcapital.com/Images/Logo.PNG","description":"Tucson-based private lending and business-purpose funding for real estate investors — DSCR, fix-and-flip, and bridge financing. Not a consumer/personal lender.","founder":{"@type":"Person","name":"James Lewis","jobTitle":"Founder & CEO","url":"https://www.linkedin.com/in/jlewismanager/"},"address":{"@type":"PostalAddress","streetAddress":"333 N Wilmot Rd, STE 340","addressLocality":"Tucson","addressRegion":"AZ","postalCode":"85711","addressCountry":"US"},"contactPoint":{"@type":"ContactPoint","telephone":"+1-321-430-4434","contactType":"customer support","areaServed":"US"},"sameAs":["https://www.linkedin.com/company/swiftpathcapital/","https://www.linkedin.com/in/jlewismanager/","https://www.instagram.com/swiftpathcapital","https://youtube.com/@swiftpath"],"knowsAbout":["real estate investment loans","business-purpose lending","DSCR loans","fix and flip loans","bridge loans","private lending"]}</script>
 <!-- LocalBusiness Schema -->
@@ -58,9 +58,9 @@ select option{ color:#0f172a; background:#fff; }
     gtag('js', new Date());
     gtag('config', 'AW-17093021602');
   </script>
-<meta content="Tucson, Arizona, USA" name="geo.placename"/>
-<meta content="32.216213;-110.887430" name="geo.position"/>
-<meta content="32.216213, -110.887430" name="ICBM"/>
+<meta content="Tucson, Arizona, USA" name="geo.placename">
+<meta content="32.216213;-110.887430" name="geo.position">
+<meta content="32.216213, -110.887430" name="ICBM">
 <meta content="333 N Wilmot Rd, STE 340" name="business:contact_data:street_address"/>
 <meta content="Tucson" name="business:contact_data:locality"/>
 <meta content="AZ" name="business:contact_data:region"/>
@@ -167,8 +167,7 @@ select option{ color:#0f172a; background:#fff; }
 <p class="mt-4 text-lg text-slate-600 max-w-2xl mx-auto">A quick, educational tip to help you succeed in today's market. A new video drops every week!</p>
 </div>
 <div class="max-w-xs mx-auto">
-
-<div class="relative w-full rounded-2xl overflow-hidden shadow-2xl bg-black" style="padding-top: 177.77%;"><div class="absolute top-0 left-0 w-full h-full" id="weeklyInsightPlayer"></div></div></div>
+<div class="relative w-full rounded-2xl overflow-hidden shadow-2xl bg-black" style="padding-top: 177.77%;"><iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" class="absolute top-0 left-0 w-full h-full" frameborder="0" src="https://www.youtube.com/embed/videoseries?list=UUBkefGsZrkhSZt5Q4-zRpAQ&amp;autoplay=1&amp;mute=1&amp;playsinline=1&amp;rel=0&amp;modestbranding=1&amp;controls=1" title="SwiftPath Capital • Weekly Insight"></iframe></div></div>
 </div>
 </section>
 <!-- Stats -->
@@ -567,55 +566,6 @@ select option{ color:#0f172a; background:#fff; }
     })();
   </script>
 <script src="/assets/verify-gatekeeper.js"></script>
-<script>
-  // Load the YouTube IFrame API asynchronously
-  var tag = document.createElement('script');
-  tag.src = "https://www.youtube.com/iframe_api";
-  var firstScriptTag = document.getElementsByTagName('script')[0];
-  firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
-  var player;
-  function onYouTubeIframeAPIReady() {
-    player = new YT.Player('weeklyInsightPlayer', {
-      height: '100%',
-      width: '100%',
-      playerVars: {
-        host: 'https://www.youtube.com',
-        origin: window.location.origin,
-        listType: 'playlist',
-        list: 'UUBkefGsZrkhSZt5Q4-zRpAQ', // SwiftPath Capital uploads
-        autoplay: 1,
-        mute: 1,            
-        playsinline: 1,     
-        rel: 0,
-        modestbranding: 1,
-        enablejsapi: 1
-      },
-      
-      events: {
-        onReady: function (e) {
-          try { e.target.setShuffle(true); } catch (_) {}
-          e.target.playVideo();
-        },
-        onStateChange: function (e) {
-          // Placeholder for future hooks
-        },
-        onError: function (e) {
-          // Fallback if playlist/video is unavailable or embedding disabled
-          try {
-            var fallbackVideoId = 'EFMf7gwbSuA'; // known public video previously used
-            e.target.loadVideoById(fallbackVideoId);
-          } catch (_) {}
-        }
-      } catch (_) {}
-          e.target.playVideo();
-        },
-        onStateChange: function (e) {
-          // Optional: placeholder for future event handling
-        }
-      }
-    });
-  }
-</script>
 </body>
 </html>
