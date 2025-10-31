@@ -438,7 +438,6 @@ select option{ color:#0f172a; background:#fff; }
       }
     })();
   </script>
-
 <!-- Lead Form + Twilio phone verification (unchanged) -->
 <script defer="" src="/assets/lead-form.js?v=2.5"></script>
 <script src="/assets/phone-verify-ui.js"></script>
@@ -456,7 +455,6 @@ select option{ color:#0f172a; background:#fff; }
     })();
   </script>
 <script src="/assets/verify-gatekeeper.js"></script>
-
 <script>
 (function(){
   function lockScroll() {
@@ -508,6 +506,101 @@ select option{ color:#0f172a; background:#fff; }
       closeProductModal();
     }
   });
+})();
+</script>
+
+<script>
+(function(){
+  function $(sel, root){ return (root||document).querySelector(sel); }
+  function $all(sel, root){ return Array.prototype.slice.call((root||document).querySelectorAll(sel)); }
+
+  // Ensure helpers exist
+  if (typeof window.openProductModal !== 'function') {
+    window.openProductModal = function(){
+      var overlay = $('#productOverlay');
+      var modal = $('#productModal');
+      if(!overlay || !modal) return;
+      overlay.classList.remove('hidden');
+      modal.classList.remove('hidden');
+      var box = modal.querySelector('.modal-container');
+      if (box) requestAnimationFrame(function(){ box.classList.add('active'); });
+      document.documentElement.classList.add('overflow-hidden');
+      document.body.classList.add('overflow-hidden', 'touch-none');
+    };
+  }
+  if (typeof window.closeProductModal !== 'function') {
+    window.closeProductModal = function(){
+      var overlay = $('#productOverlay');
+      var modal = $('#productModal');
+      if(!overlay || !modal) return;
+      var box = modal.querySelector('.modal-container');
+      if (box) box.classList.remove('active');
+      overlay.classList.add('hidden');
+      modal.classList.add('hidden');
+      document.documentElement.classList.remove('overflow-hidden');
+      document.body.classList.remove('overflow-hidden', 'touch-none');
+    };
+  }
+
+  // 1) Generic click delegation for elements intended to open the modal
+  document.addEventListener('click', function(e){
+    var el = e.target;
+    // bubble up to clickable ancestor
+    while (el && el !== document) {
+      if (
+        el.matches('[data-open="productModal"]') ||
+        el.matches('.open-product-modal') ||
+        el.matches('[data-modal-target="#productModal"]') ||
+        el.matches('a[href="#productModal"]') ||
+        el.matches('button[href="#productModal"]') ||
+        el.hasAttribute('data-product') // product tiles
+      ) {
+        e.preventDefault();
+        try {
+          var title = (el.getAttribute('data-product') || el.textContent || '').trim();
+          if (!title) {
+            // try to find a heading inside the tile
+            var h = el.querySelector('h3, h2');
+            if (h) title = h.textContent.trim();
+          }
+          var t = $('#productTitle');
+          if (t && title) t.textContent = title;
+          var applyBtn = $('#productApplyBtn');
+          if (applyBtn && title) applyBtn.setAttribute('data-product', title);
+        } catch(_) {}
+        openProductModal();
+        return;
+      }
+      el = el.parentElement;
+    }
+  }, true);
+
+  // 2) Wire the product grid cards to open the modal (fallback if no explicit triggers exist)
+  var productCards = $all('#products .group, #products [data-product]');
+  productCards.forEach(function(card){
+    if (!card.getAttribute('tabindex')) card.setAttribute('tabindex','0');
+    card.style.cursor = 'pointer';
+    card.addEventListener('click', function(e){
+      // Avoid triggering when clicking actual links inside
+      if (e.target.closest('a')) return;
+      try {
+        var title = (card.getAttribute('data-product') || (card.querySelector('h3') && card.querySelector('h3').textContent) || 'Loan Product').trim();
+        var t = $('#productTitle'); if (t) t.textContent = title;
+        var applyBtn = $('#productApplyBtn'); if (applyBtn) applyBtn.setAttribute('data-product', title);
+      } catch(_){}
+      openProductModal();
+    });
+    // Keyboard accessibility
+    card.addEventListener('keydown', function(e){
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); card.click(); }
+    });
+  });
+
+  // 3) Close handlers
+  document.addEventListener('keydown', function(e){ if (e.key === 'Escape') closeProductModal(); });
+  var overlay = $('#productOverlay');
+  if (overlay) overlay.addEventListener('click', function(e){ if (e.target === overlay) closeProductModal(); });
+  $all('[aria-label="Close"], .modal-close').forEach(function(btn){ btn.onclick = closeProductModal; });
 })();
 </script>
 </body>
