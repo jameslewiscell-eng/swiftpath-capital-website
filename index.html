@@ -73,7 +73,7 @@ select option{ color:#0f172a; background:#fff; }
 <header class="/80 backdrop-blur-lg sticky top-0 z-40 shadow-sm" id="header">
 <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
 <a class="flex items-center space-x-2" href="/">
-<img alt="SwiftPath Capital Logo" class="w-auto h-20 md:h-22" src="Images/Logo.PNG"/>
+<img alt="SwiftPath Capital Logo" class="w-auto h-20 md:h-18" src="Images/Logo.PNG"/>
 </a>
 <div class="hidden lg:flex items-center space-x-8">
 <a class="text-slate-600 hover:text-brand-blue transition duration-300 font-medium" href="#advantage">Our Advantage</a>
@@ -111,7 +111,7 @@ select option{ color:#0f172a; background:#fff; }
 <section class="relative min-h-[70vh] md:min-h-[80vh] flex items-center bg-cover bg-center" style="background-image:url('https://images.unsplash.com/photo-1580587771525-78b9dba3b914?q=80&amp;w=2874&amp;auto=format&amp;fit=crop')">
 <div class="absolute inset-0 bg-slate-900/60"></div>
 <div class="relative container mx-auto px-6 text-center text-white">
-<img alt="SwiftPath Capital" class="mx-auto mb-6 h-52 md:h-72 w-auto drop-shadow-lg" src="Images/Logo.PNG"/>
+<img alt="SwiftPath Capital" class="mx-auto mb-6 h-20 md:h-16 w-auto drop-shadow-lg" src="Images/Logo.PNG"/>
 <h1 class="text-4xl md:text-6xl font-extrabold leading-tight mb-4">SwiftPath Capital — Real Estate Investment Funding</h1>
 <p class="text-xl md:text-2xl max-w-3xl mx-auto mb-8">At the Speed of the Deal.</p>
 <div class="flex justify-center gap-4 flex-wrap">
@@ -340,9 +340,11 @@ select option{ color:#0f172a; background:#fff; }
 </div>
 </footer>
 <!-- Product Detail Modal -->
-<div class="fixed inset-0 z-60 hidden bg-black/60" id="productOverlay"></div>
-<div class="fixed inset-x-0 bottom-0 z-50 hidden md:inset-0 md:items-center md:justify-center" id="productModal">
-<div class="w-full bg-white rounded-t-2xl shadow-xl md:max-w-2xl md:rounded-2xl max-h-[85vh] overflow-y-auto p-6 modal-container">
+
+
+<!-- WhatsApp Floating Button -->
+<div class="fixed inset-0 z-60 hidden bg-black/60" id="productOverlay"></div><div class="fixed inset-x-0 bottom-0 z-50 hidden md:inset-0 md:items-center md:justify-center" id="productModal">
+<div class="w-full bg-white rounded-t-2xl shadow-xl md:max-w-2xl md:rounded-2xl max-h-[85vh] overflow-y-auto p-6">
 <div class="flex items-center justify-between mb-3">
 <h2 class="text-2xl font-bold" id="productTitle">Loan Product</h2>
 <button aria-label="Close" class="p-2 rounded hover:bg-gray-100" onclick="closeProductModal()" type="button">✕</button>
@@ -351,13 +353,11 @@ select option{ color:#0f172a; background:#fff; }
 <div class="mt-6 flex flex-col sm:flex-row gap-3">
 <a class="flex-1 bg-brand-gold text-white font-semibold py-3 px-5 rounded-lg text-center" data-product="" href="/LoanApp.html" id="productApplyBtn">Apply for this Product</a>
 <a class="flex-1 text-brand-blue underline text-center" href="mailto:info@swiftpathcapital.com" id="productAdvisorBtn">Talk to an Advisor (Email)</a>
-<a class="flex-1 text-green-600 underline text-center" href="https://wa.me/13214304434" id="productAdvisorWA" target="_blank">WhatsApp Us</a>
+<a class="flex-1 text-green-600 underline text-center" href="https://wa.me/14073743301" id="productAdvisorWA" target="_blank">WhatsApp Us</a>
 </div>
 <p class="text-xs text-gray-500 mt-2 text-center">Same‑day term sheets available • Dedicated account manager for repeat borrowers</p>
 </div>
-</div>
-<!-- WhatsApp Floating Button -->
-<a aria-label="Chat on WhatsApp" class="fixed z-40 bottom-5 right-5 md:bottom-6 md:right-6 rounded-full shadow-lg bg-green-500 hover:bg-green-600 text-white w-14 h-14 flex items-center justify-center" href="https://wa.me/13214304434" target="_blank">
+</div><a aria-label="Chat on WhatsApp" class="fixed z-40 bottom-5 right-5 md:bottom-6 md:right-6 rounded-full shadow-lg bg-green-500 hover:bg-green-600 text-white w-14 h-14 flex items-center justify-center" href="https://wa.me/13214304434" target="_blank">
 <svg aria-hidden="true" class="w-7 h-7" viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg">
 <path d="M380.9 97.1C339 55.1 283.2 32 224.8 32c-116.2 0-210.8 94.6-210.8 210.8 0 37.1 9.7 73.3 28.2 105.3L0 480l134.9-41.4c30.6 16.7 64.9 25.5 99.9 25.5h.1c116.1 0 210.8-94.6 210.8-210.8 0-58.5-23.2-114.3-64.8-156.2zM224.9 438.6h-.1c-31.1 0-61.6-8.3-88.2-24.1l-6.3-3.7-80.1 24.6 26-78.1-4.1-6.7c-17.8-29-27.2-62.5-27.2-96.6C45 156.7 126.6 75 224.8 75c47.8 0 92.8 18.6 126.5 52.3 33.8 33.8 52.4 78.7 52.4 126.5 0 98.1-81.7 184.8-178.8 184.8zM315 304.7c-4.3-2.1-25.4-12.5-29.3-13.9-3.9-2-6.8-.9-9.6 2.2-2.8 3.1-11 12.6-13.5 15.2-2.5 2.6-5 2-8.5 1-3.5-1-22.4-11-38.6-24.1-14.3-11.7-26.8-26.1-36.3-42.2-2.6-4.3-2.7-7.4.1-11.3 3.2-4.3 7.1-9.9 10-13 3.1-3.3 5.2-3.3 9-.9 3.6 2.2 23.1 10.9 27 12.9 3.9 2 6.6 3 9.4-.7 2.8-3.5 11-12.9 13.5-15.4 2.7-2.5 5.6-2.7 9 .4 3.1 3.1 10.5 12.4 10.5 20.6 0 8.2-4.3 16.3-10.6 22.3z" fill="currentColor"></path>
 </svg>
@@ -439,7 +439,117 @@ select option{ color:#0f172a; background:#fff; }
     })();
   </script>
 <!-- Lead Form + Twilio phone verification (unchanged) -->
-<script defer="" src="/assets/lead-form.js?v=2.5"></script>
+<script>
+    // Product modal
+    (function(){
+      const overlay = document.getElementById('productOverlay');
+      const modal = document.getElementById('productModal');
+      const titleEl = document.getElementById('productTitle');
+      const bodyEl = document.getElementById('productBody');
+      const applyBtn = document.getElementById('productApplyBtn');
+      const htmlEl = document.documentElement;
+
+      const copy = {
+        "Fix-and-Flip": {
+          title: "Fix-and-Flip",
+          html: `<p><strong>Best for:</strong> Buying discounted homes that need cosmetic or structural rehab and reselling for profit.</p>
+                 <ul><li><strong>Typical projects:</strong> cosmetic updates, heavy rehab, value-add flips</li>
+                     <li><strong>Why it fits:</strong> funds purchase + rehab draws; interest-only; quick closings</li></ul>
+                 <p class="mt-3"><strong>Investor story:</strong> “Maria buys outdated SFRs in Dallas, completes 6–8 week rehabs, and lists immediately. Speed and draw reliability are critical.”</p>
+                 <p class="mt-3"><strong>What you'll need:</strong></p>
+                 <ul><li>Entity docs (LLC)</li><li>Purchase contract</li><li>Scope & rehab budget</li><li>Experience summary (if any)</li></ul>`
+        },
+        "BRRRR Method": {
+          title: "BRRRR (Buy, Rehab, Rent, Refinance, Repeat)",
+          html: `<p><strong>Best for:</strong> Building a rental portfolio by renovating, renting, then refinancing into long-term DSCR/agency debt.</p>
+                 <ul><li><strong>Typical projects:</strong> SFR & small multifamily value-add rentals</li>
+                     <li><strong>Why it fits:</strong> short-term rehab funds that transition to long-term once stabilized</li></ul>
+                 <p class="mt-3"><strong>Investor story:</strong> “Andre renovates duplexes, leases quickly, then refinances to recycle capital.”</p>
+                 <p class="mt-3"><strong>What you'll need:</strong></p>
+                 <ul><li>Entity docs</li><li>Purchase contract</li><li>Rehab budget</li><li>Projected rents / comp set</li></ul>`
+        },
+        "Rental Properties": {
+          title: "Rental Properties (DSCR)",
+          html: `<p><strong>Best for:</strong> Long‑term or short‑term rentals qualified by property cash flow (DSCR).</p>
+                 <ul><li><strong>Typical projects:</strong> turnkey or light value‑add SFR/2‑4/STR</li>
+                     <li><strong>Why it fits:</strong> underwriting focuses on DSCR vs personal income</li></ul>
+                 <p class="mt-3"><strong>Investor story:</strong> “Tanya acquires STRs near national parks; DSCR lets her scale without W‑2 constraints.”</p>
+                 <p class="mt-3"><strong>What you'll need:</strong></p>
+                 <ul><li>Lease / projected rent</li><li>Property insurance quote</li><li>Entity docs</li></ul>`
+        },
+        "New Construction": {
+          title: "New Construction",
+          html: `<p><strong>Best for:</strong> Ground‑up builders needing acquisition + vertical financing with milestone draws.</p>
+                 <ul><li><strong>Typical projects:</strong> infill spec homes, scattered lots, small tracts</li>
+                     <li><strong>Why it fits:</strong> funded draws tied to inspections; interest-only during build</li></ul>
+                 <p class="mt-3"><strong>Investor story:</strong> “Chris develops 4 spec homes/yr on infill lots with a GC and pre-sold plans.”</p>
+                 <p class="mt-3"><strong>What you'll need:</strong></p>
+                 <ul><li>Plans & permits</li><li>Budget & schedule</li><li>GC agreement / resume</li></ul>`
+        },
+        "DSCR (Debt Service Coverage Ratio)": {
+          title: "DSCR (Debt Service Coverage Ratio)",
+          html: `<p><strong>Best for:</strong> Rental properties qualified primarily by property cash flow.</p>
+<p><strong>What is DSCR?</strong> Debt Service Coverage Ratio measures a property’s ability to cover its debt from Net Operating Income (NOI).</p>
+<p><strong>Formula:</strong> DSCR = NOI ÷ Annual Debt Service. Typical approvals start around <strong>1.0×–1.25×</strong> depending on LTV/credit.</p>
+<ul>
+  <li><strong>Why investors like it:</strong> Qualification focuses on the property (cash flow), not personal DTI; 30‑year options; entity borrowing allowed.</li>
+  <li><strong>Use cases:</strong> Long‑term rentals and many STRs once stabilized.</li>
+</ul>
+<p class="mt-3"><strong>Typical Docs Required</strong></p>
+<ul>
+  <li>Executed lease(s) and current rent roll (or market rent estimate for purchases)</li>
+  <li>Proof of rental income (e.g., last 2–3 months bank statements)</li>
+  <li>Mortgage statement (if refi), property tax bill, and insurance declarations page</li>
+  <li>LLC/Entity docs (Operating Agreement/EIN) if borrowing in an entity</li>
+  <li>Photo ID and credit authorization</li>
+</ul>
+<p class="mt-3"><strong>Fast Path to Term Sheet:</strong> address & expected rent, purchase price/current value, desired loan amount, borrower/entity name.</p>`
+        },
+        "Bridge Loans": {
+          title: "Bridge Loans",
+          html: `<p><strong>Best for:</strong> Short‑term capital to seize opportunities: buy before you sell, auctions, or unlock trapped equity.</p>
+                 <ul><li><strong>Typical projects:</strong> quick acquisitions, gap funding</li>
+                     <li><strong>Why it fits:</strong> asset‑based, light documentation, rapid approvals</li></ul>
+                 <p class="mt-3"><strong>Investor story:</strong> “Alex wins courthouse auctions using reliable same‑week funding.”</p>
+                 <p class="mt-3"><strong>What you'll need:</strong></p>
+                 <ul><li>Purchase details</li><li>Exit strategy</li><li>Entity docs</li></ul>`
+        }
+      };
+
+      function openProductModal(key){
+        const data = copy[key];
+        if(!data) return;
+        titleEl.textContent = data.title;
+        bodyEl.innerHTML = data.html;
+        const url = '/LoanApp.html?product=' + encodeURIComponent(key);
+        applyBtn.href = url;
+        applyBtn.dataset.product = key;
+        document.getElementById('productOverlay').classList.remove('hidden');
+        modal.classList.remove('hidden');
+        htmlEl.style.overflow = 'hidden';
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({ event: 'product_modal_open', product: key });
+      }
+      window.closeProductModal = function(){
+        document.getElementById('productOverlay').classList.add('hidden');
+        modal.classList.add('hidden');
+        htmlEl.style.overflow = '';
+      };
+      document.getElementById('productOverlay')?.addEventListener('click', closeProductModal);
+      window.addEventListener('keydown', (e)=>{ if(e.key==='Escape') closeProductModal(); });
+      document.querySelectorAll('#products .group').forEach(card => {
+        const h = card.querySelector('h3'); if(!h) return;
+        const key = h.textContent.trim();
+        card.classList.add('cursor-pointer'); card.setAttribute('role','button'); card.setAttribute('tabindex','0');
+        card.addEventListener('click', ()=> openProductModal(key));
+        card.addEventListener('keypress', (e)=>{ if(e.key==='Enter' || e.key===' ') { e.preventDefault(); openProductModal(key); } });
+      });
+      document.getElementById('productApplyBtn')?.addEventListener('click', function(){
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({ event: 'product_apply_click', product: this.dataset.product || '' });
+      });
+    })();
+  </script><script defer="" src="/assets/lead-form.js?v=2.5"></script>
 <script src="/assets/phone-verify-ui.js"></script>
 <script>
     (function(){
@@ -457,144 +567,6 @@ select option{ color:#0f172a; background:#fff; }
 <script src="/assets/verify-gatekeeper.js"></script>
 
 
-<script>
-(function(){
-  const overlay = document.getElementById('productOverlay');
-  const modal = document.getElementById('productModal');
-  const titleEl = document.getElementById('productTitle');
-  const bodyEl = document.getElementById('productBody');
-  const applyBtn = document.getElementById('productApplyBtn');
-  const htmlEl = document.documentElement;
-  const bodyEl = document.body;
-
-  if (!overlay || !modal) return;
-
-  const copy = {
-    "Fix-and-Flip": {
-      title: "Fix-and-Flip",
-      html: `<p><strong>Best for:</strong> Buying discounted homes that need cosmetic or structural rehab and reselling for profit.</p>
-             <ul><li><strong>Typical projects:</strong> cosmetic updates, heavy rehab, value-add flips</li>
-                 <li><strong>Why it fits:</strong> funds purchase + rehab draws; interest-only; quick closings</li></ul>
-             <p class="mt-3"><strong>Investor story:</strong> “Maria buys outdated SFRs in Dallas, completes 6–8 week rehabs, and lists immediately. Speed and draw reliability are critical.”</p>
-             <p class="mt-3"><strong>What you'll need:</strong></p>
-             <ul><li>Entity docs (LLC)</li><li>Purchase contract</li><li>Scope & rehab budget</li><li>Experience summary (if any)</li></ul>`
-    },
-    "BRRRR Method": {
-      title: "BRRRR (Buy, Rehab, Rent, Refinance, Repeat)",
-      html: `<p><strong>Best for:</strong> Building a rental portfolio by renovating, renting, then refinancing into long-term DSCR/agency debt.</p>
-             <ul><li><strong>Typical projects:</strong> SFR & small multifamily value-add rentals</li>
-                 <li><strong>Why it fits:</strong> short-term rehab funds that transition to long-term once stabilized</li></ul>
-             <p class="mt-3"><strong>Investor story:</strong> “Andre renovates duplexes, leases quickly, then refinances to recycle capital.”</p>
-             <p class="mt-3"><strong>What you'll need:</strong></p>
-             <ul><li>Entity docs</li><li>Purchase contract</li><li>Rehab budget</li><li>Projected rents / comp set</li></ul>`
-    },
-    "Rental Properties": {
-      title: "Rental Properties (DSCR)",
-      html: `<p><strong>Best for:</strong> Long‑term or short‑term rentals qualified by property cash flow (DSCR).</p>
-             <ul><li><strong>Typical projects:</strong> turnkey or light value‑add SFR/2‑4/STR</li>
-                 <li><strong>Why it fits:</strong> underwriting focuses on DSCR vs personal income</li></ul>
-             <p class="mt-3"><strong>Investor story:</strong> “Tanya acquires STRs near national parks; DSCR lets her scale without W‑2 constraints.”</p>
-             <p class="mt-3"><strong>What you'll need:</strong></p>
-             <ul><li>Lease / projected rent</li><li>Property insurance quote</li><li>Entity docs</li></ul>`
-    },
-    "New Construction": {
-      title: "New Construction",
-      html: `<p><strong>Best for:</strong> Ground‑up builders needing acquisition + vertical financing with milestone draws.</p>
-             <ul><li><strong>Typical projects:</strong> infill spec homes, scattered lots, small tracts</li>
-                 <li><strong>Why it fits:</strong> funded draws tied to inspections; interest-only during build</li></ul>
-             <p class="mt-3"><strong>Investor story:</strong> “Chris develops 4 spec homes/yr on infill lots with a GC and pre-sold plans.”</p>
-             <p class="mt-3"><strong>What you'll need:</strong></p>
-             <ul><li>Plans & permits</li><li>Budget & schedule</li><li>GC agreement / resume</li></ul>`
-    },
-    "DSCR (Debt Service Coverage Ratio)": {
-      title: "DSCR (Debt Service Coverage Ratio)",
-      html: `<p><strong>Best for:</strong> Rental properties qualified primarily by property cash flow.</p>
-<p><strong>What is DSCR?</strong> Debt Service Coverage Ratio measures a property’s ability to cover its debt from Net Operating Income (NOI).</p>
-<p><strong>Formula:</strong> DSCR = NOI ÷ Annual Debt Service. Typical approvals start around <strong>1.0×–1.25×</strong> depending on LTV/credit.</p>
-<ul>
-  <li><strong>Why investors like it:</strong> Qualification focuses on the property (cash flow), not personal DTI; 30‑year options; entity borrowing allowed.</li>
-  <li><strong>Use cases:</strong> Long‑term rentals and many STRs once stabilized.</li>
-</ul>
-<p class="mt-3"><strong>Typical Docs Required</strong></p>
-<ul>
-  <li>Executed lease(s) and current rent roll (or market rent estimate for purchases)</li>
-  <li>Proof of rental income (e.g., last 2–3 months bank statements)</li>
-  <li>Mortgage statement (if refi), property tax bill, and insurance declarations page</li>
-  <li>LLC/Entity docs (Operating Agreement/EIN) if borrowing in an entity</li>
-  <li>Photo ID and credit authorization</li>
-</ul>
-<p class="mt-3"><strong>Fast Path to Term Sheet:</strong> address & expected rent, purchase price/current value, desired loan amount, borrower/entity name.</p>`
-    },
-    "Bridge Loans": {
-      title: "Bridge Loans",
-      html: `<p><strong>Best for:</strong> Short‑term capital to seize opportunities: buy before you sell, auctions, or unlock trapped equity.</p>
-             <ul><li><strong>Typical projects:</strong> quick acquisitions, gap funding</li>
-                 <li><strong>Why it fits:</strong> asset‑based, light documentation, rapid approvals</li></ul>
-             <p class="mt-3"><strong>Investor story:</strong> “Alex wins courthouse auctions using reliable same‑week funding.”</p>
-             <p class="mt-3"><strong>What you'll need:</strong></p>
-             <ul><li>Purchase details</li><li>Exit strategy</li><li>Entity docs</li></ul>`
-    }
-  };
-
-  function lockScroll(){
-    htmlEl.classList.add('overflow-hidden');
-    bodyEl.classList.add('overflow-hidden', 'touch-none');
-    htmlEl.style.overflow = 'hidden';
-  }
-  function unlockScroll(){
-    htmlEl.classList.remove('overflow-hidden');
-    bodyEl.classList.remove('overflow-hidden', 'touch-none');
-    htmlEl.style.overflow = '';
-  }
-
-  window.openProductModal = function(key){
-    if (typeof key === 'string' && copy[key]) {
-      const data = copy[key];
-      titleEl.textContent = data.title;
-      bodyEl.innerHTML = data.html;
-      const url = '/LoanApp.html?product=' + encodeURIComponent(key);
-      if (applyBtn) { applyBtn.href = url; applyBtn.dataset.product = key; }
-      window.dataLayer = window.dataLayer || [];
-      window.dataLayer.push({ event: 'product_modal_open', product: key });
-    }
-    overlay.classList.remove('hidden');
-    modal.classList.remove('hidden');
-    const box = modal.querySelector('.modal-container');
-    if (box) requestAnimationFrame(function(){ box.classList.add('active'); });
-    lockScroll();
-  };
-
-  window.closeProductModal = function(){
-    const box = modal.querySelector('.modal-container');
-    if (box) box.classList.remove('active');
-    overlay.classList.add('hidden');
-    modal.classList.add('hidden');
-    unlockScroll();
-  };
-
-  // Delegation: click cards to open modal with their title
-  document.querySelectorAll('#products .group').forEach(function(card){
-    const h = card.querySelector('h3');
-    if (!h) return;
-    const key = h.textContent.trim();
-    card.classList.add('cursor-pointer'); card.setAttribute('role','button'); card.setAttribute('tabindex','0');
-    card.addEventListener('click', function(e){
-      if (e.target.closest('a')) return; // ignore inner links
-      openProductModal(key);
-    });
-    card.addEventListener('keypress', function(e){
-      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openProductModal(key); }
-    });
-  });
-
-  // Close on overlay click & ESC
-  overlay.addEventListener('click', function(e){ if (e.target === overlay) closeProductModal(); });
-  window.addEventListener('keydown', function(e){ if (e.key === 'Escape') closeProductModal(); });
-
-  // Close buttons
-  document.querySelectorAll('[aria-label="Close"], .modal-close').forEach(function(btn){ btn.onclick = closeProductModal; });
-})();
-</script>
 
 </body>
 </html>
