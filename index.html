@@ -49,7 +49,20 @@
     input { color:#0f172a; background:#fff; caret-color:#0f172a; }
 input::placeholder{ color:rgba(30,41,59,.6); }
 select option{ color:#0f172a; background:#fff; }
-  </style>
+ /* Lead form readability fix */
+#leadForm input,
+#leadForm select,
+#leadForm textarea {
+  color: #0f172a !important;            /* dark readable text */
+  background-color: #ffffff !important; /* white background */
+  border-color: rgba(15, 23, 42, 0.3);
+}
+
+#leadForm input::placeholder,
+#leadForm textarea::placeholder {
+  color: rgba(30, 41, 59, 0.6) !important; /* medium gray placeholder */
+}
+</style>
 <!-- Google Ads global site tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=AW-17093021602"></script>
 <script>
