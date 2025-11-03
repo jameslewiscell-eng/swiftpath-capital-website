@@ -67,7 +67,45 @@ select option{ color:#0f172a; background:#fff; }
 <meta content="85711" name="business:contact_data:postal_code"/>
 <meta content="USA" name="business:contact_data:country_name"/>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"SwiftPath Capital Corporation","url":"https://swiftpathcapital.com/","logo":"https://swiftpathcapital.com/Images/Logo.PNG","sameAs":["https://www.instagram.com/swiftpathcapital","https://youtube.com/@swiftpath"],"knowsAbout":["hard money loans for fix and flip","DSCR loans for rental portfolios","short-term bridge financing","business-purpose real estate lending"],"makesOffer":[{"@type":"Offer","itemOffered":{"@type":"Service","name":"Fix-and-Flip Financing"},"areaServed":"US"},{"@type":"Offer","itemOffered":{"@type":"Service","name":"DSCR Rental Loans"},"areaServed":"US"},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Bridge Loans"},"areaServed":"US"}]}</script>
-</head>
+<style>
+/* === Lead form legibility fix (injected) === */
+#leadForm input[type="text"],
+#leadForm input[type="email"],
+#leadForm input[type="tel"],
+#leadForm input[type="number"],
+#leadForm input[type="password"],
+#leadForm input[type="search"],
+#leadForm textarea,
+#leadForm select,
+#leadName, #leadEmail, #leadPhone, #otpCode {
+  color: #111 !important;
+  background-color: #fff !important;
+  caret-color: #111 !important;
+}
+
+#leadForm input::placeholder,
+#leadForm textarea::placeholder,
+#leadName::placeholder, #leadEmail::placeholder, #leadPhone::placeholder, #otpCode::placeholder {
+  color: #6b7280 !important; /* slate-500-ish */
+  opacity: 1;
+}
+
+/* Fix for WebKit autofill painting white text on white backgrounds */
+#leadForm input:-webkit-autofill,
+#leadName:-webkit-autofill, #leadEmail:-webkit-autofill, #leadPhone:-webkit-autofill, #otpCode:-webkit-autofill {
+  -webkit-text-fill-color: #111 !important;
+  transition: background-color 5000s ease-in-out 0s;
+  -webkit-box-shadow: 0 0 0px 1000px #fff inset !important;
+  box-shadow: 0 0 0px 1000px #fff inset !important;
+}
+
+/* Ensure borders remain visible against white bg in dark themes */
+#leadForm input, #leadForm textarea, #leadForm select,
+#leadName, #leadEmail, #leadPhone, #otpCode {
+  border-color: #cbd5e1 !important; /* slate-300-ish */
+}
+/* === End fix === */
+</style></head>
 <body class="bg-gray-50 text-slate-700">
 <!-- Header -->
 <header class="/80 backdrop-blur-lg sticky top-0 z-40 shadow-sm" id="header">
