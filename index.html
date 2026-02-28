@@ -158,6 +158,7 @@
   <!-- Custom Styles & Colors -->
   <style>
     body { font-family: 'Inter', sans-serif; }
+    .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
     .bg-brand-blue { background-color: #4A7A9D; }
     .text-brand-blue { color: #4A7A9D; }
     .border-brand-blue { border-color: #4A7A9D; }
@@ -272,6 +273,7 @@
   </style>
 </head>
 <body class="bg-gray-50 text-slate-700">
+<a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:bg-white focus:px-4 focus:py-2 focus:rounded focus:shadow-lg focus:text-brand-blue">Skip to main content</a>
 <!-- Header -->
 <header class="/80 backdrop-blur-lg sticky top-0 z-40 shadow-sm" id="header">
 <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
@@ -325,27 +327,42 @@
 <h2 class="text-3xl md:text-4xl font-bold mb-2 text-center">Ready to Fund Your Next Deal?</h2>
 <p class="text-lg text-blue-100 max-w-2xl mx-auto mb-8 text-center">Fast, free pre-qualification. No credit impact.</p>
 <form class="grid md:grid-cols-3 gap-4" id="leadForm" novalidate="">
-<input class="w-full border border-white/30 /10 rounded-lg px-3 py-3 placeholder-blue-100" id="leadName" placeholder="Full name" required=""/>
-<input class="w-full border border-white/30 /10 rounded-lg px-3 py-3 placeholder-blue-100" id="leadEmail" placeholder="Email" required="" type="email"/>
+<!-- Honeypot field (hidden from humans, catches bots) -->
+<div aria-hidden="true" style="position:absolute;left:-9999px;top:-9999px;height:0;width:0;overflow:hidden">
+<label for="leadWebsite">Website</label>
+<input type="text" id="leadWebsite" name="website" tabindex="-1" autocomplete="off" />
+</div>
+<div>
+<label class="sr-only" for="leadName">Full name</label>
+<input class="w-full border border-white/30 /10 rounded-lg px-3 py-3 placeholder-blue-100" id="leadName" placeholder="Full name" required="" aria-required="true" />
+</div>
+<div>
+<label class="sr-only" for="leadEmail">Email address</label>
+<input class="w-full border border-white/30 /10 rounded-lg px-3 py-3 placeholder-blue-100" id="leadEmail" placeholder="Email" required="" type="email" aria-required="true" />
+</div>
 <!-- SMS Verification UI -->
 <div class="md:col-span-3 grid grid-cols-1 sm:grid-cols-3 gap-3 items-start">
 <div class="sm:col-span-2">
-<label class="block text-sm mb-1">Phone (SMS verification required)</label>
-<input class="w-full border border-white/30 /10 rounded-lg px-3 py-3 placeholder-blue-100" id="leadPhone" placeholder="+13214304434" required=""/>
+<label class="block text-sm mb-1" for="leadPhone">Phone (SMS verification required)</label>
+<input class="w-full border border-white/30 /10 rounded-lg px-3 py-3 placeholder-blue-100" id="leadPhone" placeholder="+13214304434" required="" aria-required="true" aria-describedby="phoneHint" />
+<p id="phoneHint" class="text-xs text-blue-100/60 mt-1">We'll send a verification code to this number.</p>
 </div>
 <div class="flex flex-col gap-2">
-<button class="border-2 border-white/60 text-white font-semibold py-2 px-3 rounded" id="sendCodeBtn" type="button">Send code</button>
-<div id="otpWrap" style="display:none">
+<button class="border-2 border-white/60 text-white font-semibold py-2 px-3 rounded" id="sendCodeBtn" type="button" aria-label="Send SMS verification code">Send code</button>
+<div id="otpWrap" style="display:none" aria-hidden="true">
 <div class="flex gap-2 items-center">
-<input class="w-28 border border-white/30 /10 rounded px-2 py-2 placeholder-blue-100 bg-white text-slate-900 placeholder-slate-400 caret-slate-900" id="otpCode" inputmode="numeric" maxlength="8" placeholder="Code"/>
-<button class="border-2 border-white/60 text-white font-semibold py-2 px-3 rounded" id="checkCodeBtn" type="button">Verify</button>
+<label class="sr-only" for="otpCode">Verification code</label>
+<input class="w-28 border border-white/30 /10 rounded px-2 py-2 placeholder-blue-100 bg-white text-slate-900 placeholder-slate-400 caret-slate-900" id="otpCode" inputmode="numeric" maxlength="8" placeholder="Code" aria-label="SMS verification code" />
+<button class="border-2 border-white/60 text-white font-semibold py-2 px-3 rounded" id="checkCodeBtn" type="button" aria-label="Verify SMS code">Verify</button>
 </div>
-<span class="text-xs text-blue-100/90" id="vStatus"></span>
+<span class="text-xs text-blue-100/90" id="vStatus" aria-live="polite" role="status"></span>
 </div>
 </div>
 </div>
 <div class="md:col-span-3 flex flex-col sm:flex-row gap-3">
-<select aria-label="Loan type" class="flex-1 border border-white/30 rounded-lg px-3 py-3 text-slate-900" id="leadPurpose" required="">
+<div class="flex-1">
+<label class="sr-only" for="leadPurpose">Loan type</label>
+<select aria-label="Loan type" class="w-full border border-white/30 rounded-lg px-3 py-3 text-slate-900" id="leadPurpose" required="" aria-required="true">
 <option disabled="" selected="" value="">Loan type</option>
 <option>Fix-and-Flip</option>
 <option>BRRRR</option>
@@ -353,10 +370,11 @@
 <option>New Construction</option>
 <option>Bridge</option>
 </select>
+</div>
 <button class="sm:w-auto w-full bg-brand-gold text-white font-bold py-3 px-8 rounded-lg" id="leadSubmit" type="submit">Get Pre-Qualified</button>
 <a class="sm:w-auto w-full border-2 border-white/60 text-white font-bold py-3 px-6 rounded-lg text-center" href="LoanApp.html">Full Application</a>
 </div>
-<p class="md:col-span-3 text-sm text-blue-100/80 mt-2">By submitting, you agree to our Terms and Privacy Policy.</p>
+<p class="md:col-span-3 text-sm text-blue-100/80 mt-2">By submitting, you agree to our <a href="/terms.html" class="underline">Terms</a> and <a href="/privacy.html" class="underline">Privacy Policy</a>.</p>
 </form>
 <p class="text-xs text-white/70 mt-2 hidden" id="leadDebugState"></p>
 </div>
@@ -540,11 +558,11 @@
 </footer>
 <!-- Product Detail Modal -->
 <!-- WhatsApp Floating Button -->
-<div class="fixed inset-0 z-60 hidden bg-black/60" id="productOverlay"></div><div class="fixed inset-x-0 bottom-0 z-50 hidden md:inset-0 md:items-center md:justify-center" id="productModal">
+<div class="fixed inset-0 z-60 hidden bg-black/60" id="productOverlay"></div><div class="fixed inset-x-0 bottom-0 z-50 hidden md:inset-0 md:items-center md:justify-center" id="productModal" role="dialog" aria-modal="true" aria-labelledby="productTitle">
 <div class="w-full bg-white rounded-t-2xl shadow-xl md:max-w-2xl md:rounded-2xl max-h-[85vh] overflow-y-auto p-6">
 <div class="flex items-center justify-between mb-3">
 <h2 class="text-2xl font-bold" id="productTitle">Loan Product</h2>
-<button aria-label="Close" class="p-2 rounded hover:bg-gray-100" onclick="closeProductModal()" type="button">✕</button>
+<button aria-label="Close modal" class="p-2 rounded hover:bg-gray-100" onclick="closeProductModal()" type="button">✕</button>
 </div>
 <div class="prose prose-slate max-w-none" id="productBody"></div>
 <div class="mt-6 flex flex-col sm:flex-row gap-3">
@@ -748,19 +766,7 @@
     })();
   </script><script defer="" src="/assets/lead-form.js?v=2.5"></script>
 <script src="/assets/phone-verify-ui.js"></script>
-<script>
-    (function(){
-      var f = document.getElementById('leadForm');
-      if (f) {
-        f.addEventListener('submit', function(e){
-          if (!(window.__phoneVerified && window.__phoneVerified())){
-            e.preventDefault();
-            alert('Please verify your phone number via SMS before submitting.');
-          }
-        }, true);
-      }
-    })();
-  </script>
+<!-- Phone verification gating is now handled by verify-gatekeeper.js (inline errors, no alert) -->
 <script src="/assets/verify-gatekeeper.js"></script>
 </body>
 </html>
