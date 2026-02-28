@@ -1,8 +1,12 @@
 // assets/verify-gatekeeper.js
 // Harden form gating: block any submission unless phone has been SMS-verified.
 // Uses inline error messages instead of alert().
+// Only activates on pages that include the SMS verification UI (sendCodeBtn).
 (function(){
   'use strict';
+
+  // Don't activate gating if SMS verification UI is not present on this page
+  if (!document.getElementById('sendCodeBtn')) return;
 
   var MSG = 'Please verify your phone number via SMS before submitting.';
 

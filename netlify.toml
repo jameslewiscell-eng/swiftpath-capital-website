@@ -1,4 +1,8 @@
-# netlify.toml — Security headers & CSP (enforced)
+# netlify.toml — Build config, Security headers & CSP (enforced)
+
+[build]
+  command = "npm run build"
+  publish = "."
 
 [[headers]]
   for = "/*"
@@ -18,7 +22,6 @@
 
     script-src 'self'
       'unsafe-inline'
-      https://cdn.tailwindcss.com
       https://www.googletagmanager.com
       https://assets.calendly.com;
 
