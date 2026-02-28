@@ -9,7 +9,7 @@
   <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17093021602"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);} 
+    function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
     gtag('config', 'AW-17093021602');
   </script>
@@ -23,6 +23,9 @@
   <style>
     body{font-family:'Inter',sans-serif}
     .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+    /* Signature pad styles */
+    #signatureCanvas { border:2px solid #cbd5e1; border-radius:0.5rem; cursor:crosshair; touch-action:none; background:#fff; }
+    #signatureCanvas.signing { border-color:#ca8a04; }
   </style>
 </head>
 <body class="bg-gray-50 text-slate-800">
@@ -42,7 +45,7 @@
 <!-- Business-purpose disclosure -->
 <div class="bg-yellow-50 border-y border-yellow-200 text-yellow-900 text-sm">
   <div class="container mx-auto px-6 py-2 text-center">
-    Business‑purpose loans only. We do not originate personal/consumer loans.
+    Business&#8209;purpose loans only. We do not originate personal/consumer loans.
   </div>
 </div>
 
@@ -75,18 +78,49 @@
           <input type="hidden" id="utm_content" value="">
           <input type="hidden" id="gclid" value="">
 
-          <h2 class="text-2xl font-bold border-b-2 border-yellow-600 pb-2">Personal Information</h2>
+          <!-- ===== LOAN CONFIRMATION ===== -->
+          <div class="mb-8 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+            <label class="inline-flex items-start gap-2 text-sm font-medium">
+              <input id="investmentConfirm" type="checkbox" class="mt-1" required />
+              <span>I confirm that I am applying for a <strong>real estate investment loan</strong> (non-owner-occupied, business purpose).</span>
+            </label>
+          </div>
+
+          <!-- ===== BORROWER INFORMATION ===== -->
+          <h2 class="text-2xl font-bold border-b-2 border-yellow-600 pb-2">Borrower Information</h2>
+          <div class="grid md:grid-cols-4 gap-6 mt-6">
+            <div class="md:col-span-1">
+              <label class="block text-sm font-medium mb-1" for="firstName">First Name <span class="text-red-500">*</span></label>
+              <input id="firstName" class="w-full border border-slate-300 rounded-lg px-3 py-2" required />
+            </div>
+            <div class="md:col-span-1">
+              <label class="block text-sm font-medium mb-1" for="middleInitial">Middle Initial</label>
+              <input id="middleInitial" maxlength="1" class="w-full border border-slate-300 rounded-lg px-3 py-2" />
+            </div>
+            <div class="md:col-span-1">
+              <label class="block text-sm font-medium mb-1" for="lastName">Last Name <span class="text-red-500">*</span></label>
+              <input id="lastName" class="w-full border border-slate-300 rounded-lg px-3 py-2" required />
+            </div>
+            <div class="md:col-span-1">
+              <label class="block text-sm font-medium mb-1" for="suffix">Suffix</label>
+              <select id="suffix" class="w-full border border-slate-300 rounded-lg px-3 py-2">
+                <option value="">None</option>
+                <option>Jr.</option>
+                <option>Sr.</option>
+                <option>II</option>
+                <option>III</option>
+                <option>IV</option>
+              </select>
+            </div>
+          </div>
+
           <div class="grid md:grid-cols-2 gap-6 mt-6">
             <div>
-              <label class="block text-sm font-medium mb-1" for="fullName">Full Name</label>
-              <input id="fullName" class="w-full border border-slate-300 rounded-lg px-3 py-2" placeholder="Full legal name" required />
-            </div>
-            <div>
-              <label class="block text-sm font-medium mb-1" for="email">Email</label>
+              <label class="block text-sm font-medium mb-1" for="email">Email <span class="text-red-500">*</span></label>
               <input id="email" type="email" class="w-full border border-slate-300 rounded-lg px-3 py-2" placeholder="name@example.com" required />
             </div>
             <div>
-              <label class="block text-sm font-medium mb-1" for="phone">Phone</label>
+              <label class="block text-sm font-medium mb-1" for="phone">Phone <span class="text-red-500">*</span></label>
               <input id="phone" type="tel" class="w-full border border-slate-300 rounded-lg px-3 py-2" placeholder="+1 321-430-4434" required />
             </div>
             <!-- SMS Verification UI -->
@@ -102,33 +136,295 @@
               </div>
             </div>
             <div>
-              <label class="block text-sm font-medium mb-1" for="mailingAddress">Mailing Address</label>
-              <input id="mailingAddress" class="w-full border border-slate-300 rounded-lg px-3 py-2" placeholder="Street, City, State ZIP" />
+              <label class="block text-sm font-medium mb-1" for="dob">Date of Birth</label>
+              <input id="dob" type="date" class="w-full border border-slate-300 rounded-lg px-3 py-2" />
             </div>
           </div>
 
-          <h2 class="mt-10 text-2xl font-bold border-b-2 border-yellow-600 pb-2">Business / Investor Profile</h2>
-          <div class="grid md:grid-cols-2 gap-6 mt-6">
-            <div><label class="block text-sm font-medium mb-1" for="businessName">Business Name</label><input id="businessName" class="w-full border border-slate-300 rounded-lg px-3 py-2" placeholder="LLC or Company Name"></div>
-            <div><label class="block text-sm font-medium mb-1" for="businessType">Business Type</label><input id="businessType" class="w-full border border-slate-300 rounded-lg px-3 py-2" placeholder="LLC, Corp, Sole Prop"></div>
-            <div><label class="block text-sm font-medium mb-1" for="numDeals">Completed Investment Deals</label><input id="numDeals" type="number" min="0" class="w-full border border-slate-300 rounded-lg px-3 py-2"></div>
-            <div><label class="block text-sm font-medium mb-1" for="ein">Entity EIN</label><input id="ein" class="w-full border border-slate-300 rounded-lg px-3 py-2"></div>
+          <!-- Primary Residence -->
+          <h3 class="mt-8 text-lg font-semibold text-slate-700">Primary Residence</h3>
+          <div class="grid md:grid-cols-2 gap-6 mt-3">
+            <div class="md:col-span-2">
+              <label class="block text-sm font-medium mb-1" for="residenceStreet">Street Address</label>
+              <input id="residenceStreet" class="w-full border border-slate-300 rounded-lg px-3 py-2" placeholder="123 Main St" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1" for="residenceCity">City</label>
+              <input id="residenceCity" class="w-full border border-slate-300 rounded-lg px-3 py-2" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1" for="residenceState">State</label>
+              <input id="residenceState" class="w-full border border-slate-300 rounded-lg px-3 py-2" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1" for="residenceZip">ZIP Code</label>
+              <input id="residenceZip" class="w-full border border-slate-300 rounded-lg px-3 py-2" inputmode="numeric" maxlength="10" />
+            </div>
           </div>
 
-          <h2 class="mt-10 text-2xl font-bold border-b-2 border-yellow-600 pb-2">Property & Loan</h2>
+          <!-- Borrower Details -->
           <div class="grid md:grid-cols-2 gap-6 mt-6">
-            <div><label class="block text-sm font-medium mb-1" for="propertyAddress">Property Address</label><input id="propertyAddress" class="w-full border border-slate-300 rounded-lg px-3 py-2" required></div>
-            <div><label class="block text-sm font-medium mb-1" for="purchasePrice">Purchase Price</label><input id="purchasePrice" class="w-full border border-slate-300 rounded-lg px-3 py-2" required inputmode="decimal" placeholder="$250,000"></div>
-            <div><label class="block text-sm font-medium mb-1" for="rehabBudget">Rehab / Renovation Budget</label><input id="rehabBudget" class="w-full border border-slate-300 rounded-lg px-3 py-2" required inputmode="decimal" placeholder="$50,000"></div>
-            <div><label class="block text-sm font-medium mb-1" for="arv">After Repair Value (ARV)</label><input id="arv" class="w-full border border-slate-300 rounded-lg px-3 py-2" required inputmode="decimal" placeholder="$325,000"></div>
-            <div><label class="block text-sm font-medium mb-1" for="wholesaler">Wholesaler Involved?</label><select id="wholesaler" class="w-full border border-slate-300 rounded-lg px-3 py-2"><option value="">Select</option><option>Yes</option><option>No</option></select></div>
-            <div><label class="block text-sm font-medium mb-1" for="loanPurpose">Loan Purpose</label><select id="loanPurpose" class="w-full border border-slate-300 rounded-lg px-3 py-2"><option value="">Select</option><option>Fix-and-Flip</option><option>BRRRR</option><option>Rental Property</option><option>New Construction</option><option>Bridge Loan</option><option>Other</option></select></div>
-            <div><label class="block text-sm font-medium mb-1" for="loanAmount">Requested Loan Amount</label><input id="loanAmount" class="w-full border border-slate-300 rounded-lg px-3 py-2" inputmode="decimal" placeholder="$200,000"></div>
-            <div><label class="block text-sm font-medium mb-1" for="timeline">Timeline to Close</label><input id="timeline" class="w-full border border-slate-300 rounded-lg px-3 py-2" placeholder="ASAP, 14–30 days, etc."></div>
-            <div class="md:col-span-2"><label class="block text-sm font-medium mb-1" for="exitStrategy">Exit Strategy</label><select id="exitStrategy" class="w-full border border-slate-300 rounded-lg px-3 py-2"><option value="">Select</option><option>Sell after rehab</option><option>Refinance into rental loan</option><option>Other</option></select></div>
-            <div class="md:col-span-2"><label class="block text-sm font-medium mb-1" for="loanDetails">Additional Notes</label><textarea id="loanDetails" rows="4" class="w-full border border-slate-300 rounded-lg px-3 py-2" placeholder="Tell us about your project..."></textarea></div>
+            <div>
+              <label class="block text-sm font-medium mb-1" for="borrowerType">Borrower Type</label>
+              <select id="borrowerType" class="w-full border border-slate-300 rounded-lg px-3 py-2">
+                <option value="">Select</option>
+                <option>New Borrower</option>
+                <option>Return Borrower</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1" for="maritalStatus">Marital Status</label>
+              <select id="maritalStatus" class="w-full border border-slate-300 rounded-lg px-3 py-2">
+                <option value="">Select</option>
+                <option>Single</option>
+                <option>Married</option>
+                <option>Divorced</option>
+                <option>Widowed</option>
+                <option>Separated</option>
+              </select>
+            </div>
           </div>
 
+          <div class="mt-4">
+            <label class="inline-flex items-start gap-2 text-sm">
+              <input id="smsConsent" type="checkbox" class="mt-1" />
+              <span>I consent to receive text messages from SwiftPath Capital regarding my loan application.</span>
+            </label>
+          </div>
+
+          <!-- ===== BUSINESS / ENTITY ===== -->
+          <h2 class="mt-10 text-2xl font-bold border-b-2 border-yellow-600 pb-2">Business / Entity</h2>
+          <div class="grid md:grid-cols-2 gap-6 mt-6">
+            <div>
+              <label class="block text-sm font-medium mb-1" for="businessName">Company Name</label>
+              <input id="businessName" class="w-full border border-slate-300 rounded-lg px-3 py-2" placeholder="LLC or Company Name" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1" for="businessType">Business Type</label>
+              <input id="businessType" class="w-full border border-slate-300 rounded-lg px-3 py-2" placeholder="LLC, Corp, Sole Prop, Partnership" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1" for="ein">Entity EIN</label>
+              <input id="ein" class="w-full border border-slate-300 rounded-lg px-3 py-2" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1" for="companyStateReg">Company State of Registration</label>
+              <input id="companyStateReg" class="w-full border border-slate-300 rounded-lg px-3 py-2" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1" for="numDeals">Completed Investment Deals</label>
+              <input id="numDeals" type="number" min="0" class="w-full border border-slate-300 rounded-lg px-3 py-2" />
+            </div>
+            <div class="flex items-end">
+              <label class="inline-flex items-start gap-2 text-sm">
+                <input id="companyAddrSame" type="checkbox" class="mt-1" />
+                <span>Company address is the same as primary residence</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- ===== PARTNER INFORMATION ===== -->
+          <h2 class="mt-10 text-2xl font-bold border-b-2 border-yellow-600 pb-2">Partner Information</h2>
+          <p class="text-sm text-slate-500 mt-2">If your entity is a partnership, please provide the following information for your partner(s).</p>
+          <div class="grid md:grid-cols-2 gap-6 mt-4">
+            <div>
+              <label class="block text-sm font-medium mb-1" for="partnerName">Partner Full Name</label>
+              <input id="partnerName" class="w-full border border-slate-300 rounded-lg px-3 py-2" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1" for="partnerEmail">Partner Email</label>
+              <input id="partnerEmail" type="email" class="w-full border border-slate-300 rounded-lg px-3 py-2" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1" for="partnerPhone">Partner Phone</label>
+              <input id="partnerPhone" type="tel" class="w-full border border-slate-300 rounded-lg px-3 py-2" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1" for="partnerDob">Partner Date of Birth</label>
+              <input id="partnerDob" type="date" class="w-full border border-slate-300 rounded-lg px-3 py-2" />
+            </div>
+            <div class="md:col-span-2">
+              <label class="block text-sm font-medium mb-1" for="partnerAddress">Partner Mailing Address</label>
+              <input id="partnerAddress" class="w-full border border-slate-300 rounded-lg px-3 py-2" placeholder="Street, City, State ZIP" />
+            </div>
+          </div>
+
+          <!-- ===== PROPERTY & LOAN DETAILS ===== -->
+          <h2 class="mt-10 text-2xl font-bold border-b-2 border-yellow-600 pb-2">Property & Loan Details</h2>
+          <div class="grid md:grid-cols-2 gap-6 mt-6">
+            <div>
+              <label class="block text-sm font-medium mb-1" for="loanType">Type of Loan <span class="text-red-500">*</span></label>
+              <select id="loanType" class="w-full border border-slate-300 rounded-lg px-3 py-2" required>
+                <option value="">Select</option>
+                <option>Purchase</option>
+                <option>Refinance</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1" for="desiredCloseDate">Desired Closing Date</label>
+              <input id="desiredCloseDate" type="date" class="w-full border border-slate-300 rounded-lg px-3 py-2" />
+            </div>
+          </div>
+
+          <!-- Property Address -->
+          <h3 class="mt-8 text-lg font-semibold text-slate-700">Property Address</h3>
+          <div class="grid md:grid-cols-2 gap-6 mt-3">
+            <div class="md:col-span-2">
+              <label class="block text-sm font-medium mb-1" for="propStreet">Street Address <span class="text-red-500">*</span></label>
+              <input id="propStreet" class="w-full border border-slate-300 rounded-lg px-3 py-2" required />
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1" for="propCity">City <span class="text-red-500">*</span></label>
+              <input id="propCity" class="w-full border border-slate-300 rounded-lg px-3 py-2" required />
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1" for="propState">State <span class="text-red-500">*</span></label>
+              <input id="propState" class="w-full border border-slate-300 rounded-lg px-3 py-2" required />
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1" for="propZip">ZIP Code <span class="text-red-500">*</span></label>
+              <input id="propZip" class="w-full border border-slate-300 rounded-lg px-3 py-2" inputmode="numeric" maxlength="10" required />
+            </div>
+          </div>
+
+          <!-- Loan Numbers -->
+          <div class="grid md:grid-cols-2 gap-6 mt-6">
+            <div>
+              <label class="block text-sm font-medium mb-1" for="purchasePrice">Purchase Price <span class="text-red-500">*</span></label>
+              <input id="purchasePrice" class="w-full border border-slate-300 rounded-lg px-3 py-2" required inputmode="decimal" placeholder="$250,000" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1" for="rehabBudget">Estimated Repair Amount <span class="text-red-500">*</span></label>
+              <input id="rehabBudget" class="w-full border border-slate-300 rounded-lg px-3 py-2" required inputmode="decimal" placeholder="$50,000" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1" for="requestingRepairFunds">Requesting Repair Funds?</label>
+              <select id="requestingRepairFunds" class="w-full border border-slate-300 rounded-lg px-3 py-2">
+                <option value="">Select</option>
+                <option>Yes</option>
+                <option>No</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1" for="arv">After Repair Value (ARV) <span class="text-red-500">*</span></label>
+              <input id="arv" class="w-full border border-slate-300 rounded-lg px-3 py-2" required inputmode="decimal" placeholder="$325,000" />
+            </div>
+            <div class="md:col-span-2">
+              <label class="block text-sm font-medium mb-1" for="scopeOfWork">Brief Description of Scope of Work</label>
+              <textarea id="scopeOfWork" rows="3" class="w-full border border-slate-300 rounded-lg px-3 py-2" placeholder="Describe the planned repairs and renovations..."></textarea>
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1" for="wholesaler">Wholesaler Involved?</label>
+              <select id="wholesaler" class="w-full border border-slate-300 rounded-lg px-3 py-2">
+                <option value="">Select</option>
+                <option>Yes</option>
+                <option>No</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1" for="loanPurpose">Loan Purpose</label>
+              <select id="loanPurpose" class="w-full border border-slate-300 rounded-lg px-3 py-2">
+                <option value="">Select</option>
+                <option>Fix-and-Flip</option>
+                <option>BRRRR</option>
+                <option>Rental Property</option>
+                <option>New Construction</option>
+                <option>Bridge Loan</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div class="md:col-span-2">
+              <label class="block text-sm font-medium mb-1" for="exitStrategy">Exit Strategy</label>
+              <select id="exitStrategy" class="w-full border border-slate-300 rounded-lg px-3 py-2">
+                <option value="">Select</option>
+                <option>Sell (Fix &amp; Flip)</option>
+                <option>Hold &amp; Refinance</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div class="md:col-span-2">
+              <label class="block text-sm font-medium mb-1" for="loanDetails">Additional Notes</label>
+              <textarea id="loanDetails" rows="3" class="w-full border border-slate-300 rounded-lg px-3 py-2" placeholder="Tell us about your project..."></textarea>
+            </div>
+          </div>
+
+          <!-- ===== FINANCIAL & EXPERIENCE ===== -->
+          <h2 class="mt-10 text-2xl font-bold border-b-2 border-yellow-600 pb-2">Financial & Experience</h2>
+          <div class="grid md:grid-cols-2 gap-6 mt-6">
+            <div>
+              <label class="block text-sm font-medium mb-1" for="availableCash">Available Cash</label>
+              <input id="availableCash" class="w-full border border-slate-300 rounded-lg px-3 py-2" inputmode="decimal" placeholder="$25,000" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1" for="creditScore">What Is Your Current Credit Score?</label>
+              <select id="creditScore" class="w-full border border-slate-300 rounded-lg px-3 py-2">
+                <option value="">Select range</option>
+                <option>Below 580</option>
+                <option>580 - 619</option>
+                <option>620 - 659</option>
+                <option>660 - 699</option>
+                <option>700 - 739</option>
+                <option>740 - 779</option>
+                <option>780+</option>
+                <option>I don't know</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1" for="bankruptcy">Have You Filed Bankruptcy?</label>
+              <select id="bankruptcy" class="w-full border border-slate-300 rounded-lg px-3 py-2">
+                <option value="">Select</option>
+                <option>Yes</option>
+                <option>No</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1" for="ownPropertyFreeClear">Do You Own Property Free and Clear?</label>
+              <select id="ownPropertyFreeClear" class="w-full border border-slate-300 rounded-lg px-3 py-2">
+                <option value="">Select</option>
+                <option>Yes</option>
+                <option>No</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1" for="investorExperience">Investor Experience</label>
+              <select id="investorExperience" class="w-full border border-slate-300 rounded-lg px-3 py-2">
+                <option value="">Select</option>
+                <option>First-time investor</option>
+                <option>1 - 3 deals completed</option>
+                <option>4 - 10 deals completed</option>
+                <option>10+ deals completed</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1" for="howHeard">How Did You Hear About Us?</label>
+              <select id="howHeard" class="w-full border border-slate-300 rounded-lg px-3 py-2">
+                <option value="">Select</option>
+                <option>Google Search</option>
+                <option>Social Media</option>
+                <option>Referral</option>
+                <option>Real Estate Agent</option>
+                <option>BiggerPockets</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div class="md:col-span-2">
+              <label class="block text-sm font-medium mb-1" for="pastInvestments">Past Investment Details</label>
+              <textarea id="pastInvestments" rows="3" class="w-full border border-slate-300 rounded-lg px-3 py-2" placeholder="If you have experience, briefly describe your past investment projects..."></textarea>
+            </div>
+          </div>
+
+          <!-- ===== SIGNATURE ===== -->
+          <h2 class="mt-10 text-2xl font-bold border-b-2 border-yellow-600 pb-2">Signature</h2>
+          <p class="text-sm text-slate-500 mt-2">Please sign below using your mouse or finger to acknowledge that the information provided is accurate.</p>
+          <div class="mt-4">
+            <canvas id="signatureCanvas" width="560" height="180"></canvas>
+            <div class="mt-2 flex gap-3">
+              <button type="button" id="clearSignatureBtn" class="text-sm border border-slate-300 rounded px-3 py-1 hover:bg-slate-50">Clear Signature</button>
+              <span id="signatureStatus" class="text-xs text-slate-500 self-center" aria-live="polite"></span>
+            </div>
+          </div>
+
+          <!-- ===== CONSENT & SUBMIT ===== -->
           <div class="mt-8">
             <label class="inline-flex items-start gap-2 text-sm">
               <input id="consentCheckbox" type="checkbox" class="mt-1" required />
@@ -164,6 +460,8 @@
     </div>
   </footer>
 
+  <!-- Signature pad (must load before form handler) -->
+  <script src="/assets/signature-pad.js"></script>
   <!-- Single external handler (CSP-safe) -->
   <script src="/assets/loanapp-submit.js" defer></script>
 
