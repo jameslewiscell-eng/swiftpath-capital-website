@@ -1,5 +1,5 @@
 /**
- * SwiftPath Capital — Fix & Flip Loan Sizer
+ * SwiftPath Capital — Fix & Flip Rate Calculator
  * Pricing engine derived from RCN Capital RTL (Residential Transitional Loan) rate sheets.
  * Provides real-time indicative quotes for fix-and-flip / rehab loans.
  */
@@ -81,7 +81,7 @@
 
   /* ───────────────────────────────────────────
    *  FICO-BASED LTV ADJUSTMENTS
-   *  From Sizer sheet rows 9-14, col O-S
+   *  From rate sheet rows 9-14, col O-S
    * ─────────────────────────────────────────── */
   var FICO_LTV_ADJ = [
     { min: 700, arAdj: 0,      tLtcAdj: 0 },
@@ -369,8 +369,8 @@
     return parseFloat((val || '').replace(/[^0-9.]/g, '')) || 0;
   }
 
-  function initFlipSizer() {
-    var form = $('flipSizerForm');
+  function initFlipRateCalc() {
+    var form = $('flipRateCalcForm');
     if (!form) return;
 
     // Format currency fields on blur
@@ -511,11 +511,11 @@
 
   // Initialize when DOM is ready
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initFlipSizer);
+    document.addEventListener('DOMContentLoaded', initFlipRateCalc);
   } else {
-    initFlipSizer();
+    initFlipRateCalc();
   }
 
   // Expose for testing
-  window.SwiftPathFlipSizer = { calculateFlipLoan: calculateFlipLoan };
+  window.SwiftPathFlipRateCalc = { calculateFlipLoan: calculateFlipLoan };
 })();

@@ -4,6 +4,17 @@
   command = "npm run build"
   publish = "."
 
+# Redirects for renamed rate calculator pages (old Sizer URLs)
+[[redirects]]
+  from = "/loan-sizer.html"
+  to = "/rate-calculator.html"
+  status = 301
+
+[[redirects]]
+  from = "/flip-sizer.html"
+  to = "/flip-rate-calculator.html"
+  status = 301
+
 [[headers]]
   for = "/*"
   [headers.values]
