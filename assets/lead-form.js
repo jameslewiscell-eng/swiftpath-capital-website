@@ -74,6 +74,32 @@
     if (errorEl) errorEl.textContent = '';
   }
 
+  function showFieldSuccess(fieldId){
+    var field = byId(fieldId);
+    if (!field) return;
+    clearFieldError(fieldId);
+    field.classList.add('ring-2', 'ring-green-400');
+    // Show green check
+    var successId = fieldId + '-success';
+    var successEl = byId(successId);
+    if (!successEl) {
+      successEl = document.createElement('span');
+      successEl.id = successId;
+      successEl.className = 'text-green-400 text-xs mt-1 inline-block';
+      successEl.setAttribute('aria-hidden', 'true');
+      field.parentNode.appendChild(successEl);
+    }
+    successEl.innerHTML = '&#10003;';
+  }
+
+  function clearFieldSuccess(fieldId){
+    var field = byId(fieldId);
+    if (!field) return;
+    field.classList.remove('ring-2', 'ring-green-400');
+    var successEl = byId(fieldId + '-success');
+    if (successEl) successEl.innerHTML = '';
+  }
+
   function showFormError(msg){
     // Show error in a banner above the form
     var banner = byId('leadFormError');
@@ -269,9 +295,13 @@
       nameEl.addEventListener('blur', function(){
         var names = splitName(nameEl.value);
         if (nameEl.value.trim() && (!names.first || !names.last)) {
+          clearFieldSuccess('leadName');
           showFieldError('leadName', 'Please enter your full name (first and last).');
+        } else if (nameEl.value.trim() && names.first && names.last) {
+          showFieldSuccess('leadName');
         } else {
           clearFieldError('leadName');
+          clearFieldSuccess('leadName');
         }
       });
     }
@@ -280,9 +310,13 @@
       emailEl.addEventListener('blur', function(){
         var v = emailEl.value.trim();
         if (v && !isValidEmail(v)) {
+          clearFieldSuccess('leadEmail');
           showFieldError('leadEmail', 'Please enter a valid email address.');
+        } else if (v && isValidEmail(v)) {
+          showFieldSuccess('leadEmail');
         } else {
           clearFieldError('leadEmail');
+          clearFieldSuccess('leadEmail');
         }
       });
     }
@@ -291,9 +325,13 @@
       phoneEl.addEventListener('blur', function(){
         var v = phoneEl.value.trim().replace(/[^\d+]/g, '');
         if (v && v.length < 10) {
+          clearFieldSuccess('leadPhone');
           showFieldError('leadPhone', 'Please enter a valid phone number.');
+        } else if (v && v.length >= 10) {
+          showFieldSuccess('leadPhone');
         } else {
           clearFieldError('leadPhone');
+          clearFieldSuccess('leadPhone');
         }
       });
     }
