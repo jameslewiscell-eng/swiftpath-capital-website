@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <title>New Construction Rate Calculator | SwiftPath Capital</title>
+  <link rel="canonical" href="https://swiftpathcapital.com/construction-rate-calculator.html"/>
+
+  <meta name="description" content="Get an instant new construction loan quote in 60 seconds. Enter your project details and see your estimated rate, leverage, and projected profit — no credit pull, no obligation."/>
+  <meta property="og:title" content="New Construction Rate Calculator | SwiftPath Capital"/>
+  <meta property="og:description" content="Get an instant ground-up construction loan quote. See your rate, leverage, and projected ROI in real time."/>
+  <meta property="og:image" content="https://swiftpathcapital.com/Images/Logo.PNG"/>
+  <meta property="og:url" content="https://swiftpathcapital.com/construction-rate-calculator.html"/>
+  <meta property="og:type" content="website"/>
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17093021602"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','AW-17093021602');</script>
+
+  <link rel="stylesheet" href="/assets/style.css"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+
+  <style>
+    .calc-card { background: white; border-radius: 1rem; box-shadow: 0 4px 24px rgba(0,0,0,0.08); }
+    .result-card { background: linear-gradient(135deg, #1e3a5f 0%, #0f2a4a 100%); }
+    .rate-highlight { font-size: 2.5rem; font-weight: 800; color: #f59e0b; }
+    .field-group label { display: block; font-size: 0.875rem; font-weight: 600; color: #334155; margin-bottom: 0.25rem; }
+    .field-group input, .field-group select { width: 100%; border: 1px solid #cbd5e1; border-radius: 0.5rem; padding: 0.625rem 0.75rem; font-size: 0.95rem; transition: border-color 0.2s; }
+    .field-group input:focus, .field-group select:focus { outline: none; border-color: #1e3a5f; box-shadow: 0 0 0 3px rgba(30,58,95,0.1); }
+    .metric-row { display: flex; justify-content: space-between; padding: 0.375rem 0; border-bottom: 1px solid rgba(255,255,255,0.1); }
+    .metric-row:last-child { border-bottom: none; }
+  </style>
+</head>
+<body class="bg-gray-50 font-sans antialiased text-slate-800">
+
+<!-- Header -->
+<header class="bg-white/80 backdrop-blur-lg sticky top-0 z-40 shadow-sm">
+<nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+  <a class="flex items-center space-x-2" href="/">
+    <picture><source srcset="Images/Logo.webp" type="image/webp"/><img alt="SwiftPath Capital Logo" class="w-auto h-20 md:h-21" src="Images/Logo.PNG" width="200" height="80"/></picture>
+  </a>
+  <div class="hidden lg:flex items-center space-x-8">
+    <a class="text-slate-700 hover:text-brand-blue font-medium transition duration-300" href="/#advantage">Why SwiftPath</a>
+    <a class="text-slate-700 hover:text-brand-blue font-medium transition duration-300" href="/#process">Process</a>
+    <a class="text-slate-700 hover:text-brand-blue font-medium transition duration-300" href="/#products">Loan Programs</a>
+    <a class="text-slate-700 hover:text-brand-blue font-medium transition duration-300" href="/about-swiftpath-capital.html">About</a>
+    <a class="text-slate-700 hover:text-brand-blue font-medium transition duration-300" href="/LoanApp.html">Apply</a>
+    <a class="bg-brand-gold text-white font-bold py-2 px-5 rounded-lg shadow-md hover:bg-brand-gold-dark transition duration-300" href="/LoanApp.html">Full Application</a>
+  </div>
+  <div class="lg:hidden">
+    <button aria-label="Toggle menu" class="text-slate-700 focus:outline-none" id="mobile-menu-button">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16m-7 6h7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+    </button>
+  </div>
+</nav>
+<div class="hidden lg:hidden px-6 pt-2 pb-4 space-y-3" id="mobile-menu">
+  <a class="block text-slate-700 font-medium" href="/#advantage">Why SwiftPath</a>
+  <a class="block text-slate-700 font-medium" href="/#process">Process</a>
+  <a class="block text-slate-700 font-medium" href="/#products">Loan Programs</a>
+  <a class="block text-slate-700 font-medium" href="/about-swiftpath-capital.html">About</a>
+  <a class="block text-slate-700 font-medium" href="/LoanApp.html">Apply</a>
+  <a class="block bg-brand-gold text-white text-center font-bold py-2 px-5 rounded-lg shadow-md hover:bg-brand-gold-dark transition duration-300 mt-2" href="/LoanApp.html">Full Application</a>
+</div>
+</header>
+
+<main>
+<!-- Hero -->
+<section class="bg-brand-blue text-white py-12 md:py-16">
+  <div class="container mx-auto px-6 text-center">
+    <h1 class="text-3xl md:text-5xl font-extrabold mb-3">Check Your Construction Loan Rate</h1>
+    <p class="text-lg md:text-xl text-blue-100 max-w-2xl mx-auto mb-2">Get your estimated rate, leverage, and projected profit in seconds.</p>
+    <p class="text-sm text-yellow-200">Powered by live lender rate sheets &middot; Updated daily</p>
+  </div>
+</section>
+
+<!-- Calculator -->
+<section class="py-10 md:py-16">
+  <div class="container mx-auto px-4 md:px-6">
+    <div class="grid lg:grid-cols-5 gap-8 max-w-6xl mx-auto">
+
+      <!-- Input Form (3 cols) -->
+      <div class="lg:col-span-3">
+        <div class="calc-card p-6 md:p-8">
+          <h2 class="text-xl font-bold text-slate-800 mb-6">Enter Your Project Details</h2>
+
+          <form id="constructionRateCalcForm" novalidate>
+            <!-- Borrower Details -->
+            <div class="mb-6">
+              <h3 class="text-sm font-bold text-brand-blue uppercase tracking-wide mb-3">Borrower Details</h3>
+              <div class="grid sm:grid-cols-2 gap-4">
+                <div class="field-group">
+                  <label for="fico">FICO Score</label>
+                  <input type="number" id="fico" placeholder="700" min="620" max="850" inputmode="numeric"/>
+                  <p class="text-xs text-slate-500 mt-1">Leave blank if no FICO available</p>
+                </div>
+                <div class="field-group">
+                  <label for="experience">Completed Construction Projects</label>
+                  <select id="experience">
+                    <option value="0">0 (First build)</option>
+                    <option value="1">1-4 projects</option>
+                    <option value="5" selected>5+ projects</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <!-- Project Details -->
+            <div class="mb-6">
+              <h3 class="text-sm font-bold text-brand-blue uppercase tracking-wide mb-3">Project Financials</h3>
+              <div class="grid sm:grid-cols-2 gap-4">
+                <div class="field-group">
+                  <label for="landValue">Land / Lot Value</label>
+                  <input type="text" id="landValue" placeholder="$100,000" inputmode="numeric"/>
+                </div>
+                <div class="field-group">
+                  <label for="constructionBudget">Construction Budget</label>
+                  <input type="text" id="constructionBudget" placeholder="$250,000" inputmode="numeric"/>
+                  <p class="text-xs text-slate-500 mt-1">Hard costs + soft costs</p>
+                </div>
+                <div class="field-group sm:col-span-2">
+                  <label for="completedValue">Completed / After-Built Value</label>
+                  <input type="text" id="completedValue" placeholder="$500,000" inputmode="numeric"/>
+                  <p class="text-xs text-slate-500 mt-1">Estimated value when construction is complete</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Loan Options -->
+            <div class="mb-6">
+              <h3 class="text-sm font-bold text-brand-blue uppercase tracking-wide mb-3">Loan Options</h3>
+              <div class="grid sm:grid-cols-2 gap-4">
+                <div class="field-group">
+                  <label for="origTier">Origination Points</label>
+                  <select id="origTier">
+                    <option value="0">0.50% — Higher Rate</option>
+                    <option value="1" selected>0.75% — Standard</option>
+                    <option value="2">1.00% — Best Rate</option>
+                  </select>
+                </div>
+                <div class="field-group">
+                  <label for="loanTerm">Loan Term</label>
+                  <select id="loanTerm">
+                    <option value="9">9 Months</option>
+                    <option value="12" selected>12 Months</option>
+                    <option value="18">18 Months</option>
+                    <option value="24">24 Months</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <button type="submit" class="w-full bg-brand-gold hover:bg-brand-gold-dark text-white font-bold py-4 px-8 rounded-lg shadow-lg text-lg transition duration-300">
+              Check My Construction Rate
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Results Panel (2 cols) -->
+      <div class="lg:col-span-2">
+        <div id="resultPanel" class="hidden">
+          <!-- Errors -->
+          <div id="resultErrors" class="hidden mb-4"></div>
+
+          <!-- Success Results -->
+          <div id="resultSuccess" class="hidden">
+            <!-- Rate Card -->
+            <div class="result-card rounded-2xl p-6 md:p-8 text-white mb-6">
+              <p class="text-blue-200 text-sm font-medium mb-1">Your Estimated Rate</p>
+              <div class="rate-highlight" id="resRate">—</div>
+              <p class="text-blue-200 text-xs mt-1">Interest-Only &middot; Ground-Up Construction Loan</p>
+
+              <div class="mt-6 space-y-1">
+                <div class="metric-row">
+                  <span class="text-blue-300 text-sm">Total Loan Amount</span>
+                  <span class="text-sm font-bold" id="resTotalLoan">—</span>
+                </div>
+                <div class="metric-row">
+                  <span class="text-blue-300 text-sm">Land Advance</span>
+                  <span class="text-sm font-bold" id="resInitialAdvance">—</span>
+                </div>
+                <div class="metric-row">
+                  <span class="text-blue-300 text-sm">Construction (Funded)</span>
+                  <span class="text-sm font-bold" id="resConstructionFunded">—</span>
+                </div>
+                <div class="metric-row">
+                  <span class="text-blue-300 text-sm">Monthly IO Payment</span>
+                  <span class="text-sm font-bold" id="resMonthlyIO">—</span>
+                </div>
+              </div>
+
+              <div class="mt-5 pt-4 border-t border-white/20">
+                <div class="grid grid-cols-2 gap-3">
+                  <div>
+                    <p class="text-blue-300 text-xs">AR-LTV</p>
+                    <p class="text-lg font-bold" id="resArLtv">—</p>
+                  </div>
+                  <div>
+                    <p class="text-blue-300 text-xs">Total LTC</p>
+                    <p class="text-lg font-bold" id="resTLtc">—</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mt-5 pt-4 border-t border-white/20 text-center">
+                <p class="text-blue-200 text-xs mb-1">Est. Projected Profit</p>
+                <p id="resProfit" class="text-2xl font-bold text-green-400">—</p>
+                <p class="text-blue-200 text-xs mt-2">Est. ROI: <span id="resROI" class="font-bold text-green-400">—</span></p>
+              </div>
+            </div>
+
+            <!-- Cash Required -->
+            <div class="calc-card p-5 mb-6">
+              <h3 class="text-sm font-bold text-slate-800 mb-3">Cash to Close</h3>
+              <div class="space-y-1">
+                <div class="flex justify-between text-sm">
+                  <span>Down Payment (Land)</span>
+                  <span class="font-medium" id="resDownPayment">—</span>
+                </div>
+                <div class="flex justify-between text-sm">
+                  <span>Construction (Out-of-Pocket)</span>
+                  <span class="font-medium" id="resConstructionOOP">—</span>
+                </div>
+                <div class="flex justify-between text-sm">
+                  <span>Origination Fee</span>
+                  <span class="font-medium" id="resOrigFee">—</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Warnings -->
+            <div id="resultWarnings" class="hidden mb-4"></div>
+
+            <!-- Rate Breakdown -->
+            <div class="calc-card p-5 mb-6">
+              <h3 class="text-sm font-bold text-slate-800 mb-3">Rate Breakdown</h3>
+              <div id="rateBreakdown" class="space-y-1"></div>
+            </div>
+
+            <!-- Leverage Breakdown -->
+            <div class="calc-card p-5 mb-6">
+              <h3 class="text-sm font-bold text-slate-800 mb-3">Leverage Details</h3>
+              <div id="leverageBreakdown" class="space-y-1"></div>
+            </div>
+
+            <!-- CTA -->
+            <div class="calc-card p-5 text-center">
+              <p class="text-sm text-slate-600 mb-3">Like what you see? Lock in your rate.</p>
+              <a href="/LoanApp.html?product=New%20Construction" class="inline-block w-full bg-brand-gold hover:bg-brand-gold-dark text-white font-bold py-3 px-6 rounded-lg shadow transition duration-300">
+                Start Full Application
+              </a>
+              <p class="text-xs text-slate-500 mt-2">Same-day term sheets available</p>
+            </div>
+
+            <!-- Disclaimer -->
+            <div class="mt-4 p-4 bg-slate-100 rounded-lg">
+              <p class="text-xs text-slate-500 leading-relaxed">
+                <strong>Disclaimer:</strong> This is an indicative estimate for informational purposes only.
+                Actual rates, terms, leverage, and eligibility are subject to full underwriting review, property appraisal,
+                and lender approval. Rates shown are based on current rate sheets and may change without notice.
+                Construction draw schedules are subject to inspection and milestone completion.
+                GUC loans typically require entitlements, permits, and approved plans.
+                SwiftPath Capital is a business-purpose lender — we do not offer consumer or personal loans.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pre-calculation state -->
+        <div id="preCalcState" class="calc-card p-8 text-center">
+          <div class="text-5xl mb-4">
+            <svg class="w-16 h-16 mx-auto text-brand-blue/30" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+          </div>
+          <h3 class="text-lg font-bold text-slate-700 mb-2">Your Results Will Appear Here</h3>
+          <p class="text-sm text-slate-500">Fill in your project details and click "Check My Construction Rate" to get an instant quote.</p>
+          <div class="mt-6 text-left space-y-2">
+            <div class="flex items-center gap-2 text-sm text-slate-600">
+              <svg class="w-4 h-4 text-green-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a8 8 0 100 16 8 8 0 000-16zm3.707 6.293a1 1 0 00-1.414 0L9 11.586 7.707 10.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4a1 1 0 000-1.414z"/></svg>
+              No credit pull required
+            </div>
+            <div class="flex items-center gap-2 text-sm text-slate-600">
+              <svg class="w-4 h-4 text-green-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a8 8 0 100 16 8 8 0 000-16zm3.707 6.293a1 1 0 00-1.414 0L9 11.586 7.707 10.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4a1 1 0 000-1.414z"/></svg>
+              Based on live lender rate sheets
+            </div>
+            <div class="flex items-center gap-2 text-sm text-slate-600">
+              <svg class="w-4 h-4 text-green-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a8 8 0 100 16 8 8 0 000-16zm3.707 6.293a1 1 0 00-1.414 0L9 11.586 7.707 10.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4a1 1 0 000-1.414z"/></svg>
+              See leverage, rate &amp; projected ROI
+            </div>
+            <div class="flex items-center gap-2 text-sm text-slate-600">
+              <svg class="w-4 h-4 text-green-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a8 8 0 100 16 8 8 0 000-16zm3.707 6.293a1 1 0 00-1.414 0L9 11.586 7.707 10.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4a1 1 0 000-1.414z"/></svg>
+              Milestone-based construction draws
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- How It Works -->
+<section class="py-12 bg-white">
+  <div class="container mx-auto px-6">
+    <h2 class="text-2xl font-bold text-center text-slate-800 mb-8">How the Construction Rate Calculator Works</h2>
+    <div class="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+      <div class="text-center">
+        <div class="bg-brand-gold text-white w-12 h-12 rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-3">1</div>
+        <h3 class="font-bold text-slate-800 mb-1">Enter Your Project</h3>
+        <p class="text-sm text-slate-600">Land value, construction budget, completed value, and your experience level.</p>
+      </div>
+      <div class="text-center">
+        <div class="bg-brand-gold text-white w-12 h-12 rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-3">2</div>
+        <h3 class="font-bold text-slate-800 mb-1">Get Instant Pricing</h3>
+        <p class="text-sm text-slate-600">Our engine calculates your rate, max leverage, monthly payment, and projected profit.</p>
+      </div>
+      <div class="text-center">
+        <div class="bg-brand-gold text-white w-12 h-12 rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-3">3</div>
+        <h3 class="font-bold text-slate-800 mb-1">Apply to Lock It In</h3>
+        <p class="text-sm text-slate-600">Ready? Submit a full application and get a same-day term sheet from our team.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- Footer -->
+<footer class="bg-slate-800 text-white">
+<div class="container mx-auto px-6 py-12">
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+    <div class="md:col-span-1">
+      <a class="flex items-center space-x-2" href="/">
+        <picture><source srcset="Images/Logo.webp" type="image/webp"/><img alt="SwiftPath Capital Logo" class="h-18 lg:h-36 w-auto rounded-md" src="Images/Logo.PNG" loading="lazy"/></picture>
+      </a>
+      <p class="mt-4 text-slate-400">Your strategic partner in a fast-moving market. First, Fast, Funded.</p>
+    </div>
+    <div>
+      <h3 class="font-bold tracking-wide text-brand-gold">Navigation</h3>
+      <ul class="mt-4 space-y-2">
+        <li><a class="hover:text-brand-gold transition duration-300" href="/#advantage">Our Advantage</a></li>
+        <li><a class="hover:text-brand-gold transition duration-300" href="/#process">Our Process</a></li>
+        <li><a class="hover:text-brand-gold transition duration-300" href="/#products">Loan Products</a></li>
+        <li><a class="hover:text-brand-gold transition duration-300" href="/about-swiftpath-capital.html">About Us</a></li>
+        <li><a class="hover:text-brand-gold transition duration-300" href="/LoanApp.html">Apply</a></li>
+      </ul>
+    </div>
+    <div>
+      <h3 class="font-bold tracking-wide text-brand-gold">Contact Us</h3>
+      <ul class="mt-4 space-y-2 text-slate-300">
+        <li>Email: <a class="hover:text-brand-gold transition" href="mailto:info@swiftpathcapital.com">info@swiftpathcapital.com</a></li>
+        <li>Phone: <a class="hover:text-brand-gold transition" href="tel:+13214304434">321-430-4434</a>
+        <p class="text-sm text-slate-600 mt-1">333 N Wilmot Rd STE 340 Tucson AZ 85711</p></li>
+      </ul>
+    </div>
+  </div>
+  <div class="mt-12 border-t border-slate-700 pt-6 text-center text-sm text-slate-500">
+    <p>&copy; 2025 SwiftPath Capital. All Rights Reserved.</p>
+    <div class="mt-4 space-x-4">
+      <a class="hover:text-brand-gold transition duration-300" href="/privacy.html">Privacy Policy</a>
+      <span>&middot;</span>
+      <a class="hover:text-brand-gold transition duration-300" href="/terms.html">Terms and Conditions</a>
+      <span>&middot;</span>
+      <a class="hover:text-brand-gold transition duration-300" href="/esign.html">E-Sign Consent</a>
+    </div>
+  </div>
+</div>
+<div class="mt-2 text-sm text-center">
+  <a class="underline text-green-600" href="https://wa.me/13214304434" rel="noopener" target="_blank">Chat on WhatsApp</a>
+</div>
+<div class="mt-2 text-center">
+  <p class="text-xs text-slate-400">SwiftPath Capital provides <strong>business-purpose loans only</strong>; we do not offer consumer/personal loans.</p>
+</div>
+</footer>
+
+<!-- WhatsApp Floating Button -->
+<a aria-label="Chat on WhatsApp" class="fixed z-40 bottom-5 right-5 md:bottom-6 md:right-6 rounded-full shadow-lg bg-green-500 hover:bg-green-600 text-white w-14 h-14 flex items-center justify-center" href="https://wa.me/13214304434" target="_blank">
+  <svg aria-hidden="true" class="w-7 h-7" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg">
+    <path d="M380.9 97.1C339 55.1 283.2 32 224.8 32c-116.2 0-210.8 94.6-210.8 210.8 0 37.1 9.7 73.3 28.2 105.3L0 480l134.9-41.4c30.6 16.7 64.9 25.5 99.9 25.5h.1c116.1 0 210.8-94.6 210.8-210.8 0-58.5-23.2-114.3-64.8-156.2zM224.9 438.6h-.1c-31.1 0-61.6-8.3-88.2-24.1l-6.3-3.7-80.1 24.6 26-78.1-4.1-6.7c-17.8-29-27.2-62.5-27.2-96.6C45 156.7 126.6 75 224.8 75c47.8 0 92.8 18.6 126.5 52.3 33.8 33.8 52.4 78.7 52.4 126.5 0 98.1-81.7 184.8-178.8 184.8zM315 304.7c-4.3-2.1-25.4-12.5-29.3-13.9-3.9-2-6.8-.9-9.6 2.2-2.8 3.1-11 12.6-13.5 15.2-2.5 2.6-5 2-8.5 1-3.5-1-22.4-11-38.6-24.1-14.3-11.7-26.8-26.1-36.3-42.2-2.6-4.3-2.7-7.4.1-11.3 3.2-4.3 7.1-9.9 10-13 3.1-3.3 5.2-3.3 9-.9 3.6 2.2 23.1 10.9 27 12.9 3.9 2 6.6 3 9.4-.7 2.8-3.5 11-12.9 13.5-15.4 2.7-2.5 5.6-2.7 9 .4 3.1 3.1 10.5 12.4 10.5 20.6 0 8.2-4.3 16.3-10.6 22.3z" fill="currentColor"></path>
+  </svg>
+</a>
+
+<!-- Mobile menu toggle -->
+<script>
+  (function(){
+    var btn = document.getElementById('mobile-menu-button');
+    var menu = document.getElementById('mobile-menu');
+    if (btn && menu) {
+      btn.addEventListener('click', function() {
+        menu.classList.toggle('hidden');
+      });
+    }
+  })();
+</script>
+
+<!-- Construction Rate Calculator Engine -->
+<script src="/assets/construction-rate-calculator.js"></script>
+
+<!-- Hide pre-calc state when results show -->
+<script>
+  (function(){
+    var observer = new MutationObserver(function(){
+      var panel = document.getElementById('resultPanel');
+      var pre = document.getElementById('preCalcState');
+      if (panel && pre) {
+        pre.style.display = panel.classList.contains('hidden') ? '' : 'none';
+      }
+    });
+    var panel = document.getElementById('resultPanel');
+    if (panel) observer.observe(panel, { attributes: true, attributeFilter: ['class'] });
+  })();
+</script>
+
+</body>
+</html>
