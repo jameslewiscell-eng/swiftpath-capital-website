@@ -4,14 +4,14 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-  <title>Instant Loan Sizer | SwiftPath Capital</title>
-  <link rel="canonical" href="https://swiftpathcapital.com/loan-sizer.html"/>
+  <title>Instant Rate Calculator | SwiftPath Capital</title>
+  <link rel="canonical" href="https://swiftpathcapital.com/rate-calculator.html"/>
 
   <meta name="description" content="Get an instant DSCR loan quote in 60 seconds. Enter your deal details and see your estimated rate, payment, and DSCR — no credit pull, no obligation."/>
-  <meta property="og:title" content="Instant Loan Sizer | SwiftPath Capital"/>
+  <meta property="og:title" content="Instant Rate Calculator | SwiftPath Capital"/>
   <meta property="og:description" content="Get an instant DSCR rental loan quote. See your rate, monthly payment, and DSCR in real time."/>
   <meta property="og:image" content="https://swiftpathcapital.com/Images/Logo.PNG"/>
-  <meta property="og:url" content="https://swiftpathcapital.com/loan-sizer.html"/>
+  <meta property="og:url" content="https://swiftpathcapital.com/rate-calculator.html"/>
   <meta property="og:type" content="website"/>
 
   <link rel="stylesheet" href="/assets/style.css"/>
@@ -20,7 +20,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 
   <style>
-    .sizer-card { background: white; border-radius: 1rem; box-shadow: 0 4px 24px rgba(0,0,0,0.08); }
+    .calc-card { background: white; border-radius: 1rem; box-shadow: 0 4px 24px rgba(0,0,0,0.08); }
     .result-card { background: linear-gradient(135deg, #1e3a5f 0%, #0f2a4a 100%); }
     .rate-highlight { font-size: 2.5rem; font-weight: 800; color: #f59e0b; }
     input[type="range"] { -webkit-appearance: none; height: 8px; border-radius: 4px; background: #cbd5e1; outline: none; }
@@ -67,10 +67,10 @@
 <!-- Hero -->
 <section class="bg-brand-blue text-white py-12 md:py-16">
   <div class="container mx-auto px-6 text-center">
-    <h1 class="text-3xl md:text-5xl font-extrabold mb-3">Instant DSCR Loan Sizer</h1>
+    <h1 class="text-3xl md:text-5xl font-extrabold mb-3">Check Your DSCR Rate</h1>
     <p class="text-lg md:text-xl text-blue-100 max-w-2xl mx-auto mb-2">Get your estimated rate and payment in seconds — no credit pull, no obligation.</p>
     <p class="text-sm text-yellow-200">Powered by live lender rate sheets &middot; Updated daily</p>
-    <p class="mt-4"><a class="inline-block text-sm bg-white/10 hover:bg-white/20 border border-white/30 text-white font-semibold py-2 px-5 rounded-lg transition duration-300" href="/flip-sizer.html">Looking for a Fix &amp; Flip loan? Try our Flip Sizer &rarr;</a></p>
+    <p class="mt-4"><a class="inline-block text-sm bg-white/10 hover:bg-white/20 border border-white/30 text-white font-semibold py-2 px-5 rounded-lg transition duration-300" href="/flip-rate-calculator.html">Looking for a Fix &amp; Flip loan? Check your flip rate &rarr;</a></p>
   </div>
 </section>
 
@@ -81,10 +81,10 @@
 
       <!-- Input Form (3 cols) -->
       <div class="lg:col-span-3">
-        <div class="sizer-card p-6 md:p-8">
+        <div class="calc-card p-6 md:p-8">
           <h2 class="text-xl font-bold text-slate-800 mb-6">Enter Your Deal Details</h2>
 
-          <form id="sizerForm" novalidate>
+          <form id="rateCalcForm" novalidate>
             <!-- Property Details -->
             <div class="mb-6">
               <h3 class="text-sm font-bold text-brand-blue uppercase tracking-wide mb-3">Property Information</h3>
@@ -249,13 +249,13 @@
             </div>
 
             <!-- Rate Breakdown -->
-            <div class="sizer-card p-5 mb-6">
+            <div class="calc-card p-5 mb-6">
               <h3 class="text-sm font-bold text-slate-800 mb-3">Rate Breakdown</h3>
               <div id="rateBreakdown" class="space-y-1"></div>
             </div>
 
             <!-- CTA -->
-            <div class="sizer-card p-5 text-center">
+            <div class="calc-card p-5 text-center">
               <p class="text-sm text-slate-600 mb-3">Like what you see? Lock in your rate.</p>
               <a href="/LoanApp.html" class="inline-block w-full bg-brand-gold hover:bg-brand-gold-dark text-white font-bold py-3 px-6 rounded-lg shadow transition duration-300">
                 Start Full Application
@@ -277,7 +277,7 @@
         </div>
 
         <!-- Pre-calculation state -->
-        <div id="preCalcState" class="sizer-card p-8 text-center">
+        <div id="preCalcState" class="calc-card p-8 text-center">
           <div class="text-5xl mb-4">
             <svg class="w-16 h-16 mx-auto text-brand-blue/30" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
           </div>
@@ -311,7 +311,7 @@
 <!-- How It Works -->
 <section class="py-12 bg-white">
   <div class="container mx-auto px-6">
-    <h2 class="text-2xl font-bold text-center text-slate-800 mb-8">How the Loan Sizer Works</h2>
+    <h2 class="text-2xl font-bold text-center text-slate-800 mb-8">How the Rate Calculator Works</h2>
     <div class="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
       <div class="text-center">
         <div class="bg-brand-gold text-white w-12 h-12 rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-3">1</div>
@@ -402,8 +402,8 @@
   })();
 </script>
 
-<!-- Loan Sizer Engine -->
-<script src="/assets/loan-sizer.js"></script>
+<!-- Rate Calculator Engine -->
+<script src="/assets/rate-calculator.js"></script>
 
 <!-- Hide pre-calc state when results show -->
 <script>

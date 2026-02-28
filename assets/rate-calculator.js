@@ -1,5 +1,5 @@
 /**
- * SwiftPath Capital — Instant Loan Sizer
+ * SwiftPath Capital — Instant Rate Calculator
  * Pricing engine derived from RCN Capital LTR DSCR rate sheets.
  * Provides real-time indicative quotes for DSCR rental loans.
  */
@@ -296,8 +296,8 @@
     return parseFloat((val || '').replace(/[^0-9.]/g, '')) || 0;
   }
 
-  function initSizer() {
-    var form = $('sizerForm');
+  function initRateCalc() {
+    var form = $('rateCalcForm');
     if (!form) return;
 
     // Format currency fields on blur
@@ -434,11 +434,11 @@
 
   // Initialize when DOM is ready
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initSizer);
+    document.addEventListener('DOMContentLoaded', initRateCalc);
   } else {
-    initSizer();
+    initRateCalc();
   }
 
   // Expose for testing
-  window.SwiftPathSizer = { calculateLoan: calculateLoan };
+  window.SwiftPathRateCalc = { calculateLoan: calculateLoan };
 })();
