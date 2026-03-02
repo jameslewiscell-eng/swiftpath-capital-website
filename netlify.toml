@@ -34,6 +34,7 @@
     script-src 'self'
       'unsafe-inline'
       https://www.googletagmanager.com
+      https://googleads.g.doubleclick.net
       https://assets.calendly.com;
 
     style-src 'self' 'unsafe-inline'
@@ -56,7 +57,8 @@
       https://pagead2.googlesyndication.com
       https://www.google.com
       https://www.googleadservices.com
-      https://ad.doubleclick.net;
+      https://ad.doubleclick.net
+      https://googleads.g.doubleclick.net;
 
     frame-src https://www.youtube.com https://youtu.be
       https://www.googletagmanager.com
