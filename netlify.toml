@@ -40,7 +40,11 @@
       https://fonts.googleapis.com
       https://assets.calendly.com;
 
-    img-src 'self' https: data: blob:;
+    img-src 'self' https: data: blob:
+      https://ad.doubleclick.net
+      https://ade.googlesyndication.com
+      https://adservice.google.com
+      https://www.googletagmanager.com;
 
     font-src 'self' https://fonts.gstatic.com data:;
 
@@ -48,9 +52,14 @@
       https://api.hsforms.com
       https://www.google-analytics.com
       https://region1.google-analytics.com
-      https://calendly.com;
+      https://calendly.com
+      https://pagead2.googlesyndication.com
+      https://www.google.com
+      https://www.googleadservices.com
+      https://ad.doubleclick.net;
 
     frame-src https://www.youtube.com https://youtu.be
+      https://www.googletagmanager.com
       https://calendly.com;
 
     upgrade-insecure-requests;
