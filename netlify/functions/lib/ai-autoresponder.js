@@ -2,8 +2,8 @@
 
 function isAutoresponderEnabled() {
   const raw = String(process.env.AI_AUTORESPONDER_ENABLED || '').trim().toLowerCase();
-  if (raw === 'false' || raw === '0' || raw === 'off' || raw === 'no') return false;
-  return true;
+  if (raw === 'true' || raw === '1' || raw === 'on' || raw === 'yes') return true;
+  return false;
 }
 
 function buildFallbackEmail({ contactName, stage, applicationUrl, scheduleUrl, rateToolUrl, docsUploadUrl }) {
@@ -186,9 +186,20 @@ async function sendWithResend({ to, subject, html, tag }) {
     process.env.RESEND_TOKEN;
   const from = process.env.RESEND_FROM_EMAIL;
 
+  console.log('sendWithResend: config check —', {
+    hasApiKey: !!resendApiKey,
+    apiKeySource: process.env.RESEND_API_KEY ? 'RESEND_API_KEY' : process.env.RESEND_API_TOKEN ? 'RESEND_API_TOKEN' : process.env.RESEND_TOKEN ? 'RESEND_TOKEN' : 'NONE',
+    hasFrom: !!from,
+    from: from || '(not set)',
+    to
+  });
+
   if (!resendApiKey || !from) {
     throw new Error(
-      'Missing Resend configuration. Set RESEND_FROM_EMAIL and one of RESEND_API_KEY, RESEND_API_TOKEN, or RESEND_TOKEN.'
+      'Missing Resend configuration. ' +
+      (resendApiKey ? '' : 'RESEND_API_KEY is not set. ') +
+      (from ? '' : 'RESEND_FROM_EMAIL is not set. ') +
+      'Set both in Netlify environment variables.'
     );
   }
 
@@ -224,9 +235,11 @@ async function sendWithResend({ to, subject, html, tag }) {
   });
 
   if (error) {
+    console.error('sendWithResend: Resend API error —', error);
     throw new Error(error);
   }
 
+  console.log('sendWithResend: email sent successfully —', { id: data?.id, to });
   return data;
 }
 
