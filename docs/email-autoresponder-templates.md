@@ -24,6 +24,7 @@ Autoresponders send when these values are present:
 - Identify purchase vs refinance when possible (or ask concise clarifier).
 - Identify residential vs commercial when possible (or ask concise clarifier).
 - High-intent application flow asks for process docs quickly.
+- Do **not** mention rate calculators or discuss pricing/rates before a value conversation.
 - **Never request bank statements** in the initial docs request.
 
 ## Typical docs requested for high-intent applications
