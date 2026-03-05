@@ -3,7 +3,7 @@
  * assets/lead-form.js
  * SwiftPath Capital — externalized lead form handler (v3.0)
  * - No inline JS required (works with strict CSP)
- * - Submits to HubSpot directly; falls back to Netlify function proxy on failure
+ * - Submits through Netlify proxy (enables server-side automations); falls back to direct HubSpot on failure
  * - Validates name -> requires at least first & last
  * - Validates email format (RFC-like)
  * - Honeypot field for bot detection
@@ -264,10 +264,10 @@
       var data = buildFields();
       var ctx  = buildContext();
       var payload = { fields: data.fields, context: ctx };
-      var res = await submitDirect(payload);
+      var res = await submitViaProxy(payload);
 
       if(!res.ok){
-        res = await submitViaProxy(payload);
+        res = await submitDirect(payload);
       }
 
       if(res.ok){
