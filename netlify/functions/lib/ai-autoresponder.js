@@ -230,7 +230,7 @@ async function sendWithResend({ to, subject, html, tag }) {
     to: [to],
     subject,
     html,
-    reply_to: process.env.RESEND_REPLY_TO || undefined,
+    reply_to: process.env.RESEND_REPLY_TO || 'info@swiftpathcapital.com',
     tags: tag ? [{ name: 'automation', value: tag }] : undefined
   });
 
