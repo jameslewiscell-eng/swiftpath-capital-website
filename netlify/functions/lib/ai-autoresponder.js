@@ -32,6 +32,18 @@ function buildFallbackEmail({ contactName, stage, applicationUrl, scheduleUrl, d
   };
 }
 
+function appendEmailSignature(html) {
+  const body = String(html || '').trim();
+  const signature = [
+    '<p>Best regards,<br><strong>SwiftPath Capital Team</strong></p>',
+    '<p>Phone: <a href="tel:+13214304434">+1 (321) 430-4434</a><br>Email: <a href="mailto:info@swiftcapital.com">info@swiftcapital.com</a></p>',
+    '<p><img src="https://swiftpathcapital.com/Images/Logo.PNG" alt="SwiftPath Capital logo" width="180" /></p>'
+  ].join('');
+
+  if (!body) return signature;
+  return `${body}${signature}`;
+}
+
 function inferTransactionType(text) {
   const s = String(text || '').toLowerCase();
   if (!s) return 'unknown';
@@ -250,7 +262,7 @@ async function sendWithResend({ to, subject, html, tag }) {
     from,
     to: [to],
     subject,
-    html,
+    html: appendEmailSignature(html),
     reply_to: process.env.RESEND_REPLY_TO || 'info@swiftpathcapital.com',
     tags: tag ? [{ name: 'automation', value: tag }] : undefined
   });
@@ -269,6 +281,7 @@ module.exports = {
   inferTransactionType,
   inferPropertyType,
   buildFallbackEmail,
+  appendEmailSignature,
   generateEmailWithClaude,
   sendWithResend
 };
