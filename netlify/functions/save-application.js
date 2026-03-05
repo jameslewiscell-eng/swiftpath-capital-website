@@ -3,11 +3,56 @@
 // as a JSON file in Dropbox.  These fields are NOT sent to HubSpot.
 // Requires env var: DROPBOX_ACCESS_TOKEN (already set for upload-to-dropbox).
 
+const {
+  isAutoresponderEnabled,
+  inferTransactionType,
+  inferPropertyType,
+  generateEmailWithClaude,
+  sendWithResend
+} = require('./lib/ai-autoresponder');
+
 const CORS_HEADERS = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
   'Access-Control-Allow-Headers': 'Content-Type'
 };
+
+async function sendApplicationAutoResponse(data = {}) {
+  if (!isAutoresponderEnabled()) {
+    console.log('save-application: skipping application auto-response (AI_AUTORESPONDER_ENABLED is not true)');
+    return;
+  }
+
+  const to = data.email;
+  if (!to) {
+    console.log('save-application: skipping application auto-response (missing applicant email)');
+    return;
+  }
+
+  const dealText = [data.loan_type, data.loan_purpose, data.scope_of_work].filter(Boolean).join(' | ');
+  const transactionType = inferTransactionType(dealText);
+  const propertyType = inferPropertyType(dealText);
+
+  const email = await generateEmailWithClaude({
+    contactName: data.first_name || 'there',
+    stage: 'application',
+    intentLevel: 'high',
+    dealText,
+    transactionType,
+    propertyType,
+    applicationUrl: process.env.APPLICATION_URL || 'https://swiftpathcapital.com/LoanApp.html',
+    scheduleUrl: process.env.SCHEDULING_URL || 'https://calendly.com/swiftpath-capital',
+    rateToolUrl: process.env.RATE_TOOL_URL || 'https://swiftpathcapital.com/rate-calculator.html',
+    docsUploadUrl: process.env.DOCS_UPLOAD_URL || 'https://swiftpathcapital.com/thank-you.html'
+  });
+
+  await sendWithResend({
+    to,
+    subject: email.subject,
+    html: email.html,
+    tag: 'application-ai-autoresponse'
+  });
+}
 
 exports.handler = async function(event) {
   if (event.httpMethod === 'OPTIONS') {
@@ -93,6 +138,12 @@ exports.handler = async function(event) {
       } else {
         console.warn('Signature upload failed:', await sigRes.text());
       }
+    }
+
+    try {
+      await sendApplicationAutoResponse(data);
+    } catch (emailErr) {
+      console.error('save-application: application auto-response error', emailErr);
     }
 
     return {

@@ -269,6 +269,8 @@
       // Borrower details
       first_name: val('firstName'),
       middle_initial: val('middleInitial'),
+      email: val('email'),
+      phone: val('phone'),
       last_name: val('lastName'),
       suffix: val('suffix'),
       date_of_birth: val('dob'),
