@@ -239,9 +239,13 @@
     return valid;
   }
 
+  var isSubmitting = false;
+
   async function handleSubmit(e){
     try{
       e.preventDefault();
+
+      if (isSubmitting) return;
 
       // Honeypot check
       var honeypot = byId('leadWebsite');
@@ -258,6 +262,7 @@
         return;
       }
 
+      isSubmitting = true;
       setSubmitting(true);
       clearFormError();
 
@@ -277,11 +282,13 @@
         console.warn('[LeadForm] submit error', res.status, text);
         showFormError('We couldn\u2019t submit the form. Please confirm your info and try again.');
         setSubmitting(false);
+        isSubmitting = false;
       }
     }catch(err){
       console.error('[LeadForm] unexpected error', err);
       showFormError('Unexpected error. Please try again or email info@swiftpathcapital.com.');
       setSubmitting(false);
+      isSubmitting = false;
     }
   }
 
@@ -341,7 +348,6 @@
     var form = byId('leadForm');
     if(!form) return;
     form.addEventListener('submit', handleSubmit, true);
-    window.addEventListener('submit', function(ev){ if(ev.target===form) handleSubmit(ev); }, true);
     attachInlineValidation();
     console.log('[LeadForm] handler attached (v3.0 external)');
   }

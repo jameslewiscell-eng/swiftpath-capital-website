@@ -1,7 +1,35 @@
 // netlify/functions/lib/ai-autoresponder.js
 
 function isAutoresponderEnabled() {
-  return String(process.env.AI_AUTORESPONDER_ENABLED || '').toLowerCase() === 'true';
+  const raw = String(process.env.AI_AUTORESPONDER_ENABLED || '').trim().toLowerCase();
+  if (raw === 'false' || raw === '0' || raw === 'off' || raw === 'no') return false;
+  return true;
+}
+
+function buildFallbackEmail({ contactName, stage, applicationUrl, scheduleUrl, rateToolUrl, docsUploadUrl }) {
+  const safeName = contactName || 'there';
+
+  if (stage === 'application') {
+    return {
+      subject: 'We received your SwiftPath Capital application',
+      html: [
+        `<p>Hi ${safeName},</p>`,
+        '<p>Thanks for submitting your application with SwiftPath Capital. We received it and a team member will review it shortly.</p>',
+        '<p>To help us move faster, you can start uploading supporting documents now.</p>',
+        `<p><a href="${docsUploadUrl}">Upload documents</a> · <a href="${scheduleUrl}">Schedule a call</a></p>`
+      ].join('')
+    };
+  }
+
+  return {
+    subject: 'Thanks for reaching out to SwiftPath Capital',
+    html: [
+      `<p>Hi ${safeName},</p>`,
+      '<p>Thanks for your interest in SwiftPath Capital. We received your request and a lending advisor will follow up soon.</p>',
+      `<p>To speed things up, you can start your full application here: <a href="${applicationUrl}">Apply now</a>.</p>`,
+      `<p>You can also <a href="${scheduleUrl}">schedule a call</a> or review financing options in our <a href="${rateToolUrl}">rate calculator</a>.</p>`
+    ].join('')
+  };
 }
 
 function inferTransactionType(text) {
@@ -52,7 +80,14 @@ async function generateEmailWithClaude({
 }) {
   const apiKey = process.env.ANTHROPIC_API_KEY;
   if (!apiKey) {
-    throw new Error('Missing ANTHROPIC_API_KEY');
+    return buildFallbackEmail({
+      contactName,
+      stage,
+      applicationUrl,
+      scheduleUrl,
+      rateToolUrl,
+      docsUploadUrl
+    });
   }
 
   const model = process.env.ANTHROPIC_MODEL || 'claude-3-5-sonnet-latest';
@@ -87,49 +122,61 @@ async function generateEmailWithClaude({
     }
   };
 
-  const res = await fetch('https://api.anthropic.com/v1/messages', {
-    method: 'POST',
-    headers: {
-      'x-api-key': apiKey,
-      'anthropic-version': '2023-06-01',
-      'content-type': 'application/json'
-    },
-    body: JSON.stringify({
-      model,
-      max_tokens: 700,
-      temperature: 0.4,
-      system: systemPrompt,
-      messages: [{ role: 'user', content: JSON.stringify(userPrompt) }]
-    })
-  });
-
-  const payload = await res.json();
-  if (!res.ok) {
-    throw new Error(`Anthropic error: ${res.status} ${JSON.stringify(payload)}`);
-  }
-
-  const text = (payload.content || []).map((c) => c.text || '').join('\n').trim();
-  let parsed;
   try {
-    parsed = JSON.parse(text);
-  } catch {
-    const jsonStart = text.indexOf('{');
-    const jsonEnd = text.lastIndexOf('}');
-    if (jsonStart >= 0 && jsonEnd > jsonStart) {
-      parsed = JSON.parse(text.slice(jsonStart, jsonEnd + 1));
-    } else {
-      throw new Error('Claude response was not valid JSON');
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'x-api-key': apiKey,
+        'anthropic-version': '2023-06-01',
+        'content-type': 'application/json'
+      },
+      body: JSON.stringify({
+        model,
+        max_tokens: 700,
+        temperature: 0.4,
+        system: systemPrompt,
+        messages: [{ role: 'user', content: JSON.stringify(userPrompt) }]
+      })
+    });
+
+    const payload = await res.json();
+    if (!res.ok) {
+      throw new Error(`Anthropic error: ${res.status} ${JSON.stringify(payload)}`);
     }
-  }
 
-  if (!parsed || !parsed.subject || !parsed.html) {
-    throw new Error('Claude response missing subject or html');
-  }
+    const text = (payload.content || []).map((c) => c.text || '').join('\n').trim();
+    let parsed;
+    try {
+      parsed = JSON.parse(text);
+    } catch {
+      const jsonStart = text.indexOf('{');
+      const jsonEnd = text.lastIndexOf('}');
+      if (jsonStart >= 0 && jsonEnd > jsonStart) {
+        parsed = JSON.parse(text.slice(jsonStart, jsonEnd + 1));
+      } else {
+        throw new Error('Claude response was not valid JSON');
+      }
+    }
 
-  return {
-    subject: String(parsed.subject).trim(),
-    html: String(parsed.html).trim()
-  };
+    if (!parsed || !parsed.subject || !parsed.html) {
+      throw new Error('Claude response missing subject or html');
+    }
+
+    return {
+      subject: String(parsed.subject).trim(),
+      html: String(parsed.html).trim()
+    };
+  } catch (err) {
+    console.error('ai-autoresponder: falling back to static email', err);
+    return buildFallbackEmail({
+      contactName,
+      stage,
+      applicationUrl,
+      scheduleUrl,
+      rateToolUrl,
+      docsUploadUrl
+    });
+  }
 }
 
 async function sendWithResend({ to, subject, html, tag }) {
@@ -166,6 +213,7 @@ module.exports = {
   isAutoresponderEnabled,
   inferTransactionType,
   inferPropertyType,
+  buildFallbackEmail,
   generateEmailWithClaude,
   sendWithResend
 };
