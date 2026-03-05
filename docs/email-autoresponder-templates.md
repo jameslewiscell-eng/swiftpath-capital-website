@@ -8,12 +8,16 @@ SwiftPath autoresponders now use **Anthropic (Claude)** to generate a custom rep
 - Lead submissions are treated as low-intent; application submissions are treated as high-intent.
 
 ## Required send controls
-Autoresponders send only when all required values are present:
+Autoresponders send when these values are present:
 
-- `AI_AUTORESPONDER_ENABLED=true`
-- `ANTHROPIC_API_KEY`
 - `RESEND_API_KEY`
 - `RESEND_FROM_EMAIL`
+
+`AI_AUTORESPONDER_ENABLED` is **on by default** and can be disabled explicitly with `false`, `0`, `off`, or `no`.
+
+`ANTHROPIC_API_KEY` is optional:
+- If provided, Claude generates a tailored response.
+- If missing (or if Claude errors), the function sends a static fallback email so leads still receive an immediate confirmation.
 
 ## Guardrails included in AI prompt
 - Personalize greeting with borrower name when available.
