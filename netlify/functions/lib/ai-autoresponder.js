@@ -100,7 +100,7 @@ async function generateEmailWithClaude({
     });
   }
 
-  const model = process.env.ANTHROPIC_MODEL || 'claude-3-5-sonnet-latest';
+  const model = process.env.ANTHROPIC_MODEL || 'claude-sonnet-4-20250514';
   console.log('generateEmailWithClaude: using model', model);
 
   const systemPrompt = [
