@@ -141,9 +141,11 @@ exports.handler = async function(event) {
     }
 
     try {
+      console.log('save-application: attempting application auto-response…');
       await sendApplicationAutoResponse(data);
+      console.log('save-application: application auto-response completed');
     } catch (emailErr) {
-      console.error('save-application: application auto-response error', emailErr);
+      console.error('save-application: application auto-response FAILED —', emailErr.message || emailErr);
     }
 
     return {

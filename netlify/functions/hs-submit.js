@@ -78,9 +78,11 @@ exports.handler = async function (event) {
 
     if (res.ok) {
       try {
+        console.log('hs-submit: HubSpot submit succeeded, attempting lead auto-response…');
         await sendLeadAutoResponse(fields);
+        console.log('hs-submit: lead auto-response completed');
       } catch (emailErr) {
-        console.error('hs-submit: lead auto-response error', emailErr);
+        console.error('hs-submit: lead auto-response FAILED —', emailErr.message || emailErr);
       }
     }
 
