@@ -180,33 +180,54 @@ async function generateEmailWithClaude({
 }
 
 async function sendWithResend({ to, subject, html, tag }) {
-  const resendApiKey = process.env.RESEND_API_KEY;
+  const resendApiKey =
+    process.env.RESEND_API_KEY ||
+    process.env.RESEND_API_TOKEN ||
+    process.env.RESEND_TOKEN;
   const from = process.env.RESEND_FROM_EMAIL;
 
   if (!resendApiKey || !from) {
-    throw new Error('Missing RESEND_API_KEY or RESEND_FROM_EMAIL');
+    throw new Error(
+      'Missing Resend configuration. Set RESEND_FROM_EMAIL and one of RESEND_API_KEY, RESEND_API_TOKEN, or RESEND_TOKEN.'
+    );
   }
 
-  const emailRes = await fetch('https://api.resend.com/emails', {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${resendApiKey}`,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      from,
-      to: [to],
-      subject,
-      html,
-      reply_to: process.env.RESEND_REPLY_TO || undefined,
-      tags: tag ? [{ name: 'automation', value: tag }] : undefined
-    })
+  const resend = {
+    emails: {
+      send: async function(payload) {
+        const emailRes = await fetch('https://api.resend.com/emails', {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${resendApiKey}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(payload)
+        });
+
+        if (!emailRes.ok) {
+          const errText = await emailRes.text();
+          return { data: null, error: `Resend send failed: ${emailRes.status} ${errText}` };
+        }
+
+        return { data: await emailRes.json(), error: null };
+      }
+    }
+  };
+
+  const { data, error } = await resend.emails.send({
+    from,
+    to: [to],
+    subject,
+    html,
+    reply_to: process.env.RESEND_REPLY_TO || undefined,
+    tags: tag ? [{ name: 'automation', value: tag }] : undefined
   });
 
-  if (!emailRes.ok) {
-    const errText = await emailRes.text();
-    throw new Error(`Resend send failed: ${emailRes.status} ${errText}`);
+  if (error) {
+    throw new Error(error);
   }
+
+  return data;
 }
 
 module.exports = {

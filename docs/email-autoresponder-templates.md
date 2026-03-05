@@ -10,8 +10,8 @@ SwiftPath autoresponders now use **Anthropic (Claude)** to generate a custom rep
 ## Required send controls
 Autoresponders send when these values are present:
 
-- `RESEND_API_KEY`
 - `RESEND_FROM_EMAIL`
+- One of: `RESEND_API_KEY`, `RESEND_API_TOKEN`, or `RESEND_TOKEN`
 
 `AI_AUTORESPONDER_ENABLED` is **on by default** and can be disabled explicitly with `false`, `0`, `off`, or `no`.
 
@@ -32,3 +32,6 @@ Autoresponders send when these values are present:
 - Scope of work + rehab budget (if rehab)
 - Rent roll / T12 (when applicable)
 - Insurance declarations/quote (if available)
+
+
+> Note: the API key *name* in Resend (for example `swiftpathcapital`) does not matter to the code. Only the token value matters, and it must be copied into one of the environment variables above.
