@@ -31,7 +31,12 @@ async function sendLeadAutoResponse(fields = []) {
   }
 
   const contactName = fieldMap.firstname || fieldMap.name || 'there';
-  const dealText = fieldMap.lead_purpose || fieldMap.loan_purpose || fieldMap.purpose || '';
+  const leadSource = fieldMap.lead_source || '';
+  const leadCaptureOffer = fieldMap.lead_capture_offer || '';
+  const isRoiCalculatorPopupLead = leadCaptureOffer === 'roi_calculator' || leadSource === 'exit_popup_roi_calculator';
+  const dealText = isRoiCalculatorPopupLead
+    ? ''
+    : (fieldMap.lead_purpose || fieldMap.loan_purpose || fieldMap.purpose || '');
   const transactionType = inferTransactionType(dealText);
   const propertyType = inferPropertyType(dealText);
 
@@ -44,8 +49,10 @@ async function sendLeadAutoResponse(fields = []) {
     propertyType,
     applicationUrl: process.env.APPLICATION_URL || 'https://swiftpathcapital.com/LoanApp.html',
     scheduleUrl: process.env.SCHEDULING_URL || 'https://calendly.com/swiftpath-capital',
-    rateToolUrl: process.env.RATE_TOOL_URL || 'https://swiftpathcapital.com/rate-calculator.html',
-    docsUploadUrl: process.env.DOCS_UPLOAD_URL || 'https://swiftpathcapital.com/thank-you.html'
+    rateToolUrl: process.env.RATE_TOOL_URL || 'https://swiftpathcapital.com/flip-rate-calculator.html',
+    docsUploadUrl: process.env.DOCS_UPLOAD_URL || 'https://swiftpathcapital.com/thank-you.html',
+    leadSource,
+    leadCaptureOffer
   });
 
   await sendWithResend({

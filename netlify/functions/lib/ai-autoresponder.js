@@ -6,8 +6,20 @@ function isAutoresponderEnabled() {
   return false;
 }
 
-function buildFallbackEmail({ contactName, stage, applicationUrl, scheduleUrl, docsUploadUrl }) {
+function buildFallbackEmail({ contactName, stage, applicationUrl, scheduleUrl, docsUploadUrl, rateToolUrl, leadSource, leadCaptureOffer }) {
   const safeName = contactName || 'there';
+
+  if (stage === 'lead' && leadCaptureOffer === 'roi_calculator') {
+    return {
+      subject: 'Here’s your ROI calculator',
+      html: [
+        `<p>Hi ${safeName},</p>`,
+        `<p>Thanks for requesting the ROI calculator. You can access it here: <a href="${rateToolUrl}">Open the ROI Calculator</a>.</p>`,
+        '<p>Quick question so we can point you in the right direction: are you looking at a purchase or refinance, and is this for a residential or commercial property?</p>',
+        `<p>If you'd like, you can also <a href="${scheduleUrl}">schedule a quick call</a> and we’ll help you evaluate your scenario.</p>`
+      ].join('')
+    };
+  }
 
   if (stage === 'application') {
     return {
@@ -108,7 +120,10 @@ async function generateEmailWithClaude({
   propertyType,
   scheduleUrl,
   applicationUrl,
-  docsUploadUrl
+  docsUploadUrl,
+  rateToolUrl,
+  leadSource,
+  leadCaptureOffer
 }) {
   const apiKey = process.env.ANTHROPIC_API_KEY;
   console.log('generateEmailWithClaude: starting', {
@@ -127,7 +142,10 @@ async function generateEmailWithClaude({
       stage,
       applicationUrl,
       scheduleUrl,
-      docsUploadUrl
+      docsUploadUrl,
+      rateToolUrl,
+      leadSource,
+      leadCaptureOffer
     });
   }
 
@@ -141,8 +159,10 @@ async function generateEmailWithClaude({
     '- Greet by first name when available.',
     '- Detect and reference purchase vs refinance when known, otherwise ask a short clarifying question.',
     '- Detect and reference commercial vs residential when known, otherwise ask a short clarifying question.',
+    '- If leadCaptureOffer is roi_calculator, fulfill the promise by explicitly sharing rateToolUrl as the requested calculator link in the email body.',
+    '- If leadCaptureOffer is roi_calculator and transactionType/propertyType are unknown, ask a single compact clarifying question to learn both (purchase vs refinance + residential vs commercial).',
     '- Adjust tone by intent level: low intent (lead) = nudge to apply + schedule call; high intent (application) = immediate process engagement + docs checklist + schedule call.',
-    '- Do not mention rate calculators or discuss pricing/rates before a value conversation.',
+    '- Do not mention rate calculators or discuss pricing/rates before a value conversation, unless leadCaptureOffer is roi_calculator.',
     '- NEVER request bank statements in the initial document request.',
     '- If stage is application/high intent, include docs request list tailored for private lending such as: LLC formation docs/operating agreement (if entity borrower), purchase contract (if under contract), scope of work + rehab budget (if rehab), rent roll/T12 (if applicable), and current insurance quote/declarations if available.',
     '- Keep concise, clear CTA, and human.',
@@ -160,8 +180,11 @@ async function generateEmailWithClaude({
     links: {
       scheduleUrl,
       applicationUrl,
-      docsUploadUrl
-    }
+      docsUploadUrl,
+      rateToolUrl
+    },
+    leadSource,
+    leadCaptureOffer
   };
 
   try {
@@ -228,7 +251,10 @@ async function generateEmailWithClaude({
       stage,
       applicationUrl,
       scheduleUrl,
-      docsUploadUrl
+      docsUploadUrl,
+      rateToolUrl,
+      leadSource,
+      leadCaptureOffer
     });
   }
 }
