@@ -79,7 +79,17 @@ async function generateEmailWithClaude({
   docsUploadUrl
 }) {
   const apiKey = process.env.ANTHROPIC_API_KEY;
+  console.log('generateEmailWithClaude: starting', {
+    hasApiKey: !!apiKey,
+    apiKeyLength: apiKey ? apiKey.length : 0,
+    apiKeyPrefix: apiKey ? apiKey.substring(0, 10) + '...' : '(none)',
+    stage,
+    intentLevel,
+    contactName
+  });
+
   if (!apiKey) {
+    console.log('generateEmailWithClaude: NO API KEY — using fallback template');
     return buildFallbackEmail({
       contactName,
       stage,
@@ -91,6 +101,7 @@ async function generateEmailWithClaude({
   }
 
   const model = process.env.ANTHROPIC_MODEL || 'claude-3-5-sonnet-latest';
+  console.log('generateEmailWithClaude: using model', model);
 
   const systemPrompt = [
     'You write high-converting, professional loan follow-up emails for SwiftPath Capital.',
@@ -139,12 +150,19 @@ async function generateEmailWithClaude({
       })
     });
 
+    console.log('generateEmailWithClaude: Anthropic API response status', res.status);
     const payload = await res.json();
     if (!res.ok) {
+      console.error('generateEmailWithClaude: Anthropic API ERROR', {
+        status: res.status,
+        error: JSON.stringify(payload).substring(0, 500)
+      });
       throw new Error(`Anthropic error: ${res.status} ${JSON.stringify(payload)}`);
     }
 
     const text = (payload.content || []).map((c) => c.text || '').join('\n').trim();
+    console.log('generateEmailWithClaude: Claude raw response length', text.length);
+    console.log('generateEmailWithClaude: Claude raw response preview', text.substring(0, 300));
     let parsed;
     try {
       parsed = JSON.parse(text);
@@ -159,15 +177,21 @@ async function generateEmailWithClaude({
     }
 
     if (!parsed || !parsed.subject || !parsed.html) {
+      console.error('generateEmailWithClaude: parsed response missing subject or html', JSON.stringify(parsed).substring(0, 300));
       throw new Error('Claude response missing subject or html');
     }
+
+    console.log('generateEmailWithClaude: SUCCESS — AI-generated email', {
+      subject: parsed.subject,
+      htmlLength: parsed.html.length
+    });
 
     return {
       subject: String(parsed.subject).trim(),
       html: String(parsed.html).trim()
     };
   } catch (err) {
-    console.error('ai-autoresponder: falling back to static email', err);
+    console.error('generateEmailWithClaude: FALLING BACK TO TEMPLATE — error was:', err.message || err);
     return buildFallbackEmail({
       contactName,
       stage,
