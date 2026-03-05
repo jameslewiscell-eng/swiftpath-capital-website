@@ -55,8 +55,42 @@ async function sendApplicationAutoResponse(data = {}) {
 }
 
 exports.handler = async function(event) {
+  console.log('save-application: INVOKED', {
+    method: event.httpMethod,
+    path: event.path,
+    timestamp: new Date().toISOString(),
+    bodyLength: (event.body || '').length,
+    envCheck: {
+      AI_AUTORESPONDER_ENABLED: process.env.AI_AUTORESPONDER_ENABLED || '(not set)',
+      DROPBOX_ACCESS_TOKEN: process.env.DROPBOX_ACCESS_TOKEN ? 'set' : '(not set)',
+      RESEND_API_KEY: process.env.RESEND_API_KEY ? 'set' : '(not set)',
+      RESEND_FROM_EMAIL: process.env.RESEND_FROM_EMAIL || '(not set)',
+      ANTHROPIC_API_KEY: process.env.ANTHROPIC_API_KEY ? 'set' : '(not set)'
+    }
+  });
+
   if (event.httpMethod === 'OPTIONS') {
     return { statusCode: 204, headers: CORS_HEADERS };
+  }
+
+  // GET = health check / diagnostic
+  if (event.httpMethod === 'GET') {
+    return {
+      statusCode: 200,
+      headers: { 'Content-Type': 'application/json', ...CORS_HEADERS },
+      body: JSON.stringify({
+        status: 'ok',
+        function: 'save-application',
+        timestamp: new Date().toISOString(),
+        env: {
+          AI_AUTORESPONDER_ENABLED: process.env.AI_AUTORESPONDER_ENABLED || '(not set)',
+          DROPBOX_ACCESS_TOKEN: process.env.DROPBOX_ACCESS_TOKEN ? 'set' : '(not set)',
+          RESEND_API_KEY: process.env.RESEND_API_KEY ? 'set' : '(not set)',
+          RESEND_FROM_EMAIL: process.env.RESEND_FROM_EMAIL || '(not set)',
+          ANTHROPIC_API_KEY: process.env.ANTHROPIC_API_KEY ? 'set' : '(not set)'
+        }
+      }, null, 2)
+    };
   }
 
   if (event.httpMethod !== 'POST') {
