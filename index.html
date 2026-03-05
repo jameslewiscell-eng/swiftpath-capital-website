@@ -968,6 +968,26 @@ Check Your Rate Instantly — see your rate before you apply
     return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email);
   }
 
+  function deriveNameFromEmail(email){
+    var local = (email.split('@')[0] || '').trim();
+    if(!local) return { firstName: 'Website', lastName: 'Visitor' };
+
+    var pieces = local
+      .replace(/[._-]+/g, ' ')
+      .replace(/[^a-zA-Z\s]/g, ' ')
+      .trim()
+      .split(/\s+/)
+      .filter(Boolean);
+
+    if(!pieces.length) return { firstName: 'Website', lastName: 'Visitor' };
+    if(pieces.length === 1) return { firstName: pieces[0], lastName: 'Visitor' };
+
+    return {
+      firstName: pieces[0],
+      lastName: pieces.slice(1).join(' ')
+    };
+  }
+
   function getCookie(name){
     var m = document.cookie.match(new RegExp('(?:^|; )' + name.replace(/([.$?*|{}()\[\]\\/+^])/g, '\\$1') + '=([^;]*)'));
     return m ? decodeURIComponent(m[1]) : null;
@@ -1049,8 +1069,11 @@ Check Your Rate Instantly — see your rate before you apply
 
       try {
         var params = new URLSearchParams(window.location.search);
+        var parsedName = deriveNameFromEmail(email);
         var fields = [
           { name: 'email', value: email },
+          { name: 'firstname', value: parsedName.firstName },
+          { name: 'lastname', value: parsedName.lastName },
           { name: 'lead_purpose', value: 'Fix-and-Flip ROI Calculator' },
           { name: 'loan_purpose', value: 'Fix-and-Flip ROI Calculator' },
           { name: 'purpose', value: 'Fix-and-Flip ROI Calculator' }
