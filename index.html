@@ -955,10 +955,54 @@ Check Your Rate Instantly — see your rate before you apply
   var overlay = document.getElementById('exitOverlay');
   var closeBtn = document.getElementById('exitClose');
   var form = document.getElementById('exitForm');
+  var emailInput = document.getElementById('exitEmail');
   if(!popup) return;
+  var HUBSPOT_PORTAL_ID = '243569048';
+  var HUBSPOT_FORM_GUID = '65717a53-a61c-4f85-ae97-8c34b85c5d83';
+  var PROXY_URL = '/.netlify/functions/hs-submit';
   var shown = false;
   var KEY = 'spc_exit_shown';
   if(sessionStorage.getItem(KEY)) return;
+
+  function isValidEmail(email){
+    return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email);
+  }
+
+  function getCookie(name){
+    var m = document.cookie.match(new RegExp('(?:^|; )' + name.replace(/([.$?*|{}()\[\]\\/+^])/g, '\\$1') + '=([^;]*)'));
+    return m ? decodeURIComponent(m[1]) : null;
+  }
+
+  function setStatus(message, isError){
+    if(!form) return;
+    var status = document.getElementById('exitFormStatus');
+    if(!status){
+      status = document.createElement('p');
+      status.id = 'exitFormStatus';
+      status.className = 'text-sm mt-2';
+      status.setAttribute('role', 'status');
+      status.setAttribute('aria-live', 'polite');
+      form.appendChild(status);
+    }
+    status.className = 'text-sm mt-2 ' + (isError ? 'text-red-600' : 'text-green-600');
+    status.textContent = message;
+  }
+
+  function setSubmitting(isSubmitting){
+    if(!form) return;
+    var btn = form.querySelector('button[type="submit"]');
+    if(!btn) return;
+    if(isSubmitting){
+      btn.dataset.origText = btn.dataset.origText || btn.textContent;
+      btn.textContent = 'Sending...';
+      btn.setAttribute('disabled', 'disabled');
+      btn.classList.add('opacity-60', 'cursor-not-allowed');
+    } else {
+      if(btn.dataset.origText) btn.textContent = btn.dataset.origText;
+      btn.removeAttribute('disabled');
+      btn.classList.remove('opacity-60', 'cursor-not-allowed');
+    }
+  }
 
   function show(){
     if(shown) return;
@@ -985,14 +1029,63 @@ Check Your Rate Instantly — see your rate before you apply
   if(overlay) overlay.addEventListener('click', hide);
   if(closeBtn) closeBtn.addEventListener('click', hide);
   if(form){
-    form.addEventListener('submit', function(e){
+    form.addEventListener('submit', async function(e){
       e.preventDefault();
-      var email = document.getElementById('exitEmail').value;
-      if(email){
-        // Store for later — could be sent to HubSpot
-        console.log('[ExitPopup] captured:', email);
+      if(!emailInput) return;
+      var email = emailInput.value.trim();
+      if(!email){
+        setStatus('Please enter your email address.', true);
+        emailInput.focus();
+        return;
+      }
+      if(!isValidEmail(email)){
+        setStatus('Please enter a valid email address.', true);
+        emailInput.focus();
+        return;
+      }
+
+      setSubmitting(true);
+      setStatus('', false);
+
+      try {
+        var params = new URLSearchParams(window.location.search);
+        var fields = [
+          { name: 'email', value: email },
+          { name: 'lead_purpose', value: 'Fix-and-Flip ROI Calculator' },
+          { name: 'loan_purpose', value: 'Fix-and-Flip ROI Calculator' },
+          { name: 'purpose', value: 'Fix-and-Flip ROI Calculator' }
+        ];
+        ['utm_source','utm_medium','utm_campaign','utm_term','utm_content','gclid','gbraid','wbraid'].forEach(function(key){
+          var value = params.get(key);
+          if(value) fields.push({ name: key, value: value });
+        });
+
+        var context = { pageUri: window.location.href, pageName: document.title };
+        var hutk = getCookie('hubspotutk');
+        if(hutk) context.hutk = hutk;
+
+        var res = await fetch(PROXY_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            portalId: HUBSPOT_PORTAL_ID,
+            formGuid: HUBSPOT_FORM_GUID,
+            fields: fields,
+            context: context
+          })
+        });
+
+        if(!res.ok){
+          throw new Error('Submission failed with status ' + res.status);
+        }
+
         form.innerHTML = '<p class="text-green-600 font-semibold text-center py-4">Check your inbox! Your calculator is on its way.</p>';
         setTimeout(hide, 3000);
+      } catch (err) {
+        console.error('[ExitPopup] submit failed:', err);
+        setStatus('Something went wrong. Please try again or email info@swiftpathcapital.com.', true);
+      } finally {
+        setSubmitting(false);
       }
     });
   }
