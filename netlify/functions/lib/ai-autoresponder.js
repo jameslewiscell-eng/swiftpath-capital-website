@@ -34,14 +34,35 @@ function buildFallbackEmail({ contactName, stage, applicationUrl, scheduleUrl, d
 
 function appendEmailSignature(html) {
   const body = String(html || '').trim();
+  const wrappedBody = body
+    ? [
+        '<div style="font-family:Arial,Helvetica,sans-serif;color:#1f2937;font-size:15px;line-height:1.6;">',
+        body,
+        '</div>'
+      ].join('')
+    : '';
+
   const signature = [
-    '<p>Best regards,<br><strong>SwiftPath Capital Team</strong></p>',
-    '<p>Phone: <a href="tel:+13214304434">+1 (321) 430-4434</a><br>Email: <a href="mailto:info@swiftcapital.com">info@swiftcapital.com</a></p>',
-    '<p><img src="https://swiftpathcapital.com/Images/Logo.PNG" alt="SwiftPath Capital logo" width="180" /></p>'
+    '<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="font-family:Arial,Helvetica,sans-serif;margin-top:22px;max-width:560px;width:100%;border-top:1px solid #e5e7eb;padding-top:16px;">',
+    '<tr>',
+    '<td style="vertical-align:top;padding-right:14px;width:140px;">',
+    '<img src="https://swiftpathcapital.com/Images/Logo.PNG" alt="SwiftPath Capital logo" width="125" style="display:block;border:0;max-width:125px;height:auto;" />',
+    '</td>',
+    '<td style="vertical-align:top;">',
+    '<p style="margin:0 0 4px 0;font-size:16px;line-height:1.4;color:#111827;"><strong>SwiftPath Capital Team</strong></p>',
+    '<p style="margin:0 0 10px 0;font-size:13px;line-height:1.4;color:#6b7280;">Private lending for residential and commercial real estate</p>',
+    '<p style="margin:0;font-size:14px;line-height:1.6;color:#1f2937;">',
+    '📞 <a href="tel:+13214304434" style="color:#1d4ed8;text-decoration:none;">+1 (321) 430-4434</a><br>',
+    '✉️ <a href="mailto:info@swiftcapital.com" style="color:#1d4ed8;text-decoration:none;">info@swiftcapital.com</a><br>',
+    '🌐 <a href="https://swiftpathcapital.com" style="color:#1d4ed8;text-decoration:none;">swiftpathcapital.com</a>',
+    '</p>',
+    '</td>',
+    '</tr>',
+    '</table>'
   ].join('');
 
-  if (!body) return signature;
-  return `${body}${signature}`;
+  if (!wrappedBody) return signature;
+  return `${wrappedBody}${signature}`;
 }
 
 function inferTransactionType(text) {
