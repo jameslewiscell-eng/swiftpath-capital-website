@@ -6,7 +6,7 @@ function isAutoresponderEnabled() {
   return false;
 }
 
-function buildFallbackEmail({ contactName, stage, applicationUrl, scheduleUrl, rateToolUrl, docsUploadUrl }) {
+function buildFallbackEmail({ contactName, stage, applicationUrl, scheduleUrl, docsUploadUrl }) {
   const safeName = contactName || 'there';
 
   if (stage === 'application') {
@@ -27,7 +27,7 @@ function buildFallbackEmail({ contactName, stage, applicationUrl, scheduleUrl, r
       `<p>Hi ${safeName},</p>`,
       '<p>Thanks for your interest in SwiftPath Capital. We received your request and a lending advisor will follow up soon.</p>',
       `<p>To speed things up, you can start your full application here: <a href="${applicationUrl}">Apply now</a>.</p>`,
-      `<p>You can also <a href="${scheduleUrl}">schedule a call</a> or review financing options in our <a href="${rateToolUrl}">rate calculator</a>.</p>`
+      `<p>You can also <a href="${scheduleUrl}">schedule a call</a> to discuss your scenario and next steps.</p>`
     ].join('')
   };
 }
@@ -75,7 +75,6 @@ async function generateEmailWithClaude({
   propertyType,
   scheduleUrl,
   applicationUrl,
-  rateToolUrl,
   docsUploadUrl
 }) {
   const apiKey = process.env.ANTHROPIC_API_KEY;
@@ -95,7 +94,6 @@ async function generateEmailWithClaude({
       stage,
       applicationUrl,
       scheduleUrl,
-      rateToolUrl,
       docsUploadUrl
     });
   }
@@ -111,6 +109,7 @@ async function generateEmailWithClaude({
     '- Detect and reference purchase vs refinance when known, otherwise ask a short clarifying question.',
     '- Detect and reference commercial vs residential when known, otherwise ask a short clarifying question.',
     '- Adjust tone by intent level: low intent (lead) = nudge to apply + schedule call; high intent (application) = immediate process engagement + docs checklist + schedule call.',
+    '- Do not mention rate calculators or discuss pricing/rates before a value conversation.',
     '- NEVER request bank statements in the initial document request.',
     '- If stage is application/high intent, include docs request list tailored for private lending such as: LLC formation docs/operating agreement (if entity borrower), purchase contract (if under contract), scope of work + rehab budget (if rehab), rent roll/T12 (if applicable), and current insurance quote/declarations if available.',
     '- Keep concise, clear CTA, and human.',
@@ -128,7 +127,6 @@ async function generateEmailWithClaude({
     links: {
       scheduleUrl,
       applicationUrl,
-      rateToolUrl,
       docsUploadUrl
     }
   };
@@ -197,7 +195,6 @@ async function generateEmailWithClaude({
       stage,
       applicationUrl,
       scheduleUrl,
-      rateToolUrl,
       docsUploadUrl
     });
   }
