@@ -35,6 +35,7 @@
 
   setupCurrencyInput('arv');
   setupCurrencyInput('rehabCost');
+  setupCurrencyInput('purchasePrice');
   setupCurrencyInput('monthlyRent');
 
   // ── Mortgage Calculation ─────────────────────────────────
@@ -138,6 +139,7 @@
     document.getElementById('propZip').value = '';
     document.getElementById('arv').value = '';
     document.getElementById('rehabCost').value = '';
+    document.getElementById('purchasePrice').value = '';
     document.getElementById('interestRate').value = '7.0';
     document.getElementById('loanTerm').value = '30';
     document.getElementById('monthlyRent').value = '';
@@ -148,7 +150,7 @@
     var arv = parseCurrency(document.getElementById('arv').value);
     var rehab = parseCurrency(document.getElementById('rehabCost').value);
     if (isNaN(rehab)) rehab = 0;
-    var maxOffer = arv * 0.70 - rehab;
+    var purchasePrice = getPurchasePrice();
 
     var params = new URLSearchParams();
     params.set('source', 'deal-evaluator');
@@ -156,7 +158,7 @@
     params.set('propCity', document.getElementById('propCity').value.trim());
     params.set('propState', document.getElementById('propState').value.trim());
     params.set('propZip', document.getElementById('propZip').value.trim());
-    params.set('purchasePrice', Math.round(maxOffer).toString());
+    params.set('purchasePrice', Math.round(purchasePrice).toString());
     params.set('rehabBudget', Math.round(rehab).toString());
     params.set('arv', Math.round(arv).toString());
     params.set('monthlyRent', document.getElementById('monthlyRent').value.replace(/[^0-9.]/g, ''));
@@ -166,6 +168,19 @@
   };
 
   // ── Display Updates ──────────────────────────────────────
+
+  function getMaxOffer() {
+    var arv = parseCurrency(document.getElementById('arv').value);
+    var rehab = parseCurrency(document.getElementById('rehabCost').value);
+    if (isNaN(rehab)) rehab = 0;
+    return arv * 0.70 - rehab;
+  }
+
+  function getPurchasePrice() {
+    var custom = parseCurrency(document.getElementById('purchasePrice').value);
+    if (!isNaN(custom) && custom > 0) return custom;
+    return getMaxOffer();
+  }
 
   function updateOfferDisplay() {
     var arv = parseCurrency(document.getElementById('arv').value);
@@ -178,24 +193,30 @@
     document.getElementById('maxOfferDisplay').textContent = formatCurrency(maxOffer);
     document.getElementById('offerBreakdown').textContent =
       formatCurrency(arv) + ' x 70% = ' + formatCurrency(arv70) + ' - ' + formatCurrency(rehab) + ' rehab';
+
+    // Pre-fill purchase price with the 70% rule value if empty
+    var ppInput = document.getElementById('purchasePrice');
+    if (!ppInput.value || ppInput.dataset.autoFilled === 'true') {
+      ppInput.value = formatCurrency(maxOffer);
+      ppInput.dataset.autoFilled = 'true';
+    }
+    ppInput.addEventListener('input', function () {
+      ppInput.dataset.autoFilled = 'false';
+    }, { once: true });
   }
 
   function updateMortgagePreview() {
-    var arv = parseCurrency(document.getElementById('arv').value);
-    var rehab = parseCurrency(document.getElementById('rehabCost').value);
-    if (isNaN(rehab)) rehab = 0;
-
-    var maxOffer = arv * 0.70 - rehab;
+    var purchasePrice = getPurchasePrice();
     var rate = parseFloat(document.getElementById('interestRate').value);
     var term = parseInt(document.getElementById('loanTerm').value, 10);
 
     if (isNaN(rate) || rate <= 0) rate = 7.0;
 
-    var monthly = calcMonthlyMortgage(maxOffer, rate, term);
+    var monthly = calcMonthlyMortgage(purchasePrice, rate, term);
 
     document.getElementById('mortgagePreview').textContent = formatCurrencyWithCents(monthly);
     document.getElementById('mortgageBreakdownPreview').textContent =
-      formatCurrency(maxOffer) + ' loan at ' + rate.toFixed(1) + '% for ' + term + ' years';
+      formatCurrency(purchasePrice) + ' loan at ' + rate.toFixed(1) + '% for ' + term + ' years';
   }
 
   // ── Summary Builder ──────────────────────────────────────
@@ -212,7 +233,8 @@
 
     var arv70 = arv * 0.70;
     var maxOffer = arv70 - rehab;
-    var monthly = calcMonthlyMortgage(maxOffer, rate, term);
+    var purchasePrice = getPurchasePrice();
+    var monthly = calcMonthlyMortgage(purchasePrice, rate, term);
     var cashFlow = rent - monthly;
 
     // Property
@@ -225,7 +247,7 @@
     document.getElementById('sumMaxOffer').textContent = formatCurrency(maxOffer);
 
     // Financing
-    document.getElementById('sumLoanAmt').textContent = formatCurrency(maxOffer);
+    document.getElementById('sumLoanAmt').textContent = formatCurrency(purchasePrice);
     document.getElementById('sumRate').textContent = rate.toFixed(1) + '%';
     document.getElementById('sumTerm').textContent = term + ' Years';
     document.getElementById('sumMortgage').textContent = formatCurrencyWithCents(monthly);
