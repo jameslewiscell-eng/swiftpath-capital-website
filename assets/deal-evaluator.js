@@ -132,12 +132,37 @@
   };
 
   window.startOver = function () {
+    document.getElementById('propStreet').value = '';
+    document.getElementById('propCity').value = '';
+    document.getElementById('propState').value = '';
+    document.getElementById('propZip').value = '';
     document.getElementById('arv').value = '';
     document.getElementById('rehabCost').value = '';
     document.getElementById('interestRate').value = '7.0';
     document.getElementById('loanTerm').value = '30';
     document.getElementById('monthlyRent').value = '';
     showStep(1);
+  };
+
+  window.applyWithDeal = function () {
+    var arv = parseCurrency(document.getElementById('arv').value);
+    var rehab = parseCurrency(document.getElementById('rehabCost').value);
+    if (isNaN(rehab)) rehab = 0;
+    var maxOffer = arv * 0.70 - rehab;
+
+    var params = new URLSearchParams();
+    params.set('source', 'deal-evaluator');
+    params.set('propStreet', document.getElementById('propStreet').value.trim());
+    params.set('propCity', document.getElementById('propCity').value.trim());
+    params.set('propState', document.getElementById('propState').value.trim());
+    params.set('propZip', document.getElementById('propZip').value.trim());
+    params.set('purchasePrice', Math.round(maxOffer).toString());
+    params.set('rehabBudget', Math.round(rehab).toString());
+    params.set('arv', Math.round(arv).toString());
+    params.set('monthlyRent', document.getElementById('monthlyRent').value.replace(/[^0-9.]/g, ''));
+    params.set('loanType', 'Purchase');
+
+    window.location.href = '/LoanApp.html?' + params.toString();
   };
 
   // ── Display Updates ──────────────────────────────────────

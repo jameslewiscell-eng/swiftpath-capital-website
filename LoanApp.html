@@ -37,6 +37,7 @@
       </a>
       <nav class="hidden md:flex items-center gap-6">
         <a class="hover:text-slate-900" href="/#products">Loan Products</a>
+        <a class="hover:text-slate-900" href="/deal-evaluator.html">Deal Evaluator</a>
         <a class="bg-yellow-600 hover:bg-yellow-700 text-white font-semibold px-4 py-2 rounded" href="#application">Apply Now</a>
       </nav>
     </div>
@@ -459,6 +460,36 @@
       </div>
     </div>
   </footer>
+
+  <!-- Pre-fill from deal evaluator or other tools -->
+  <script>
+  (function(){
+    var p = new URLSearchParams(location.search);
+    if (!p.get('source')) return;
+    var fields = ['propStreet','propCity','propState','propZip','purchasePrice','rehabBudget','arv','loanType'];
+    fields.forEach(function(id){
+      var v = p.get(id);
+      if (v) {
+        var el = document.getElementById(id);
+        if (!el) return;
+        if (['purchasePrice','rehabBudget','arv'].indexOf(id) !== -1) {
+          var num = parseFloat(v);
+          if (!isNaN(num)) el.value = '$' + Math.round(num).toLocaleString('en-US');
+        } else {
+          el.value = v;
+        }
+      }
+    });
+    // Show a banner indicating pre-filled data
+    var banner = document.getElementById('submitStatus');
+    if (banner && p.get('source') === 'deal-evaluator') {
+      banner.className = 'mb-6 rounded-md border border-blue-300 bg-blue-50 text-blue-800 p-4';
+      banner.textContent = 'Your deal details have been pre-filled from the Deal Evaluator. Review and complete the remaining fields to submit your application.';
+      banner.removeAttribute('hidden');
+      banner.classList.remove('hidden');
+    }
+  })();
+  </script>
 
   <!-- Signature pad (must load before form handler) -->
   <script src="/assets/signature-pad.js"></script>
