@@ -260,11 +260,11 @@
     var aboveEl = document.getElementById('sumAboveOptimal');
     if (aboveEl) {
       if (aboveOptimal > 0) {
-        aboveEl.textContent = '+' + formatCurrency(aboveOptimal) + ' above optimal';
-        aboveEl.className = 'text-xs text-yellow-300';
+        aboveEl.textContent = '+' + formatCurrency(aboveOptimal) + ' above 70% rule price';
+        aboveEl.className = 'text-xs text-blue-200';
       } else {
-        aboveEl.textContent = 'At optimal price';
-        aboveEl.className = 'text-xs text-green-300';
+        aboveEl.textContent = 'At 70% rule price';
+        aboveEl.className = 'text-xs text-blue-200';
       }
     }
 
@@ -304,16 +304,9 @@
     roiEl.textContent = roi.toFixed(1) + '%';
     roiEl.className = 'text-lg font-bold ' + (roi >= 0 ? 'text-green-400' : 'text-red-400');
 
-    // Verdict
     var verdictEl = document.getElementById('flipVerdict');
     if (verdictEl) {
-      if (profit > 0 && roi >= 15) {
-        verdictEl.innerHTML = '<div class="bg-green-900/40 border border-green-500/30 rounded-lg p-4"><p class="text-green-300 font-bold text-sm">Strong Flip Opportunity</p><p class="text-green-200 text-xs mt-1">This deal shows a healthy projected profit and ROI. Consider moving forward with due diligence.</p></div>';
-      } else if (profit > 0) {
-        verdictEl.innerHTML = '<div class="bg-yellow-900/40 border border-yellow-500/30 rounded-lg p-4"><p class="text-yellow-300 font-bold text-sm">Marginal Flip</p><p class="text-yellow-200 text-xs mt-1">There\'s profit here, but the margins are tight. Unexpected costs could eat into your returns. Negotiate a lower purchase price if possible.</p></div>';
-      } else {
-        verdictEl.innerHTML = '<div class="bg-red-900/40 border border-red-500/30 rounded-lg p-4"><p class="text-red-300 font-bold text-sm">Not Profitable as a Flip</p><p class="text-red-200 text-xs mt-1">At this purchase price, the deal doesn\'t pencil as a flip. Consider negotiating a lower price or evaluating a rental exit strategy instead.</p></div>';
-      }
+      verdictEl.innerHTML = '';
     }
   }
 
@@ -374,16 +367,9 @@
       moneyLeftEl.textContent = formatCurrency(moneyLeftInDeal) + ' left in deal';
     }
 
-    // Verdict
     var verdictEl = document.getElementById('rentVerdict');
     if (verdictEl) {
-      if (cashFlow >= 200 && dscr >= 1.25 && moneyLeftInDeal <= 0) {
-        verdictEl.innerHTML = '<div class="bg-green-900/40 border border-green-500/30 rounded-lg p-4"><p class="text-green-300 font-bold text-sm">Excellent BRRRR Candidate</p><p class="text-green-200 text-xs mt-1">Strong cash flow, healthy DSCR, and you get all your capital back at refinance. This deal checks every box.</p></div>';
-      } else if (cashFlow >= 0 && dscr >= 1.0) {
-        verdictEl.innerHTML = '<div class="bg-yellow-900/40 border border-yellow-500/30 rounded-lg p-4"><p class="text-yellow-300 font-bold text-sm">Viable Rental with Caveats</p><p class="text-yellow-200 text-xs mt-1">The deal cash flows positive, but margins are thin. ' + (moneyLeftInDeal > 0 ? 'You\'ll have ' + formatCurrency(moneyLeftInDeal) + ' left in the deal after refinance. ' : '') + 'Consider if the returns justify the capital committed.</p></div>';
-      } else {
-        verdictEl.innerHTML = '<div class="bg-red-900/40 border border-red-500/30 rounded-lg p-4"><p class="text-red-300 font-bold text-sm">Negative Cash Flow</p><p class="text-red-200 text-xs mt-1">At this purchase price and rent level, the property won\'t cash flow after refinancing. Consider negotiating a lower purchase price or confirming rents are accurate.</p></div>';
-      }
+      verdictEl.innerHTML = '';
     }
   }
 
