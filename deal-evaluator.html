@@ -165,10 +165,15 @@
             <p class="text-sm font-medium text-blue-800 mb-1">The 70% Rule</p>
             <p class="text-xs text-blue-600 mb-3">ARV &times; 70% &minus; Renovation Costs = Max Offer Price</p>
             <div class="text-center">
-              <p class="text-sm text-slate-600">Your Maximum Offer Price</p>
+              <p class="text-sm text-slate-600">Suggested Maximum Offer Price</p>
               <p class="text-3xl font-extrabold text-brand-blue" id="maxOfferDisplay">$0</p>
               <p class="text-xs text-slate-500 mt-1" id="offerBreakdown"></p>
             </div>
+          </div>
+          <div class="field-group mb-6">
+            <label for="purchasePrice">Your Purchase Price</label>
+            <input type="text" id="purchasePrice" placeholder="$0" inputmode="numeric"/>
+            <p class="text-xs text-slate-500 mt-1">Pre-filled with the 70% rule price. Adjust to match your actual or intended offer.</p>
           </div>
           <h2 class="text-xl font-bold text-slate-800 mb-2">Loan Details</h2>
           <p class="text-sm text-slate-500 mb-6">Now let's figure out what your mortgage payment would be if you purchased at this price. Adjust the interest rate and loan term to match your expected financing.</p>
@@ -266,7 +271,7 @@
           <div class="mb-5 pt-4 border-t border-white/20">
             <h3 class="text-xs font-bold uppercase tracking-wider text-blue-300 mb-2">Financing</h3>
             <div class="metric-row">
-              <span class="text-blue-200 text-sm">Loan Amount (Purchase Price)</span>
+              <span class="text-blue-200 text-sm">Purchase Price (Loan Amount)</span>
               <span class="text-sm font-bold" id="sumLoanAmt">-</span>
             </div>
             <div class="metric-row">
