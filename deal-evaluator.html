@@ -39,6 +39,10 @@
     .step-connector.completed { background: #1e3a5f; }
     .summary-row { display: flex; justify-content: space-between; padding: 0.625rem 0; border-bottom: 1px solid #e2e8f0; }
     .summary-row:last-child { border-bottom: none; }
+    .exit-toggle { display: flex; gap: 0.75rem; }
+    .exit-toggle button { flex: 1; padding: 1rem; border: 2px solid #cbd5e1; border-radius: 0.75rem; background: white; font-weight: 600; font-size: 0.95rem; color: #64748b; cursor: pointer; transition: all 0.2s; }
+    .exit-toggle button.selected { border-color: #1e3a5f; background: #1e3a5f; color: white; box-shadow: 0 2px 8px rgba(30,58,95,0.3); }
+    .exit-toggle button:hover:not(.selected) { border-color: #94a3b8; background: #f8fafc; }
   </style>
 </head>
 <body class="bg-gray-50 font-sans antialiased text-slate-800">
@@ -80,8 +84,8 @@
 <section class="bg-brand-blue text-white py-12 md:py-16">
   <div class="container mx-auto px-6 text-center">
     <h1 class="text-3xl md:text-5xl font-extrabold mb-3">Deal Evaluator</h1>
-    <p class="text-lg md:text-xl text-blue-100 max-w-2xl mx-auto mb-2">Walk through your deal step by step and get a clear summary using the 70% rule.</p>
-    <p class="text-sm text-yellow-200">ARV &times; 70% &minus; Renovation Costs = Max Offer</p>
+    <p class="text-lg md:text-xl text-blue-100 max-w-2xl mx-auto mb-2">Walk through your deal step by step and get a clear summary based on your exit strategy.</p>
+    <p class="text-sm text-yellow-200">Flip it or rent it &mdash; we'll show you the numbers.</p>
   </div>
 </section>
 
@@ -158,38 +162,22 @@
         </div>
       </div>
 
-      <!-- Step 3: Max Offer (calculated) + Loan Details -->
+      <!-- Step 3: Max Offer (calculated) + Purchase Price -->
       <div class="step" id="step-3">
         <div class="calc-card p-6 md:p-8">
           <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
-            <p class="text-sm font-medium text-blue-800 mb-1">The 70% Rule</p>
-            <p class="text-xs text-blue-600 mb-3">ARV &times; 70% &minus; Renovation Costs = Max Offer Price</p>
+            <p class="text-sm font-medium text-blue-800 mb-1">The 70% Rule <span class="text-xs font-normal text-blue-600">(Suggestion Only)</span></p>
+            <p class="text-xs text-blue-600 mb-3">ARV &times; 70% &minus; Renovation Costs = Suggested Max Offer Price</p>
             <div class="text-center">
               <p class="text-sm text-slate-600">Suggested Maximum Offer Price</p>
               <p class="text-3xl font-extrabold text-brand-blue" id="maxOfferDisplay">$0</p>
               <p class="text-xs text-slate-500 mt-1" id="offerBreakdown"></p>
             </div>
           </div>
-          <div class="field-group mb-6">
+          <div class="field-group mb-4">
             <label for="purchasePrice">Your Purchase Price</label>
             <input type="text" id="purchasePrice" placeholder="$0" inputmode="numeric"/>
-            <p class="text-xs text-slate-500 mt-1">Pre-filled with the 70% rule price. Adjust to match your actual or intended offer.</p>
-          </div>
-          <h2 class="text-xl font-bold text-slate-800 mb-2">Loan Details</h2>
-          <p class="text-sm text-slate-500 mb-6">Now let's figure out what your mortgage payment would be if you purchased at this price. Adjust the interest rate and loan term to match your expected financing.</p>
-          <div class="grid sm:grid-cols-2 gap-4">
-            <div class="field-group">
-              <label for="interestRate">Interest Rate (%)</label>
-              <input type="text" id="interestRate" placeholder="7.0" inputmode="decimal" value="7.0"/>
-              <p class="text-xs text-slate-500 mt-1">Annual interest rate</p>
-            </div>
-            <div class="field-group">
-              <label for="loanTerm">Loan Term (Years)</label>
-              <select id="loanTerm">
-                <option value="15">15 Years</option>
-                <option value="30" selected>30 Years</option>
-              </select>
-            </div>
+            <p class="text-xs text-slate-500 mt-1">Pre-filled with the 70% rule suggestion. Adjust to match your actual or intended offer.</p>
           </div>
           <div class="flex gap-3 mt-6">
             <button type="button" class="flex-1 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold py-4 px-6 rounded-lg transition duration-300" onclick="prevStep(3)">
@@ -202,23 +190,33 @@
         </div>
       </div>
 
-      <!-- Step 4: Monthly Rent -->
+      <!-- Step 4: Exit Strategy -->
       <div class="step" id="step-4">
         <div class="calc-card p-6 md:p-8">
-          <div class="bg-slate-50 border border-slate-200 rounded-lg p-4 mb-6">
-            <div class="flex justify-between items-center">
-              <span class="text-sm text-slate-600">Estimated Monthly Mortgage</span>
-              <span class="text-xl font-bold text-brand-blue" id="mortgagePreview">$0</span>
+          <h2 class="text-xl font-bold text-slate-800 mb-2">What's Your Exit Strategy?</h2>
+          <p class="text-sm text-slate-500 mb-6">How you plan to exit the deal determines how we evaluate it. Choose your strategy below.</p>
+
+          <div class="exit-toggle mb-6">
+            <button type="button" id="btn-flip" onclick="selectStrategy('flip')">
+              <div class="text-lg mb-1">Flip It</div>
+              <div class="text-xs font-normal">Buy, rehab, sell for profit</div>
+            </button>
+            <button type="button" id="btn-rent" onclick="selectStrategy('rent')">
+              <div class="text-lg mb-1">Rent It</div>
+              <div class="text-xs font-normal">Buy, rehab, refinance &amp; hold</div>
+            </button>
+          </div>
+          <p id="err-strategy" class="text-red-500 text-sm mb-4 hidden">Please select an exit strategy.</p>
+
+          <!-- Rent-only fields -->
+          <div id="rent-fields" class="hidden">
+            <div class="field-group mb-4">
+              <label for="monthlyRent">Expected Monthly Rent</label>
+              <input type="text" id="monthlyRent" placeholder="$1,800" inputmode="numeric"/>
             </div>
-            <p class="text-xs text-slate-500 mt-1" id="mortgageBreakdownPreview"></p>
+            <p id="err-rent" class="text-red-500 text-sm mt-2 hidden">Please enter a valid rent amount.</p>
           </div>
-          <h2 class="text-xl font-bold text-slate-800 mb-2">What is the Expected Monthly Rent?</h2>
-          <p class="text-sm text-slate-500 mb-6">Enter what you expect to collect in monthly rent. This will be compared against the mortgage payment to show your monthly cash position.</p>
-          <div class="field-group">
-            <label for="monthlyRent">Expected Monthly Rent</label>
-            <input type="text" id="monthlyRent" placeholder="$1,800" inputmode="numeric"/>
-          </div>
-          <p id="err-rent" class="text-red-500 text-sm mt-2 hidden">Please enter a valid rent amount.</p>
+
           <div class="flex gap-3 mt-6">
             <button type="button" class="flex-1 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold py-4 px-6 rounded-lg transition duration-300" onclick="prevStep(4)">
               &larr; Back
@@ -235,9 +233,9 @@
         <!-- Summary Card -->
         <div class="result-card rounded-2xl p-6 md:p-8 text-white mb-6">
           <h2 class="text-xl font-bold mb-1">Deal Summary</h2>
-          <p class="text-blue-200 text-sm mb-6">Here's the full picture of your deal based on the 70% rule.</p>
+          <p class="text-blue-200 text-sm mb-6" id="sumSubtitle">Here's the full picture of your deal.</p>
 
-          <!-- Property Section -->
+          <!-- Property Section (always shown) -->
           <div class="mb-5">
             <h3 class="text-xs font-bold uppercase tracking-wider text-blue-300 mb-2">Property</h3>
             <div class="metric-row">
@@ -248,11 +246,15 @@
               <span class="text-blue-200 text-sm">Renovation Costs</span>
               <span class="text-sm font-bold" id="sumRehab">-</span>
             </div>
+            <div class="metric-row">
+              <span class="text-blue-200 text-sm">Purchase Price</span>
+              <span class="text-sm font-bold" id="sumPurchase">-</span>
+            </div>
           </div>
 
-          <!-- 70% Rule Section -->
+          <!-- 70% Rule Section (always shown as reference) -->
           <div class="mb-5 pt-4 border-t border-white/20">
-            <h3 class="text-xs font-bold uppercase tracking-wider text-blue-300 mb-2">The 70% Rule</h3>
+            <h3 class="text-xs font-bold uppercase tracking-wider text-blue-300 mb-2">70% Rule <span class="text-blue-400 font-normal">(Suggestion)</span></h3>
             <div class="metric-row">
               <span class="text-blue-200 text-sm">ARV &times; 70%</span>
               <span class="text-sm font-bold" id="sumArv70">-</span>
@@ -262,46 +264,104 @@
               <span class="text-sm font-bold text-red-300" id="sumMinusRehab">-</span>
             </div>
             <div class="metric-row">
-              <span class="text-yellow-200 text-sm font-bold">Maximum Offer Price</span>
-              <span class="text-lg font-extrabold text-yellow-300" id="sumMaxOffer">-</span>
+              <span class="text-blue-200 text-sm">Suggested Max Offer</span>
+              <span class="text-sm font-bold text-yellow-300" id="sumMaxOffer">-</span>
+            </div>
+            <div class="metric-row" id="sumPriceCompareRow">
+              <span class="text-blue-200 text-sm">Your Price vs. Suggestion</span>
+              <span class="text-sm font-bold" id="sumPriceCompare">-</span>
             </div>
           </div>
 
-          <!-- Financing Section -->
-          <div class="mb-5 pt-4 border-t border-white/20">
-            <h3 class="text-xs font-bold uppercase tracking-wider text-blue-300 mb-2">Financing</h3>
-            <div class="metric-row">
-              <span class="text-blue-200 text-sm">Purchase Price (Loan Amount)</span>
-              <span class="text-sm font-bold" id="sumLoanAmt">-</span>
-            </div>
-            <div class="metric-row">
-              <span class="text-blue-200 text-sm">Interest Rate</span>
-              <span class="text-sm font-bold" id="sumRate">-</span>
-            </div>
-            <div class="metric-row">
-              <span class="text-blue-200 text-sm">Loan Term</span>
-              <span class="text-sm font-bold" id="sumTerm">-</span>
-            </div>
-            <div class="metric-row">
-              <span class="text-blue-200 text-sm font-bold">Monthly Mortgage Payment</span>
-              <span class="text-lg font-bold" id="sumMortgage">-</span>
+          <!-- FLIP Summary Section -->
+          <div id="flip-summary" class="hidden">
+            <div class="mb-5 pt-4 border-t border-white/20">
+              <h3 class="text-xs font-bold uppercase tracking-wider text-blue-300 mb-2">Flip Analysis</h3>
+              <div class="metric-row">
+                <span class="text-blue-200 text-sm">Sale Price (ARV)</span>
+                <span class="text-sm font-bold text-green-300" id="sumFlipSale">-</span>
+              </div>
+              <div class="metric-row">
+                <span class="text-blue-200 text-sm">Purchase Price</span>
+                <span class="text-sm font-bold text-red-300" id="sumFlipPurchase">-</span>
+              </div>
+              <div class="metric-row">
+                <span class="text-blue-200 text-sm">Renovation Costs</span>
+                <span class="text-sm font-bold text-red-300" id="sumFlipRehab">-</span>
+              </div>
+              <div class="metric-row">
+                <span class="text-blue-200 text-sm">Closing Costs (Buy ~3%)</span>
+                <span class="text-sm font-bold text-red-300" id="sumFlipCloseBuy">-</span>
+              </div>
+              <div class="metric-row">
+                <span class="text-blue-200 text-sm">Selling Costs (~6% of ARV)</span>
+                <span class="text-sm font-bold text-red-300" id="sumFlipCloseSell">-</span>
+              </div>
+              <div class="metric-row">
+                <span class="text-blue-200 text-sm">Holding Costs (~6 months)</span>
+                <span class="text-sm font-bold text-red-300" id="sumFlipHolding">-</span>
+              </div>
+              <div class="metric-row">
+                <span class="text-white text-sm font-bold">Projected Profit</span>
+                <span class="text-xl font-extrabold" id="sumFlipProfit">-</span>
+              </div>
+              <div class="metric-row">
+                <span class="text-blue-200 text-sm">Estimated ROI</span>
+                <span class="text-sm font-bold" id="sumFlipROI">-</span>
+              </div>
             </div>
           </div>
 
-          <!-- Cash Flow Section -->
-          <div class="pt-4 border-t border-white/20">
-            <h3 class="text-xs font-bold uppercase tracking-wider text-blue-300 mb-2">Monthly Cash Position</h3>
-            <div class="metric-row">
-              <span class="text-blue-200 text-sm">Monthly Rent</span>
-              <span class="text-sm font-bold text-green-300" id="sumRent">-</span>
+          <!-- RENT / BRRRR Summary Section -->
+          <div id="rent-summary" class="hidden">
+            <!-- Refinance Analysis -->
+            <div class="mb-5 pt-4 border-t border-white/20">
+              <h3 class="text-xs font-bold uppercase tracking-wider text-blue-300 mb-2">Refinance Analysis (75% LTV)</h3>
+              <div class="metric-row">
+                <span class="text-blue-200 text-sm">Total Invested (Purchase + Rehab)</span>
+                <span class="text-sm font-bold" id="sumRefiInvested">-</span>
+              </div>
+              <div class="metric-row">
+                <span class="text-blue-200 text-sm">Refinance Amount (ARV &times; 75%)</span>
+                <span class="text-sm font-bold" id="sumRefiAmount">-</span>
+              </div>
+              <div class="metric-row">
+                <span class="text-white text-sm font-bold">Capital Position at Refinance</span>
+                <span class="text-lg font-extrabold" id="sumRefiPosition">-</span>
+              </div>
+              <div class="metric-row">
+                <span class="text-blue-200 text-sm" id="sumRefiLabel">-</span>
+                <span class="text-sm font-bold" id="sumRefiDetail">-</span>
+              </div>
             </div>
-            <div class="metric-row">
-              <span class="text-blue-200 text-sm">Monthly Mortgage</span>
-              <span class="text-sm font-bold text-red-300" id="sumMortgage2">-</span>
-            </div>
-            <div class="metric-row">
-              <span class="text-white text-sm font-bold">Monthly Cash Flow</span>
-              <span class="text-xl font-extrabold" id="sumCashFlow">-</span>
+
+            <!-- Monthly Cash Flow -->
+            <div class="pt-4 border-t border-white/20">
+              <h3 class="text-xs font-bold uppercase tracking-wider text-blue-300 mb-2">Monthly Cash Flow (After Refinance)</h3>
+              <div class="metric-row">
+                <span class="text-blue-200 text-sm">Refinance Loan Amount</span>
+                <span class="text-sm font-bold" id="sumRefiLoan">-</span>
+              </div>
+              <div class="metric-row">
+                <span class="text-blue-200 text-sm">Rate / Term</span>
+                <span class="text-sm font-bold" id="sumRefiTerms">7.0% / 30 Years</span>
+              </div>
+              <div class="metric-row">
+                <span class="text-blue-200 text-sm">Monthly Mortgage (P&amp;I)</span>
+                <span class="text-sm font-bold" id="sumRefiMortgage">-</span>
+              </div>
+              <div class="metric-row">
+                <span class="text-blue-200 text-sm">Monthly Rent</span>
+                <span class="text-sm font-bold text-green-300" id="sumRent">-</span>
+              </div>
+              <div class="metric-row">
+                <span class="text-blue-200 text-sm">Monthly Mortgage</span>
+                <span class="text-sm font-bold text-red-300" id="sumMortgage2">-</span>
+              </div>
+              <div class="metric-row">
+                <span class="text-white text-sm font-bold">Monthly Cash Flow</span>
+                <span class="text-xl font-extrabold" id="sumCashFlow">-</span>
+              </div>
             </div>
           </div>
         </div>
@@ -318,7 +378,7 @@
         <!-- Why 70% Explanation -->
         <div class="calc-card p-5 mb-6">
           <h3 class="text-sm font-bold text-slate-800 mb-2">Why the 70% Rule?</h3>
-          <p class="text-sm text-slate-600 leading-relaxed">When you refinance a property, lenders typically finance up to 75% of the appraised value. The 70% rule gives you a 5% cushion for closing costs, holding costs, and unexpected expenses. This ensures you aren't overpaying for the property and that you can refinance out of your purchase loan cleanly.</p>
+          <p class="text-sm text-slate-600 leading-relaxed">When you refinance a property, lenders typically finance up to 75% of the appraised value. The 70% rule gives you a 5% cushion for closing costs, holding costs, and unexpected expenses. This is a guideline to help you evaluate a deal &mdash; not a hard rule. Your actual purchase price is what matters in the final analysis.</p>
         </div>
 
         <!-- Start Over -->
@@ -350,26 +410,31 @@
 <section class="py-12 bg-white">
   <div class="container mx-auto px-6">
     <h2 class="text-2xl font-bold text-center text-slate-800 mb-8">How the Deal Evaluator Works</h2>
-    <div class="grid md:grid-cols-4 gap-8 max-w-5xl mx-auto">
+    <div class="grid md:grid-cols-5 gap-6 max-w-5xl mx-auto">
       <div class="text-center">
         <div class="bg-brand-gold text-white w-12 h-12 rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-3">1</div>
         <h3 class="font-bold text-slate-800 mb-1">Enter Your ARV</h3>
-        <p class="text-sm text-slate-600">The after-repair value based on comparable sales in your market.</p>
+        <p class="text-sm text-slate-600">The after-repair value based on comparable sales.</p>
       </div>
       <div class="text-center">
         <div class="bg-brand-gold text-white w-12 h-12 rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-3">2</div>
-        <h3 class="font-bold text-slate-800 mb-1">Add Renovation Costs</h3>
+        <h3 class="font-bold text-slate-800 mb-1">Add Rehab Costs</h3>
         <p class="text-sm text-slate-600">Your estimated rehab budget for the property.</p>
       </div>
       <div class="text-center">
         <div class="bg-brand-gold text-white w-12 h-12 rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-3">3</div>
-        <h3 class="font-bold text-slate-800 mb-1">See Your Max Offer</h3>
-        <p class="text-sm text-slate-600">The 70% rule calculates a maximum offer price based on your inputs.</p>
+        <h3 class="font-bold text-slate-800 mb-1">Set Your Price</h3>
+        <p class="text-sm text-slate-600">See the 70% rule suggestion and set your purchase price.</p>
       </div>
       <div class="text-center">
         <div class="bg-brand-gold text-white w-12 h-12 rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-3">4</div>
+        <h3 class="font-bold text-slate-800 mb-1">Pick Your Strategy</h3>
+        <p class="text-sm text-slate-600">Flip it for profit or rent it for cash flow.</p>
+      </div>
+      <div class="text-center">
+        <div class="bg-brand-gold text-white w-12 h-12 rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-3">5</div>
         <h3 class="font-bold text-slate-800 mb-1">Get Your Summary</h3>
-        <p class="text-sm text-slate-600">See mortgage payment, rent vs. mortgage, and full deal breakdown.</p>
+        <p class="text-sm text-slate-600">See a full deal breakdown based on your exit strategy.</p>
       </div>
     </div>
   </div>

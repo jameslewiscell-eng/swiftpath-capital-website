@@ -3,6 +3,7 @@
 
   var currentStep = 1;
   var totalSteps = 5;
+  var selectedStrategy = ''; // 'flip' or 'rent'
 
   // ── Helpers ──────────────────────────────────────────────
 
@@ -21,7 +22,6 @@
     return '$' + num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   }
 
-  // Auto-format currency inputs as the user types
   function setupCurrencyInput(id) {
     var input = document.getElementById(id);
     if (!input) return;
@@ -78,6 +78,26 @@
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
+  // ── Exit Strategy Selection ────────────────────────────────
+
+  window.selectStrategy = function (strategy) {
+    selectedStrategy = strategy;
+    var btnFlip = document.getElementById('btn-flip');
+    var btnRent = document.getElementById('btn-rent');
+    var rentFields = document.getElementById('rent-fields');
+    var errStrategy = document.getElementById('err-strategy');
+
+    btnFlip.classList.toggle('selected', strategy === 'flip');
+    btnRent.classList.toggle('selected', strategy === 'rent');
+    errStrategy.classList.add('hidden');
+
+    if (strategy === 'rent') {
+      rentFields.classList.remove('hidden');
+    } else {
+      rentFields.classList.add('hidden');
+    }
+  };
+
   // ── Validation & Progression ─────────────────────────────
 
   window.nextStep = function (step) {
@@ -89,8 +109,6 @@
         return;
       }
       errArv.classList.add('hidden');
-
-      // Pre-populate step 3 calculations
       updateOfferDisplay();
       showStep(2);
 
@@ -102,22 +120,31 @@
         return;
       }
       errRehab.classList.add('hidden');
-
       updateOfferDisplay();
       showStep(3);
 
     } else if (step === 3) {
-      updateMortgagePreview();
       showStep(4);
 
     } else if (step === 4) {
-      var rent = parseCurrency(document.getElementById('monthlyRent').value);
-      var errRent = document.getElementById('err-rent');
-      if (isNaN(rent) || rent <= 0) {
-        errRent.classList.remove('hidden');
+      // Validate strategy selected
+      var errStrategy = document.getElementById('err-strategy');
+      if (!selectedStrategy) {
+        errStrategy.classList.remove('hidden');
         return;
       }
-      errRent.classList.add('hidden');
+      errStrategy.classList.add('hidden');
+
+      // If rent strategy, validate rent input
+      if (selectedStrategy === 'rent') {
+        var rent = parseCurrency(document.getElementById('monthlyRent').value);
+        var errRent = document.getElementById('err-rent');
+        if (isNaN(rent) || rent <= 0) {
+          errRent.classList.remove('hidden');
+          return;
+        }
+        errRent.classList.add('hidden');
+      }
 
       buildSummary();
       showStep(5);
@@ -127,7 +154,6 @@
   window.prevStep = function (step) {
     if (step > 1) {
       if (step === 3) updateOfferDisplay();
-      if (step === 4) updateMortgagePreview();
       showStep(step - 1);
     }
   };
@@ -140,9 +166,11 @@
     document.getElementById('arv').value = '';
     document.getElementById('rehabCost').value = '';
     document.getElementById('purchasePrice').value = '';
-    document.getElementById('interestRate').value = '7.0';
-    document.getElementById('loanTerm').value = '30';
     document.getElementById('monthlyRent').value = '';
+    selectedStrategy = '';
+    document.getElementById('btn-flip').classList.remove('selected');
+    document.getElementById('btn-rent').classList.remove('selected');
+    document.getElementById('rent-fields').classList.add('hidden');
     showStep(1);
   };
 
@@ -161,8 +189,15 @@
     params.set('purchasePrice', Math.round(purchasePrice).toString());
     params.set('rehabBudget', Math.round(rehab).toString());
     params.set('arv', Math.round(arv).toString());
-    params.set('monthlyRent', document.getElementById('monthlyRent').value.replace(/[^0-9.]/g, ''));
     params.set('loanType', 'Purchase');
+
+    if (selectedStrategy === 'flip') {
+      params.set('product', 'Fix-and-Flip');
+    } else {
+      params.set('product', 'DSCR');
+      var rentVal = document.getElementById('monthlyRent').value.replace(/[^0-9.]/g, '');
+      if (rentVal) params.set('monthlyRent', rentVal);
+    }
 
     window.location.href = '/LoanApp.html?' + params.toString();
   };
@@ -205,56 +240,124 @@
     }, { once: true });
   }
 
-  function updateMortgagePreview() {
-    var purchasePrice = getPurchasePrice();
-    var rate = parseFloat(document.getElementById('interestRate').value);
-    var term = parseInt(document.getElementById('loanTerm').value, 10);
-
-    if (isNaN(rate) || rate <= 0) rate = 7.0;
-
-    var monthly = calcMonthlyMortgage(purchasePrice, rate, term);
-
-    document.getElementById('mortgagePreview').textContent = formatCurrencyWithCents(monthly);
-    document.getElementById('mortgageBreakdownPreview').textContent =
-      formatCurrency(purchasePrice) + ' loan at ' + rate.toFixed(1) + '% for ' + term + ' years';
-  }
-
   // ── Summary Builder ──────────────────────────────────────
 
   function buildSummary() {
     var arv = parseCurrency(document.getElementById('arv').value);
     var rehab = parseCurrency(document.getElementById('rehabCost').value);
     if (isNaN(rehab)) rehab = 0;
-    var rate = parseFloat(document.getElementById('interestRate').value);
-    var term = parseInt(document.getElementById('loanTerm').value, 10);
-    var rent = parseCurrency(document.getElementById('monthlyRent').value);
-
-    if (isNaN(rate) || rate <= 0) rate = 7.0;
+    var purchasePrice = getPurchasePrice();
 
     var arv70 = arv * 0.70;
     var maxOffer = arv70 - rehab;
-    var purchasePrice = getPurchasePrice();
-    var monthly = calcMonthlyMortgage(purchasePrice, rate, term);
-    var cashFlow = rent - monthly;
 
-    // Property
+    // Property section
     document.getElementById('sumArv').textContent = formatCurrency(arv);
     document.getElementById('sumRehab').textContent = formatCurrency(rehab);
+    document.getElementById('sumPurchase').textContent = formatCurrency(purchasePrice);
 
-    // 70% Rule
+    // 70% Rule section (suggestion only)
     document.getElementById('sumArv70').textContent = formatCurrency(arv70);
     document.getElementById('sumMinusRehab').textContent = '- ' + formatCurrency(rehab);
     document.getElementById('sumMaxOffer').textContent = formatCurrency(maxOffer);
 
-    // Financing
-    document.getElementById('sumLoanAmt').textContent = formatCurrency(purchasePrice);
-    document.getElementById('sumRate').textContent = rate.toFixed(1) + '%';
-    document.getElementById('sumTerm').textContent = term + ' Years';
-    document.getElementById('sumMortgage').textContent = formatCurrencyWithCents(monthly);
+    // Price comparison
+    var diff = purchasePrice - maxOffer;
+    var compareEl = document.getElementById('sumPriceCompare');
+    if (Math.abs(diff) < 1) {
+      compareEl.textContent = 'At suggestion';
+      compareEl.className = 'text-sm font-bold text-yellow-300';
+    } else if (diff > 0) {
+      compareEl.textContent = formatCurrency(diff) + ' above';
+      compareEl.className = 'text-sm font-bold text-red-300';
+    } else {
+      compareEl.textContent = formatCurrency(Math.abs(diff)) + ' below';
+      compareEl.className = 'text-sm font-bold text-green-300';
+    }
 
-    // Cash Flow
+    // Show/hide strategy-specific sections
+    var flipSection = document.getElementById('flip-summary');
+    var rentSection = document.getElementById('rent-summary');
+
+    if (selectedStrategy === 'flip') {
+      flipSection.classList.remove('hidden');
+      rentSection.classList.add('hidden');
+      document.getElementById('sumSubtitle').textContent = "Here's your flip analysis based on your purchase price.";
+      buildFlipSummary(arv, rehab, purchasePrice);
+    } else {
+      flipSection.classList.add('hidden');
+      rentSection.classList.remove('hidden');
+      document.getElementById('sumSubtitle').textContent = "Here's your rental / BRRRR analysis based on your purchase price.";
+      buildRentSummary(arv, rehab, purchasePrice);
+    }
+  }
+
+  function buildFlipSummary(arv, rehab, purchasePrice) {
+    var closingBuy = purchasePrice * 0.03;
+    var closingSell = arv * 0.06;
+    var holdingCosts = purchasePrice * 0.005 * 6; // ~0.5% of purchase per month, 6 months
+    var totalCosts = purchasePrice + rehab + closingBuy + closingSell + holdingCosts;
+    var profit = arv - totalCosts;
+    var totalCashIn = purchasePrice + rehab + closingBuy + holdingCosts;
+    var roi = totalCashIn > 0 ? (profit / totalCashIn) * 100 : 0;
+
+    document.getElementById('sumFlipSale').textContent = '+' + formatCurrency(arv);
+    document.getElementById('sumFlipPurchase').textContent = '-' + formatCurrency(purchasePrice);
+    document.getElementById('sumFlipRehab').textContent = '-' + formatCurrency(rehab);
+    document.getElementById('sumFlipCloseBuy').textContent = '-' + formatCurrency(closingBuy);
+    document.getElementById('sumFlipCloseSell').textContent = '-' + formatCurrency(closingSell);
+    document.getElementById('sumFlipHolding').textContent = '-' + formatCurrency(holdingCosts);
+
+    var profitEl = document.getElementById('sumFlipProfit');
+    profitEl.textContent = (profit >= 0 ? '+' : '') + formatCurrency(profit);
+    profitEl.className = 'text-xl font-extrabold ' + (profit >= 0 ? 'text-green-400' : 'text-red-400');
+
+    var roiEl = document.getElementById('sumFlipROI');
+    roiEl.textContent = roi.toFixed(1) + '%';
+    roiEl.className = 'text-sm font-bold ' + (roi >= 0 ? 'text-green-300' : 'text-red-300');
+  }
+
+  function buildRentSummary(arv, rehab, purchasePrice) {
+    var rent = parseCurrency(document.getElementById('monthlyRent').value);
+
+    // Refinance analysis
+    var totalInvested = purchasePrice + rehab;
+    var refiAmount = arv * 0.75;
+    var capitalPosition = refiAmount - totalInvested;
+
+    document.getElementById('sumRefiInvested').textContent = formatCurrency(totalInvested);
+    document.getElementById('sumRefiAmount').textContent = formatCurrency(refiAmount);
+
+    var posEl = document.getElementById('sumRefiPosition');
+    var labelEl = document.getElementById('sumRefiLabel');
+    var detailEl = document.getElementById('sumRefiDetail');
+
+    if (capitalPosition >= 0) {
+      posEl.textContent = '+' + formatCurrency(capitalPosition);
+      posEl.className = 'text-lg font-extrabold text-green-400';
+      labelEl.textContent = 'You get money back at refinance';
+      detailEl.textContent = formatCurrency(capitalPosition) + ' cash back';
+      detailEl.className = 'text-sm font-bold text-green-300';
+    } else {
+      posEl.textContent = '-' + formatCurrency(Math.abs(capitalPosition));
+      posEl.className = 'text-lg font-extrabold text-red-400';
+      labelEl.textContent = 'Money left in the deal after refinance';
+      detailEl.textContent = formatCurrency(Math.abs(capitalPosition)) + ' still in deal';
+      detailEl.className = 'text-sm font-bold text-red-300';
+    }
+
+    // Monthly cash flow based on refinance loan
+    var refiRate = 7.0;
+    var refiTerm = 30;
+    var monthlyMortgage = calcMonthlyMortgage(refiAmount, refiRate, refiTerm);
+    var cashFlow = rent - monthlyMortgage;
+
+    document.getElementById('sumRefiLoan').textContent = formatCurrency(refiAmount);
+    document.getElementById('sumRefiTerms').textContent = refiRate.toFixed(1) + '% / ' + refiTerm + ' Years';
+    document.getElementById('sumRefiMortgage').textContent = formatCurrencyWithCents(monthlyMortgage);
+
     document.getElementById('sumRent').textContent = '+' + formatCurrencyWithCents(rent);
-    document.getElementById('sumMortgage2').textContent = '-' + formatCurrencyWithCents(monthly);
+    document.getElementById('sumMortgage2').textContent = '-' + formatCurrencyWithCents(monthlyMortgage);
 
     var cfEl = document.getElementById('sumCashFlow');
     cfEl.textContent = (cashFlow >= 0 ? '+' : '') + formatCurrencyWithCents(cashFlow);
