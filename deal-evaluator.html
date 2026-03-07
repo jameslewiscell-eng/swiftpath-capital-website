@@ -53,6 +53,7 @@
     <a class="text-slate-700 hover:text-brand-blue font-medium transition duration-300" href="/#advantage">Why SwiftPath</a>
     <a class="text-slate-700 hover:text-brand-blue font-medium transition duration-300" href="/#process">Process</a>
     <a class="text-slate-700 hover:text-brand-blue font-medium transition duration-300" href="/#products">Loan Programs</a>
+    <a class="text-slate-700 hover:text-brand-blue font-medium transition duration-300" href="/deal-evaluator.html">Deal Evaluator</a>
     <a class="text-slate-700 hover:text-brand-blue font-medium transition duration-300" href="/about-swiftpath-capital.html">About</a>
     <a class="text-slate-700 hover:text-brand-blue font-medium transition duration-300" href="/LoanApp.html">Apply</a>
     <a class="bg-brand-gold text-white font-bold py-2 px-5 rounded-lg shadow-md hover:bg-brand-gold-dark transition duration-300" href="/LoanApp.html">Full Application</a>
@@ -67,6 +68,7 @@
   <a class="block text-slate-700 font-medium" href="/#advantage">Why SwiftPath</a>
   <a class="block text-slate-700 font-medium" href="/#process">Process</a>
   <a class="block text-slate-700 font-medium" href="/#products">Loan Programs</a>
+  <a class="block text-slate-700 font-medium" href="/deal-evaluator.html">Deal Evaluator</a>
   <a class="block text-slate-700 font-medium" href="/about-swiftpath-capital.html">About</a>
   <a class="block text-slate-700 font-medium" href="/LoanApp.html">Apply</a>
   <a class="block bg-brand-gold text-white text-center font-bold py-2 px-5 rounded-lg shadow-md hover:bg-brand-gold-dark transition duration-300 mt-2" href="/LoanApp.html">Full Application</a>
@@ -101,11 +103,29 @@
         <div class="step-indicator" id="ind-5">5</div>
       </div>
 
-      <!-- Step 1: ARV -->
+      <!-- Step 1: Property Address + ARV -->
       <div class="step active" id="step-1">
         <div class="calc-card p-6 md:p-8">
-          <h2 class="text-xl font-bold text-slate-800 mb-2">What is the After-Repair Value (ARV)?</h2>
-          <p class="text-sm text-slate-500 mb-6">This is what the property will be worth after all renovations are complete. You can get this from comparable sales in the area.</p>
+          <h2 class="text-xl font-bold text-slate-800 mb-2">Tell Us About the Property</h2>
+          <p class="text-sm text-slate-500 mb-6">Enter the property address and after-repair value (ARV). The ARV is what the property will be worth after all renovations are complete, based on comparable sales in the area.</p>
+          <div class="field-group mb-4">
+            <label for="propStreet">Property Street Address</label>
+            <input type="text" id="propStreet" placeholder="123 Main St"/>
+          </div>
+          <div class="grid sm:grid-cols-3 gap-4 mb-4">
+            <div class="field-group">
+              <label for="propCity">City</label>
+              <input type="text" id="propCity" placeholder="Orlando"/>
+            </div>
+            <div class="field-group">
+              <label for="propState">State</label>
+              <input type="text" id="propState" placeholder="FL"/>
+            </div>
+            <div class="field-group">
+              <label for="propZip">ZIP Code</label>
+              <input type="text" id="propZip" placeholder="32801" inputmode="numeric" maxlength="10"/>
+            </div>
+          </div>
           <div class="field-group">
             <label for="arv">After-Repair Value (ARV)</label>
             <input type="text" id="arv" placeholder="$250,000" inputmode="numeric"/>
@@ -281,6 +301,15 @@
           </div>
         </div>
 
+        <!-- Apply Now CTA -->
+        <div class="calc-card p-6 mb-6 border-2 border-brand-gold">
+          <h3 class="text-lg font-bold text-slate-800 mb-2">Like this deal? Let's get it funded.</h3>
+          <p class="text-sm text-slate-600 mb-4">Your deal details will be transferred to the application so you don't have to re-enter anything.</p>
+          <button type="button" id="applyNowBtn" class="w-full bg-brand-gold hover:bg-brand-gold-dark text-white font-bold py-4 px-8 rounded-lg shadow-lg text-lg transition duration-300" onclick="applyWithDeal()">
+            Apply Now for Financing &rarr;
+          </button>
+        </div>
+
         <!-- Why 70% Explanation -->
         <div class="calc-card p-5 mb-6">
           <h3 class="text-sm font-bold text-slate-800 mb-2">Why the 70% Rule?</h3>
@@ -359,6 +388,7 @@
         <li><a class="hover:text-brand-gold transition duration-300" href="/#advantage">Our Advantage</a></li>
         <li><a class="hover:text-brand-gold transition duration-300" href="/#process">Our Process</a></li>
         <li><a class="hover:text-brand-gold transition duration-300" href="/#products">Loan Products</a></li>
+        <li><a class="hover:text-brand-gold transition duration-300" href="/deal-evaluator.html">Deal Evaluator</a></li>
         <li><a class="hover:text-brand-gold transition duration-300" href="/about-swiftpath-capital.html">About Us</a></li>
         <li><a class="hover:text-brand-gold transition duration-300" href="/LoanApp.html">Apply</a></li>
       </ul>
