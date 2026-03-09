@@ -411,9 +411,24 @@ Check Your Rate Instantly — see your rate before you apply
 <label class="sr-only" for="leadEmail">Email address</label>
 <input class="w-full border border-white/30 /10 rounded-lg px-3 py-3 placeholder-blue-100" id="leadEmail" placeholder="Email" required="" type="email" aria-required="true" />
 </div>
-<div>
-<label class="sr-only" for="leadPhone">Phone number</label>
-<input class="w-full border border-white/30 /10 rounded-lg px-3 py-3 placeholder-blue-100" id="leadPhone" type="tel" placeholder="Phone number" required="" aria-required="true" />
+<!-- SMS Verification UI -->
+<div class="md:col-span-2 grid grid-cols-1 sm:grid-cols-3 gap-3 items-start">
+<div class="sm:col-span-2">
+<label class="block text-sm mb-1" for="leadPhone">Phone (SMS verification required)</label>
+<input class="w-full border border-white/30 /10 rounded-lg px-3 py-3 placeholder-blue-100" id="leadPhone" placeholder="+13214304434" required="" aria-required="true" aria-describedby="phoneHint" />
+<p id="phoneHint" class="text-xs text-blue-100/60 mt-1">We'll send a verification code to this number.</p>
+</div>
+<div class="flex flex-col gap-2">
+<button class="border-2 border-white/60 text-white font-semibold py-2 px-3 rounded" id="sendCodeBtn" type="button" aria-label="Send SMS verification code">Send code</button>
+<div id="otpWrap" style="display:none" aria-hidden="true">
+<div class="flex gap-2 items-center">
+<label class="sr-only" for="otpCode">Verification code</label>
+<input class="w-28 border border-white/30 /10 rounded px-2 py-2 placeholder-blue-100 bg-white text-slate-900 placeholder-slate-400 caret-slate-900" id="otpCode" inputmode="numeric" maxlength="8" placeholder="Code" aria-label="SMS verification code" />
+<button class="border-2 border-white/60 text-white font-semibold py-2 px-3 rounded" id="checkCodeBtn" type="button" aria-label="Verify SMS code">Verify</button>
+</div>
+<span class="text-xs text-blue-100/90" id="vStatus" aria-live="polite" role="status"></span>
+</div>
+</div>
 </div>
 <div>
 <label class="sr-only" for="leadPurpose">Loan type</label>
@@ -869,8 +884,9 @@ Check Your Rate Instantly — see your rate before you apply
       });
     })();
   </script><script defer="" src="/assets/lead-form.js?v=2.5"></script>
-<!-- SMS verification removed from homepage pre-qual for reduced friction -->
-<!-- Phone verify + gatekeeper are only loaded on LoanApp.html now -->
+<!-- Lead Form + Twilio phone verification -->
+<script src="/assets/phone-verify-ui.js"></script>
+<script src="/assets/verify-gatekeeper.js"></script>
 
 <!-- Sticky Mobile CTA Bar -->
 <div class="fixed bottom-0 inset-x-0 z-50 bg-brand-blue shadow-lg border-t border-brand-blue/80 p-3 md:hidden" id="mobileCTA">
