@@ -1,6 +1,6 @@
 /**
- * SwiftPath Capital — Unified Loan Sizer
- * Handles DSCR, Fix & Flip, Bridge, and Ground-Up Construction loan sizing.
+ * SwiftPath Capital — Unified Loan Calculator
+ * Handles DSCR, Fix & Flip, Bridge, and Ground-Up Construction loan calculations.
  * Pricing engines derived from RCN Capital rate sheets (LTR + RTL).
  */
 (function () {
@@ -1086,7 +1086,7 @@
           ['Loan Purpose', (adj.purpose >= 0 ? '+' : '') + fmtPct(adj.purpose)],
           ['Interest-Only', (adj.io >= 0 ? '+' : '') + fmtPct(adj.io)],
           ['Prepay Penalty', (adj.prepay >= 0 ? '+' : '') + fmtPct(adj.prepay)],
-          ['Loan Size', (adj.loanSize >= 0 ? '+' : '') + fmtPct(adj.loanSize)],
+          ['Loan Amount', (adj.loanSize >= 0 ? '+' : '') + fmtPct(adj.loanSize)],
           ['Final Rate', fmtRate(result.finalRate)]
         ];
       } else {
@@ -1094,7 +1094,7 @@
         rows = [
           ['Base Rate (' + result.expLabel + ', ' + result.origTier.label + ' pts)', fmtRate(result.baseRate)],
           ['FICO Adjustment', (adj2.fico >= 0 ? '+' : '') + fmtPct(adj2.fico)],
-          ['Loan Size Adjustment', (adj2.loanSize >= 0 ? '+' : '') + fmtPct(adj2.loanSize)],
+          ['Loan Amount Adjustment', (adj2.loanSize >= 0 ? '+' : '') + fmtPct(adj2.loanSize)],
           ['Final Rate', fmtRate(result.finalRate)]
         ];
         // Add term
@@ -1176,7 +1176,7 @@
   }
 
   // Expose for testing
-  window.SwiftPathLoanSizer = {
+  window.SwiftPathLoanCalculator = {
     calculateDSCR: DSCR.calculate,
     calculateFlip: FLIP.calculate,
     calculateBridge: BRIDGE.calculate,
