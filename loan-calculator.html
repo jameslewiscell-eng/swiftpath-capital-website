@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <title>Loan Sizer — Can Your Deal Get Done? | SwiftPath Capital</title>
+  <link rel="canonical" href="https://swiftpathcapital.com/loan-calculator.html"/>
+
+  <meta name="description" content="Size your real estate investment loan in 60 seconds. See if your deal qualifies, what you'll need to bring to closing, and your estimated terms — across DSCR, Fix & Flip, Bridge, and Ground-Up Construction."/>
+  <meta property="og:title" content="Loan Sizer — Can Your Deal Get Done? | SwiftPath Capital"/>
+  <meta property="og:description" content="Find out if your deal qualifies. See your down payment, loan amount, and estimated terms in real time."/>
+  <meta property="og:image" content="https://swiftpathcapital.com/Images/Logo.PNG"/>
+  <meta property="og:url" content="https://swiftpathcapital.com/loan-calculator.html"/>
+  <meta property="og:type" content="website"/>
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17093021602"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','AW-17093021602');</script>
+
+  <link rel="stylesheet" href="/assets/style.css"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+
+  <style>
+    .calc-card { background: white; border-radius: 1rem; box-shadow: 0 4px 24px rgba(0,0,0,0.08); }
+    .result-card { background: linear-gradient(135deg, #1e3a5f 0%, #0f2a4a 100%); }
+    .field-group label { display: block; font-size: 0.875rem; font-weight: 600; color: #334155; margin-bottom: 0.25rem; }
+    .field-group input, .field-group select { width: 100%; border: 1px solid #cbd5e1; border-radius: 0.5rem; padding: 0.625rem 0.75rem; font-size: 0.95rem; transition: border-color 0.2s; }
+    .field-group input:focus, .field-group select:focus { outline: none; border-color: #1e3a5f; box-shadow: 0 0 0 3px rgba(30,58,95,0.1); }
+    input[type="range"] { -webkit-appearance: none; height: 8px; border-radius: 4px; background: #cbd5e1; outline: none; }
+    input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 24px; height: 24px; border-radius: 50%; background: #1e3a5f; cursor: pointer; box-shadow: 0 2px 6px rgba(0,0,0,0.3); }
+    input[type="range"]::-moz-range-thumb { width: 24px; height: 24px; border-radius: 50%; background: #1e3a5f; cursor: pointer; border: none; }
+    .metric-row { display: flex; justify-content: space-between; padding: 0.375rem 0; border-bottom: 1px solid rgba(255,255,255,0.1); }
+    .metric-row:last-child { border-bottom: none; }
+
+    /* Loan type tabs */
+    .loan-tab { padding: 0.625rem 1.25rem; font-weight: 600; font-size: 0.875rem; border-radius: 0.5rem 0.5rem 0 0; cursor: pointer; transition: all 0.2s; border: 1px solid transparent; border-bottom: none; color: #64748b; background: transparent; }
+    .loan-tab:hover { color: #1e3a5f; background: #f1f5f9; }
+    .loan-tab.active { color: #1e3a5f; background: white; border-color: #e2e8f0; position: relative; }
+    .loan-tab.active::after { content: ''; position: absolute; bottom: -1px; left: 0; right: 0; height: 2px; background: white; }
+    .tab-bar { border-bottom: 1px solid #e2e8f0; display: flex; flex-wrap: wrap; gap: 0.25rem; }
+
+    /* Qualification badge */
+    .qual-badge { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.25rem; border-radius: 0.75rem; font-weight: 700; font-size: 1.125rem; }
+    .qual-pass { background: #065f46; color: #d1fae5; }
+    .qual-caution { background: #92400e; color: #fef3c7; }
+    .qual-fail { background: #991b1b; color: #fee2e2; }
+
+    /* Deal summary cards */
+    .deal-metric { text-align: center; padding: 1rem; }
+    .deal-metric-value { font-size: 1.5rem; font-weight: 800; color: white; }
+    .deal-metric-label { font-size: 0.75rem; color: #93c5fd; margin-top: 0.25rem; }
+
+    /* Form sections hidden by default */
+    .loan-form-section { display: none; }
+    .loan-form-section.active { display: block; }
+  </style>
+</head>
+<body class="bg-gray-50 font-sans antialiased text-slate-800">
+
+<!-- Header -->
+<header class="bg-white/80 backdrop-blur-lg sticky top-0 z-40 shadow-sm">
+<nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+  <a class="flex items-center space-x-2" href="/">
+    <picture><source srcset="Images/Logo.webp" type="image/webp"/><img alt="SwiftPath Capital Logo" class="w-auto h-20 md:h-21" src="Images/Logo.PNG" width="200" height="80"/></picture>
+  </a>
+  <div class="hidden lg:flex items-center space-x-8">
+    <a class="text-slate-700 hover:text-brand-blue font-medium transition duration-300" href="/#advantage">Why SwiftPath</a>
+    <a class="text-slate-700 hover:text-brand-blue font-medium transition duration-300" href="/#process">Process</a>
+    <a class="text-slate-700 hover:text-brand-blue font-medium transition duration-300" href="/#products">Loan Programs</a>
+    <a class="text-slate-700 hover:text-brand-blue font-medium transition duration-300" href="/deal-evaluator.html">Deal Evaluator</a>
+    <a class="text-slate-700 hover:text-brand-blue font-medium transition duration-300" href="/about-swiftpath-capital.html">About</a>
+    <a class="text-slate-700 hover:text-brand-blue font-medium transition duration-300" href="/LoanApp.html">Apply</a>
+    <a class="bg-brand-gold text-white font-bold py-2 px-5 rounded-lg shadow-md hover:bg-brand-gold-dark transition duration-300" href="/LoanApp.html">Full Application</a>
+  </div>
+  <div class="lg:hidden">
+    <button aria-label="Toggle menu" class="text-slate-700 focus:outline-none" id="mobile-menu-button">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16m-7 6h7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+    </button>
+  </div>
+</nav>
+<div class="hidden lg:hidden px-6 pt-2 pb-4 space-y-3" id="mobile-menu">
+  <a class="block text-slate-700 font-medium" href="/#advantage">Why SwiftPath</a>
+  <a class="block text-slate-700 font-medium" href="/#process">Process</a>
+  <a class="block text-slate-700 font-medium" href="/#products">Loan Programs</a>
+  <a class="block text-slate-700 font-medium" href="/deal-evaluator.html">Deal Evaluator</a>
+  <a class="block text-slate-700 font-medium" href="/about-swiftpath-capital.html">About</a>
+  <a class="block text-slate-700 font-medium" href="/LoanApp.html">Apply</a>
+  <a class="block bg-brand-gold text-white text-center font-bold py-2 px-5 rounded-lg shadow-md hover:bg-brand-gold-dark transition duration-300 mt-2" href="/LoanApp.html">Full Application</a>
+</div>
+</header>
+
+<main>
+<!-- Hero -->
+<section class="bg-brand-blue text-white py-10 md:py-14">
+  <div class="container mx-auto px-6 text-center">
+    <h1 class="text-3xl md:text-5xl font-extrabold mb-3">Can Your Deal Get Done?</h1>
+    <p class="text-lg md:text-xl text-blue-100 max-w-2xl mx-auto mb-2">Find out in 60 seconds. See what you qualify for, what you need to bring to closing, and your estimated loan terms.</p>
+    <p class="text-sm text-yellow-200">No credit pull &middot; No obligation &middot; Powered by live lender guidelines</p>
+  </div>
+</section>
+
+<!-- Calculator -->
+<section class="py-8 md:py-12">
+  <div class="container mx-auto px-4 md:px-6">
+    <div class="max-w-6xl mx-auto">
+
+      <!-- Loan Type Tabs -->
+      <div class="tab-bar mb-0 px-2">
+        <button class="loan-tab active" data-loan-type="dscr">DSCR Rental</button>
+        <button class="loan-tab" data-loan-type="flip">Fix &amp; Flip</button>
+        <button class="loan-tab" data-loan-type="bridge">Bridge</button>
+        <button class="loan-tab" data-loan-type="guc">New Construction</button>
+      </div>
+
+      <div class="grid lg:grid-cols-5 gap-8">
+
+        <!-- Input Form (3 cols) -->
+        <div class="lg:col-span-3">
+          <div class="calc-card p-6 md:p-8 rounded-tl-none">
+
+            <!-- ==================== DSCR FORM ==================== -->
+            <div id="form-dscr" class="loan-form-section active">
+              <h2 class="text-xl font-bold text-slate-800 mb-1">DSCR Rental Loan</h2>
+              <p class="text-sm text-slate-500 mb-6">30-year fixed &middot; Qualify on property cash flow, not personal income</p>
+
+              <form id="dscrForm" novalidate>
+                <div class="mb-6">
+                  <h3 class="text-sm font-bold text-brand-blue uppercase tracking-wide mb-3">Property Information</h3>
+                  <div class="grid sm:grid-cols-2 gap-4">
+                    <div class="field-group">
+                      <label for="dscr-propertyType">Property Type</label>
+                      <select id="dscr-propertyType">
+                        <option value="Detached SFR">Single Family (Detached)</option>
+                        <option value="Townhome">Townhome</option>
+                        <option value="PUD">PUD</option>
+                        <option value="SFR + ADU">SFR + ADU</option>
+                        <option value="Condo (Warrantable)">Condo (Warrantable)</option>
+                        <option value="Condo (Non-Warr.)">Condo (Non-Warrantable)</option>
+                        <option value="2-4 Unit">2-4 Unit Residential</option>
+                        <option value="5-9 Unit">Multi-Family (5-9 Unit)</option>
+                        <option value="10+ Unit">Multi-Family (10+ Unit)</option>
+                      </select>
+                    </div>
+                    <div class="field-group">
+                      <label for="dscr-propertyValue">Property Value</label>
+                      <input type="text" id="dscr-propertyValue" placeholder="$250,000" inputmode="numeric"/>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="mb-6">
+                  <h3 class="text-sm font-bold text-brand-blue uppercase tracking-wide mb-3">Loan Details</h3>
+                  <div class="grid sm:grid-cols-2 gap-4">
+                    <div class="field-group">
+                      <label for="dscr-purpose">Loan Purpose</label>
+                      <select id="dscr-purpose">
+                        <option value="Purchase">Purchase</option>
+                        <option value="Delayed Purchase">Delayed Purchase</option>
+                        <option value="Rate/Term Refi">Rate/Term Refinance</option>
+                        <option value="Cash-Out Refi">Cash-Out Refinance</option>
+                      </select>
+                    </div>
+                    <div class="field-group">
+                      <label for="dscr-fico">FICO Score</label>
+                      <input type="number" id="dscr-fico" placeholder="720" min="680" max="850" inputmode="numeric"/>
+                    </div>
+                  </div>
+
+                  <div class="mt-4">
+                    <div class="flex justify-between items-center mb-1">
+                      <label class="text-sm font-semibold text-slate-700" for="dscr-ltvSlider">Desired LTV</label>
+                      <span class="text-sm font-bold text-brand-blue" id="dscr-ltvDisplay">75%</span>
+                    </div>
+                    <input type="range" id="dscr-ltvSlider" min="50" max="80" value="75" step="5" class="w-full"/>
+                    <div class="flex justify-between text-xs text-slate-400 mt-1">
+                      <span>50%</span><span>60%</span><span>70%</span><span>80%</span>
+                    </div>
+                  </div>
+
+                  <div class="mt-4 field-group">
+                    <label for="dscr-loanAmount">Loan Amount</label>
+                    <input type="text" id="dscr-loanAmount" placeholder="$187,500" inputmode="numeric"/>
+                    <p class="text-xs text-slate-500 mt-1">Auto-calculated from property value and LTV, or enter your own amount</p>
+                  </div>
+                </div>
+
+                <div class="mb-6">
+                  <h3 class="text-sm font-bold text-brand-blue uppercase tracking-wide mb-3">Income &amp; Expenses</h3>
+                  <div class="grid sm:grid-cols-2 gap-4">
+                    <div class="field-group">
+                      <label for="dscr-monthlyRent">Monthly Rent</label>
+                      <input type="text" id="dscr-monthlyRent" placeholder="$1,800" inputmode="numeric"/>
+                    </div>
+                    <div class="field-group">
+                      <label for="dscr-annualTaxes">Annual Taxes</label>
+                      <input type="text" id="dscr-annualTaxes" placeholder="$3,000" inputmode="numeric"/>
+                    </div>
+                    <div class="field-group">
+                      <label for="dscr-annualInsurance">Annual Insurance</label>
+                      <input type="text" id="dscr-annualInsurance" placeholder="$1,500" inputmode="numeric"/>
+                    </div>
+                    <div class="field-group">
+                      <label for="dscr-annualHOA">Annual HOA (if any)</label>
+                      <input type="text" id="dscr-annualHOA" placeholder="$0" inputmode="numeric"/>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="mb-6">
+                  <h3 class="text-sm font-bold text-brand-blue uppercase tracking-wide mb-3">Loan Options</h3>
+                  <div class="grid sm:grid-cols-2 gap-4">
+                    <div class="field-group">
+                      <label for="dscr-ioOption">Interest-Only Period</label>
+                      <select id="dscr-ioOption">
+                        <option value="No IO">No Interest-Only</option>
+                        <option value="5Y IO">5-Year IO</option>
+                        <option value="7Y IO">7-Year IO</option>
+                        <option value="10Y IO">10-Year IO</option>
+                      </select>
+                    </div>
+                    <div class="field-group">
+                      <label for="dscr-pppOption">Prepay Penalty</label>
+                      <select id="dscr-pppOption">
+                        <option value="5y (5% Flat)">5-Year (5% Flat) — Best Rate</option>
+                        <option value="5y (Step-Down)">5-Year (Step-Down)</option>
+                        <option value="3y (Step-Down)">3-Year (Step-Down)</option>
+                        <option value="2y (Step-Down)">2-Year (Step-Down)</option>
+                        <option value="1y (1%)">1-Year (1%)</option>
+                        <option value="No Prepay">No Prepay Penalty</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <button type="submit" class="w-full bg-brand-gold hover:bg-brand-gold-dark text-white font-bold py-4 px-8 rounded-lg shadow-lg text-lg transition duration-300">
+                  Size My Loan
+                </button>
+              </form>
+            </div>
+
+            <!-- ==================== FIX & FLIP FORM ==================== -->
+            <div id="form-flip" class="loan-form-section">
+              <h2 class="text-xl font-bold text-slate-800 mb-1">Fix &amp; Flip Loan</h2>
+              <p class="text-sm text-slate-500 mb-6">Short-term, interest-only &middot; Purchase + rehab funding</p>
+
+              <form id="flipForm" novalidate>
+                <div class="mb-6">
+                  <h3 class="text-sm font-bold text-brand-blue uppercase tracking-wide mb-3">Borrower Details</h3>
+                  <div class="grid sm:grid-cols-2 gap-4">
+                    <div class="field-group">
+                      <label for="flip-fico">FICO Score</label>
+                      <input type="number" id="flip-fico" placeholder="700" min="620" max="850" inputmode="numeric"/>
+                      <p class="text-xs text-slate-500 mt-1">Leave blank if no FICO available</p>
+                    </div>
+                    <div class="field-group">
+                      <label for="flip-experience">Completed Flip Deals</label>
+                      <select id="flip-experience">
+                        <option value="0">0 (First-time flipper)</option>
+                        <option value="1">1-4 deals</option>
+                        <option value="5" selected>5+ deals</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="mb-6">
+                  <h3 class="text-sm font-bold text-brand-blue uppercase tracking-wide mb-3">Deal Financials</h3>
+                  <div class="grid sm:grid-cols-2 gap-4">
+                    <div class="field-group">
+                      <label for="flip-purchasePrice">Purchase Price</label>
+                      <input type="text" id="flip-purchasePrice" placeholder="$200,000" inputmode="numeric"/>
+                    </div>
+                    <div class="field-group">
+                      <label for="flip-rehabBudget">Rehab Budget</label>
+                      <input type="text" id="flip-rehabBudget" placeholder="$50,000" inputmode="numeric"/>
+                    </div>
+                    <div class="field-group">
+                      <label for="flip-afterRepairValue">After-Repair Value (ARV)</label>
+                      <input type="text" id="flip-afterRepairValue" placeholder="$325,000" inputmode="numeric"/>
+                    </div>
+                    <div class="field-group">
+                      <label for="flip-asIsValue">As-Is Value <span class="font-normal text-slate-400">(optional)</span></label>
+                      <input type="text" id="flip-asIsValue" placeholder="Same as purchase price" inputmode="numeric"/>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="mb-6">
+                  <h3 class="text-sm font-bold text-brand-blue uppercase tracking-wide mb-3">Loan Options</h3>
+                  <div class="grid sm:grid-cols-2 gap-4">
+                    <div class="field-group">
+                      <label for="flip-origTier">Origination Points</label>
+                      <select id="flip-origTier">
+                        <option value="0">0.50% — Higher Rate</option>
+                        <option value="1" selected>0.75% — Standard</option>
+                        <option value="2">1.00% — Best Rate</option>
+                      </select>
+                    </div>
+                    <div class="field-group">
+                      <label for="flip-loanTerm">Loan Term</label>
+                      <select id="flip-loanTerm">
+                        <option value="9">9 Months</option>
+                        <option value="12" selected>12 Months</option>
+                        <option value="18">18 Months</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <button type="submit" class="w-full bg-brand-gold hover:bg-brand-gold-dark text-white font-bold py-4 px-8 rounded-lg shadow-lg text-lg transition duration-300">
+                  Size My Loan
+                </button>
+              </form>
+            </div>
+
+            <!-- ==================== BRIDGE FORM ==================== -->
+            <div id="form-bridge" class="loan-form-section">
+              <h2 class="text-xl font-bold text-slate-800 mb-1">Bridge Loan</h2>
+              <p class="text-sm text-slate-500 mb-6">Short-term &middot; No rehab required &middot; Asset-based</p>
+
+              <form id="bridgeForm" novalidate>
+                <div class="mb-6">
+                  <h3 class="text-sm font-bold text-brand-blue uppercase tracking-wide mb-3">Borrower Details</h3>
+                  <div class="grid sm:grid-cols-2 gap-4">
+                    <div class="field-group">
+                      <label for="bridge-fico">FICO Score</label>
+                      <input type="number" id="bridge-fico" placeholder="700" min="620" max="850" inputmode="numeric"/>
+                      <p class="text-xs text-slate-500 mt-1">Leave blank if no FICO available</p>
+                    </div>
+                    <div class="field-group">
+                      <label for="bridge-experience">Completed Deals</label>
+                      <select id="bridge-experience">
+                        <option value="0">0 deals</option>
+                        <option value="1">1-4 deals</option>
+                        <option value="5" selected>5+ deals</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="mb-6">
+                  <h3 class="text-sm font-bold text-brand-blue uppercase tracking-wide mb-3">Property Details</h3>
+                  <div class="grid sm:grid-cols-2 gap-4">
+                    <div class="field-group">
+                      <label for="bridge-propertyValue">Property Value (As-Is)</label>
+                      <input type="text" id="bridge-propertyValue" placeholder="$300,000" inputmode="numeric"/>
+                    </div>
+                    <div class="field-group">
+                      <label for="bridge-purchasePrice">Purchase Price</label>
+                      <input type="text" id="bridge-purchasePrice" placeholder="$280,000" inputmode="numeric"/>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="mb-6">
+                  <h3 class="text-sm font-bold text-brand-blue uppercase tracking-wide mb-3">Loan Options</h3>
+                  <div class="grid sm:grid-cols-2 gap-4">
+                    <div class="field-group">
+                      <label for="bridge-origTier">Origination Points</label>
+                      <select id="bridge-origTier">
+                        <option value="0">0.50% — Higher Rate</option>
+                        <option value="1" selected>0.75% — Standard</option>
+                        <option value="2">1.00% — Best Rate</option>
+                      </select>
+                    </div>
+                    <div class="field-group">
+                      <label for="bridge-loanTerm">Loan Term</label>
+                      <select id="bridge-loanTerm">
+                        <option value="9">9 Months</option>
+                        <option value="12" selected>12 Months</option>
+                        <option value="18">18 Months</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <button type="submit" class="w-full bg-brand-gold hover:bg-brand-gold-dark text-white font-bold py-4 px-8 rounded-lg shadow-lg text-lg transition duration-300">
+                  Size My Loan
+                </button>
+              </form>
+            </div>
+
+            <!-- ==================== GUC (NEW CONSTRUCTION) FORM ==================== -->
+            <div id="form-guc" class="loan-form-section">
+              <h2 class="text-xl font-bold text-slate-800 mb-1">Ground-Up Construction Loan</h2>
+              <p class="text-sm text-slate-500 mb-6">Acquisition + vertical build &middot; Milestone draws &middot; Interest-only during construction</p>
+
+              <form id="gucForm" novalidate>
+                <div class="mb-6">
+                  <h3 class="text-sm font-bold text-brand-blue uppercase tracking-wide mb-3">Borrower Details</h3>
+                  <div class="grid sm:grid-cols-2 gap-4">
+                    <div class="field-group">
+                      <label for="guc-fico">FICO Score</label>
+                      <input type="number" id="guc-fico" placeholder="700" min="620" max="850" inputmode="numeric"/>
+                      <p class="text-xs text-slate-500 mt-1">Leave blank if no FICO available</p>
+                    </div>
+                    <div class="field-group">
+                      <label for="guc-experience">Completed Build/Rehab Deals</label>
+                      <select id="guc-experience">
+                        <option value="0">0 deals</option>
+                        <option value="1">1-4 deals</option>
+                        <option value="5" selected>5+ deals</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="mb-6">
+                  <h3 class="text-sm font-bold text-brand-blue uppercase tracking-wide mb-3">Deal Financials</h3>
+                  <div class="grid sm:grid-cols-2 gap-4">
+                    <div class="field-group">
+                      <label for="guc-lotPrice">Lot / Land Acquisition Price</label>
+                      <input type="text" id="guc-lotPrice" placeholder="$80,000" inputmode="numeric"/>
+                    </div>
+                    <div class="field-group">
+                      <label for="guc-constructionBudget">Construction Budget</label>
+                      <input type="text" id="guc-constructionBudget" placeholder="$250,000" inputmode="numeric"/>
+                    </div>
+                    <div class="field-group">
+                      <label for="guc-afterBuiltValue">After-Built Value (ABV / ARV)</label>
+                      <input type="text" id="guc-afterBuiltValue" placeholder="$450,000" inputmode="numeric"/>
+                    </div>
+                    <div class="field-group">
+                      <label for="guc-asIsValue">Lot As-Is Value <span class="font-normal text-slate-400">(optional)</span></label>
+                      <input type="text" id="guc-asIsValue" placeholder="Same as lot price" inputmode="numeric"/>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="mb-6">
+                  <h3 class="text-sm font-bold text-brand-blue uppercase tracking-wide mb-3">Loan Options</h3>
+                  <div class="grid sm:grid-cols-2 gap-4">
+                    <div class="field-group">
+                      <label for="guc-origTier">Origination Points</label>
+                      <select id="guc-origTier">
+                        <option value="0">0.50% — Higher Rate</option>
+                        <option value="1" selected>0.75% — Standard</option>
+                        <option value="2">1.00% — Best Rate</option>
+                      </select>
+                    </div>
+                    <div class="field-group">
+                      <label for="guc-loanTerm">Loan Term</label>
+                      <select id="guc-loanTerm">
+                        <option value="12">12 Months</option>
+                        <option value="18" selected>18 Months</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <button type="submit" class="w-full bg-brand-gold hover:bg-brand-gold-dark text-white font-bold py-4 px-8 rounded-lg shadow-lg text-lg transition duration-300">
+                  Size My Loan
+                </button>
+              </form>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Results Panel (2 cols) -->
+        <div class="lg:col-span-2">
+          <div id="resultPanel" class="hidden">
+            <!-- Errors -->
+            <div id="resultErrors" class="hidden mb-4"></div>
+
+            <!-- Warnings -->
+            <div id="resultWarnings" class="hidden mb-4"></div>
+
+            <!-- Success Results -->
+            <div id="resultSuccess" class="hidden">
+
+              <!-- Qualification Status — THE HERO -->
+              <div id="qualBadgeWrap" class="text-center mb-4">
+                <div id="qualBadge" class="qual-badge qual-pass">
+                  <svg id="qualIconPass" class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a8 8 0 100 16 8 8 0 000-16zm3.707 6.293a1 1 0 00-1.414 0L9 11.586 7.707 10.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4a1 1 0 000-1.414z"/></svg>
+                  <svg id="qualIconCaution" class="w-6 h-6 hidden" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
+                  <span id="qualText">Your deal qualifies</span>
+                </div>
+              </div>
+
+              <!-- Deal Summary Card — Key Numbers -->
+              <div class="result-card rounded-2xl p-6 md:p-8 text-white mb-6">
+                <p class="text-blue-200 text-xs font-medium uppercase tracking-wide mb-4" id="resLoanTypeLabel">DSCR Rental Loan</p>
+
+                <!-- Cash to Close — THE MOST IMPORTANT NUMBER -->
+                <div class="bg-white/10 rounded-xl p-4 mb-5">
+                  <p class="text-blue-200 text-xs text-center mb-1">Estimated Cash to Close</p>
+                  <p class="text-center text-3xl font-extrabold text-white" id="resTotalCash">—</p>
+                  <div id="cashBreakdownWrap" class="mt-3 space-y-1">
+                    <div class="metric-row">
+                      <span class="text-blue-300 text-xs">Down Payment</span>
+                      <span class="text-sm font-bold" id="resDownPayment">—</span>
+                    </div>
+                    <div class="metric-row" id="resOrigFeeRow">
+                      <span class="text-blue-300 text-xs">Origination Fee</span>
+                      <span class="text-sm font-bold" id="resOrigFee">—</span>
+                    </div>
+                    <div class="metric-row hidden" id="resRehabOOPRow">
+                      <span class="text-blue-300 text-xs">Rehab (Out-of-Pocket)</span>
+                      <span class="text-sm font-bold" id="resRehabOOP">—</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Key Metrics Grid -->
+                <div class="grid grid-cols-2 gap-4">
+                  <div class="deal-metric">
+                    <p class="deal-metric-value" id="resLoanAmount">—</p>
+                    <p class="deal-metric-label">Loan Amount</p>
+                  </div>
+                  <div class="deal-metric">
+                    <p class="deal-metric-value" id="resMonthlyPayment">—</p>
+                    <p class="deal-metric-label" id="resPaymentLabel">Monthly Payment</p>
+                  </div>
+                  <div class="deal-metric" id="resLtvWrap">
+                    <p class="deal-metric-value" id="resLtv">—</p>
+                    <p class="deal-metric-label" id="resLtvLabel">LTV</p>
+                  </div>
+                  <div class="deal-metric" id="resDscrWrap">
+                    <p class="deal-metric-value" id="resDscr">—</p>
+                    <p class="deal-metric-label" id="resDscrLabel">DSCR</p>
+                  </div>
+                </div>
+
+                <!-- DSCR-specific: PITIA -->
+                <div id="resPitiaSection" class="mt-4 pt-3 border-t border-white/20 hidden">
+                  <div class="metric-row">
+                    <span class="text-blue-300 text-sm">Monthly PITIA</span>
+                    <span class="text-sm font-bold" id="resPITIA">—</span>
+                  </div>
+                  <p class="text-xs mt-1" id="resDscrNote"></p>
+                </div>
+
+                <!-- Flip/GUC-specific: Profit -->
+                <div id="resProfitSection" class="mt-4 pt-3 border-t border-white/20 text-center hidden">
+                  <p class="text-blue-200 text-xs mb-1">Est. Projected Profit</p>
+                  <p id="resProfit" class="text-2xl font-bold text-green-400">—</p>
+                  <p class="text-blue-200 text-xs mt-2">Est. ROI: <span id="resROI" class="font-bold text-green-400">—</span></p>
+                </div>
+              </div>
+
+              <!-- Rate & Term Details — SECONDARY, NOT THE HERO -->
+              <div class="calc-card p-5 mb-6">
+                <h3 class="text-sm font-bold text-slate-800 mb-3">Rate &amp; Term Details</h3>
+                <div id="rateBreakdown" class="space-y-1"></div>
+              </div>
+
+              <!-- Leverage Details (flip/bridge/guc only) -->
+              <div id="leverageCard" class="calc-card p-5 mb-6 hidden">
+                <h3 class="text-sm font-bold text-slate-800 mb-3">Leverage Details</h3>
+                <div id="leverageBreakdown" class="space-y-1"></div>
+              </div>
+
+              <!-- CTA -->
+              <div class="calc-card p-5 text-center">
+                <p class="text-sm text-slate-600 mb-3" id="ctaText">Your deal qualifies. Let's lock it in.</p>
+                <a id="ctaLink" href="/LoanApp.html" class="inline-block w-full bg-brand-gold hover:bg-brand-gold-dark text-white font-bold py-3 px-6 rounded-lg shadow transition duration-300">
+                  Start Full Application
+                </a>
+                <p class="text-xs text-slate-500 mt-2">Same-day term sheets available</p>
+              </div>
+
+              <!-- Disclaimer -->
+              <div class="mt-4 p-4 bg-slate-100 rounded-lg">
+                <p class="text-xs text-slate-500 leading-relaxed">
+                  <strong>Disclaimer:</strong> This is an indicative estimate for informational purposes only.
+                  Actual rates, terms, leverage, and eligibility are subject to full underwriting review, property appraisal,
+                  and lender approval. Rates and guidelines shown are based on current rate sheets and may change without notice.
+                  SwiftPath Capital is a business-purpose lender — we do not offer consumer or personal loans.
+                  All loans are subject to credit, property, and experience verification.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pre-calculation state -->
+          <div id="preCalcState" class="calc-card p-8 text-center">
+            <div class="text-5xl mb-4">
+              <svg class="w-16 h-16 mx-auto text-brand-blue/30" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+            </div>
+            <h3 class="text-lg font-bold text-slate-700 mb-2">Your Loan Sizing Will Appear Here</h3>
+            <p class="text-sm text-slate-500">Select a loan type, fill in your deal details, and click "Size My Loan" to find out if your deal qualifies.</p>
+            <div class="mt-6 text-left space-y-2">
+              <div class="flex items-center gap-2 text-sm text-slate-600">
+                <svg class="w-4 h-4 text-green-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a8 8 0 100 16 8 8 0 000-16zm3.707 6.293a1 1 0 00-1.414 0L9 11.586 7.707 10.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4a1 1 0 000-1.414z"/></svg>
+                No credit pull required
+              </div>
+              <div class="flex items-center gap-2 text-sm text-slate-600">
+                <svg class="w-4 h-4 text-green-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a8 8 0 100 16 8 8 0 000-16zm3.707 6.293a1 1 0 00-1.414 0L9 11.586 7.707 10.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4a1 1 0 000-1.414z"/></svg>
+                Based on live lender guidelines
+              </div>
+              <div class="flex items-center gap-2 text-sm text-slate-600">
+                <svg class="w-4 h-4 text-green-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a8 8 0 100 16 8 8 0 000-16zm3.707 6.293a1 1 0 00-1.414 0L9 11.586 7.707 10.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4a1 1 0 000-1.414z"/></svg>
+                See down payment, loan amount &amp; qualification
+              </div>
+              <div class="flex items-center gap-2 text-sm text-slate-600">
+                <svg class="w-4 h-4 text-green-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a8 8 0 100 16 8 8 0 000-16zm3.707 6.293a1 1 0 00-1.414 0L9 11.586 7.707 10.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4a1 1 0 000-1.414z"/></svg>
+                DSCR, Fix &amp; Flip, Bridge &amp; New Construction
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- How It Works -->
+<section class="py-12 bg-white">
+  <div class="container mx-auto px-6">
+    <h2 class="text-2xl font-bold text-center text-slate-800 mb-8">How the Loan Sizer Works</h2>
+    <div class="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+      <div class="text-center">
+        <div class="bg-brand-gold text-white w-12 h-12 rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-3">1</div>
+        <h3 class="font-bold text-slate-800 mb-1">Pick Your Loan Type</h3>
+        <p class="text-sm text-slate-600">DSCR rental, fix & flip, bridge, or new construction — choose the program that fits your strategy.</p>
+      </div>
+      <div class="text-center">
+        <div class="bg-brand-gold text-white w-12 h-12 rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-3">2</div>
+        <h3 class="font-bold text-slate-800 mb-1">Enter Your Deal</h3>
+        <p class="text-sm text-slate-600">Property value, FICO, and deal details. Our engine checks guidelines and sizes your loan instantly.</p>
+      </div>
+      <div class="text-center">
+        <div class="bg-brand-gold text-white w-12 h-12 rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-3">3</div>
+        <h3 class="font-bold text-slate-800 mb-1">See If It Gets Done</h3>
+        <p class="text-sm text-slate-600">Qualification status, down payment needed, loan amount, and estimated terms — all in one view.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- Footer -->
+<footer class="bg-slate-800 text-white">
+<div class="container mx-auto px-6 py-12">
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+    <div class="md:col-span-1">
+      <a class="flex items-center space-x-2" href="/">
+        <picture><source srcset="Images/Logo.webp" type="image/webp"/><img alt="SwiftPath Capital Logo" class="h-18 lg:h-36 w-auto rounded-md" src="Images/Logo.PNG" loading="lazy"/></picture>
+      </a>
+      <p class="mt-4 text-slate-400">Your strategic partner in a fast-moving market. First, Fast, Funded.</p>
+    </div>
+    <div>
+      <h3 class="font-bold tracking-wide text-brand-gold">Navigation</h3>
+      <ul class="mt-4 space-y-2">
+        <li><a class="hover:text-brand-gold transition duration-300" href="/#advantage">Our Advantage</a></li>
+        <li><a class="hover:text-brand-gold transition duration-300" href="/#process">Our Process</a></li>
+        <li><a class="hover:text-brand-gold transition duration-300" href="/#products">Loan Products</a></li>
+        <li><a class="hover:text-brand-gold transition duration-300" href="/deal-evaluator.html">Deal Evaluator</a></li>
+        <li><a class="hover:text-brand-gold transition duration-300" href="/about-swiftpath-capital.html">About Us</a></li>
+        <li><a class="hover:text-brand-gold transition duration-300" href="/LoanApp.html">Apply</a></li>
+      </ul>
+    </div>
+    <div>
+      <h3 class="font-bold tracking-wide text-brand-gold">Contact Us</h3>
+      <ul class="mt-4 space-y-2 text-slate-300">
+        <li>Email: <a class="hover:text-brand-gold transition" href="mailto:info@swiftpathcapital.com">info@swiftpathcapital.com</a></li>
+        <li>Phone: <a class="hover:text-brand-gold transition" href="tel:+13214304434">321-430-4434</a>
+        <p class="text-sm text-slate-600 mt-1">333 N Wilmot Rd STE 340 Tucson AZ 85711</p></li>
+      </ul>
+    </div>
+  </div>
+  <div class="mt-12 border-t border-slate-700 pt-6 text-center text-sm text-slate-500">
+    <p>&copy; 2025 SwiftPath Capital. All Rights Reserved.</p>
+    <div class="mt-4 space-x-4">
+      <a class="hover:text-brand-gold transition duration-300" href="/privacy.html">Privacy Policy</a>
+      <span>&middot;</span>
+      <a class="hover:text-brand-gold transition duration-300" href="/terms.html">Terms and Conditions</a>
+      <span>&middot;</span>
+      <a class="hover:text-brand-gold transition duration-300" href="/esign.html">E-Sign Consent</a>
+    </div>
+  </div>
+</div>
+<div class="mt-2 text-sm text-center">
+  <a class="underline text-green-600" href="https://wa.me/13214304434" rel="noopener" target="_blank">Chat on WhatsApp</a>
+</div>
+<div class="mt-2 text-center">
+  <p class="text-xs text-slate-400">SwiftPath Capital provides <strong>business-purpose loans only</strong>; we do not offer consumer/personal loans.</p>
+</div>
+</footer>
+
+<!-- WhatsApp Floating Button -->
+<a aria-label="Chat on WhatsApp" class="fixed z-40 bottom-5 right-5 md:bottom-6 md:right-6 rounded-full shadow-lg bg-green-500 hover:bg-green-600 text-white w-14 h-14 flex items-center justify-center" href="https://wa.me/13214304434" target="_blank">
+  <svg aria-hidden="true" class="w-7 h-7" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg">
+    <path d="M380.9 97.1C339 55.1 283.2 32 224.8 32c-116.2 0-210.8 94.6-210.8 210.8 0 37.1 9.7 73.3 28.2 105.3L0 480l134.9-41.4c30.6 16.7 64.9 25.5 99.9 25.5h.1c116.1 0 210.8-94.6 210.8-210.8 0-58.5-23.2-114.3-64.8-156.2zM224.9 438.6h-.1c-31.1 0-61.6-8.3-88.2-24.1l-6.3-3.7-80.1 24.6 26-78.1-4.1-6.7c-17.8-29-27.2-62.5-27.2-96.6C45 156.7 126.6 75 224.8 75c47.8 0 92.8 18.6 126.5 52.3 33.8 33.8 52.4 78.7 52.4 126.5 0 98.1-81.7 184.8-178.8 184.8zM315 304.7c-4.3-2.1-25.4-12.5-29.3-13.9-3.9-2-6.8-.9-9.6 2.2-2.8 3.1-11 12.6-13.5 15.2-2.5 2.6-5 2-8.5 1-3.5-1-22.4-11-38.6-24.1-14.3-11.7-26.8-26.1-36.3-42.2-2.6-4.3-2.7-7.4.1-11.3 3.2-4.3 7.1-9.9 10-13 3.1-3.3 5.2-3.3 9-.9 3.6 2.2 23.1 10.9 27 12.9 3.9 2 6.6 3 9.4-.7 2.8-3.5 11-12.9 13.5-15.4 2.7-2.5 5.6-2.7 9 .4 3.1 3.1 10.5 12.4 10.5 20.6 0 8.2-4.3 16.3-10.6 22.3z" fill="currentColor"></path>
+  </svg>
+</a>
+
+<!-- Mobile menu toggle -->
+<script>
+  (function(){
+    var btn = document.getElementById('mobile-menu-button');
+    var menu = document.getElementById('mobile-menu');
+    if (btn && menu) {
+      btn.addEventListener('click', function() {
+        menu.classList.toggle('hidden');
+      });
+    }
+  })();
+</script>
+
+<!-- Loan Calculator Engine -->
+<script src="/assets/loan-calculator.js"></script>
+
+<!-- Hide pre-calc state when results show -->
+<script>
+  (function(){
+    var observer = new MutationObserver(function(){
+      var panel = document.getElementById('resultPanel');
+      var pre = document.getElementById('preCalcState');
+      if (panel && pre) {
+        pre.style.display = panel.classList.contains('hidden') ? '' : 'none';
+      }
+    });
+    var panel = document.getElementById('resultPanel');
+    if (panel) observer.observe(panel, { attributes: true, attributeFilter: ['class'] });
+  })();
+</script>
+
+</body>
+</html>
