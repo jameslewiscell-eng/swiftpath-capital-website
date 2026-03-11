@@ -81,6 +81,26 @@
     if (banner) banner.classList.add('hidden');
   }
 
+  async function notifyApplicationError(type, details){
+    try {
+      var payload = {
+        type: type,
+        details: details || {},
+        page_url: window.location.href,
+        user_agent: navigator.userAgent,
+        submitted_at: new Date().toISOString()
+      };
+
+      await fetch('/.netlify/functions/notify-application-error', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+    } catch (err) {
+      console.warn('Failed to send error notification:', err);
+    }
+  }
+
   // Build the full_name from separate fields for HubSpot compatibility
   function buildFullName(){
     var parts = [val('firstName'), val('middleInitial'), val('lastName'), val('suffix')];
@@ -103,6 +123,7 @@
   // ---- VALIDATION ----
   function validateForm(){
     var valid = true;
+    var invalidIds = [];
     hideFormStatus();
 
     // Honeypot
@@ -112,18 +133,21 @@
     // Investment confirmation
     if (!checked('investmentConfirm')) {
       showFieldError('investmentConfirm', 'Please confirm this is a real estate investment loan.');
+      invalidIds.push('investmentConfirm');
       valid = false;
     } else { clearFieldError('investmentConfirm'); }
 
     // First name
     if (!val('firstName')) {
       showFieldError('firstName', 'First name is required.');
+      invalidIds.push('firstName');
       valid = false;
     } else { clearFieldError('firstName'); }
 
     // Last name
     if (!val('lastName')) {
       showFieldError('lastName', 'Last name is required.');
+      invalidIds.push('lastName');
       valid = false;
     } else { clearFieldError('lastName'); }
 
@@ -131,64 +155,75 @@
     var email = val('email');
     if (!email) {
       showFieldError('email', 'Email is required.');
+      invalidIds.push('email');
       valid = false;
     } else if (!isValidEmail(email)) {
       showFieldError('email', 'Please enter a valid email address.');
+      invalidIds.push('email');
       valid = false;
     } else { clearFieldError('email'); }
 
     // Phone
     if (!val('phone')) {
       showFieldError('phone', 'Phone number is required.');
+      invalidIds.push('phone');
       valid = false;
     } else { clearFieldError('phone'); }
 
     // Loan type
     if (!val('loanType')) {
       showFieldError('loanType', 'Please select a loan type.');
+      invalidIds.push('loanType');
       valid = false;
     } else { clearFieldError('loanType'); }
 
     // Property address
     if (!val('propStreet')) {
       showFieldError('propStreet', 'Property street address is required.');
+      invalidIds.push('propStreet');
       valid = false;
     } else { clearFieldError('propStreet'); }
 
     if (!val('propCity')) {
       showFieldError('propCity', 'Property city is required.');
+      invalidIds.push('propCity');
       valid = false;
     } else { clearFieldError('propCity'); }
 
     if (!val('propState')) {
       showFieldError('propState', 'Property state is required.');
+      invalidIds.push('propState');
       valid = false;
     } else { clearFieldError('propState'); }
 
     if (!val('propZip')) {
       showFieldError('propZip', 'Property ZIP code is required.');
+      invalidIds.push('propZip');
       valid = false;
     } else { clearFieldError('propZip'); }
 
     // Purchase price
     if (!val('purchasePrice')) {
       showFieldError('purchasePrice', 'Purchase price is required.');
+      invalidIds.push('purchasePrice');
       valid = false;
     } else { clearFieldError('purchasePrice'); }
 
     // Signature
     if (typeof window.__hasSignature === 'function' && !window.__hasSignature()) {
       showFieldError('clearSignatureBtn', 'Please provide your signature above.');
+      invalidIds.push('clearSignatureBtn');
       valid = false;
     } else { clearFieldError('clearSignatureBtn'); }
 
     // Consent
     if (!checked('consentCheckbox')) {
       showFieldError('consentCheckbox', 'You must agree to the Terms, Privacy Policy, and E-Sign Consent.');
+      invalidIds.push('consentCheckbox');
       valid = false;
     } else { clearFieldError('consentCheckbox'); }
 
-    return valid;
+    return { valid: valid, invalidIds: invalidIds };
   }
 
   // ---- INLINE VALIDATION ON BLUR ----
@@ -343,17 +378,24 @@
       var btn = form.querySelector('button[type="submit"]');
       var orig = btn ? btn.textContent : '';
 
-      var validResult = validateForm();
+      var validation = validateForm();
 
       // Bot check
-      if (validResult === 'bot') {
+      if (validation === 'bot') {
         window.location.href = THANK_YOU_URL;
         return;
       }
 
-      if (!validResult) {
+      if (!validation.valid) {
+        showFormStatus('Please complete the required fields highlighted below. We\'ve taken you to the first one.', 'error');
         var firstError = form.querySelector('[aria-invalid="true"]');
-        if (firstError) firstError.focus();
+        if (firstError) {
+          firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          firstError.focus({ preventScroll: true });
+        }
+        notifyApplicationError('validation_error', {
+          invalid_fields: validation.invalidIds
+        });
         return;
       }
 
@@ -395,6 +437,9 @@
       } catch(err){
         console.error('Submission error:', err);
         showFormStatus('There was a problem submitting. Please try again or email info@swiftpathcapital.com.', 'error');
+        notifyApplicationError('submission_error', {
+          message: err && err.message ? err.message : String(err)
+        });
         if(btn){ btn.disabled=false; btn.textContent=orig; }
       }
     }, {passive:false});
