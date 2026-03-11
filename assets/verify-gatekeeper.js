@@ -15,20 +15,21 @@
     catch(e){ return false; }
   }
 
-  function setSubmitEnabled(enabled){
-    var submits = document.querySelectorAll(
-      'button[type="submit"], input[type="submit"], #leadSubmit, #loanSubmit'
-    );
-    submits.forEach(function(el){
-      if (enabled) {
-        el.removeAttribute('disabled');
-        el.classList.remove('opacity-50', 'pointer-events-none');
-        el.setAttribute('aria-disabled', 'false');
-      } else {
-        el.setAttribute('disabled', 'disabled');
-        el.classList.add('opacity-50', 'pointer-events-none');
-        el.setAttribute('aria-disabled', 'true');
-      }
+  function markVerifyUiNeeded(){
+    var sendBtn = document.getElementById('sendCodeBtn');
+    var otpCode = document.getElementById('otpCode');
+    [sendBtn, otpCode].forEach(function(el){
+      if (!el) return;
+      el.classList.add('ring-2', 'ring-red-400');
+    });
+  }
+
+  function clearVerifyUiNeeded(){
+    var sendBtn = document.getElementById('sendCodeBtn');
+    var otpCode = document.getElementById('otpCode');
+    [sendBtn, otpCode].forEach(function(el){
+      if (!el) return;
+      el.classList.remove('ring-2', 'ring-red-400');
     });
   }
 
@@ -53,6 +54,8 @@
       banner.removeAttribute('hidden');
       banner.classList.remove('hidden');
     }
+    markVerifyUiNeeded();
+
     // Scroll verification area into view
     var sendBtn = document.getElementById('sendCodeBtn');
     if (sendBtn) {
@@ -60,18 +63,15 @@
     }
   }
 
-  // Initially disable until verified
-  setSubmitEnabled(isVerified());
-
   // Watch for verification changes instead of polling
   var lastState = isVerified();
   var iv = setInterval(function(){
     var current = isVerified();
     if (current !== lastState) {
       lastState = current;
-      setSubmitEnabled(current);
       // Clear gate message when verified
       if (current) {
+        clearVerifyUiNeeded();
         var banner = document.getElementById('submitStatus');
         if (banner && banner.textContent === MSG) {
           banner.classList.add('hidden');
