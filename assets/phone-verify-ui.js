@@ -14,6 +14,19 @@
   var otpCode   = $('otpCode');
   var vStatus   = $('vStatus');
   var verified  = false;
+
+  function emitVerificationState(){
+    try {
+      window.dispatchEvent(new CustomEvent('phone-verification-state', { detail: { verified: verified } }));
+    } catch(e) {
+      // Ignore environments without CustomEvent support
+    }
+  }
+
+  function setVerified(next){
+    verified = !!next;
+    emitVerificationState();
+  }
   var cooldown  = 0;
   var cooldownTimer = null;
 
@@ -74,7 +87,7 @@
   }
 
   async function startVerify(){
-    verified = false;
+    setVerified(false);
     setStatus('', '');
     if (otpWrap) {
       otpWrap.style.display = 'inline-block';
@@ -149,7 +162,7 @@
       var data = {};
       try { data = await res.json(); } catch(e){}
 
-      verified = data.ok === true;
+      setVerified(data.ok === true);
 
       if (verified) {
         setStatus('Phone verified successfully.', 'success');

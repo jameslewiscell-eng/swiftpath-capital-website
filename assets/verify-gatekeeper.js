@@ -63,22 +63,20 @@
     }
   }
 
-  // Watch for verification changes instead of polling
-  var lastState = isVerified();
-  var iv = setInterval(function(){
-    var current = isVerified();
-    if (current !== lastState) {
-      lastState = current;
-      // Clear gate message when verified
-      if (current) {
-        clearVerifyUiNeeded();
-        var banner = document.getElementById('submitStatus');
-        if (banner && banner.textContent === MSG) {
-          banner.classList.add('hidden');
-        }
-      }
+  function handleVerificationState(){
+    if (!isVerified()) return;
+    clearVerifyUiNeeded();
+    var banner = document.getElementById('submitStatus');
+    if (banner && banner.textContent === MSG) {
+      banner.classList.add('hidden');
     }
-  }, 400);
+  }
+
+  // Event-driven verification state updates from phone-verify-ui.js
+  window.addEventListener('phone-verification-state', handleVerificationState);
+
+  // Also run once on load in case user is already verified
+  handleVerificationState();
 
   // Capture any submit attempts and block if not verified
   function guardEvent(e){
@@ -91,17 +89,9 @@
     }
   }
 
-  // Block all form submits
+  // Block all form submits. Native constraint validation still runs on click;
+  // this gate only blocks the actual submit event if phone isn't verified.
   document.addEventListener('submit', guardEvent, true);
-
-  // Block common click paths
-  document.addEventListener('click', function(e){
-    var el = e.target;
-    if (!el) return;
-    if (el.closest('button[type="submit"], input[type="submit"], #leadSubmit, #loanSubmit')){
-      guardEvent(e);
-    }
-  }, true);
 
   // Guard programmatic submits
   try {
