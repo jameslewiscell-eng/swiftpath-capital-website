@@ -133,6 +133,27 @@
     return hasSigned;
   };
 
+  // Re-initialize when the canvas becomes visible (e.g. multi-step forms)
+  window.__reinitSignaturePad = function(){
+    if(!canvas){
+      canvas = document.getElementById('signatureCanvas');
+      if(!canvas) return;
+      ctx = canvas.getContext('2d');
+      canvas.addEventListener('mousedown', startDraw);
+      canvas.addEventListener('mousemove', draw);
+      canvas.addEventListener('mouseup', stopDraw);
+      canvas.addEventListener('mouseleave', stopDraw);
+      canvas.addEventListener('touchstart', startDrawTouch, {passive:false});
+      canvas.addEventListener('touchmove', drawTouch, {passive:false});
+      canvas.addEventListener('touchend', stopDraw);
+      canvas.addEventListener('touchcancel', stopDraw);
+      var clearBtn = document.getElementById('clearSignatureBtn');
+      if(clearBtn) clearBtn.addEventListener('click', clearSignature);
+    }
+    hasSigned = false;
+    resizeCanvas();
+  };
+
   if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
   else init();
 })();
