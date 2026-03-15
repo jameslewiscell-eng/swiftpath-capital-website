@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=300, initial-scale=1">
+<meta name="ad.size" content="width=300,height=600">
+<title>SwiftPath Capital - DSCR Rental Loans - 300x600</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  .ad-container {
+    width: 300px;
+    height: 600px;
+    overflow: hidden;
+    position: relative;
+    background: linear-gradient(180deg, #1a3a4f 0%, #2d5a78 50%, #4A7A9D 100%);
+    font-family: 'Inter', sans-serif;
+    border: 1px solid #3b627e;
+    cursor: pointer;
+  }
+
+  .accent-bar {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 4px;
+    background: linear-gradient(90deg, #c5a35a, #e0c882, #c5a35a);
+    z-index: 10;
+  }
+
+  .brand-header {
+    padding: 24px 24px 16px;
+    text-align: center;
+  }
+
+  .brand-name {
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .brand-divider {
+    width: 40px;
+    height: 2px;
+    background: #c5a35a;
+    margin: 8px auto;
+  }
+
+  .content-area {
+    position: relative;
+    height: 340px;
+    overflow: hidden;
+  }
+
+  .slide {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 20px 24px;
+    opacity: 0;
+  }
+
+  .slide-1 { animation: fadeSlide 12s infinite; }
+  .slide-2 { animation: fadeSlide 12s infinite 3s; }
+  .slide-3 { animation: fadeSlide 12s infinite 6s; }
+  .slide-4 { animation: fadeSlide 12s infinite 9s; }
+
+  @keyframes fadeSlide {
+    0%   { opacity: 0; transform: translateY(12px); }
+    3%   { opacity: 1; transform: translateY(0); }
+    22%  { opacity: 1; transform: translateY(0); }
+    25%  { opacity: 0; transform: translateY(-12px); }
+    100% { opacity: 0; }
+  }
+
+  .headline {
+    color: #ffffff;
+    font-size: 28px;
+    font-weight: 800;
+    line-height: 1.15;
+    margin-bottom: 12px;
+  }
+
+  .highlight { color: #c5a35a; }
+
+  .subtext {
+    color: rgba(255,255,255,0.85);
+    font-size: 14px;
+    line-height: 1.5;
+    margin-bottom: 8px;
+  }
+
+  .stat-number {
+    font-size: 48px;
+    font-weight: 800;
+    color: #c5a35a;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .stat-label {
+    color: rgba(255,255,255,0.9);
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+  .features {
+    list-style: none;
+    padding: 0;
+    text-align: left;
+    width: 100%;
+  }
+
+  .features li {
+    color: rgba(255,255,255,0.9);
+    font-size: 14px;
+    padding: 8px 0;
+    padding-left: 24px;
+    position: relative;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .features li:last-child { border-bottom: none; }
+
+  .features li::before {
+    content: '✓';
+    color: #c5a35a;
+    position: absolute;
+    left: 0;
+    font-weight: 700;
+    font-size: 16px;
+  }
+
+  /* Comparison boxes */
+  .compare-row {
+    display: flex;
+    gap: 12px;
+    width: 100%;
+  }
+
+  .compare-box {
+    flex: 1;
+    padding: 14px;
+    border-radius: 8px;
+    text-align: center;
+  }
+
+  .compare-old {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .compare-new {
+    background: rgba(197,163,90,0.15);
+    border: 1px solid rgba(197,163,90,0.3);
+  }
+
+  .compare-label {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+  }
+
+  .compare-old .compare-label { color: rgba(255,255,255,0.5); }
+  .compare-new .compare-label { color: #c5a35a; }
+
+  .compare-value {
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.3;
+  }
+
+  .compare-old .compare-value { color: rgba(255,255,255,0.6); text-decoration: line-through; }
+  .compare-new .compare-value { color: #ffffff; }
+
+  .cta-section {
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 100%;
+    padding: 20px 24px 24px;
+    text-align: center;
+    background: linear-gradient(0deg, rgba(0,0,0,0.3) 0%, transparent 100%);
+  }
+
+  .cta {
+    display: inline-block;
+    background: linear-gradient(135deg, #c5a35a, #d4b56c);
+    color: #1a3a4f;
+    padding: 14px 40px;
+    border-radius: 6px;
+    font-size: 15px;
+    font-weight: 700;
+    text-decoration: none;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    animation: pulse 2.5s ease-in-out infinite 6s;
+    width: 100%;
+  }
+
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); box-shadow: none; }
+    50% { transform: scale(1.03); box-shadow: 0 4px 25px rgba(197,163,90,0.4); }
+  }
+
+  .tagline {
+    color: #c5a35a;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    margin-top: 12px;
+  }
+
+  .deco-circle {
+    position: absolute;
+    border: 2px solid rgba(197,163,90,0.1);
+    border-radius: 50%;
+  }
+
+  .deco-1 { width: 120px; height: 120px; top: 60px; right: -40px; }
+  .deco-2 { width: 80px; height: 80px; bottom: 120px; left: -30px; }
+
+  .side-accent {
+    position: absolute;
+    left: 0; top: 80px;
+    width: 3px; height: 60px;
+    background: #c5a35a;
+    border-radius: 0 2px 2px 0;
+  }
+</style>
+</head>
+<body>
+<div class="ad-container" onclick="window.open(window.clickTag || 'https://swiftpathcapital.com/loans/dscr')">
+  <div class="accent-bar"></div>
+  <div class="deco-circle deco-1"></div>
+  <div class="deco-circle deco-2"></div>
+  <div class="side-accent"></div>
+
+  <div class="brand-header">
+    <div class="brand-name">SwiftPath Capital</div>
+    <div class="brand-divider"></div>
+  </div>
+
+  <div class="content-area">
+    <!-- Slide 1: Big headline -->
+    <div class="slide slide-1">
+      <div class="headline">DSCR<br><span class="highlight">Rental Loans</span></div>
+      <div class="subtext">Qualify on your property's<br>cash flow — not your W-2.</div>
+    </div>
+
+    <!-- Slide 2: Comparison -->
+    <div class="slide slide-2">
+      <div class="headline" style="font-size:16px; margin-bottom:16px;">Traditional vs. <span class="highlight">DSCR</span></div>
+      <div class="compare-row">
+        <div class="compare-box compare-old">
+          <div class="compare-label">Traditional</div>
+          <div class="compare-value">W-2s, tax returns,<br>income docs</div>
+        </div>
+        <div class="compare-box compare-new">
+          <div class="compare-label">DSCR</div>
+          <div class="compare-value">Property cash flow<br>is all you need</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 3: Feature list -->
+    <div class="slide slide-3">
+      <div class="headline" style="font-size:18px; margin-bottom:16px;">Built for<br><span class="highlight">Portfolio Growth</span></div>
+      <ul class="features">
+        <li>30-year fixed options</li>
+        <li>No limit on properties</li>
+        <li>LTR &amp; Airbnb eligible</li>
+        <li>Cash-out refinance</li>
+        <li>LLC / entity borrowing</li>
+      </ul>
+    </div>
+
+    <!-- Slide 4: Final hook -->
+    <div class="slide slide-4">
+      <div class="headline" style="font-size:22px;">Stop Trading<br>Time for<br><span class="highlight">Documentation</span></div>
+      <div class="subtext" style="margin-top:8px">Your property's income<br>speaks for itself.</div>
+    </div>
+  </div>
+
+  <div class="cta-section">
+    <a class="cta" href="#">Get Your DSCR Rate</a>
+    <div class="tagline">FIRST. FAST. FUNDED.</div>
+  </div>
+</div>
+</body>
+</html>
