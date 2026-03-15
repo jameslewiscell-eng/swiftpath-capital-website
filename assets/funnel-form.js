@@ -140,6 +140,29 @@
 
     switch(n){
       case 1:
+        if(!val('loanPurpose')){
+          // Show error near the cards container since loanPurpose is a hidden input
+          var cardsContainer = byId('loanPurposeCards');
+          if(cardsContainer) cardsContainer.classList.add('ring-2', 'ring-red-400', 'rounded-lg');
+          var errorId = 'loanPurpose-error';
+          var errorEl = byId(errorId);
+          if(!errorEl){
+            errorEl = document.createElement('p');
+            errorEl.id = errorId;
+            errorEl.className = 'text-red-600 text-xs mt-1';
+            errorEl.setAttribute('role', 'alert');
+            var purposeHidden = byId('loanPurpose');
+            if(purposeHidden) purposeHidden.parentNode.insertBefore(errorEl, purposeHidden);
+          }
+          errorEl.textContent = 'Please select a loan purpose.';
+          if(!firstInvalid) firstInvalid = 'loanPurposeCards';
+          valid = false;
+        } else {
+          var cardsContainer = byId('loanPurposeCards');
+          if(cardsContainer) cardsContainer.classList.remove('ring-2', 'ring-red-400', 'rounded-lg');
+          var errorEl = byId('loanPurpose-error');
+          if(errorEl) errorEl.textContent = '';
+        }
         require('loanType', 'Please select purchase or refinance.');
         break;
       case 2:
@@ -218,15 +241,29 @@
       'Other': 'Other'
     };
 
+    function selectCard(card){
+      cards.forEach(function(c){ c.classList.remove('selected'); c.setAttribute('aria-pressed', 'false'); });
+      card.classList.add('selected');
+      card.setAttribute('aria-pressed', 'true');
+      var purpose = card.getAttribute('data-value');
+      if(hidden) hidden.value = purpose;
+      // Auto-set exit strategy
+      var exitEl = byId('exitStrategy');
+      if(exitEl && exitMap[purpose]) exitEl.value = exitMap[purpose];
+    }
+
     cards.forEach(function(card){
-      card.addEventListener('click', function(){
-        cards.forEach(function(c){ c.classList.remove('selected'); });
-        card.classList.add('selected');
-        var purpose = card.getAttribute('data-value');
-        if(hidden) hidden.value = purpose;
-        // Auto-set exit strategy
-        var exitEl = byId('exitStrategy');
-        if(exitEl && exitMap[purpose]) exitEl.value = exitMap[purpose];
+      // Make keyboard accessible
+      card.setAttribute('role', 'button');
+      card.setAttribute('tabindex', '0');
+      card.setAttribute('aria-pressed', 'false');
+
+      card.addEventListener('click', function(){ selectCard(card); });
+      card.addEventListener('keydown', function(e){
+        if(e.key === 'Enter' || e.key === ' '){
+          e.preventDefault();
+          selectCard(card);
+        }
       });
     });
   }
@@ -255,15 +292,21 @@
       { label: 'EIN', value: val('ein') }
     ];
 
-    var html = '';
+    container.innerHTML = '';
     rows.forEach(function(r){
       if(!r.value) return;
-      html += '<div class="flex justify-between py-1 border-b border-slate-100 last:border-0">';
-      html += '<span class="text-slate-500">' + r.label + '</span>';
-      html += '<span class="font-medium text-right">' + r.value.replace(/</g, '&lt;') + '</span>';
-      html += '</div>';
+      var row = document.createElement('div');
+      row.className = 'flex justify-between py-1 border-b border-slate-100 last:border-0';
+      var labelSpan = document.createElement('span');
+      labelSpan.className = 'text-slate-500';
+      labelSpan.textContent = r.label;
+      var valueSpan = document.createElement('span');
+      valueSpan.className = 'font-medium text-right';
+      valueSpan.textContent = r.value;
+      row.appendChild(labelSpan);
+      row.appendChild(valueSpan);
+      container.appendChild(row);
     });
-    container.innerHTML = html;
   }
 
   // ---- ATTRIBUTION ----
@@ -491,12 +534,15 @@
       }
     }, {passive: false});
 
-    // Keyboard: Enter advances to next step (except on textareas / final step)
+    // Keyboard: Enter advances to next step (only from text-like inputs and selects)
     form.addEventListener('keydown', function(e){
-      if(e.key === 'Enter' && e.target.tagName !== 'TEXTAREA' && currentStep < TOTAL_STEPS){
-        e.preventDefault();
-        if(validateStep(currentStep)) showStep(currentStep + 1);
-      }
+      if(e.key !== 'Enter' || currentStep >= TOTAL_STEPS) return;
+      var tag = e.target.tagName;
+      var type = (e.target.type || '').toLowerCase();
+      var textLike = (tag === 'INPUT' && ['text','email','tel','number','search','url','password',''].indexOf(type) !== -1) || tag === 'SELECT';
+      if(!textLike) return;
+      e.preventDefault();
+      if(validateStep(currentStep)) showStep(currentStep + 1);
     });
   }
 
