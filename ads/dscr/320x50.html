@@ -97,7 +97,7 @@
 </style>
 </head>
 <body>
-<div class="ad-container" onclick="window.open(window.clickTag || 'https://swiftpathcapital.com/loans/dscr')">
+<a class="ad-container" href="https://swiftpathcapital.com/loans/dscr" target="_blank" rel="noopener noreferrer">
   <div class="accent-bar"></div>
 
   <div class="content-section">
@@ -117,8 +117,18 @@
   </div>
 
   <div class="cta-section">
-    <a class="cta" href="#">Get Rate</a>
+    <span class="cta">Get Rate</span>
   </div>
-</div>
+</a>
+<script>
+  (function () {
+    var adLink = document.querySelector('.ad-container');
+    if (adLink) {
+      var fallbackUrl = 'https://swiftpathcapital.com/loans/dscr';
+      var targetUrl = (typeof window !== 'undefined' && window.clickTag) ? window.clickTag : fallbackUrl;
+      adLink.href = targetUrl;
+    }
+  })();
+</script>
 </body>
 </html>
