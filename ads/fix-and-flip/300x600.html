@@ -11,6 +11,9 @@
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
   .ad-container {
+    display: block;
+    text-decoration: none;
+    color: inherit;
     width: 300px;
     height: 600px;
     overflow: hidden;
@@ -206,7 +209,7 @@
 </style>
 </head>
 <body>
-<div class="ad-container" onclick="window.open(window.clickTag || 'https://swiftpathcapital.com/loans/fix-and-flip')">
+<a class="ad-container" href="https://swiftpathcapital.com/loans/fix-and-flip" target="_blank" rel="noopener noreferrer">
   <div class="accent-bar"></div>
   <div class="deco-circle deco-1"></div>
   <div class="deco-circle deco-2"></div>
@@ -252,9 +255,17 @@
   </div>
 
   <div class="cta-section">
-    <a class="cta" href="#">Get Your Rate Today</a>
+    <span class="cta">Get Your Rate Today</span>
     <div class="tagline">FIRST. FAST. FUNDED.</div>
   </div>
-</div>
+</a>
+<script>
+  (function () {
+    var adLink = document.querySelector('.ad-container');
+    if (adLink && window.clickTag) {
+      adLink.href = window.clickTag;
+    }
+  })();
+</script>
 </body>
 </html>

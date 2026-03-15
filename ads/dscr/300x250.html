@@ -11,6 +11,9 @@
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
   .ad-container {
+    display: block;
+    text-decoration: none;
+    color: inherit;
     width: 300px;
     height: 250px;
     overflow: hidden;
@@ -170,7 +173,7 @@
 </style>
 </head>
 <body>
-<div class="ad-container" onclick="window.open(window.clickTag || 'https://swiftpathcapital.com/loans/dscr')">
+<a class="ad-container" href="https://swiftpathcapital.com/loans/dscr" target="_blank" rel="noopener noreferrer">
   <div class="accent-bar"></div>
   <div class="corner-accent"></div>
   <div class="corner-accent-2"></div>
@@ -195,13 +198,21 @@
   <!-- Slide 3: CTA -->
   <div class="slide slide-3">
     <div class="headline" style="font-size:18px;">Scale Your<br><span class="highlight">Rental Portfolio</span></div>
-    <a class="cta" href="#">Get Your Rate</a>
+    <span class="cta">Get Your Rate</span>
   </div>
 
   <div class="bottom-bar">
     <span class="brand-name">SWIFTPATH CAPITAL</span>
     <span class="tagline">FIRST. FAST. FUNDED.</span>
   </div>
-</div>
+</a>
+<script>
+  (function () {
+    var adLink = document.querySelector('.ad-container');
+    if (adLink && window.clickTag) {
+      adLink.href = window.clickTag;
+    }
+  })();
+</script>
 </body>
 </html>
