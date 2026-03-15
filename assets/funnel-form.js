@@ -66,8 +66,14 @@
 
     currentStep = n;
 
-    // Build review summary on last step
-    if(n === TOTAL_STEPS) buildReviewSummary();
+    // Re-init signature pad when step 7 becomes visible
+    if(n === TOTAL_STEPS){
+      buildReviewSummary();
+      if(typeof window.__reinitSignaturePad === 'function'){
+        // Small delay to ensure the step is fully rendered/visible
+        setTimeout(function(){ window.__reinitSignaturePad(); }, 50);
+      }
+    }
   }
 
   // ---- INLINE ERRORS ----
@@ -202,11 +208,25 @@
     var cards = container.querySelectorAll('.option-card');
     var hidden = byId('loanPurpose');
 
+    // Map loan purpose to exit strategy
+    var exitMap = {
+      'Fix-and-Flip': 'Sell (Fix & Flip)',
+      'BRRRR': 'Hold & Refinance',
+      'Rental Property': 'Hold & Refinance',
+      'Bridge Loan': 'Other',
+      'New Construction': 'Sell (Fix & Flip)',
+      'Other': 'Other'
+    };
+
     cards.forEach(function(card){
       card.addEventListener('click', function(){
         cards.forEach(function(c){ c.classList.remove('selected'); });
         card.classList.add('selected');
-        if(hidden) hidden.value = card.getAttribute('data-value');
+        var purpose = card.getAttribute('data-value');
+        if(hidden) hidden.value = purpose;
+        // Auto-set exit strategy
+        var exitEl = byId('exitStrategy');
+        if(exitEl && exitMap[purpose]) exitEl.value = exitMap[purpose];
       });
     });
   }

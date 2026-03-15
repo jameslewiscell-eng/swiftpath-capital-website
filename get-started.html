@@ -172,25 +172,15 @@
                 </div>
               </div>
               <input type="hidden" id="loanPurpose" value="" />
+              <input type="hidden" id="exitStrategy" value="" />
 
-              <div class="mt-6 grid grid-cols-2 gap-4">
-                <div>
-                  <label class="block text-sm font-medium mb-1" for="loanType">Purchase or Refinance? <span class="text-red-500">*</span></label>
-                  <select id="loanType" class="w-full border border-slate-300 rounded-lg px-3 py-2" required>
-                    <option value="">Select</option>
-                    <option>Purchase</option>
-                    <option>Refinance</option>
-                  </select>
-                </div>
-                <div>
-                  <label class="block text-sm font-medium mb-1" for="exitStrategy">Exit Strategy</label>
-                  <select id="exitStrategy" class="w-full border border-slate-300 rounded-lg px-3 py-2">
-                    <option value="">Select</option>
-                    <option>Sell (Fix &amp; Flip)</option>
-                    <option>Hold &amp; Refinance</option>
-                    <option>Other</option>
-                  </select>
-                </div>
+              <div class="mt-6">
+                <label class="block text-sm font-medium mb-1" for="loanType">Purchase or Refinance? <span class="text-red-500">*</span></label>
+                <select id="loanType" class="w-full border border-slate-300 rounded-lg px-3 py-2" required>
+                  <option value="">Select</option>
+                  <option>Purchase</option>
+                  <option>Refinance</option>
+                </select>
               </div>
 
               <div class="mt-6 flex justify-end">
