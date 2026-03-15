@@ -101,7 +101,8 @@
     field.classList.remove('ring-2', 'ring-red-400');
     field.removeAttribute('aria-invalid');
     var errorEl = byId(fieldId + '-error');
-    if(errorEl) errorEl.textContent = '';
+    if(errorEl) errorEl.remove();
+    field.removeAttribute('aria-describedby');
   }
 
   function showFormStatus(msg, type){
@@ -161,7 +162,7 @@
           var cardsContainer = byId('loanPurposeCards');
           if(cardsContainer) cardsContainer.classList.remove('ring-2', 'ring-red-400', 'rounded-lg');
           var errorEl = byId('loanPurpose-error');
-          if(errorEl) errorEl.textContent = '';
+          if(errorEl) errorEl.remove();
         }
         require('loanType', 'Please select purchase or refinance.');
         break;
@@ -228,6 +229,7 @@
   function initLoanPurposeCards(){
     var container = byId('loanPurposeCards');
     if(!container) return;
+    if(!container.hasAttribute('tabindex')) container.setAttribute('tabindex', '-1');
     var cards = container.querySelectorAll('.option-card');
     var hidden = byId('loanPurpose');
 
@@ -247,6 +249,12 @@
       card.setAttribute('aria-pressed', 'true');
       var purpose = card.getAttribute('data-value');
       if(hidden) hidden.value = purpose;
+
+      var cardsContainer = byId('loanPurposeCards');
+      if(cardsContainer) cardsContainer.classList.remove('ring-2', 'ring-red-400', 'rounded-lg');
+      var errorEl = byId('loanPurpose-error');
+      if(errorEl) errorEl.remove();
+
       // Auto-set exit strategy
       var exitEl = byId('exitStrategy');
       if(exitEl && exitMap[purpose]) exitEl.value = exitMap[purpose];
