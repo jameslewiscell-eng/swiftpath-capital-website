@@ -134,7 +134,8 @@ exports.handler = async function(event) {
 
     return errorResponse(405, 'Method Not Allowed');
   } catch (err) {
-    console.error('google-ads-campaigns error:', err.message || err);
-    return errorResponse(500, err.message || 'Internal server error');
+    const msg = err.message || (typeof err === 'object' ? JSON.stringify(err) : String(err)) || 'Internal server error';
+    console.error('google-ads-campaigns error:', msg, err);
+    return errorResponse(500, msg);
   }
 };
