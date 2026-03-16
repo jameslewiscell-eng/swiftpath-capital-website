@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="robots" content="noindex, nofollow"/>
+  <title>Google Ads Agent | SwiftPath Capital</title>
+
+  <link rel="stylesheet" href="/assets/style.css"/>
+  <link rel="stylesheet" href="/assets/enhancements.css"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+
+  <style>
+    :root {
+      --brand-blue: #4A7A9D;
+      --brand-blue-dark: #3b627e;
+      --brand-gold: #c5a35a;
+      --brand-gold-dark: #a2864a;
+    }
+
+    body { background: #f8fafc; font-family: Arial, Helvetica, sans-serif; }
+
+    .agent-header {
+      background: linear-gradient(135deg, var(--brand-blue-dark) 0%, var(--brand-blue) 100%);
+      color: #fff;
+      padding: 1.5rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .agent-header img { height: 40px; }
+    .agent-header h1 { font-size: 1.35rem; margin: 0; font-weight: 700; }
+
+    /* Auth gate */
+    #auth-gate {
+      max-width: 420px;
+      margin: 6rem auto;
+      background: #fff;
+      border-radius: 12px;
+      padding: 2.5rem;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+      text-align: center;
+    }
+    #auth-gate h2 { color: var(--brand-blue-dark); margin-bottom: 0.5rem; }
+    #auth-gate p { color: #6b7280; font-size: 0.95rem; margin-bottom: 1.5rem; }
+    #auth-gate input {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      font-size: 1rem;
+      margin-bottom: 1rem;
+      box-sizing: border-box;
+    }
+    #auth-gate button {
+      width: 100%;
+      background: var(--brand-blue);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 0.75rem;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    #auth-gate button:hover { background: var(--brand-blue-dark); }
+    #auth-error { color: #dc2626; font-size: 0.875rem; margin-top: 0.5rem; display: none; }
+
+    /* Dashboard container */
+    #dashboard { display: none; }
+
+    /* Top bar controls */
+    .controls-bar {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem 2rem;
+      background: #fff;
+      border-bottom: 1px solid #e5e7eb;
+      flex-wrap: wrap;
+    }
+    .controls-bar select, .controls-bar button {
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      border: 1px solid #d1d5db;
+      font-size: 0.875rem;
+      background: #fff;
+      cursor: pointer;
+    }
+    .controls-bar button {
+      background: var(--brand-blue);
+      color: #fff;
+      border: none;
+      font-weight: 600;
+    }
+    .controls-bar button:hover { background: var(--brand-blue-dark); }
+    .controls-bar button.secondary {
+      background: var(--brand-gold);
+    }
+    .controls-bar button.secondary:hover { background: var(--brand-gold-dark); }
+
+    /* KPI cards */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+      padding: 1.5rem 2rem;
+    }
+    .kpi-card {
+      background: #fff;
+      border-radius: 10px;
+      padding: 1.25rem;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+      text-align: center;
+    }
+    .kpi-card .label { font-size: 0.75rem; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.25rem; }
+    .kpi-card .value { font-size: 1.75rem; font-weight: 700; color: #111827; }
+    .kpi-card .value.positive { color: #059669; }
+    .kpi-card .value.negative { color: #dc2626; }
+
+    /* Content sections */
+    .section { padding: 0 2rem 1.5rem; }
+    .section h2 { font-size: 1.15rem; color: #1f2937; margin-bottom: 0.75rem; font-weight: 600; }
+
+    /* Tables */
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+      font-size: 0.875rem;
+    }
+    .data-table th {
+      background: #f9fafb;
+      text-align: left;
+      padding: 0.75rem 1rem;
+      font-weight: 600;
+      color: #374151;
+      border-bottom: 1px solid #e5e7eb;
+      white-space: nowrap;
+    }
+    .data-table td {
+      padding: 0.65rem 1rem;
+      border-bottom: 1px solid #f3f4f6;
+      color: #374151;
+    }
+    .data-table tr:last-child td { border-bottom: none; }
+    .data-table tr:hover td { background: #f9fafb; }
+
+    /* Status badges */
+    .badge {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+    .badge.enabled { background: #d1fae5; color: #065f46; }
+    .badge.paused { background: #fef3c7; color: #92400e; }
+    .badge.removed { background: #fee2e2; color: #991b1b; }
+
+    /* Action buttons */
+    .btn-sm {
+      padding: 0.3rem 0.7rem;
+      border-radius: 5px;
+      border: 1px solid #d1d5db;
+      background: #fff;
+      font-size: 0.75rem;
+      cursor: pointer;
+      font-weight: 500;
+    }
+    .btn-sm:hover { background: #f3f4f6; }
+    .btn-sm.pause { color: #b45309; border-color: #fbbf24; }
+    .btn-sm.enable { color: #059669; border-color: #34d399; }
+
+    /* Tabs */
+    .tab-bar {
+      display: flex;
+      gap: 0;
+      background: #fff;
+      border-bottom: 2px solid #e5e7eb;
+      padding: 0 2rem;
+    }
+    .tab-btn {
+      padding: 0.75rem 1.5rem;
+      border: none;
+      background: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: #6b7280;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -2px;
+    }
+    .tab-btn.active { color: var(--brand-blue); border-bottom-color: var(--brand-blue); font-weight: 600; }
+    .tab-btn:hover { color: #111827; }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* Ad copy generator */
+    .copy-form {
+      background: #fff;
+      border-radius: 10px;
+      padding: 1.5rem;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+      max-width: 600px;
+    }
+    .copy-form label {
+      display: block;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 0.25rem;
+    }
+    .copy-form select, .copy-form input, .copy-form textarea {
+      width: 100%;
+      padding: 0.6rem 0.75rem;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      font-size: 0.875rem;
+      margin-bottom: 1rem;
+      box-sizing: border-box;
+    }
+    .copy-form textarea { min-height: 80px; resize: vertical; }
+
+    .copy-result {
+      background: #fff;
+      border-radius: 10px;
+      padding: 1.5rem;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+      margin-top: 1rem;
+      display: none;
+    }
+    .copy-result h3 { font-size: 1rem; color: #1f2937; margin-bottom: 0.5rem; }
+    .headline-chip {
+      display: inline-block;
+      background: #eff6ff;
+      color: #1e40af;
+      padding: 0.3rem 0.75rem;
+      border-radius: 6px;
+      margin: 0.2rem;
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+    .desc-block {
+      background: #f9fafb;
+      border-left: 3px solid var(--brand-blue);
+      padding: 0.5rem 0.75rem;
+      margin: 0.5rem 0;
+      font-size: 0.85rem;
+      color: #374151;
+    }
+
+    /* Loading spinner */
+    .spinner {
+      display: inline-block;
+      width: 18px;
+      height: 18px;
+      border: 2px solid #d1d5db;
+      border-top-color: var(--brand-blue);
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+      vertical-align: middle;
+      margin-right: 0.5rem;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .loading-overlay {
+      text-align: center;
+      padding: 3rem;
+      color: #6b7280;
+      font-size: 0.95rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .agent-header { padding: 1rem; }
+      .controls-bar { padding: 0.75rem 1rem; }
+      .kpi-grid { padding: 1rem; }
+      .section { padding: 0 1rem 1rem; }
+      .tab-bar { padding: 0 1rem; overflow-x: auto; }
+      .data-table { font-size: 0.8rem; }
+      .data-table th, .data-table td { padding: 0.5rem 0.6rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="agent-header">
+    <div style="display:flex;align-items:center;gap:1rem;">
+      <a href="/"><img src="/Images/Logo.PNG" alt="SwiftPath Capital"/></a>
+      <h1>Google Ads Agent</h1>
+    </div>
+    <div id="header-user" style="display:none;font-size:0.85rem;opacity:0.85;">
+      <span id="header-status"></span>
+      <button onclick="logout()" style="margin-left:0.75rem;background:rgba(255,255,255,0.2);border:none;color:#fff;padding:0.35rem 0.75rem;border-radius:5px;cursor:pointer;font-size:0.8rem;">Sign Out</button>
+    </div>
+  </header>
+
+  <!-- Auth Gate -->
+  <div id="auth-gate">
+    <h2>Agent Access</h2>
+    <p>Enter your agent access key to manage Google Ads campaigns.</p>
+    <input type="password" id="auth-key" placeholder="Access key" autocomplete="off"/>
+    <button onclick="authenticate()">Sign In</button>
+    <p id="auth-error">Invalid access key. Please try again.</p>
+  </div>
+
+  <!-- Dashboard (hidden until auth) -->
+  <div id="dashboard">
+
+    <!-- Controls -->
+    <div class="controls-bar">
+      <label for="date-range" style="font-size:0.85rem;font-weight:600;color:#374151;">Date Range:</label>
+      <select id="date-range">
+        <option value="TODAY">Today</option>
+        <option value="YESTERDAY">Yesterday</option>
+        <option value="LAST_7_DAYS" selected>Last 7 Days</option>
+        <option value="LAST_14_DAYS">Last 14 Days</option>
+        <option value="LAST_30_DAYS">Last 30 Days</option>
+        <option value="THIS_MONTH">This Month</option>
+        <option value="LAST_MONTH">Last Month</option>
+      </select>
+      <button onclick="refreshAll()">Refresh Data</button>
+      <button class="secondary" onclick="switchTab('copy')">Generate Ad Copy</button>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tab-bar">
+      <button class="tab-btn active" data-tab="overview" onclick="switchTab('overview')">Overview</button>
+      <button class="tab-btn" data-tab="campaigns" onclick="switchTab('campaigns')">Campaigns</button>
+      <button class="tab-btn" data-tab="keywords" onclick="switchTab('keywords')">Keywords</button>
+      <button class="tab-btn" data-tab="copy" onclick="switchTab('copy')">Ad Copy AI</button>
+    </div>
+
+    <!-- Overview Tab -->
+    <div class="tab-panel active" id="panel-overview">
+      <div class="kpi-grid" id="kpi-grid">
+        <div class="kpi-card"><div class="label">Impressions</div><div class="value" id="kpi-impressions">--</div></div>
+        <div class="kpi-card"><div class="label">Clicks</div><div class="value" id="kpi-clicks">--</div></div>
+        <div class="kpi-card"><div class="label">CTR</div><div class="value" id="kpi-ctr">--</div></div>
+        <div class="kpi-card"><div class="label">Avg CPC</div><div class="value" id="kpi-cpc">--</div></div>
+        <div class="kpi-card"><div class="label">Cost</div><div class="value" id="kpi-cost">--</div></div>
+        <div class="kpi-card"><div class="label">Conversions</div><div class="value" id="kpi-conversions">--</div></div>
+        <div class="kpi-card"><div class="label">Conv. Rate</div><div class="value" id="kpi-conv-rate">--</div></div>
+        <div class="kpi-card"><div class="label">Cost / Conv.</div><div class="value" id="kpi-cpa">--</div></div>
+      </div>
+
+      <div class="section">
+        <h2>Daily Performance</h2>
+        <div id="daily-table-container">
+          <div class="loading-overlay"><span class="spinner"></span> Loading performance data…</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Campaigns Tab -->
+    <div class="tab-panel" id="panel-campaigns">
+      <div class="section" style="padding-top:1.5rem;">
+        <h2>Campaign Management</h2>
+        <div id="campaigns-table-container">
+          <div class="loading-overlay"><span class="spinner"></span> Loading campaigns…</div>
+        </div>
+      </div>
+
+      <div class="section" id="adgroups-section" style="display:none;">
+        <h2>Ad Groups — <span id="adgroups-campaign-name"></span></h2>
+        <div id="adgroups-table-container"></div>
+      </div>
+    </div>
+
+    <!-- Keywords Tab -->
+    <div class="tab-panel" id="panel-keywords">
+      <div class="section" style="padding-top:1.5rem;">
+        <h2>Top Keywords by Spend</h2>
+        <div id="keywords-table-container">
+          <div class="loading-overlay"><span class="spinner"></span> Loading keyword data…</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ad Copy AI Tab -->
+    <div class="tab-panel" id="panel-copy">
+      <div class="section" style="padding-top:1.5rem;">
+        <h2>AI Ad Copy Generator</h2>
+        <div class="copy-form">
+          <label for="copy-campaign-type">Campaign Type</label>
+          <select id="copy-campaign-type">
+            <option value="search">Search</option>
+            <option value="display">Display</option>
+            <option value="performance_max">Performance Max</option>
+          </select>
+
+          <label for="copy-loan-product">Loan Product</label>
+          <select id="copy-loan-product">
+            <option value="general">General (All Products)</option>
+            <option value="dscr">DSCR Loans</option>
+            <option value="fix-and-flip">Fix-and-Flip</option>
+            <option value="bridge">Bridge Loans</option>
+            <option value="new-construction">New Construction</option>
+          </select>
+
+          <label for="copy-audience">Target Audience</label>
+          <input type="text" id="copy-audience" value="real estate investors" placeholder="e.g., real estate investors, flippers"/>
+
+          <label for="copy-tone">Tone</label>
+          <select id="copy-tone">
+            <option value="professional and urgent">Professional &amp; Urgent</option>
+            <option value="friendly and approachable">Friendly &amp; Approachable</option>
+            <option value="data-driven and authoritative">Data-Driven &amp; Authoritative</option>
+          </select>
+
+          <label for="copy-existing">Existing Headlines (optional, one per line)</label>
+          <textarea id="copy-existing" placeholder="Paste existing headlines to avoid duplicates…"></textarea>
+
+          <button onclick="generateCopy()" id="generate-btn" style="width:100%;background:var(--brand-gold);color:#fff;border:none;border-radius:8px;padding:0.75rem;font-size:1rem;font-weight:600;cursor:pointer;">
+            Generate Ad Copy with AI
+          </button>
+        </div>
+
+        <div class="copy-result" id="copy-result">
+          <h3>Responsive Search Ad</h3>
+          <div id="rsa-headlines" style="margin-bottom:0.75rem;"></div>
+          <div id="rsa-descriptions"></div>
+
+          <h3 style="margin-top:1.25rem;">Display Ad</h3>
+          <div id="display-copy"></div>
+
+          <h3 style="margin-top:1.25rem;">Sitelink Extensions</h3>
+          <div id="sitelinks"></div>
+
+          <h3 style="margin-top:1.25rem;">Callout Extensions</h3>
+          <div id="callouts"></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="/assets/google-ads-agent.js"></script>
+</body>
+</html>
