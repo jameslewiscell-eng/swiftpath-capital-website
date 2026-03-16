@@ -6,6 +6,7 @@
 
   const API_BASE = '/.netlify/functions';
   let authToken = '';
+  let selectedAccount = ''; // empty = default (env var), or alias/ID
 
   // ── Auth ──────────────────────────────────────────────────
 
@@ -35,7 +36,7 @@
 
     // Validate by making a test call
     try {
-      const res = await fetch(`${API_BASE}/google-ads-report?type=overview&dateRange=LAST_7_DAYS`, {
+      const res = await fetch(`${API_BASE}/google-ads-report?type=overview&dateRange=LAST_7_DAYS${accountQS()}`, {
         headers: { Authorization: `Bearer ${key}` }
       });
 
@@ -104,6 +105,16 @@
     return document.getElementById('date-range').value;
   }
 
+  function getAccountParam() {
+    const el = document.getElementById('account-select');
+    return el ? el.value : '';
+  }
+
+  function accountQS() {
+    const acct = getAccountParam();
+    return acct ? `&account=${encodeURIComponent(acct)}` : '';
+  }
+
   // ── Format Helpers ────────────────────────────────────────
 
   function fmt(n) { return n != null ? n.toLocaleString() : '--'; }
@@ -143,7 +154,7 @@
   async function loadOverview() {
     const dateRange = getDateRange();
     try {
-      const data = await apiGet(`google-ads-report?type=overview&dateRange=${dateRange}`);
+      const data = await apiGet(`google-ads-report?type=overview&dateRange=${dateRange}${accountQS()}`);
       const o = data.overview || {};
       document.getElementById('kpi-impressions').textContent = fmt(o.impressions);
       document.getElementById('kpi-clicks').textContent = fmt(o.clicks);
@@ -164,7 +175,7 @@
     const dateRange = getDateRange();
 
     try {
-      const data = await apiGet(`google-ads-report?type=daily&dateRange=${dateRange}`);
+      const data = await apiGet(`google-ads-report?type=daily&dateRange=${dateRange}${accountQS()}`);
       const rows = data.daily || [];
 
       if (!rows.length) {
@@ -201,7 +212,7 @@
     container.innerHTML = '<div class="loading-overlay"><span class="spinner"></span> Loading campaigns…</div>';
 
     try {
-      const data = await apiGet('google-ads-campaigns');
+      const data = await apiGet(`google-ads-campaigns?${accountQS().replace('&', '')}`);
       const campaigns = data.campaigns || [];
 
       if (!campaigns.length) {
@@ -246,7 +257,8 @@
       await apiPost('google-ads-campaigns', {
         action: 'updateCampaignStatus',
         campaignId,
-        status: newStatus
+        status: newStatus,
+        account: getAccountParam()
       });
       await loadCampaigns();
     } catch (err) {
@@ -264,7 +276,7 @@
     container.innerHTML = '<div class="loading-overlay"><span class="spinner"></span> Loading ad groups…</div>';
 
     try {
-      const data = await apiGet(`google-ads-campaigns?campaignId=${campaignId}`);
+      const data = await apiGet(`google-ads-campaigns?campaignId=${campaignId}${accountQS()}`);
       const adGroups = data.adGroups || [];
 
       if (!adGroups.length) {
@@ -307,7 +319,8 @@
       await apiPost('google-ads-campaigns', {
         action: 'updateAdGroupStatus',
         adGroupId,
-        status: newStatus
+        status: newStatus,
+        account: getAccountParam()
       });
       // Reload the current ad groups view
       const name = document.getElementById('adgroups-campaign-name').textContent;
@@ -326,7 +339,7 @@
     const dateRange = getDateRange();
 
     try {
-      const data = await apiGet(`google-ads-report?type=keywords&dateRange=${dateRange}`);
+      const data = await apiGet(`google-ads-report?type=keywords&dateRange=${dateRange}${accountQS()}`);
       const keywords = data.keywords || [];
 
       if (!keywords.length) {
@@ -441,6 +454,14 @@
   document.getElementById('date-range').addEventListener('change', function () {
     if (authToken) refreshAll();
   });
+
+  // ── Account switcher handler ──────────────────────────────
+  const accountSelect = document.getElementById('account-select');
+  if (accountSelect) {
+    accountSelect.addEventListener('change', function () {
+      if (authToken) refreshAll();
+    });
+  }
 
   // ── Auth key enter handler ────────────────────────────────
 

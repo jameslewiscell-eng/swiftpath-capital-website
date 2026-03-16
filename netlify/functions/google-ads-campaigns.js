@@ -101,9 +101,9 @@ exports.handler = async function(event) {
   }
 
   try {
-    const customer = getCustomer();
     const params = event.queryStringParameters || {};
     const body = event.httpMethod === 'POST' ? JSON.parse(event.body || '{}') : {};
+    const customer = getCustomer(params.account || body.account);
 
     // GET /google-ads-campaigns — list campaigns or ad groups
     if (event.httpMethod === 'GET') {

@@ -22,11 +22,24 @@ function getClient() {
   });
 }
 
-function getCustomer() {
+// Known accounts managed via this MCC. Add new accounts here.
+const KNOWN_ACCOUNTS = {
+  manager: process.env.GOOGLE_ADS_CUSTOMER_ID,
+  swiftpath: '5354667756'
+};
+
+function getCustomer(accountOverride) {
   const client = getClient();
-  const customerId = process.env.GOOGLE_ADS_CUSTOMER_ID;
   const refreshToken = process.env.GOOGLE_ADS_REFRESH_TOKEN;
-  const loginCustomerId = process.env.GOOGLE_ADS_LOGIN_CUSTOMER_ID || undefined;
+  const loginCustomerId = process.env.GOOGLE_ADS_LOGIN_CUSTOMER_ID || process.env.GOOGLE_ADS_CUSTOMER_ID;
+
+  // Resolve account: use override, look up alias, or fall back to env default
+  let customerId;
+  if (accountOverride) {
+    customerId = KNOWN_ACCOUNTS[accountOverride] || accountOverride.replace(/-/g, '');
+  } else {
+    customerId = process.env.GOOGLE_ADS_CUSTOMER_ID;
+  }
 
   if (!customerId || !refreshToken) {
     throw new Error(
@@ -40,6 +53,10 @@ function getCustomer() {
     refresh_token: refreshToken,
     login_customer_id: loginCustomerId
   });
+}
+
+function listAccounts() {
+  return KNOWN_ACCOUNTS;
 }
 
 function corsHeaders() {
@@ -89,6 +106,7 @@ function requireAuth(event) {
 module.exports = {
   getClient,
   getCustomer,
+  listAccounts,
   corsHeaders,
   handleOptions,
   errorResponse,
