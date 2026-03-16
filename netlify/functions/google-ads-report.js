@@ -167,7 +167,8 @@ exports.handler = async function(event) {
         return errorResponse(400, `Invalid report type: ${reportType}`);
     }
   } catch (err) {
-    console.error('google-ads-report error:', err.message || err);
-    return errorResponse(500, err.message || 'Internal server error');
+    const msg = err.message || (typeof err === 'object' ? JSON.stringify(err) : String(err)) || 'Internal server error';
+    console.error('google-ads-report error:', msg, err);
+    return errorResponse(500, msg);
   }
 };
