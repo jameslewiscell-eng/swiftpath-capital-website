@@ -141,8 +141,8 @@ exports.handler = async function(event) {
   if (!requireAuth(event)) return errorResponse(401, 'Unauthorized');
 
   try {
-    const customer = getCustomer();
     const params = event.queryStringParameters || {};
+    const customer = getCustomer(params.account);
     const dateRange = VALID_DATE_RANGES.includes(params.dateRange) ? params.dateRange : 'LAST_30_DAYS';
     const reportType = params.type || 'overview';
 
