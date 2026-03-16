@@ -11,7 +11,8 @@
     "build": "npm run build:css"
   },
   "dependencies": {
-    "busboy": "^1.6.0"
+    "busboy": "^1.6.0",
+    "google-ads-api": "^17.1.0"
   },
   "devDependencies": {
     "@tailwindcss/cli": "^4.2.1",
