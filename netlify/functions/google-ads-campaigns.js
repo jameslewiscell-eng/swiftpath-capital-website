@@ -77,25 +77,19 @@ async function listAdGroups(customer, campaignId) {
 
 async function updateCampaignStatus(customer, campaignId, newStatus) {
   const resourceName = `customers/${process.env.GOOGLE_ADS_CUSTOMER_ID}/campaigns/${campaignId}`;
-  await customer.campaignService.mutateCampaigns({
-    customer_id: process.env.GOOGLE_ADS_CUSTOMER_ID,
-    operations: [{
-      update: { resource_name: resourceName, status: newStatus },
-      update_mask: { paths: ['status'] }
-    }]
-  });
+  await customer.campaigns.update([{
+    resource_name: resourceName,
+    status: newStatus
+  }]);
   return { campaignId, status: newStatus };
 }
 
 async function updateAdGroupStatus(customer, adGroupId, newStatus) {
   const resourceName = `customers/${process.env.GOOGLE_ADS_CUSTOMER_ID}/adGroups/${adGroupId}`;
-  await customer.adGroupService.mutateAdGroups({
-    customer_id: process.env.GOOGLE_ADS_CUSTOMER_ID,
-    operations: [{
-      update: { resource_name: resourceName, status: newStatus },
-      update_mask: { paths: ['status'] }
-    }]
-  });
+  await customer.adGroups.update([{
+    resource_name: resourceName,
+    status: newStatus
+  }]);
   return { adGroupId, status: newStatus };
 }
 
