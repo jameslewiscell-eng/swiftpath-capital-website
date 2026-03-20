@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <title>CRE Deal Evaluator | SwiftPath Capital</title>
+  <link rel="canonical" href="https://swiftpathcapital.com/cre-evaluator.html"/>
+
+  <meta name="description" content="Evaluate commercial real estate deals with NOI, cap rate, DSCR, and cash-on-cash analysis. Score your next multi-family, retail, office, or industrial deal."/>
+  <meta property="og:title" content="CRE Deal Evaluator | SwiftPath Capital"/>
+  <meta property="og:description" content="Evaluate commercial real estate deals with NOI, cap rate, DSCR, and cash-on-cash analysis. Score your next multi-family, retail, office, or industrial deal."/>
+  <meta property="og:image" content="https://swiftpathcapital.com/Images/Logo.PNG"/>
+  <meta property="og:url" content="https://swiftpathcapital.com/cre-evaluator.html"/>
+  <meta property="og:type" content="website"/>
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17093021602"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','AW-17093021602');gtag('config','G-MC0NC3VFNR');</script>
+
+  <link rel="stylesheet" href="/assets/style.css"/>
+  <link rel="stylesheet" href="/assets/enhancements.css"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+
+  <style>
+    .calc-card { background: white; border-radius: 1rem; box-shadow: 0 4px 24px rgba(0,0,0,0.08); }
+    .result-card { background: linear-gradient(135deg, #1e3a5f 0%, #0f2a4a 100%); border-radius: 0.75rem; }
+    .field-group label { display: block; font-size: 0.875rem; font-weight: 600; color: #334155; margin-bottom: 0.25rem; }
+    .field-group input, .field-group select { width: 100%; border: 1px solid #cbd5e1; border-radius: 0.5rem; padding: 0.625rem 0.75rem; font-size: 0.95rem; transition: border-color 0.2s; }
+    .field-group input:focus, .field-group select:focus { outline: none; border-color: #1e3a5f; box-shadow: 0 0 0 3px rgba(30,58,95,0.1); }
+    .section-label {
+      display: flex; align-items: center; gap: 0.75rem;
+      font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #4A7A9D; margin-bottom: 1rem;
+    }
+    .section-label::after {
+      content: ''; flex: 1; height: 1px; background: #e2e8f0;
+    }
+    .metric-card { text-align: center; padding: 1rem; }
+    .metric-card .metric-value { font-size: 1.25rem; font-weight: 800; color: white; }
+    .metric-card .metric-label { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: rgba(255,255,255,0.7); margin-top: 0.25rem; }
+    .progress-track { width: 100%; height: 0.5rem; background: #e2e8f0; border-radius: 9999px; overflow: hidden; }
+    .progress-fill { height: 100%; border-radius: 9999px; transition: width 0.4s ease, background 0.4s ease; }
+  </style>
+</head>
+<body class="bg-gray-50 font-sans antialiased text-slate-800">
+
+<!-- Header -->
+<header class="header-enhanced sticky top-0 z-40">
+<nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+  <a class="flex items-center space-x-2" href="/">
+    <picture><source srcset="Images/Logo.webp" type="image/webp"/><img alt="SwiftPath Capital Logo" class="w-auto h-20 md:h-21" src="Images/Logo.PNG" width="200" height="80"/></picture>
+  </a>
+  <div class="hidden lg:flex items-center space-x-8">
+    <a class="text-slate-700 hover:text-brand-blue font-medium transition duration-300" href="/#advantage">Why SwiftPath</a>
+    <a class="text-slate-700 hover:text-brand-blue font-medium transition duration-300" href="/#process">Process</a>
+    <a class="text-slate-700 hover:text-brand-blue font-medium transition duration-300" href="/#products">Loan Programs</a>
+    <a class="text-slate-700 hover:text-brand-blue font-medium transition duration-300" href="/deal-evaluator.html">Deal Evaluator</a>
+    <a class="text-slate-700 hover:text-brand-blue font-medium transition duration-300" href="/about-swiftpath-capital.html">About</a>
+    <a class="text-slate-700 hover:text-brand-blue font-medium transition duration-300" href="/LoanApp.html">Apply</a>
+    <a class="bg-brand-gold text-white font-bold py-2 px-5 rounded-lg shadow-md hover:bg-brand-gold-dark transition duration-300" href="/LoanApp.html">Full Application</a>
+  </div>
+  <div class="lg:hidden">
+    <button aria-label="Toggle menu" class="text-slate-700 focus:outline-none" id="mobile-menu-button">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16m-7 6h7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+    </button>
+  </div>
+</nav>
+<div class="hidden lg:hidden px-6 pt-2 pb-4 space-y-3" id="mobile-menu">
+  <a class="block text-slate-700 font-medium" href="/#advantage">Why SwiftPath</a>
+  <a class="block text-slate-700 font-medium" href="/#process">Process</a>
+  <a class="block text-slate-700 font-medium" href="/#products">Loan Programs</a>
+  <a class="block text-slate-700 font-medium" href="/deal-evaluator.html">Deal Evaluator</a>
+  <a class="block text-slate-700 font-medium" href="/about-swiftpath-capital.html">About</a>
+  <a class="block text-slate-700 font-medium" href="/LoanApp.html">Apply</a>
+  <a class="block bg-brand-gold text-white text-center font-bold py-2 px-5 rounded-lg shadow-md hover:bg-brand-gold-dark transition duration-300 mt-2" href="/LoanApp.html">Full Application</a>
+</div>
+</header>
+
+<!-- Hero -->
+<section class="hero-enhanced bg-brand-blue text-white py-12 md:py-16">
+  <div class="container mx-auto px-6 text-center relative">
+    <h1 class="text-3xl md:text-5xl font-extrabold mb-3">CRE Deal Evaluator</h1>
+    <p class="text-lg md:text-xl text-blue-100 max-w-2xl mx-auto mb-2">Analyze commercial real estate deals with institutional-grade metrics.</p>
+    <p class="text-sm text-yellow-200">NOI &middot; Cap Rate &middot; DSCR &middot; Cash-on-Cash &middot; Deal Score</p>
+  </div>
+</section>
+
+<!-- Calculator -->
+<main class="container mx-auto px-4 md:px-6 py-8 max-w-4xl">
+
+  <!-- Property Info -->
+  <div class="calc-card p-6 mb-6">
+    <div class="section-label">Property Info</div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="field-group">
+        <label for="propName">Property Name</label>
+        <input type="text" id="propName" placeholder="e.g. Maple Ridge Apartments"/>
+      </div>
+      <div class="field-group">
+        <label for="propType">Property Type</label>
+        <select id="propType">
+          <option value="multifamily">Multi-Family</option>
+          <option value="retail">Retail</option>
+          <option value="office">Office</option>
+          <option value="industrial">Industrial</option>
+          <option value="mixed">Mixed Use</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+      <div class="field-group">
+        <label for="purchasePrice">Purchase Price ($)</label>
+        <input type="number" id="purchasePrice" placeholder="1,500,000" oninput="calc()"/>
+      </div>
+      <div class="field-group">
+        <label for="downPct">Down Payment (%)</label>
+        <input type="number" id="downPct" value="25" min="0" max="100" oninput="calc()"/>
+      </div>
+    </div>
+  </div>
+
+  <!-- Income -->
+  <div class="calc-card p-6 mb-6">
+    <div class="section-label">Income</div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div class="field-group">
+        <label for="gsr">Annual Gross Rent ($)</label>
+        <input type="number" id="gsr" placeholder="180,000" oninput="calc()"/>
+      </div>
+      <div class="field-group">
+        <label for="otherIncome">Other Income ($)</label>
+        <input type="number" id="otherIncome" placeholder="5,000" oninput="calc()"/>
+      </div>
+      <div class="field-group">
+        <label for="vacancyPct">Vacancy (%)</label>
+        <input type="number" id="vacancyPct" value="5" min="0" max="100" oninput="calc()"/>
+      </div>
+    </div>
+    <div class="mt-4 flex justify-between text-sm text-slate-500 border-t pt-3">
+      <span>Vacancy Loss</span>
+      <span id="vacancyLoss" class="font-semibold text-slate-700">$0</span>
+    </div>
+    <div class="flex justify-between text-sm text-slate-500">
+      <span>Effective Gross Income</span>
+      <span id="egi" class="font-semibold text-slate-700">$0</span>
+    </div>
+  </div>
+
+  <!-- Operating Expenses -->
+  <div class="calc-card p-6 mb-6">
+    <div class="section-label">Operating Expenses</div>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div class="field-group">
+        <label for="taxes">Taxes ($)</label>
+        <input type="number" id="taxes" placeholder="15,000" oninput="calc()"/>
+      </div>
+      <div class="field-group">
+        <label for="insurance">Insurance ($)</label>
+        <input type="number" id="insurance" placeholder="8,000" oninput="calc()"/>
+      </div>
+      <div class="field-group">
+        <label for="utilities">Utilities ($)</label>
+        <input type="number" id="utilities" placeholder="6,000" oninput="calc()"/>
+      </div>
+      <div class="field-group">
+        <label for="repairs">Repairs ($)</label>
+        <input type="number" id="repairs" placeholder="5,000" oninput="calc()"/>
+      </div>
+      <div class="field-group">
+        <label for="mgmtPct">Management (%)</label>
+        <input type="number" id="mgmtPct" value="8" min="0" max="100" oninput="calc()"/>
+      </div>
+      <div class="field-group">
+        <label for="reserves">Reserves ($)</label>
+        <input type="number" id="reserves" placeholder="3,000" oninput="calc()"/>
+      </div>
+      <div class="field-group">
+        <label for="otherExp">Other Expenses ($)</label>
+        <input type="number" id="otherExp" placeholder="2,000" oninput="calc()"/>
+      </div>
+    </div>
+    <div class="mt-4 flex justify-between text-sm text-slate-500 border-t pt-3">
+      <span>Total Operating Expenses</span>
+      <span id="totalExp" class="font-semibold text-slate-700">$0</span>
+    </div>
+  </div>
+
+  <!-- NOI & Valuation -->
+  <div class="calc-card p-6 mb-6">
+    <div class="section-label">NOI &amp; Valuation</div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
+      <div class="field-group">
+        <label for="capRate">Your Cap Rate (%)</label>
+        <input type="number" id="capRate" value="7" step="0.1" min="0" oninput="calc()"/>
+      </div>
+      <div class="field-group">
+        <label for="mktCapRate">Market Cap Rate (%)</label>
+        <input type="number" id="mktCapRate" value="6" step="0.1" min="0" oninput="calc()"/>
+      </div>
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+      <div class="result-card metric-card">
+        <div class="metric-value" id="noi">&mdash;</div>
+        <div class="metric-label">NOI</div>
+      </div>
+      <div class="result-card metric-card">
+        <div class="metric-value" id="expRatio">&mdash;</div>
+        <div class="metric-label">Expense Ratio</div>
+      </div>
+      <div class="result-card metric-card">
+        <div class="metric-value" id="impliedVal">&mdash;</div>
+        <div class="metric-label">Implied Value</div>
+      </div>
+      <div class="result-card metric-card">
+        <div class="metric-value" id="valueVsAsk" style="color:#c5a35a">&mdash;</div>
+        <div class="metric-label"><span id="valueVsAskNote">enter purchase price</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Financing & Returns -->
+  <div class="calc-card p-6 mb-6">
+    <div class="section-label">Financing &amp; Returns</div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-5">
+      <div class="field-group">
+        <label for="intRate">Interest Rate (%)</label>
+        <input type="number" id="intRate" value="7.5" step="0.1" min="0" oninput="calc()"/>
+      </div>
+      <div class="field-group">
+        <label for="amort">Amortization (yrs)</label>
+        <input type="number" id="amort" value="30" min="1" oninput="calc()"/>
+      </div>
+      <div class="field-group">
+        <label for="loanTerm">Loan Term (yrs)</label>
+        <input type="number" id="loanTerm" value="5" min="1" oninput="calc()"/>
+      </div>
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+      <div class="result-card metric-card">
+        <div class="metric-value" id="loanAmt">&mdash;</div>
+        <div class="metric-label" id="ltvLabel">LTV</div>
+      </div>
+      <div class="result-card metric-card">
+        <div class="metric-value" id="annualDS">&mdash;</div>
+        <div class="metric-label">Annual Debt Service</div>
+      </div>
+      <div class="result-card metric-card">
+        <div class="metric-value" id="dscr">&mdash;</div>
+        <div class="metric-label">DSCR</div>
+      </div>
+      <div class="result-card metric-card">
+        <div class="metric-value" id="coc">&mdash;</div>
+        <div class="metric-label">Cash-on-Cash</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Deal Score -->
+  <div class="calc-card p-6 mb-6">
+    <div class="section-label">Deal Score</div>
+    <div class="text-center mb-5">
+      <span id="verdictBadge" class="inline-block text-sm font-semibold px-4 py-1.5 rounded-full bg-slate-100 text-slate-500 border border-slate-300">Enter data above</span>
+      <p id="verdictNote" class="text-sm text-slate-500 mt-2">Fill in income, expenses, cap rate, and purchase price to score this deal.</p>
+    </div>
+    <div class="space-y-4">
+      <!-- Cap Rate vs Market -->
+      <div>
+        <div class="flex justify-between text-sm mb-1">
+          <span class="font-semibold text-slate-700">Cap Rate vs Market</span>
+          <span id="s1val" class="font-semibold text-slate-600">&mdash;</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill" id="s1bar" style="width:0%;background:#e2e8f0"></div>
+        </div>
+      </div>
+      <!-- DSCR Coverage -->
+      <div>
+        <div class="flex justify-between text-sm mb-1">
+          <span class="font-semibold text-slate-700">DSCR Coverage</span>
+          <span id="s2val" class="font-semibold text-slate-600">&mdash;</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill" id="s2bar" style="width:0%;background:#e2e8f0"></div>
+        </div>
+      </div>
+      <!-- Cash-on-Cash -->
+      <div>
+        <div class="flex justify-between text-sm mb-1">
+          <span class="font-semibold text-slate-700">Cash-on-Cash Return</span>
+          <span id="s3val" class="font-semibold text-slate-600">&mdash;</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill" id="s3bar" style="width:0%;background:#e2e8f0"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Conversion CTA -->
+  <div class="calc-card p-6 mb-6 border-2 border-brand-gold">
+    <h3 class="text-lg font-bold text-slate-800 mb-2">Like what you see? Let's finance this deal.</h3>
+    <p class="text-sm text-slate-600 mb-4">SwiftPath Capital provides DSCR, bridge, and commercial financing for investors nationwide. Get a term sheet in 24 hours.</p>
+    <a href="/LoanApp.html" class="block w-full bg-brand-gold hover:bg-brand-gold-dark text-white font-bold py-4 px-8 rounded-lg shadow-lg text-lg transition duration-300 text-center">
+      Apply Now for CRE Financing &rarr;
+    </a>
+  </div>
+
+  <!-- Cross-link -->
+  <div class="calc-card p-5 mb-6">
+    <h3 class="text-sm font-bold text-slate-800 mb-2">Evaluating a residential deal instead?</h3>
+    <p class="text-sm text-slate-600">Our <a href="/deal-evaluator.html" class="text-brand-blue hover:underline font-semibold">Residential Deal Evaluator</a> uses the 70% rule to analyze fix-and-flip and rental deals.</p>
+  </div>
+
+  <!-- Disclaimer -->
+  <div class="calc-card p-5 mb-6">
+    <p class="text-xs text-slate-400 leading-relaxed">
+      <strong>Disclaimer:</strong> This calculator is provided for informational and educational purposes only. Results are estimates based on the inputs you provide and do not constitute financial advice, a loan commitment, or an offer to lend. Actual loan terms, rates, and eligibility may vary. SwiftPath Capital recommends consulting with a qualified financial advisor or CPA before making investment decisions. SwiftPath Capital provides business-purpose loans only and does not offer consumer or personal loans.
+    </p>
+  </div>
+
+</main>
+
+<!-- Footer -->
+<footer class="footer-enhanced text-white">
+<div class="container mx-auto px-6 py-12">
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+    <div class="md:col-span-1">
+      <a class="flex items-center space-x-2" href="/">
+        <picture><source srcset="Images/Logo.webp" type="image/webp"/><img alt="SwiftPath Capital Logo" class="h-18 lg:h-36 w-auto rounded-md" src="Images/Logo.PNG" loading="lazy"/></picture>
+      </a>
+      <p class="mt-4 text-slate-400">Your strategic partner in a fast-moving market. First, Fast, Funded.</p>
+    </div>
+    <div>
+      <h3 class="font-bold tracking-wide text-brand-gold">Navigation</h3>
+      <ul class="mt-4 space-y-2">
+        <li><a class="hover:text-brand-gold transition duration-300" href="/#advantage">Our Advantage</a></li>
+        <li><a class="hover:text-brand-gold transition duration-300" href="/#process">Our Process</a></li>
+        <li><a class="hover:text-brand-gold transition duration-300" href="/#products">Loan Products</a></li>
+        <li><a class="hover:text-brand-gold transition duration-300" href="/deal-evaluator.html">Deal Evaluator</a></li>
+        <li><a class="hover:text-brand-gold transition duration-300" href="/cre-evaluator.html">CRE Evaluator</a></li>
+        <li><a class="hover:text-brand-gold transition duration-300" href="/about-swiftpath-capital.html">About Us</a></li>
+        <li><a class="hover:text-brand-gold transition duration-300" href="/LoanApp.html">Apply</a></li>
+      </ul>
+    </div>
+    <div>
+      <h3 class="font-bold tracking-wide text-brand-gold">Contact Us</h3>
+      <ul class="mt-4 space-y-2 text-slate-300">
+        <li>Email: <a class="hover:text-brand-gold transition" href="mailto:info@swiftpathcapital.com">info@swiftpathcapital.com</a></li>
+        <li>Phone: <a class="hover:text-brand-gold transition" href="tel:+13214304434">321-430-4434</a>
+        <p class="text-sm text-slate-600 mt-1">333 N Wilmot Rd STE 340 Tucson AZ 85711</p></li>
+      </ul>
+    </div>
+  </div>
+  <div class="mt-12 border-t border-slate-700 pt-6 text-center text-sm text-slate-500">
+    <p>&copy; 2025 SwiftPath Capital. All Rights Reserved.</p>
+    <div class="mt-4 space-x-4">
+      <a class="hover:text-brand-gold transition duration-300" href="/privacy.html">Privacy Policy</a>
+      <span>&middot;</span>
+      <a class="hover:text-brand-gold transition duration-300" href="/terms.html">Terms and Conditions</a>
+      <span>&middot;</span>
+      <a class="hover:text-brand-gold transition duration-300" href="/esign.html">E-Sign Consent</a>
+    </div>
+  </div>
+</div>
+<div class="mt-2 text-sm text-center">
+  <a class="underline text-green-600" href="https://wa.me/13214304434" rel="noopener" target="_blank">Chat on WhatsApp</a>
+</div>
+<div class="mt-2 text-center">
+  <p class="text-xs text-slate-400">SwiftPath Capital provides <strong>business-purpose loans only</strong>; we do not offer consumer/personal loans.</p>
+</div>
+</footer>
+
+<!-- WhatsApp Float -->
+<a href="https://wa.me/13214304434" target="_blank" rel="noopener" class="fixed bottom-6 right-6 z-50 bg-green-500 hover:bg-green-600 text-white rounded-full w-14 h-14 flex items-center justify-center shadow-lg transition duration-300" aria-label="Chat on WhatsApp">
+  <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<!-- Mobile Menu Toggle -->
+<script>
+  document.getElementById('mobile-menu-button').addEventListener('click', function() {
+    document.getElementById('mobile-menu').classList.toggle('hidden');
+  });
+</script>
+
+<!-- CRE Calculator -->
+<script>
+function fmt(n) { if (!isFinite(n) || isNaN(n)) return '\u2014'; return '$' + Math.round(n).toLocaleString(); }
+function fmtPct(n) { if (!isFinite(n) || isNaN(n)) return '\u2014'; return n.toFixed(1) + '%'; }
+function v(id) { return parseFloat(document.getElementById(id).value) || 0; }
+function el(id, val) { document.getElementById(id).textContent = val; }
+function calc() {
+  var gsr = v('gsr'), otherInc = v('otherIncome'), vacPct = v('vacancyPct');
+  var vacancyLoss = (gsr + otherInc) * (vacPct / 100);
+  var egi = gsr + otherInc - vacancyLoss;
+  var taxes = v('taxes'), ins = v('insurance'), utils = v('utilities');
+  var repairs = v('repairs'), mgmt = egi * (v('mgmtPct') / 100);
+  var reserves = v('reserves'), otherExp = v('otherExp');
+  var totalOpex = taxes + ins + utils + repairs + mgmt + reserves + otherExp;
+  var noi = egi - totalOpex;
+  var expRatio = egi > 0 ? (totalOpex / egi) * 100 : 0;
+  el('vacancyLoss', vacancyLoss > 0 ? '-' + fmt(vacancyLoss) : '$0');
+  el('egi', fmt(egi));
+  el('totalExp', fmt(totalOpex));
+  el('noi', fmt(noi));
+  el('expRatio', egi > 0 ? expRatio.toFixed(1) + '%' : '\u2014');
+  var capRate = v('capRate') / 100;
+  var mktCap = v('mktCapRate') / 100;
+  var purchasePrice = v('purchasePrice');
+  var downPct = v('downPct') / 100;
+  var impliedVal = capRate > 0 ? noi / capRate : 0;
+  el('impliedVal', capRate > 0 && noi > 0 ? fmt(impliedVal) : '\u2014');
+  var vvaEl = document.getElementById('valueVsAsk');
+  if (purchasePrice > 0 && impliedVal > 0) {
+    var diff = impliedVal - purchasePrice;
+    var diffPct = (diff / purchasePrice) * 100;
+    var sign = diff >= 0 ? '+' : '';
+    el('valueVsAsk', sign + fmtPct(diffPct));
+    el('valueVsAskNote', diff >= 0 ? 'equity cushion' : 'overpaying');
+    vvaEl.style.color = diff >= 0 ? '#22c55e' : '#ef4444';
+  } else {
+    el('valueVsAsk', '\u2014');
+    el('valueVsAskNote', 'enter purchase price');
+    vvaEl.style.color = '#c5a35a';
+  }
+  var loanAmt = purchasePrice * (1 - downPct);
+  var intRate = v('intRate') / 100 / 12;
+  var amort = v('amort') * 12;
+  var monthlyPI = 0;
+  if (intRate > 0 && amort > 0 && loanAmt > 0) {
+    monthlyPI = loanAmt * (intRate * Math.pow(1 + intRate, amort)) / (Math.pow(1 + intRate, amort) - 1);
+  }
+  var annualDS = monthlyPI * 12;
+  var dscr = annualDS > 0 ? noi / annualDS : 0;
+  var downPayment = purchasePrice * downPct;
+  var cashFlow = noi - annualDS;
+  var coc = downPayment > 0 ? (cashFlow / downPayment) * 100 : 0;
+  el('loanAmt', purchasePrice > 0 ? fmt(loanAmt) : '\u2014');
+  document.getElementById('ltvLabel').textContent = purchasePrice > 0 ? (100 - v('downPct')).toFixed(0) + '% LTV' : 'LTV';
+  el('annualDS', annualDS > 0 ? fmt(annualDS) : '\u2014');
+  el('dscr', dscr > 0 ? dscr.toFixed(2) + 'x' : '\u2014');
+  el('coc', downPayment > 0 && isFinite(coc) ? fmtPct(coc) : '\u2014');
+  var hasData = noi > 0 && purchasePrice > 0 && capRate > 0 && dscr > 0;
+  if (hasData) {
+    var actualCap = noi / purchasePrice * 100;
+    var capSpread = actualCap - (mktCap * 100);
+    var capScore = Math.min(100, Math.max(0, (capSpread + 2) / 4 * 100));
+    var dscrScore = Math.min(100, Math.max(0, (dscr - 0.8) / 1.2 * 100));
+    var cocScore = Math.min(100, Math.max(0, coc / 15 * 100));
+    var totalScore = (capScore + dscrScore + cocScore) / 3;
+    el('s1val', actualCap.toFixed(2) + '%');
+    el('s2val', dscr.toFixed(2) + 'x');
+    el('s3val', fmtPct(coc));
+    var setBar = function(barId, pct) {
+      var bar = document.getElementById(barId);
+      bar.style.width = Math.round(pct) + '%';
+      bar.style.background = pct > 65 ? '#22c55e' : pct > 35 ? '#f59e0b' : '#ef4444';
+    };
+    setBar('s1bar', capScore);
+    setBar('s2bar', dscrScore);
+    setBar('s3bar', cocScore);
+    var badge = document.getElementById('verdictBadge');
+    var notes = [];
+    if (totalScore >= 65) { badge.textContent = 'Strong Deal'; badge.className = 'inline-block text-sm font-semibold px-4 py-1.5 rounded-full bg-green-100 text-green-700 border border-green-300'; }
+    else if (totalScore >= 40) { badge.textContent = 'Proceed with Caution'; badge.className = 'inline-block text-sm font-semibold px-4 py-1.5 rounded-full bg-yellow-100 text-yellow-700 border border-yellow-300'; }
+    else { badge.textContent = 'Pass'; badge.className = 'inline-block text-sm font-semibold px-4 py-1.5 rounded-full bg-red-100 text-red-700 border border-red-300'; }
+    if (capSpread < 0) notes.push('cap rate below market');
+    if (dscr < 1.25) notes.push('DSCR below lender floor of 1.25x');
+    if (coc < 6) notes.push('cash-on-cash below 6%');
+    if (dscr >= 1.35 && capSpread >= 0) notes.push('solid coverage with above-market yield');
+    if (coc >= 10) notes.push('strong cash-on-cash');
+    el('verdictNote', notes.join(' \u00b7 ') || 'Deal metrics look clean.');
+  } else {
+    var badge = document.getElementById('verdictBadge');
+    badge.textContent = 'Enter data above';
+    badge.className = 'inline-block text-sm font-semibold px-4 py-1.5 rounded-full bg-slate-100 text-slate-500 border border-slate-300';
+    el('verdictNote', 'Fill in income, expenses, cap rate, and purchase price to score this deal.');
+  }
+}
+calc();
+</script>
+
+</body>
+</html>
