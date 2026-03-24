@@ -279,11 +279,18 @@
       var extraFields = buildExtraFields();
 
       var hubspotPromise = submitToHubspot(hubspotFields);
-      saveApplication(extraFields).catch(function (err) {
+      var archivePromise = saveApplication(extraFields).catch(function (err) {
         console.error('Failed to archive application', err);
       });
 
       await hubspotPromise;
+      // Give archival a brief chance to complete without blocking indefinitely.
+      await Promise.race([
+        archivePromise,
+        new Promise(function (resolve) {
+          setTimeout(resolve, 2000);
+        })
+      ]);
       location.href = THANK_YOU_URL;
     } catch (err) {
       console.error(err);
