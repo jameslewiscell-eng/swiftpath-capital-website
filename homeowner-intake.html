@@ -8,437 +8,592 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: { sans: ['Inter', 'sans-serif'] },
-          colors: { brand: { 50:'#FFFBEB', 100:'#FEF3C7', 200:'#FDE68A', 500:'#EAB308', 600:'#CA8A04', 700:'#A16207' } }
-        }
-      }
-    }
-  </script>
   <style>
-    /* Step transition */
-    .step-panel { display: none; opacity: 0; transform: translateY(12px); }
+    /* ── Reset & Base ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: #f8fafc; color: #1e293b; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; height: auto; display: block; }
+    button { font-family: inherit; cursor: pointer; }
+    input, select, textarea { font-family: inherit; font-size: 0.875rem; }
+    fieldset { border: none; padding: 0; margin: 0; }
+
+    /* ── Layout ── */
+    .container { max-width: 1140px; margin: 0 auto; padding: 0 1rem; }
+    @media (min-width: 768px) { .container { padding: 0 1.5rem; } }
+
+    /* ── Header ── */
+    .site-header { background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,.08); position: sticky; top: 0; z-index: 40; }
+    .header-inner { display: flex; align-items: center; justify-content: space-between; padding: 1rem 0; }
+    .header-logo { height: 48px; width: auto; }
+    .header-nav { display: none; align-items: center; gap: 1.5rem; font-size: 0.875rem; font-weight: 500; color: #475569; }
+    @media (min-width: 768px) { .header-nav { display: flex; } }
+    .header-nav a:hover { color: #0f172a; }
+    .btn-apply { background: #ca8a04; color: #fff; font-weight: 600; padding: 0.5rem 1rem; border-radius: 0.375rem; border: none; transition: background 0.2s; }
+    .btn-apply:hover { background: #a16207; }
+
+    /* ── Hero ── */
+    .hero { background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%); padding: 4rem 0; text-align: center; overflow: hidden; }
+    @media (min-width: 768px) { .hero { padding: 5rem 0; } }
+    .hero-badge { display: inline-block; background: rgba(202,138,4,0.2); color: #facc15; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; padding: 0.25rem 0.75rem; border-radius: 9999px; margin-bottom: 1rem; }
+    .hero h1 { font-size: 1.875rem; font-weight: 800; color: #fff; line-height: 1.2; }
+    @media (min-width: 768px) { .hero h1 { font-size: 2.75rem; } }
+    .hero p { margin-top: 1rem; color: #94a3b8; font-size: 1rem; max-width: 36rem; margin-left: auto; margin-right: auto; }
+    @media (min-width: 768px) { .hero p { font-size: 1.125rem; } }
+    .hero-cta { display: inline-flex; align-items: center; gap: 0.5rem; margin-top: 2rem; background: #ca8a04; color: #fff; font-weight: 600; padding: 0.75rem 1.5rem; border-radius: 0.5rem; border: none; transition: background 0.2s; font-size: 0.9375rem; }
+    .hero-cta:hover { background: #a16207; }
+    .hero-cta svg { width: 16px; height: 16px; }
+
+    /* ── Main ── */
+    .main-section { padding: 2.5rem 0 3.5rem; }
+    @media (min-width: 768px) { .main-section { padding: 3.5rem 0; } }
+    .form-wrapper { max-width: 48rem; margin: 0 auto; }
+
+    /* ── Progress Bar ── */
+    .progress-header { display: flex; justify-content: space-between; font-size: 0.75rem; font-weight: 600; color: #64748b; margin-bottom: 0.5rem; }
+    .progress-track { width: 100%; height: 0.5rem; background: #e2e8f0; border-radius: 9999px; overflow: hidden; }
+    .progress-fill { height: 100%; background: #ca8a04; border-radius: 9999px; transition: width 0.5s ease-out; }
+    .step-names { display: none; grid-template-columns: repeat(6, 1fr); font-size: 0.6875rem; color: #94a3b8; text-align: center; margin-top: 0.5rem; }
+    @media (min-width: 768px) { .step-names { display: grid; } }
+    .step-name-active { font-weight: 600; color: #ca8a04; }
+    .step-name-done { color: #16a34a; }
+
+    /* ── Status Banner ── */
+    .status-banner { display: none; margin-bottom: 1.5rem; border-radius: 0.5rem; border: 1px solid; padding: 1rem; font-size: 0.875rem; }
+    .status-banner.error { background: #fef2f2; border-color: #fecaca; color: #991b1b; }
+    .status-banner.success { background: #f0fdf4; border-color: #bbf7d0; color: #166534; }
+    .status-banner.visible { display: block; }
+
+    /* ── Form Card ── */
+    .form-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 1rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,.07), 0 2px 4px -2px rgba(0,0,0,.05); overflow: hidden; }
+
+    /* ── Step Panels ── */
+    .step-panel { display: none; opacity: 0; transform: translateY(12px); padding: 1.5rem; }
+    @media (min-width: 768px) { .step-panel { padding: 2rem; } }
     .step-panel.active { display: block; animation: fadeSlideIn 0.35s ease forwards; }
     @keyframes fadeSlideIn { to { opacity: 1; transform: translateY(0); } }
     @media (prefers-reduced-motion: reduce) {
       .step-panel.active { animation: none; opacity: 1; transform: none; }
     }
-    /* Signature canvas */
-    #signatureCanvas { touch-action: none; }
-    /* Invalid field ring */
-    .field-error { border-color: #EF4444 !important; box-shadow: 0 0 0 2px rgba(239,68,68,.15); }
-    .field-error-msg { color: #EF4444; font-size: 0.75rem; margin-top: 0.25rem; }
+
+    /* ── Section Header ── */
+    .section-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.5rem; }
+    .section-icon { width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .section-icon svg { width: 1.25rem; height: 1.25rem; }
+    .section-icon-yellow { background: #fef3c7; color: #a16207; }
+    .section-icon-slate { background: #f1f5f9; color: #64748b; }
+    .section-icon-green { background: #dcfce7; color: #15803d; }
+    .section-title { font-size: 1.25rem; font-weight: 700; color: #0f172a; }
+    .section-subtitle { font-size: 0.875rem; color: #64748b; margin-top: 0.125rem; }
+    .required-tag { color: #ef4444; font-size: 0.8125rem; font-weight: 400; }
+
+    /* ── Form Grid ── */
+    .form-grid { display: grid; gap: 1.25rem; }
+    @media (min-width: 640px) { .form-grid { grid-template-columns: 1fr 1fr; } }
+    .col-full { grid-column: 1 / -1; }
+
+    /* ── Form Fields ── */
+    .field-label { display: block; font-size: 0.8125rem; font-weight: 500; color: #334155; margin-bottom: 0.25rem; }
+    .field-required { color: #ef4444; }
+    .field-hint { color: #94a3b8; font-size: 0.75rem; }
+    .field-input { width: 100%; border: 1px solid #cbd5e1; border-radius: 0.5rem; padding: 0.625rem 0.75rem; font-size: 0.875rem; color: #1e293b; background: #fff; outline: none; transition: border-color 0.15s, box-shadow 0.15s; }
+    .field-input:focus { border-color: #eab308; box-shadow: 0 0 0 3px rgba(234,179,8,0.15); }
+    .field-input::placeholder { color: #94a3b8; }
+    select.field-input { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 0.5rem center; background-size: 1.25rem; padding-right: 2.25rem; }
+    .input-prefix { position: relative; }
+    .input-prefix .prefix { position: absolute; left: 0.75rem; top: 50%; transform: translateY(-50%); color: #94a3b8; font-size: 0.875rem; pointer-events: none; }
+    .input-prefix .field-input { padding-left: 1.75rem; }
+    .input-suffix { position: relative; }
+    .input-suffix .suffix { position: absolute; right: 0.75rem; top: 50%; transform: translateY(-50%); color: #94a3b8; font-size: 0.875rem; pointer-events: none; }
+    .input-suffix .field-input { padding-right: 2rem; }
+
+    /* ── Validation ── */
+    .field-error { border-color: #ef4444 !important; box-shadow: 0 0 0 2px rgba(239,68,68,.15) !important; }
+    .field-error-msg { color: #ef4444; font-size: 0.75rem; margin-top: 0.25rem; }
+
+    /* ── Fieldset Legend ── */
+    .field-legend { font-size: 0.75rem; font-weight: 600; color: #475569; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.75rem; }
+
+    /* ── Debt Table ── */
+    .debt-table-wrap { overflow-x: auto; margin: 0 -1.5rem; padding: 0 1.5rem; }
+    @media (min-width: 768px) { .debt-table-wrap { margin: 0 -2rem; padding: 0 2rem; } }
+    .debt-table { width: 100%; min-width: 520px; font-size: 0.875rem; border-collapse: collapse; }
+    .debt-table th { text-align: left; font-size: 0.6875rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; padding-bottom: 0.5rem; }
+    .debt-table th:not(:last-child), .debt-table td:not(:last-child) { padding-right: 0.5rem; }
+    .debt-table td { padding: 0.5rem 0; }
+    .debt-table td:not(:last-child) { padding-right: 0.5rem; }
+    .debt-table tbody tr + tr { border-top: 1px solid #f1f5f9; }
+    .debt-table input { width: 100%; border: 1px solid #cbd5e1; border-radius: 0.375rem; padding: 0.375rem 0.5rem; font-size: 0.8125rem; outline: none; transition: border-color 0.15s, box-shadow 0.15s; }
+    .debt-table input:focus { border-color: #eab308; box-shadow: 0 0 0 2px rgba(234,179,8,0.15); }
+    .add-debt-btn { margin-top: 0.75rem; font-size: 0.8125rem; color: #a16207; font-weight: 500; background: none; border: none; display: flex; align-items: center; gap: 0.25rem; transition: color 0.2s; }
+    .add-debt-btn:hover { color: #854d0e; }
+    .add-debt-btn svg { width: 1rem; height: 1rem; }
+
+    /* ── Review Summary ── */
+    .review-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem; }
+    .review-card h4 { font-size: 0.6875rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem; }
+    .review-row { display: flex; justify-content: space-between; padding: 0.25rem 0; font-size: 0.875rem; }
+    .review-row + .review-row { border-top: 1px solid #f1f5f9; }
+    .review-label { color: #64748b; }
+    .review-value { font-weight: 500; color: #1e293b; }
+
+    /* ── Signature ── */
+    .sig-container { border: 2px dashed #cbd5e1; border-radius: 0.75rem; padding: 0.5rem; background: #f8fafc; position: relative; }
+    #signatureCanvas { width: 100%; height: 140px; background: #fff; border-radius: 0.5rem; cursor: crosshair; touch-action: none; display: block; }
+    .clear-sig-btn { position: absolute; top: 1rem; right: 1rem; font-size: 0.75rem; color: #94a3b8; background: none; border: none; display: flex; align-items: center; gap: 0.25rem; transition: color 0.2s; }
+    .clear-sig-btn:hover { color: #ef4444; }
+    .clear-sig-btn svg { width: 0.875rem; height: 0.875rem; }
+
+    /* ── Consent ── */
+    .consent-box { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; }
+    .consent-label { display: flex; align-items: flex-start; gap: 0.75rem; cursor: pointer; }
+    .consent-label input[type="checkbox"] { margin-top: 0.25rem; width: 1rem; height: 1rem; accent-color: #ca8a04; cursor: pointer; flex-shrink: 0; }
+    .consent-label span { font-size: 0.875rem; color: #475569; line-height: 1.5; }
+    .consent-label a { color: #a16207; text-decoration: underline; }
+    .consent-label a:hover { color: #854d0e; }
+
+    /* ── Nav Buttons ── */
+    .form-nav { display: flex; align-items: center; justify-content: space-between; border-top: 1px solid #e2e8f0; padding: 1.25rem 1.5rem; background: rgba(248,250,252,0.5); }
+    @media (min-width: 768px) { .form-nav { padding: 1.25rem 2rem; } }
+    .btn-back { font-size: 0.875rem; font-weight: 500; color: #475569; background: none; border: none; display: flex; align-items: center; gap: 0.375rem; transition: color 0.2s; }
+    .btn-back:hover { color: #0f172a; }
+    .btn-back svg { width: 1rem; height: 1rem; }
+    .nav-right { margin-left: auto; display: flex; align-items: center; gap: 0.75rem; }
+    .skip-hint { font-size: 0.75rem; color: #94a3b8; }
+    .btn-next { background: #ca8a04; color: #fff; font-weight: 600; font-size: 0.875rem; padding: 0.625rem 1.5rem; border-radius: 0.5rem; border: none; display: flex; align-items: center; gap: 0.5rem; transition: background 0.2s; }
+    .btn-next:hover { background: #a16207; }
+    .btn-next svg { width: 1rem; height: 1rem; }
+    .btn-submit { background: #16a34a; color: #fff; font-weight: 600; font-size: 0.875rem; padding: 0.625rem 1.5rem; border-radius: 0.5rem; border: none; display: flex; align-items: center; gap: 0.5rem; transition: background 0.2s; }
+    .btn-submit:hover { background: #15803d; }
+    .btn-submit svg { width: 1rem; height: 1rem; }
+    .btn-submit:disabled { opacity: 0.7; cursor: not-allowed; }
+    .hidden { display: none !important; }
+
+    /* ── Trust Signals ── */
+    .trust-signals { margin-top: 2rem; display: flex; flex-wrap: wrap; justify-content: center; gap: 1.5rem; font-size: 0.75rem; color: #94a3b8; }
+    .trust-item { display: flex; align-items: center; gap: 0.375rem; }
+    .trust-item svg { width: 1rem; height: 1rem; }
+
+    /* ── Footer ── */
+    .site-footer { background: #0f172a; color: #cbd5e1; }
+    .footer-inner { padding: 2.5rem 0; display: grid; gap: 2rem; }
+    @media (min-width: 768px) { .footer-inner { grid-template-columns: 1fr 1fr 1fr; } }
+    .footer-logo { height: 2.5rem; width: auto; background: #fff; padding: 0.25rem; border-radius: 0.25rem; }
+    .footer-note { margin-top: 0.75rem; font-size: 0.8125rem; color: #64748b; }
+    .footer-heading { color: #eab308; font-weight: 600; margin-bottom: 0.5rem; }
+    .footer-links { list-style: none; font-size: 0.8125rem; }
+    .footer-links li + li { margin-top: 0.25rem; }
+    .footer-links a:hover { color: #fff; }
+
+    /* ── Spin animation ── */
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .animate-spin { animation: spin 1s linear infinite; }
+
+    /* ── Half-width helper for state/zip ── */
+    .grid-half { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
   </style>
 </head>
 
-<body class="bg-gray-50 text-slate-800 font-sans">
+<body>
   <!-- ─── Header ─── -->
-  <header class="bg-white shadow-sm sticky top-0 z-40">
-    <div class="container mx-auto px-4 md:px-6 py-4 flex items-center justify-between">
-      <a href="/" class="flex items-center space-x-2">
-        <img src="Images/Logo.PNG" alt="SwiftPath Capital" class="h-12 w-auto" />
-      </a>
-      <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-slate-600">
-        <a class="hover:text-slate-900 transition-colors duration-200" href="/#products">Loan Products</a>
-        <a class="hover:text-slate-900 transition-colors duration-200" href="/about-swiftpath-capital.html">About</a>
-        <a class="bg-yellow-600 hover:bg-yellow-700 text-white font-semibold px-4 py-2 rounded transition-colors duration-200 cursor-pointer" href="/LoanApp.html">Apply Now</a>
-      </nav>
+  <header class="site-header">
+    <div class="container">
+      <div class="header-inner">
+        <a href="/">
+          <img src="Images/Logo.PNG" alt="SwiftPath Capital" class="header-logo" />
+        </a>
+        <nav class="header-nav">
+          <a href="/#products">Loan Products</a>
+          <a href="/about-swiftpath-capital.html">About</a>
+          <a href="/LoanApp.html" class="btn-apply">Apply Now</a>
+        </nav>
+      </div>
     </div>
   </header>
 
   <!-- ─── Hero ─── -->
-  <section class="relative py-16 md:py-20 bg-slate-900 overflow-hidden">
-    <div class="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900"></div>
-    <div class="relative container mx-auto px-4 md:px-6 text-center">
-      <span class="inline-block bg-yellow-600/20 text-yellow-400 text-xs font-semibold tracking-wider uppercase px-3 py-1 rounded-full mb-4">Homeowner Intake</span>
-      <h1 class="text-3xl md:text-5xl font-extrabold text-white leading-tight">Let's Get Started on<br class="hidden md:block"> Your Home Loan</h1>
-      <p class="mt-4 text-slate-300 text-base md:text-lg max-w-2xl mx-auto leading-relaxed">Complete the form below so we can evaluate your options. It only takes a few minutes.</p>
-      <a href="#intake" class="inline-flex items-center gap-2 mt-8 bg-yellow-600 hover:bg-yellow-700 text-white font-semibold px-6 py-3 rounded-lg transition-colors duration-200 cursor-pointer">
+  <section class="hero">
+    <div class="container">
+      <span class="hero-badge">Homeowner Intake</span>
+      <h1>Let's Get Started on<br>Your Home Loan</h1>
+      <p>Complete the form below so we can evaluate your options. It only takes a few minutes.</p>
+      <a href="#intake" class="hero-cta">
         Begin Intake
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+        <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
       </a>
     </div>
   </section>
 
   <!-- ─── Main Form ─── -->
-  <main id="intake" class="py-10 md:py-14">
-    <div class="container mx-auto px-4 md:px-6 max-w-3xl">
+  <main id="intake" class="main-section">
+    <div class="container">
+      <div class="form-wrapper">
 
-      <!-- Progress Bar -->
-      <div class="mb-8">
-        <div class="flex items-center justify-between text-xs font-semibold text-slate-500 mb-2">
-          <span id="stepLabel">Step 1 of 6</span>
-          <span id="stepPercent">0%</span>
-        </div>
-        <div class="w-full h-2 bg-slate-200 rounded-full overflow-hidden">
-          <div id="progressBar" class="h-full bg-yellow-600 rounded-full transition-all duration-500 ease-out" style="width:0%"></div>
-        </div>
-        <!-- Step names -->
-        <div class="hidden md:grid grid-cols-6 text-[11px] text-slate-400 mt-2 text-center">
-          <span id="sn1" class="font-semibold text-yellow-600">Agent</span>
-          <span id="sn2">Client 1</span>
-          <span id="sn3">Client 2</span>
-          <span id="sn4">Property</span>
-          <span id="sn5">Finances</span>
-          <span id="sn6">Review</span>
-        </div>
-      </div>
-
-      <!-- Status Banner -->
-      <div id="submitStatus" class="hidden mb-6 rounded-lg border p-4 text-sm" aria-live="polite"></div>
-
-      <form id="intakeForm" novalidate class="bg-white border border-slate-200 rounded-2xl shadow-lg overflow-hidden">
-
-        <!-- ══════════ STEP 1: Agent Info ══════════ -->
-        <div class="step-panel active p-6 md:p-8" data-step="1">
-          <div class="flex items-center gap-3 mb-6">
-            <div class="w-10 h-10 rounded-full bg-yellow-100 text-yellow-700 flex items-center justify-center flex-shrink-0">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/></svg>
-            </div>
-            <div>
-              <h2 class="text-xl font-bold text-slate-900">Agent Information</h2>
-              <p class="text-sm text-slate-500">If an agent is referring this client, fill in the details below.</p>
-            </div>
+        <!-- Progress Bar -->
+        <div style="margin-bottom:2rem;">
+          <div class="progress-header">
+            <span id="stepLabel">Step 1 of 6</span>
+            <span id="stepPercent">0%</span>
           </div>
-          <div class="grid sm:grid-cols-2 gap-5">
-            <div>
-              <label for="agentName" class="block text-sm font-medium text-slate-700 mb-1">Agent Name</label>
-              <input id="agentName" type="text" class="w-full border border-slate-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition" placeholder="Jane Smith" />
-            </div>
-            <div>
-              <label for="agentEmail" class="block text-sm font-medium text-slate-700 mb-1">Agent Email</label>
-              <input id="agentEmail" type="email" class="w-full border border-slate-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition" placeholder="agent@example.com" />
-            </div>
-            <div>
-              <label for="agentPhone" class="block text-sm font-medium text-slate-700 mb-1">Agent Phone</label>
-              <input id="agentPhone" type="tel" class="w-full border border-slate-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition" placeholder="(321) 430-4434" />
-            </div>
-            <div>
-              <label for="agentWebsite" class="block text-sm font-medium text-slate-700 mb-1">Website</label>
-              <input id="agentWebsite" type="url" class="w-full border border-slate-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition" placeholder="https://example.com" />
-            </div>
+          <div class="progress-track">
+            <div id="progressBar" class="progress-fill" style="width:0%"></div>
+          </div>
+          <div class="step-names">
+            <span id="sn1" class="step-name-active">Agent</span>
+            <span id="sn2">Client 1</span>
+            <span id="sn3">Client 2</span>
+            <span id="sn4">Property</span>
+            <span id="sn5">Finances</span>
+            <span id="sn6">Review</span>
           </div>
         </div>
 
-        <!-- ══════════ STEP 2: Client #1 ══════════ -->
-        <div class="step-panel p-6 md:p-8" data-step="2">
-          <div class="flex items-center gap-3 mb-6">
-            <div class="w-10 h-10 rounded-full bg-yellow-100 text-yellow-700 flex items-center justify-center flex-shrink-0">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 9h3.75M15 12h3.75M15 15h3.75M4.5 19.5h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15A2.25 2.25 0 002.25 6.75v10.5A2.25 2.25 0 004.5 19.5zm6-10.125a1.875 1.875 0 11-3.75 0 1.875 1.875 0 013.75 0zm1.294 6.336a6.721 6.721 0 01-3.17.789 6.721 6.721 0 01-3.168-.789 3.376 3.376 0 016.338 0z"/></svg>
-            </div>
-            <div>
-              <h2 class="text-xl font-bold text-slate-900">Client #1 <span class="text-red-500 text-sm font-normal">(Required)</span></h2>
-              <p class="text-sm text-slate-500">Primary borrower information.</p>
-            </div>
-          </div>
-          <div class="grid sm:grid-cols-2 gap-5">
-            <div>
-              <label for="client1Name" class="block text-sm font-medium text-slate-700 mb-1">Full Name <span class="text-red-500">*</span></label>
-              <input id="client1Name" type="text" required class="w-full border border-slate-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition" placeholder="Full legal name" />
-            </div>
-            <div>
-              <label for="client1DOB" class="block text-sm font-medium text-slate-700 mb-1">Date of Birth</label>
-              <input id="client1DOB" type="date" class="w-full border border-slate-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition" />
-            </div>
-            <div>
-              <label for="client1Email" class="block text-sm font-medium text-slate-700 mb-1">Email <span class="text-red-500">*</span></label>
-              <input id="client1Email" type="email" required class="w-full border border-slate-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition" placeholder="name@example.com" />
-            </div>
-            <div>
-              <label for="client1Phone" class="block text-sm font-medium text-slate-700 mb-1">Phone Number <span class="text-red-500">*</span></label>
-              <input id="client1Phone" type="tel" required class="w-full border border-slate-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition" placeholder="(555) 123-4567" />
-            </div>
-          </div>
-        </div>
+        <!-- Status Banner -->
+        <div id="submitStatus" class="status-banner" aria-live="polite"></div>
 
-        <!-- ══════════ STEP 3: Client #2 ══════════ -->
-        <div class="step-panel p-6 md:p-8" data-step="3">
-          <div class="flex items-center gap-3 mb-6">
-            <div class="w-10 h-10 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center flex-shrink-0">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zM4 19.235v-.11a6.375 6.375 0 0112.75 0v.109A12.318 12.318 0 0110.374 21c-2.331 0-4.512-.645-6.374-1.766z"/></svg>
-            </div>
-            <div>
-              <h2 class="text-xl font-bold text-slate-900">Client #2 <span class="text-slate-400 text-sm font-normal">(Optional)</span></h2>
-              <p class="text-sm text-slate-500">Add a co-borrower if applicable. You can skip this step.</p>
-            </div>
-          </div>
-          <div class="grid sm:grid-cols-2 gap-5">
-            <div>
-              <label for="client2Name" class="block text-sm font-medium text-slate-700 mb-1">Full Name</label>
-              <input id="client2Name" type="text" class="w-full border border-slate-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition" placeholder="Co-borrower name" />
-            </div>
-            <div>
-              <label for="client2DOB" class="block text-sm font-medium text-slate-700 mb-1">Date of Birth</label>
-              <input id="client2DOB" type="date" class="w-full border border-slate-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition" />
-            </div>
-            <div>
-              <label for="client2Email" class="block text-sm font-medium text-slate-700 mb-1">Email</label>
-              <input id="client2Email" type="email" class="w-full border border-slate-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition" placeholder="name@example.com" />
-            </div>
-            <div>
-              <label for="client2Phone" class="block text-sm font-medium text-slate-700 mb-1">Phone Number</label>
-              <input id="client2Phone" type="tel" class="w-full border border-slate-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition" placeholder="(555) 123-4567" />
-            </div>
-          </div>
-        </div>
+        <form id="intakeForm" novalidate class="form-card">
 
-        <!-- ══════════ STEP 4: Property ══════════ -->
-        <div class="step-panel p-6 md:p-8" data-step="4">
-          <div class="flex items-center gap-3 mb-6">
-            <div class="w-10 h-10 rounded-full bg-yellow-100 text-yellow-700 flex items-center justify-center flex-shrink-0">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"/></svg>
-            </div>
-            <div>
-              <h2 class="text-xl font-bold text-slate-900">Property Details</h2>
-              <p class="text-sm text-slate-500">Tell us about the property.</p>
-            </div>
-          </div>
-
-          <!-- Address -->
-          <fieldset class="mb-6">
-            <legend class="text-sm font-semibold text-slate-600 uppercase tracking-wider mb-3">Address</legend>
-            <div class="grid sm:grid-cols-2 gap-5">
-              <div class="sm:col-span-2">
-                <label for="propAddress" class="block text-sm font-medium text-slate-700 mb-1">Street Address <span class="text-red-500">*</span></label>
-                <input id="propAddress" type="text" required class="w-full border border-slate-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition" placeholder="123 Main St" />
+          <!-- ══════════ STEP 1: Agent Info ══════════ -->
+          <div class="step-panel active" data-step="1">
+            <div class="section-header">
+              <div class="section-icon section-icon-yellow">
+                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/></svg>
               </div>
               <div>
-                <label for="propCity" class="block text-sm font-medium text-slate-700 mb-1">City <span class="text-red-500">*</span></label>
-                <input id="propCity" type="text" required class="w-full border border-slate-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition" placeholder="Tucson" />
+                <div class="section-title">Agent Information</div>
+                <div class="section-subtitle">If an agent is referring this client, fill in the details below.</div>
               </div>
-              <div class="grid grid-cols-2 gap-4">
-                <div>
-                  <label for="propState" class="block text-sm font-medium text-slate-700 mb-1">State <span class="text-red-500">*</span></label>
-                  <input id="propState" type="text" required maxlength="2" class="w-full border border-slate-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition uppercase" placeholder="AZ" />
+            </div>
+            <div class="form-grid">
+              <div>
+                <label for="agentName" class="field-label">Agent Name</label>
+                <input id="agentName" type="text" class="field-input" placeholder="Jane Smith" />
+              </div>
+              <div>
+                <label for="agentEmail" class="field-label">Agent Email</label>
+                <input id="agentEmail" type="email" class="field-input" placeholder="agent@example.com" />
+              </div>
+              <div>
+                <label for="agentPhone" class="field-label">Agent Phone</label>
+                <input id="agentPhone" type="tel" class="field-input" placeholder="(321) 430-4434" />
+              </div>
+              <div>
+                <label for="agentWebsite" class="field-label">Website</label>
+                <input id="agentWebsite" type="url" class="field-input" placeholder="https://example.com" />
+              </div>
+            </div>
+          </div>
+
+          <!-- ══════════ STEP 2: Client #1 ══════════ -->
+          <div class="step-panel" data-step="2">
+            <div class="section-header">
+              <div class="section-icon section-icon-yellow">
+                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 9h3.75M15 12h3.75M15 15h3.75M4.5 19.5h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15A2.25 2.25 0 002.25 6.75v10.5A2.25 2.25 0 004.5 19.5zm6-10.125a1.875 1.875 0 11-3.75 0 1.875 1.875 0 013.75 0zm1.294 6.336a6.721 6.721 0 01-3.17.789 6.721 6.721 0 01-3.168-.789 3.376 3.376 0 016.338 0z"/></svg>
+              </div>
+              <div>
+                <div class="section-title">Client #1 <span class="required-tag">(Required)</span></div>
+                <div class="section-subtitle">Primary borrower information.</div>
+              </div>
+            </div>
+            <div class="form-grid">
+              <div>
+                <label for="client1Name" class="field-label">Full Name <span class="field-required">*</span></label>
+                <input id="client1Name" type="text" required class="field-input" placeholder="Full legal name" />
+              </div>
+              <div>
+                <label for="client1DOB" class="field-label">Date of Birth</label>
+                <input id="client1DOB" type="date" class="field-input" />
+              </div>
+              <div>
+                <label for="client1Email" class="field-label">Email <span class="field-required">*</span></label>
+                <input id="client1Email" type="email" required class="field-input" placeholder="name@example.com" />
+              </div>
+              <div>
+                <label for="client1Phone" class="field-label">Phone Number <span class="field-required">*</span></label>
+                <input id="client1Phone" type="tel" required class="field-input" placeholder="(555) 123-4567" />
+              </div>
+            </div>
+          </div>
+
+          <!-- ══════════ STEP 3: Client #2 ══════════ -->
+          <div class="step-panel" data-step="3">
+            <div class="section-header">
+              <div class="section-icon section-icon-slate">
+                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zM4 19.235v-.11a6.375 6.375 0 0112.75 0v.109A12.318 12.318 0 0110.374 21c-2.331 0-4.512-.645-6.374-1.766z"/></svg>
+              </div>
+              <div>
+                <div class="section-title">Client #2 <span style="color:#94a3b8;font-size:0.8125rem;font-weight:400">(Optional)</span></div>
+                <div class="section-subtitle">Add a co-borrower if applicable. You can skip this step.</div>
+              </div>
+            </div>
+            <div class="form-grid">
+              <div>
+                <label for="client2Name" class="field-label">Full Name</label>
+                <input id="client2Name" type="text" class="field-input" placeholder="Co-borrower name" />
+              </div>
+              <div>
+                <label for="client2DOB" class="field-label">Date of Birth</label>
+                <input id="client2DOB" type="date" class="field-input" />
+              </div>
+              <div>
+                <label for="client2Email" class="field-label">Email</label>
+                <input id="client2Email" type="email" class="field-input" placeholder="name@example.com" />
+              </div>
+              <div>
+                <label for="client2Phone" class="field-label">Phone Number</label>
+                <input id="client2Phone" type="tel" class="field-input" placeholder="(555) 123-4567" />
+              </div>
+            </div>
+          </div>
+
+          <!-- ══════════ STEP 4: Property ══════════ -->
+          <div class="step-panel" data-step="4">
+            <div class="section-header">
+              <div class="section-icon section-icon-yellow">
+                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"/></svg>
+              </div>
+              <div>
+                <div class="section-title">Property Details</div>
+                <div class="section-subtitle">Tell us about the property.</div>
+              </div>
+            </div>
+
+            <fieldset style="margin-bottom:1.5rem;">
+              <legend class="field-legend">Address</legend>
+              <div class="form-grid">
+                <div class="col-full">
+                  <label for="propAddress" class="field-label">Street Address <span class="field-required">*</span></label>
+                  <input id="propAddress" type="text" required class="field-input" placeholder="123 Main St" />
                 </div>
                 <div>
-                  <label for="propZip" class="block text-sm font-medium text-slate-700 mb-1">ZIP <span class="text-red-500">*</span></label>
-                  <input id="propZip" type="text" required maxlength="10" inputmode="numeric" class="w-full border border-slate-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition" placeholder="85711" />
+                  <label for="propCity" class="field-label">City <span class="field-required">*</span></label>
+                  <input id="propCity" type="text" required class="field-input" placeholder="Tucson" />
+                </div>
+                <div class="grid-half">
+                  <div>
+                    <label for="propState" class="field-label">State <span class="field-required">*</span></label>
+                    <input id="propState" type="text" required maxlength="2" class="field-input" placeholder="AZ" style="text-transform:uppercase" />
+                  </div>
+                  <div>
+                    <label for="propZip" class="field-label">ZIP <span class="field-required">*</span></label>
+                    <input id="propZip" type="text" required maxlength="10" inputmode="numeric" class="field-input" placeholder="85711" />
+                  </div>
                 </div>
               </div>
-            </div>
-          </fieldset>
+            </fieldset>
 
-          <!-- Property Values -->
-          <fieldset>
-            <legend class="text-sm font-semibold text-slate-600 uppercase tracking-wider mb-3">Property Information</legend>
-            <div class="grid sm:grid-cols-2 gap-5">
-              <div>
-                <label for="fairMarketValue" class="block text-sm font-medium text-slate-700 mb-1">Fair Market Value</label>
-                <div class="relative">
-                  <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">$</span>
-                  <input id="fairMarketValue" type="text" inputmode="decimal" class="w-full border border-slate-300 rounded-lg pl-7 pr-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition" placeholder="350,000" />
+            <fieldset>
+              <legend class="field-legend">Property Information</legend>
+              <div class="form-grid">
+                <div>
+                  <label for="fairMarketValue" class="field-label">Fair Market Value</label>
+                  <div class="input-prefix">
+                    <span class="prefix">$</span>
+                    <input id="fairMarketValue" type="text" inputmode="decimal" class="field-input" placeholder="350,000" />
+                  </div>
+                </div>
+                <div>
+                  <label for="currentBalance" class="field-label">Current Mortgage Balance</label>
+                  <div class="input-prefix">
+                    <span class="prefix">$</span>
+                    <input id="currentBalance" type="text" inputmode="decimal" class="field-input" placeholder="220,000" />
+                  </div>
+                </div>
+                <div>
+                  <label for="currentRate" class="field-label">Current Interest Rate (APR)</label>
+                  <div class="input-suffix">
+                    <input id="currentRate" type="text" inputmode="decimal" class="field-input" placeholder="6.5" />
+                    <span class="suffix">%</span>
+                  </div>
+                </div>
+                <div>
+                  <label for="yearsRemaining" class="field-label">Years Remaining</label>
+                  <input id="yearsRemaining" type="number" min="0" max="40" class="field-input" placeholder="25" />
+                </div>
+                <div>
+                  <label for="mortgagePayment" class="field-label">Monthly Payment <span class="field-hint">(w/ tax & ins.)</span></label>
+                  <div class="input-prefix">
+                    <span class="prefix">$</span>
+                    <input id="mortgagePayment" type="text" inputmode="decimal" class="field-input" placeholder="1,850" />
+                  </div>
+                </div>
+                <div>
+                  <label for="propClassification" class="field-label">Property Classification</label>
+                  <select id="propClassification" class="field-input">
+                    <option value="">Select&hellip;</option>
+                    <option>Primary Residence</option>
+                    <option>Secondary Residence</option>
+                    <option>Investment Property</option>
+                  </select>
                 </div>
               </div>
-              <div>
-                <label for="currentBalance" class="block text-sm font-medium text-slate-700 mb-1">Current Mortgage Balance</label>
-                <div class="relative">
-                  <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">$</span>
-                  <input id="currentBalance" type="text" inputmode="decimal" class="w-full border border-slate-300 rounded-lg pl-7 pr-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition" placeholder="220,000" />
-                </div>
-              </div>
-              <div>
-                <label for="currentRate" class="block text-sm font-medium text-slate-700 mb-1">Current Interest Rate (APR)</label>
-                <div class="relative">
-                  <input id="currentRate" type="text" inputmode="decimal" class="w-full border border-slate-300 rounded-lg px-3 pr-8 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition" placeholder="6.5" />
-                  <span class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">%</span>
-                </div>
-              </div>
-              <div>
-                <label for="yearsRemaining" class="block text-sm font-medium text-slate-700 mb-1">Years Remaining</label>
-                <input id="yearsRemaining" type="number" min="0" max="40" class="w-full border border-slate-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition" placeholder="25" />
-              </div>
-              <div>
-                <label for="mortgagePayment" class="block text-sm font-medium text-slate-700 mb-1">Monthly Payment <span class="text-slate-400 text-xs">(w/ tax & ins.)</span></label>
-                <div class="relative">
-                  <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">$</span>
-                  <input id="mortgagePayment" type="text" inputmode="decimal" class="w-full border border-slate-300 rounded-lg pl-7 pr-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition" placeholder="1,850" />
-                </div>
-              </div>
-              <div>
-                <label for="propClassification" class="block text-sm font-medium text-slate-700 mb-1">Property Classification</label>
-                <select id="propClassification" class="w-full border border-slate-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition cursor-pointer bg-white">
-                  <option value="">Select&hellip;</option>
-                  <option>Primary Residence</option>
-                  <option>Secondary Residence</option>
-                  <option>Investment Property</option>
-                </select>
-              </div>
-            </div>
-          </fieldset>
-        </div>
+            </fieldset>
+          </div>
 
-        <!-- ══════════ STEP 5: Finances ══════════ -->
-        <div class="step-panel p-6 md:p-8" data-step="5">
-          <div class="flex items-center gap-3 mb-6">
-            <div class="w-10 h-10 rounded-full bg-yellow-100 text-yellow-700 flex items-center justify-center flex-shrink-0">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          <!-- ══════════ STEP 5: Finances ══════════ -->
+          <div class="step-panel" data-step="5">
+            <div class="section-header">
+              <div class="section-icon section-icon-yellow">
+                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              </div>
+              <div>
+                <div class="section-title">Income, Expenses & Debts</div>
+                <div class="section-subtitle">Help us understand your financial picture.</div>
+              </div>
             </div>
-            <div>
-              <h2 class="text-xl font-bold text-slate-900">Income, Expenses & Debts</h2>
-              <p class="text-sm text-slate-500">Help us understand your financial picture.</p>
+
+            <fieldset style="margin-bottom:2rem;">
+              <legend class="field-legend">Income & Expenses</legend>
+              <div class="form-grid">
+                <div>
+                  <label for="monthlyIncome" class="field-label">Net Household Monthly Income</label>
+                  <div class="input-prefix">
+                    <span class="prefix">$</span>
+                    <input id="monthlyIncome" type="text" inputmode="decimal" class="field-input" placeholder="8,500" />
+                  </div>
+                </div>
+                <div>
+                  <label for="monthlyExpenses" class="field-label">Estimated Monthly Expenses</label>
+                  <div class="input-prefix">
+                    <span class="prefix">$</span>
+                    <input id="monthlyExpenses" type="text" inputmode="decimal" class="field-input" placeholder="4,200" />
+                  </div>
+                </div>
+                <div>
+                  <label for="liquidSavings" class="field-label">Liquid Savings</label>
+                  <div class="input-prefix">
+                    <span class="prefix">$</span>
+                    <input id="liquidSavings" type="text" inputmode="decimal" class="field-input" placeholder="25,000" />
+                  </div>
+                </div>
+                <div>
+                  <label for="creditScore" class="field-label">Current Credit Score</label>
+                  <input id="creditScore" type="number" min="300" max="850" class="field-input" placeholder="720" />
+                </div>
+              </div>
+            </fieldset>
+
+            <fieldset>
+              <legend class="field-legend">Additional Debts / Loans</legend>
+              <p style="font-size:0.75rem;color:#94a3b8;margin-bottom:0.75rem;">List any other outstanding debts (auto loans, student loans, credit cards, etc.)</p>
+              <div class="debt-table-wrap">
+                <table class="debt-table">
+                  <thead>
+                    <tr>
+                      <th>Loan Type</th>
+                      <th>Balance</th>
+                      <th>Rate</th>
+                      <th>Monthly Pmt</th>
+                    </tr>
+                  </thead>
+                  <tbody id="debtRows"></tbody>
+                </table>
+              </div>
+              <button type="button" id="addDebtBtn" class="add-debt-btn">
+                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
+                Add another debt
+              </button>
+            </fieldset>
+          </div>
+
+          <!-- ══════════ STEP 6: Review & Sign ══════════ -->
+          <div class="step-panel" data-step="6">
+            <div class="section-header">
+              <div class="section-icon section-icon-green">
+                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              </div>
+              <div>
+                <div class="section-title">Review & Sign</div>
+                <div class="section-subtitle">Almost done! Review your info, sign below, and submit.</div>
+              </div>
+            </div>
+
+            <div id="reviewSummary"></div>
+
+            <fieldset style="margin-bottom:1.5rem;">
+              <legend class="field-legend">Digital Signature</legend>
+              <div class="sig-container">
+                <canvas id="signatureCanvas" width="600" height="160"></canvas>
+                <button type="button" id="clearSigBtn" class="clear-sig-btn">
+                  <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"/></svg>
+                  Clear
+                </button>
+              </div>
+            </fieldset>
+
+            <div class="consent-box">
+              <label class="consent-label">
+                <input id="consentCheckbox" type="checkbox" required />
+                <span>
+                  I consent to SwiftPath Capital contacting me regarding this inquiry. I have reviewed and agree to the
+                  <a href="/terms.html">Terms of Service</a> and
+                  <a href="/privacy.html">Privacy Policy</a>.
+                </span>
+              </label>
             </div>
           </div>
 
-          <!-- Income & Expenses -->
-          <fieldset class="mb-8">
-            <legend class="text-sm font-semibold text-slate-600 uppercase tracking-wider mb-3">Income & Expenses</legend>
-            <div class="grid sm:grid-cols-2 gap-5">
-              <div>
-                <label for="monthlyIncome" class="block text-sm font-medium text-slate-700 mb-1">Net Household Monthly Income</label>
-                <div class="relative">
-                  <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">$</span>
-                  <input id="monthlyIncome" type="text" inputmode="decimal" class="w-full border border-slate-300 rounded-lg pl-7 pr-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition" placeholder="8,500" />
-                </div>
-              </div>
-              <div>
-                <label for="monthlyExpenses" class="block text-sm font-medium text-slate-700 mb-1">Estimated Monthly Expenses</label>
-                <div class="relative">
-                  <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">$</span>
-                  <input id="monthlyExpenses" type="text" inputmode="decimal" class="w-full border border-slate-300 rounded-lg pl-7 pr-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition" placeholder="4,200" />
-                </div>
-              </div>
-              <div>
-                <label for="liquidSavings" class="block text-sm font-medium text-slate-700 mb-1">Liquid Savings</label>
-                <div class="relative">
-                  <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">$</span>
-                  <input id="liquidSavings" type="text" inputmode="decimal" class="w-full border border-slate-300 rounded-lg pl-7 pr-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition" placeholder="25,000" />
-                </div>
-              </div>
-              <div>
-                <label for="creditScore" class="block text-sm font-medium text-slate-700 mb-1">Current Credit Score</label>
-                <input id="creditScore" type="number" min="300" max="850" class="w-full border border-slate-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition" placeholder="720" />
-              </div>
-            </div>
-          </fieldset>
-
-          <!-- Additional Debts -->
-          <fieldset>
-            <legend class="text-sm font-semibold text-slate-600 uppercase tracking-wider mb-3">Additional Debts / Loans</legend>
-            <p class="text-xs text-slate-400 mb-3">List any other outstanding debts (auto loans, student loans, credit cards, etc.)</p>
-            <div class="overflow-x-auto -mx-6 md:-mx-8 px-6 md:px-8">
-              <table class="w-full text-sm min-w-[520px]">
-                <thead>
-                  <tr class="text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                    <th class="pb-2 pr-2">Loan Type</th>
-                    <th class="pb-2 pr-2">Balance</th>
-                    <th class="pb-2 pr-2">Rate</th>
-                    <th class="pb-2">Monthly Pmt</th>
-                  </tr>
-                </thead>
-                <tbody id="debtRows" class="divide-y divide-slate-100">
-                </tbody>
-              </table>
-            </div>
-            <button type="button" id="addDebtBtn" class="mt-3 text-sm text-yellow-700 hover:text-yellow-800 font-medium flex items-center gap-1 cursor-pointer transition-colors duration-200">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
-              Add another debt
+          <!-- ─── Navigation Buttons ─── -->
+          <div class="form-nav">
+            <button type="button" id="prevBtn" class="btn-back hidden">
+              <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"/></svg>
+              Back
             </button>
-          </fieldset>
-        </div>
-
-        <!-- ══════════ STEP 6: Review & Sign ══════════ -->
-        <div class="step-panel p-6 md:p-8" data-step="6">
-          <div class="flex items-center gap-3 mb-6">
-            <div class="w-10 h-10 rounded-full bg-green-100 text-green-700 flex items-center justify-center flex-shrink-0">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-            </div>
-            <div>
-              <h2 class="text-xl font-bold text-slate-900">Review & Sign</h2>
-              <p class="text-sm text-slate-500">Almost done! Review your info, sign below, and submit.</p>
-            </div>
-          </div>
-
-          <!-- Summary cards -->
-          <div id="reviewSummary" class="space-y-3 mb-8"></div>
-
-          <!-- Signature -->
-          <fieldset class="mb-6">
-            <legend class="text-sm font-semibold text-slate-600 uppercase tracking-wider mb-3">Digital Signature</legend>
-            <div class="border-2 border-dashed border-slate-300 rounded-xl p-2 bg-slate-50 relative">
-              <canvas id="signatureCanvas" width="600" height="160" class="w-full bg-white rounded-lg cursor-crosshair" style="height:140px"></canvas>
-              <button type="button" id="clearSigBtn" class="absolute top-4 right-4 text-xs text-slate-400 hover:text-red-500 font-medium cursor-pointer transition-colors duration-200 flex items-center gap-1">
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"/></svg>
-                Clear
+            <div class="nav-right">
+              <span id="skipHint" class="skip-hint hidden">Optional — you can skip</span>
+              <button type="button" id="nextBtn" class="btn-next">
+                Continue
+                <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg>
+              </button>
+              <button type="submit" id="submitBtn" class="btn-submit hidden">
+                <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"/></svg>
+                Submit Intake
               </button>
             </div>
-          </fieldset>
-
-          <!-- Consent -->
-          <div class="bg-slate-50 border border-slate-200 rounded-lg p-4 mb-2">
-            <label class="flex items-start gap-3 cursor-pointer">
-              <input id="consentCheckbox" type="checkbox" required class="mt-1 w-4 h-4 text-yellow-600 border-slate-300 rounded focus:ring-yellow-500 cursor-pointer" />
-              <span class="text-sm text-slate-600 leading-relaxed">
-                I consent to SwiftPath Capital contacting me regarding this inquiry. I have reviewed and agree to the
-                <a href="/terms.html" class="text-yellow-700 underline hover:text-yellow-800">Terms of Service</a> and
-                <a href="/privacy.html" class="text-yellow-700 underline hover:text-yellow-800">Privacy Policy</a>.
-              </span>
-            </label>
           </div>
-        </div>
+        </form>
 
-        <!-- ─── Navigation Buttons ─── -->
-        <div class="flex items-center justify-between border-t border-slate-200 px-6 md:px-8 py-5 bg-slate-50/50">
-          <button type="button" id="prevBtn" class="hidden text-sm font-medium text-slate-600 hover:text-slate-900 flex items-center gap-1.5 cursor-pointer transition-colors duration-200">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"/></svg>
-            Back
-          </button>
-          <div class="ml-auto flex items-center gap-3">
-            <span id="skipHint" class="hidden text-xs text-slate-400">Optional — you can skip</span>
-            <button type="button" id="nextBtn" class="bg-yellow-600 hover:bg-yellow-700 text-white font-semibold text-sm px-6 py-2.5 rounded-lg transition-colors duration-200 cursor-pointer flex items-center gap-2">
-              Continue
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg>
-            </button>
-            <button type="submit" id="submitBtn" class="hidden bg-green-600 hover:bg-green-700 text-white font-semibold text-sm px-6 py-2.5 rounded-lg transition-colors duration-200 cursor-pointer flex items-center gap-2">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"/></svg>
-              Submit Intake
-            </button>
-          </div>
+        <!-- Trust signals -->
+        <div class="trust-signals">
+          <span class="trust-item">
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/></svg>
+            256-bit SSL Encrypted
+          </span>
+          <span class="trust-item">
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"/></svg>
+            Your data is private & secure
+          </span>
+          <span class="trust-item">
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            Takes ~5 minutes
+          </span>
         </div>
-      </form>
-
-      <!-- Trust signals -->
-      <div class="mt-8 flex flex-wrap items-center justify-center gap-6 text-xs text-slate-400">
-        <span class="flex items-center gap-1.5">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/></svg>
-          256-bit SSL Encrypted
-        </span>
-        <span class="flex items-center gap-1.5">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"/></svg>
-          Your data is private & secure
-        </span>
-        <span class="flex items-center gap-1.5">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-          Takes ~5 minutes
-        </span>
       </div>
     </div>
   </main>
 
   <!-- ─── Footer ─── -->
-  <footer class="bg-slate-900 text-slate-300">
-    <div class="container mx-auto px-4 md:px-6 py-10 grid md:grid-cols-3 gap-8">
-      <div>
-        <img src="Images/Logo.PNG" alt="SwiftPath Capital" class="h-10 w-auto bg-white p-1 rounded" />
-        <p class="mt-3 text-slate-400 text-sm">Equal Housing Opportunity &middot; Not a commitment to lend.</p>
-      </div>
-      <div>
-        <h3 class="text-yellow-500 font-semibold">Navigation</h3>
-        <ul class="mt-2 space-y-1 text-sm">
-          <li><a href="/#products" class="hover:text-white transition-colors duration-200">Loan Products</a></li>
-          <li><a href="/about-swiftpath-capital.html" class="hover:text-white transition-colors duration-200">About Us</a></li>
-        </ul>
-      </div>
-      <div>
-        <h3 class="text-yellow-500 font-semibold">Contact</h3>
-        <ul class="mt-2 space-y-1 text-sm">
-          <li>Email: <a href="mailto:info@swiftpathcapital.com" class="hover:text-white transition-colors duration-200">info@swiftpathcapital.com</a></li>
-          <li>Phone: <a href="tel:+13214304434" class="hover:text-white transition-colors duration-200">321-430-4434</a></li>
-        </ul>
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-inner">
+        <div>
+          <img src="Images/Logo.PNG" alt="SwiftPath Capital" class="footer-logo" />
+          <p class="footer-note">Equal Housing Opportunity &middot; Not a commitment to lend.</p>
+        </div>
+        <div>
+          <div class="footer-heading">Navigation</div>
+          <ul class="footer-links">
+            <li><a href="/#products">Loan Products</a></li>
+            <li><a href="/about-swiftpath-capital.html">About Us</a></li>
+          </ul>
+        </div>
+        <div>
+          <div class="footer-heading">Contact</div>
+          <ul class="footer-links">
+            <li>Email: <a href="mailto:info@swiftpathcapital.com">info@swiftpathcapital.com</a></li>
+            <li>Phone: <a href="tel:+13214304434">321-430-4434</a></li>
+          </ul>
+        </div>
       </div>
     </div>
   </footer>
@@ -448,85 +603,67 @@
   (function () {
     'use strict';
 
-    /* ── State ── */
-    const TOTAL_STEPS = 6;
-    let currentStep = 1;
+    var TOTAL_STEPS = 6;
+    var currentStep = 1;
 
-    /* ── DOM refs ── */
-    const panels   = document.querySelectorAll('.step-panel');
-    const prevBtn  = document.getElementById('prevBtn');
-    const nextBtn  = document.getElementById('nextBtn');
-    const submitBtn= document.getElementById('submitBtn');
-    const skipHint = document.getElementById('skipHint');
-    const bar      = document.getElementById('progressBar');
-    const label    = document.getElementById('stepLabel');
-    const pct      = document.getElementById('stepPercent');
-    const form     = document.getElementById('intakeForm');
-    const status   = document.getElementById('submitStatus');
+    var panels   = document.querySelectorAll('.step-panel');
+    var prevBtn  = document.getElementById('prevBtn');
+    var nextBtn  = document.getElementById('nextBtn');
+    var submitBtn= document.getElementById('submitBtn');
+    var skipHint = document.getElementById('skipHint');
+    var bar      = document.getElementById('progressBar');
+    var label    = document.getElementById('stepLabel');
+    var pct      = document.getElementById('stepPercent');
+    var form     = document.getElementById('intakeForm');
+    var status   = document.getElementById('submitStatus');
+    var stepNames = ['sn1','sn2','sn3','sn4','sn5','sn6'];
 
-    /* ── Step names for progress ── */
-    const stepNames = ['sn1','sn2','sn3','sn4','sn5','sn6'];
-
-    /* ── Navigate ── */
     function goTo(step) {
-      // Validate current step before advancing (except going back)
       if (step > currentStep && !validateStep(currentStep)) return;
-
       currentStep = step;
-      panels.forEach(p => p.classList.remove('active'));
-      document.querySelector(`[data-step="${step}"]`).classList.add('active');
+      panels.forEach(function(p) { p.classList.remove('active'); });
+      document.querySelector('[data-step="' + step + '"]').classList.add('active');
 
-      // Progress
-      const progress = Math.round(((step - 1) / (TOTAL_STEPS - 1)) * 100);
+      var progress = Math.round(((step - 1) / (TOTAL_STEPS - 1)) * 100);
       bar.style.width = progress + '%';
-      label.textContent = `Step ${step} of ${TOTAL_STEPS}`;
+      label.textContent = 'Step ' + step + ' of ' + TOTAL_STEPS;
       pct.textContent = progress + '%';
 
-      // Step name highlights
-      stepNames.forEach((id, i) => {
-        const el = document.getElementById(id);
+      stepNames.forEach(function(id, i) {
+        var el = document.getElementById(id);
         if (!el) return;
-        if (i + 1 === step) { el.className = 'font-semibold text-yellow-600'; }
-        else if (i + 1 < step) { el.className = 'text-green-600'; }
-        else { el.className = 'text-slate-400'; }
+        el.className = '';
+        if (i + 1 === step) el.className = 'step-name-active';
+        else if (i + 1 < step) el.className = 'step-name-done';
       });
 
-      // Button visibility
       prevBtn.classList.toggle('hidden', step === 1);
       nextBtn.classList.toggle('hidden', step === TOTAL_STEPS);
       submitBtn.classList.toggle('hidden', step !== TOTAL_STEPS);
-
-      // Skip hint for optional steps (1 = agent, 3 = client 2)
       skipHint.classList.toggle('hidden', step !== 1 && step !== 3);
 
-      // Build review on last step
       if (step === TOTAL_STEPS) buildReview();
-
-      // Scroll to form top
       document.getElementById('intake').scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
-    nextBtn.addEventListener('click', () => goTo(currentStep + 1));
-    prevBtn.addEventListener('click', () => goTo(currentStep - 1));
+    nextBtn.addEventListener('click', function() { goTo(currentStep + 1); });
+    prevBtn.addEventListener('click', function() { goTo(currentStep - 1); });
 
-    /* ── Validation ── */
     function validateStep(step) {
-      const panel = document.querySelector(`[data-step="${step}"]`);
-      const required = panel.querySelectorAll('[required]');
-      let valid = true;
+      var panel = document.querySelector('[data-step="' + step + '"]');
+      var required = panel.querySelectorAll('[required]');
+      var valid = true;
 
-      // Clear previous errors
-      panel.querySelectorAll('.field-error').forEach(el => el.classList.remove('field-error'));
-      panel.querySelectorAll('.field-error-msg').forEach(el => el.remove());
+      panel.querySelectorAll('.field-error').forEach(function(el) { el.classList.remove('field-error'); });
+      panel.querySelectorAll('.field-error-msg').forEach(function(el) { el.remove(); });
 
-      // Steps 1 and 3 are optional
       if (step === 1 || step === 3) return true;
 
-      required.forEach(input => {
+      required.forEach(function(input) {
         if (!input.value.trim()) {
           valid = false;
           input.classList.add('field-error');
-          const msg = document.createElement('p');
+          var msg = document.createElement('p');
           msg.className = 'field-error-msg';
           msg.textContent = 'This field is required';
           input.parentElement.appendChild(msg);
@@ -535,50 +672,47 @@
       return valid;
     }
 
-    // Clear error on input
-    form.addEventListener('input', function (e) {
+    form.addEventListener('input', function(e) {
       if (e.target.classList.contains('field-error')) {
         e.target.classList.remove('field-error');
-        const msg = e.target.parentElement.querySelector('.field-error-msg');
+        var msg = e.target.parentElement.querySelector('.field-error-msg');
         if (msg) msg.remove();
       }
     });
 
-    /* ── Debt table ── */
-    const debtRows = document.getElementById('debtRows');
-    const addDebtBtn = document.getElementById('addDebtBtn');
-    let debtCount = 0;
-    const MAX_DEBTS = 5;
+    /* Debt table */
+    var debtRows = document.getElementById('debtRows');
+    var addDebtBtn = document.getElementById('addDebtBtn');
+    var debtCount = 0;
 
     function addDebtRow() {
-      if (debtCount >= MAX_DEBTS) return;
+      if (debtCount >= 5) return;
       debtCount++;
-      const tr = document.createElement('tr');
+      var tr = document.createElement('tr');
       tr.className = 'debt-row';
-      tr.innerHTML = `
-        <td class="py-2 pr-2"><input type="text" class="w-full border border-slate-300 rounded px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500" placeholder="Auto, Student…" /></td>
-        <td class="py-2 pr-2"><input type="text" inputmode="decimal" class="w-full border border-slate-300 rounded px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500" placeholder="$10,000" /></td>
-        <td class="py-2 pr-2"><input type="text" inputmode="decimal" class="w-full border border-slate-300 rounded px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500" placeholder="5.9%" /></td>
-        <td class="py-2"><input type="text" inputmode="decimal" class="w-full border border-slate-300 rounded px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500" placeholder="$250" /></td>
-      `;
+      tr.innerHTML =
+        '<td><input type="text" placeholder="Auto, Student\u2026" /></td>' +
+        '<td><input type="text" inputmode="decimal" placeholder="$10,000" /></td>' +
+        '<td><input type="text" inputmode="decimal" placeholder="5.9%" /></td>' +
+        '<td><input type="text" inputmode="decimal" placeholder="$250" /></td>';
       debtRows.appendChild(tr);
-      if (debtCount >= MAX_DEBTS) addDebtBtn.classList.add('hidden');
+      if (debtCount >= 5) addDebtBtn.style.display = 'none';
     }
     addDebtBtn.addEventListener('click', addDebtRow);
-    // Start with one row
     addDebtRow();
 
-    /* ── Signature Canvas ── */
-    const canvas = document.getElementById('signatureCanvas');
-    const ctx = canvas.getContext('2d');
-    let signing = false;
-    let hasSigned = false;
+    /* Signature */
+    var canvas = document.getElementById('signatureCanvas');
+    var ctx = canvas.getContext('2d');
+    var signing = false;
+    var hasSigned = false;
 
     function resizeCanvas() {
-      const rect = canvas.getBoundingClientRect();
-      canvas.width = rect.width * (window.devicePixelRatio || 1);
-      canvas.height = rect.height * (window.devicePixelRatio || 1);
-      ctx.scale(window.devicePixelRatio || 1, window.devicePixelRatio || 1);
+      var rect = canvas.getBoundingClientRect();
+      var dpr = window.devicePixelRatio || 1;
+      canvas.width = rect.width * dpr;
+      canvas.height = rect.height * dpr;
+      ctx.scale(dpr, dpr);
       ctx.strokeStyle = '#1e293b';
       ctx.lineWidth = 2;
       ctx.lineCap = 'round';
@@ -586,13 +720,13 @@
     }
 
     function getPos(e) {
-      const rect = canvas.getBoundingClientRect();
-      const touch = e.touches ? e.touches[0] : e;
+      var rect = canvas.getBoundingClientRect();
+      var touch = e.touches ? e.touches[0] : e;
       return { x: touch.clientX - rect.left, y: touch.clientY - rect.top };
     }
 
-    function startSign(e) { e.preventDefault(); signing = true; hasSigned = true; const p = getPos(e); ctx.beginPath(); ctx.moveTo(p.x, p.y); }
-    function moveSign(e) { if (!signing) return; e.preventDefault(); const p = getPos(e); ctx.lineTo(p.x, p.y); ctx.stroke(); }
+    function startSign(e) { e.preventDefault(); signing = true; hasSigned = true; var p = getPos(e); ctx.beginPath(); ctx.moveTo(p.x, p.y); }
+    function moveSign(e) { if (!signing) return; e.preventDefault(); var p = getPos(e); ctx.lineTo(p.x, p.y); ctx.stroke(); }
     function endSign() { signing = false; }
 
     canvas.addEventListener('mousedown', startSign);
@@ -603,135 +737,94 @@
     canvas.addEventListener('touchmove', moveSign, { passive: false });
     canvas.addEventListener('touchend', endSign);
 
-    document.getElementById('clearSigBtn').addEventListener('click', function () {
+    document.getElementById('clearSigBtn').addEventListener('click', function() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       hasSigned = false;
     });
 
-    // Resize on panel show
-    const observer = new MutationObserver(() => {
+    var observer = new MutationObserver(function() {
       if (document.querySelector('[data-step="6"]').classList.contains('active')) {
         setTimeout(resizeCanvas, 50);
       }
     });
     observer.observe(document.querySelector('[data-step="6"]'), { attributes: true, attributeFilter: ['class'] });
-    window.addEventListener('resize', () => { if (currentStep === 6) resizeCanvas(); });
+    window.addEventListener('resize', function() { if (currentStep === 6) resizeCanvas(); });
 
-    /* ── Review Summary ── */
+    /* Review */
     function buildReview() {
-      const summary = document.getElementById('reviewSummary');
-      const sections = [
-        { title: 'Agent', fields: [
-          ['Name', 'agentName'], ['Email', 'agentEmail'], ['Phone', 'agentPhone']
-        ]},
-        { title: 'Client #1', fields: [
-          ['Name', 'client1Name'], ['Email', 'client1Email'], ['Phone', 'client1Phone']
-        ]},
-        { title: 'Client #2', fields: [
-          ['Name', 'client2Name'], ['Email', 'client2Email'], ['Phone', 'client2Phone']
-        ]},
+      var summary = document.getElementById('reviewSummary');
+      var sections = [
+        { title: 'Agent', fields: [['Name','agentName'],['Email','agentEmail'],['Phone','agentPhone']] },
+        { title: 'Client #1', fields: [['Name','client1Name'],['Email','client1Email'],['Phone','client1Phone']] },
+        { title: 'Client #2', fields: [['Name','client2Name'],['Email','client2Email'],['Phone','client2Phone']] },
         { title: 'Property', fields: [
-          ['Address', () => {
-            const a = document.getElementById('propAddress').value;
-            const c = document.getElementById('propCity').value;
-            const s = document.getElementById('propState').value;
-            const z = document.getElementById('propZip').value;
-            return [a, c, s, z].filter(Boolean).join(', ');
+          ['Address', function() {
+            var a=document.getElementById('propAddress').value, c=document.getElementById('propCity').value,
+                s=document.getElementById('propState').value, z=document.getElementById('propZip').value;
+            return [a,c,s,z].filter(Boolean).join(', ');
           }],
-          ['Fair Market Value', 'fairMarketValue'],
-          ['Mortgage Balance', 'currentBalance'],
-          ['Classification', 'propClassification']
+          ['Fair Market Value','fairMarketValue'],['Mortgage Balance','currentBalance'],['Classification','propClassification']
         ]},
         { title: 'Finances', fields: [
-          ['Monthly Income', 'monthlyIncome'],
-          ['Monthly Expenses', 'monthlyExpenses'],
-          ['Liquid Savings', 'liquidSavings'],
-          ['Credit Score', 'creditScore']
+          ['Monthly Income','monthlyIncome'],['Monthly Expenses','monthlyExpenses'],
+          ['Liquid Savings','liquidSavings'],['Credit Score','creditScore']
         ]}
       ];
 
-      summary.innerHTML = sections.map(s => {
-        const rows = s.fields.map(([label, key]) => {
-          const val = typeof key === 'function' ? key() : (document.getElementById(key)?.value || '');
+      summary.innerHTML = sections.map(function(s) {
+        var rows = s.fields.map(function(f) {
+          var val = typeof f[1] === 'function' ? f[1]() : (document.getElementById(f[1]) ? document.getElementById(f[1]).value : '');
           if (!val) return '';
-          return `<div class="flex justify-between py-1"><span class="text-slate-500">${label}</span><span class="font-medium text-slate-800">${val}</span></div>`;
+          return '<div class="review-row"><span class="review-label">' + f[0] + '</span><span class="review-value">' + val + '</span></div>';
         }).filter(Boolean).join('');
         if (!rows) return '';
-        return `<div class="bg-slate-50 border border-slate-200 rounded-lg p-4">
-          <h4 class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">${s.title}</h4>
-          <div class="divide-y divide-slate-100 text-sm">${rows}</div>
-        </div>`;
+        return '<div class="review-card"><h4>' + s.title + '</h4>' + rows + '</div>';
       }).filter(Boolean).join('');
     }
 
-    /* ── Submit ── */
-    form.addEventListener('submit', function (e) {
+    /* Submit */
+    form.addEventListener('submit', function(e) {
       e.preventDefault();
+      if (!document.getElementById('consentCheckbox').checked) { showStatus('Please agree to the Terms and Privacy Policy.', 'error'); return; }
+      if (!hasSigned) { showStatus('Please provide your signature above.', 'error'); return; }
 
-      if (!document.getElementById('consentCheckbox').checked) {
-        showStatus('Please agree to the Terms and Privacy Policy.', 'error');
-        return;
-      }
-      if (!hasSigned) {
-        showStatus('Please provide your signature above.', 'error');
-        return;
-      }
-
-      // Collect data
-      const data = {};
-      form.querySelectorAll('input, select, textarea').forEach(el => {
+      var data = {};
+      form.querySelectorAll('input, select, textarea').forEach(function(el) {
         if (el.id && el.type !== 'checkbox' && el.type !== 'hidden') data[el.id] = el.value;
       });
       data.consent = document.getElementById('consentCheckbox').checked;
       data.signature = canvas.toDataURL('image/png');
-
-      // Collect debts
       data.debts = [];
-      document.querySelectorAll('.debt-row').forEach(row => {
-        const inputs = row.querySelectorAll('input');
+      document.querySelectorAll('.debt-row').forEach(function(row) {
+        var inputs = row.querySelectorAll('input');
         if (inputs[0].value) {
-          data.debts.push({
-            type: inputs[0].value,
-            balance: inputs[1].value,
-            rate: inputs[2].value,
-            payment: inputs[3].value
-          });
+          data.debts.push({ type: inputs[0].value, balance: inputs[1].value, rate: inputs[2].value, payment: inputs[3].value });
         }
       });
 
-      // Disable button, show loading
       submitBtn.disabled = true;
-      submitBtn.innerHTML = `<svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg> Submitting…`;
+      submitBtn.innerHTML = '<svg class="animate-spin" style="width:1rem;height:1rem" fill="none" viewBox="0 0 24 24"><circle style="opacity:.25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path style="opacity:.75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg> Submitting\u2026';
 
-      // POST to Netlify function or endpoint
       fetch('/.netlify/functions/homeowner-intake', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)
       })
-      .then(res => {
-        if (!res.ok) throw new Error('Submission failed');
-        return res.json();
-      })
-      .then(() => {
-        window.location.href = '/thank-you.html';
-      })
-      .catch(() => {
+      .then(function(res) { if (!res.ok) throw new Error('fail'); return res.json(); })
+      .then(function() { window.location.href = '/thank-you.html'; })
+      .catch(function() {
         showStatus('Something went wrong. Please try again or call us at 321-430-4434.', 'error');
         submitBtn.disabled = false;
-        submitBtn.innerHTML = `<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"/></svg> Submit Intake`;
+        submitBtn.innerHTML = '<svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" style="width:1rem;height:1rem"><path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"/></svg> Submit Intake';
       });
     });
 
     function showStatus(msg, type) {
       status.textContent = msg;
-      status.className = 'mb-6 rounded-lg border p-4 text-sm ' +
-        (type === 'error' ? 'bg-red-50 border-red-200 text-red-800' : 'bg-green-50 border-green-200 text-green-800');
-      status.classList.remove('hidden');
+      status.className = 'status-banner visible ' + type;
       status.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
 
-    /* ── Init ── */
     goTo(1);
   })();
   </script>
