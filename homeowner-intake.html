@@ -254,13 +254,12 @@
           <div class="progress-track">
             <div id="progressBar" class="progress-fill" style="width:0%"></div>
           </div>
-          <div class="step-names">
-            <span id="sn1" class="step-name-active">Agent</span>
-            <span id="sn2">Client 1</span>
-            <span id="sn3">Client 2</span>
-            <span id="sn4">Property</span>
-            <span id="sn5">Finances</span>
-            <span id="sn6">Review</span>
+          <div class="step-names" style="grid-template-columns:repeat(5,1fr)">
+            <span id="sn1" class="step-name-active">Your Info</span>
+            <span id="sn2">Co-Borrower</span>
+            <span id="sn3">Property</span>
+            <span id="sn4">Finances</span>
+            <span id="sn5">Review</span>
           </div>
         </div>
 
@@ -269,46 +268,15 @@
 
         <form id="intakeForm" novalidate class="form-card">
 
-          <!-- ══════════ STEP 1: Agent Info ══════════ -->
+          <!-- ══════════ STEP 1: Your Info ══════════ -->
           <div class="step-panel active" data-step="1">
-            <div class="section-header">
-              <div class="section-icon section-icon-yellow">
-                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/></svg>
-              </div>
-              <div>
-                <div class="section-title">Agent Information</div>
-                <div class="section-subtitle">If an agent is referring this client, fill in the details below.</div>
-              </div>
-            </div>
-            <div class="form-grid">
-              <div>
-                <label for="agentName" class="field-label">Agent Name</label>
-                <input id="agentName" type="text" class="field-input" placeholder="Jane Smith" />
-              </div>
-              <div>
-                <label for="agentEmail" class="field-label">Agent Email</label>
-                <input id="agentEmail" type="email" class="field-input" placeholder="agent@example.com" />
-              </div>
-              <div>
-                <label for="agentPhone" class="field-label">Agent Phone</label>
-                <input id="agentPhone" type="tel" class="field-input" placeholder="(321) 430-4434" />
-              </div>
-              <div>
-                <label for="agentWebsite" class="field-label">Website</label>
-                <input id="agentWebsite" type="url" class="field-input" placeholder="https://example.com" />
-              </div>
-            </div>
-          </div>
-
-          <!-- ══════════ STEP 2: Client #1 ══════════ -->
-          <div class="step-panel" data-step="2">
             <div class="section-header">
               <div class="section-icon section-icon-yellow">
                 <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 9h3.75M15 12h3.75M15 15h3.75M4.5 19.5h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15A2.25 2.25 0 002.25 6.75v10.5A2.25 2.25 0 004.5 19.5zm6-10.125a1.875 1.875 0 11-3.75 0 1.875 1.875 0 013.75 0zm1.294 6.336a6.721 6.721 0 01-3.17.789 6.721 6.721 0 01-3.168-.789 3.376 3.376 0 016.338 0z"/></svg>
               </div>
               <div>
-                <div class="section-title">Client #1 <span class="required-tag">(Required)</span></div>
-                <div class="section-subtitle">Primary borrower information.</div>
+                <div class="section-title">Your Information</div>
+                <div class="section-subtitle">Tell us about yourself.</div>
               </div>
             </div>
             <div class="form-grid">
@@ -331,8 +299,8 @@
             </div>
           </div>
 
-          <!-- ══════════ STEP 3: Client #2 ══════════ -->
-          <div class="step-panel" data-step="3">
+          <!-- ══════════ STEP 2: Client #2 ══════════ -->
+          <div class="step-panel" data-step="2">
             <div class="section-header">
               <div class="section-icon section-icon-slate">
                 <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zM4 19.235v-.11a6.375 6.375 0 0112.75 0v.109A12.318 12.318 0 0110.374 21c-2.331 0-4.512-.645-6.374-1.766z"/></svg>
@@ -362,8 +330,8 @@
             </div>
           </div>
 
-          <!-- ══════════ STEP 4: Property ══════════ -->
-          <div class="step-panel" data-step="4">
+          <!-- ══════════ STEP 3: Property ══════════ -->
+          <div class="step-panel" data-step="3">
             <div class="section-header">
               <div class="section-icon section-icon-yellow">
                 <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"/></svg>
@@ -446,8 +414,8 @@
             </fieldset>
           </div>
 
-          <!-- ══════════ STEP 5: Finances ══════════ -->
-          <div class="step-panel" data-step="5">
+          <!-- ══════════ STEP 4: Finances ══════════ -->
+          <div class="step-panel" data-step="4">
             <div class="section-header">
               <div class="section-icon section-icon-yellow">
                 <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
@@ -512,8 +480,8 @@
             </fieldset>
           </div>
 
-          <!-- ══════════ STEP 6: Review & Sign ══════════ -->
-          <div class="step-panel" data-step="6">
+          <!-- ══════════ STEP 5: Review & Sign ══════════ -->
+          <div class="step-panel" data-step="5">
             <div class="section-header">
               <div class="section-icon section-icon-green">
                 <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
@@ -619,7 +587,7 @@
   (function () {
     'use strict';
 
-    var TOTAL_STEPS = 6;
+    var TOTAL_STEPS = 5;
     var currentStep = 1;
 
     var panels   = document.querySelectorAll('.step-panel');
@@ -632,7 +600,7 @@
     var pct      = document.getElementById('stepPercent');
     var form     = document.getElementById('intakeForm');
     var status   = document.getElementById('submitStatus');
-    var stepNames = ['sn1','sn2','sn3','sn4','sn5','sn6'];
+    var stepNames = ['sn1','sn2','sn3','sn4','sn5'];
 
     function goTo(step) {
       if (step > currentStep && !validateStep(currentStep)) return;
@@ -656,7 +624,8 @@
       prevBtn.classList.toggle('hidden', step === 1);
       nextBtn.classList.toggle('hidden', step === TOTAL_STEPS);
       submitBtn.classList.toggle('hidden', step !== TOTAL_STEPS);
-      skipHint.classList.toggle('hidden', step !== 1 && step !== 3);
+      // Step 2 (co-borrower) is optional
+      skipHint.classList.toggle('hidden', step !== 2);
 
       if (step === TOTAL_STEPS) buildReview();
       document.getElementById('intake').scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -673,7 +642,8 @@
       panel.querySelectorAll('.field-error').forEach(function(el) { el.classList.remove('field-error'); });
       panel.querySelectorAll('.field-error-msg').forEach(function(el) { el.remove(); });
 
-      if (step === 1 || step === 3) return true;
+      // Step 2 (co-borrower) is optional
+      if (step === 2) return true;
 
       required.forEach(function(input) {
         if (!input.value.trim()) {
@@ -759,20 +729,19 @@
     });
 
     var observer = new MutationObserver(function() {
-      if (document.querySelector('[data-step="6"]').classList.contains('active')) {
+      if (document.querySelector('[data-step="5"]').classList.contains('active')) {
         setTimeout(resizeCanvas, 50);
       }
     });
-    observer.observe(document.querySelector('[data-step="6"]'), { attributes: true, attributeFilter: ['class'] });
-    window.addEventListener('resize', function() { if (currentStep === 6) resizeCanvas(); });
+    observer.observe(document.querySelector('[data-step="5"]'), { attributes: true, attributeFilter: ['class'] });
+    window.addEventListener('resize', function() { if (currentStep === 5) resizeCanvas(); });
 
     /* Review */
     function buildReview() {
       var summary = document.getElementById('reviewSummary');
       var sections = [
-        { title: 'Agent', fields: [['Name','agentName'],['Email','agentEmail'],['Phone','agentPhone']] },
-        { title: 'Client #1', fields: [['Name','client1Name'],['Email','client1Email'],['Phone','client1Phone']] },
-        { title: 'Client #2', fields: [['Name','client2Name'],['Email','client2Email'],['Phone','client2Phone']] },
+        { title: 'Your Information', fields: [['Name','client1Name'],['Email','client1Email'],['Phone','client1Phone']] },
+        { title: 'Co-Borrower', fields: [['Name','client2Name'],['Email','client2Email'],['Phone','client2Phone']] },
         { title: 'Property', fields: [
           ['Address', function() {
             var a=document.getElementById('propAddress').value, c=document.getElementById('propCity').value,
@@ -814,11 +783,11 @@
         phone: v('client1Phone'),
         // Form type identifier
         form_type: 'homeowner_intake',
-        // Agent
-        agent_name: v('agentName'),
-        agent_email: v('agentEmail'),
-        agent_phone: v('agentPhone'),
-        agent_website: v('agentWebsite'),
+        // Agent (hardcoded — always SwiftPath Capital)
+        agent_name: 'James Lewis',
+        agent_email: 'info@swiftpathcapital.com',
+        agent_phone: '321-430-4434',
+        agent_company: 'SwiftPath Capital',
         // Client 1
         client1_name: v('client1Name'),
         client1_dob: v('client1DOB'),
