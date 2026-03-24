@@ -25,23 +25,30 @@
     /* ── Header ── */
     .site-header { background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,.08); position: sticky; top: 0; z-index: 40; }
     .header-inner { display: flex; align-items: center; justify-content: space-between; padding: 1rem 0; }
-    .header-logo { height: 48px; width: auto; }
+    .header-logo { height: 80px; width: auto; }
+    @media (min-width: 768px) { .header-logo { height: 84px; } }
     .header-nav { display: none; align-items: center; gap: 1.5rem; font-size: 0.875rem; font-weight: 500; color: #475569; }
     @media (min-width: 768px) { .header-nav { display: flex; } }
     .header-nav a:hover { color: #0f172a; }
-    .btn-apply { background: #ca8a04; color: #fff; font-weight: 600; padding: 0.5rem 1rem; border-radius: 0.375rem; border: none; transition: background 0.2s; }
-    .btn-apply:hover { background: #a16207; }
+    .btn-apply { background: #c5a35a; color: #fff; font-weight: 600; padding: 0.5rem 1rem; border-radius: 0.375rem; border: none; transition: background 0.2s; }
+    .btn-apply:hover { background: #a2864a; }
 
     /* ── Hero ── */
-    .hero { background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%); padding: 4rem 0; text-align: center; overflow: hidden; }
-    @media (min-width: 768px) { .hero { padding: 5rem 0; } }
-    .hero-badge { display: inline-block; background: rgba(202,138,4,0.2); color: #facc15; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; padding: 0.25rem 0.75rem; border-radius: 9999px; margin-bottom: 1rem; }
+    .hero { position: relative; min-height: 50vh; display: flex; align-items: center; background-size: cover; background-position: center; background-repeat: no-repeat; text-align: center; overflow: hidden; padding: 3rem 0; }
+    @media (min-width: 768px) { .hero { min-height: 55vh; padding: 4rem 0; } }
+    .hero-overlay { position: absolute; inset: 0; background: rgba(15,23,42,0.65); }
+    .hero-content { position: relative; z-index: 1; }
+    .hero-logo { height: 6rem; width: auto; margin: 0 auto 1.5rem; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.3)); }
+    @media (min-width: 768px) { .hero-logo { height: 9rem; margin-bottom: 2rem; } }
     .hero h1 { font-size: 1.875rem; font-weight: 800; color: #fff; line-height: 1.2; }
     @media (min-width: 768px) { .hero h1 { font-size: 2.75rem; } }
-    .hero p { margin-top: 1rem; color: #94a3b8; font-size: 1rem; max-width: 36rem; margin-left: auto; margin-right: auto; }
+    .hero p { margin-top: 1rem; color: #dbeafe; font-size: 1rem; max-width: 38rem; margin-left: auto; margin-right: auto; line-height: 1.6; }
     @media (min-width: 768px) { .hero p { font-size: 1.125rem; } }
-    .hero-cta { display: inline-flex; align-items: center; gap: 0.5rem; margin-top: 2rem; background: #ca8a04; color: #fff; font-weight: 600; padding: 0.75rem 1.5rem; border-radius: 0.5rem; border: none; transition: background 0.2s; font-size: 0.9375rem; }
-    .hero-cta:hover { background: #a16207; }
+    .hero-badges { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; margin-top: 1.5rem; }
+    .hero-badge { display: inline-flex; align-items: center; gap: 0.5rem; background: rgba(255,255,255,0.1); backdrop-filter: blur(4px); border: 1px solid rgba(255,255,255,0.2); border-radius: 9999px; padding: 0.375rem 1rem; font-size: 0.8125rem; font-weight: 500; color: #fff; }
+    .hero-badge svg { width: 1rem; height: 1rem; color: #c5a35a; }
+    .hero-cta { display: inline-flex; align-items: center; gap: 0.5rem; margin-top: 2rem; background: #c5a35a; color: #fff; font-weight: 700; padding: 0.875rem 2rem; border-radius: 0.5rem; border: none; transition: background 0.2s; font-size: 1rem; box-shadow: 0 4px 14px rgba(197,163,90,0.4); }
+    .hero-cta:hover { background: #a2864a; }
     .hero-cta svg { width: 16px; height: 16px; }
 
     /* ── Main ── */
@@ -212,13 +219,22 @@
   </header>
 
   <!-- ─── Hero ─── -->
-  <section class="hero">
-    <div class="container">
-      <span class="hero-badge">Homeowner Intake</span>
-      <h1>Let's Get Started on<br>Your Home Loan</h1>
-      <p>Complete the form below so we can evaluate your options. It only takes a few minutes.</p>
+  <section class="hero" style="background-image:url('https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=2875&auto=format&fit=crop')">
+    <div class="hero-overlay"></div>
+    <div class="container hero-content">
+      <picture>
+        <source srcset="Images/Logo.webp" type="image/webp" />
+        <img src="Images/Logo.PNG" alt="SwiftPath Capital" class="hero-logo" width="400" height="320" />
+      </picture>
+      <h1>Explore Your Home Financing Options</h1>
+      <p>Tell us a little about your situation and we'll help find the right solution. Quick, confidential, and no obligation.</p>
+      <div class="hero-badges">
+        <span class="hero-badge"><svg fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a8 8 0 100 16 8 8 0 000-16zm3.707 6.293a1 1 0 00-1.414 0L9 11.586 7.707 10.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4a1 1 0 000-1.414z"/></svg>Free Consultation</span>
+        <span class="hero-badge"><svg fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a8 8 0 100 16 8 8 0 000-16zm3.707 6.293a1 1 0 00-1.414 0L9 11.586 7.707 10.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4a1 1 0 000-1.414z"/></svg>No Credit Impact</span>
+        <span class="hero-badge"><svg fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a8 8 0 100 16 8 8 0 000-16zm3.707 6.293a1 1 0 00-1.414 0L9 11.586 7.707 10.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4a1 1 0 000-1.414z"/></svg>Takes ~5 Minutes</span>
+      </div>
       <a href="#intake" class="hero-cta">
-        Begin Intake
+        Get Started
         <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
       </a>
     </div>
