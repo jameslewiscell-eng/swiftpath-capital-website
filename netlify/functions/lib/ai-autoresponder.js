@@ -259,7 +259,7 @@ async function generateEmailWithClaude({
   }
 }
 
-async function sendWithResend({ to, subject, html, tag }) {
+async function sendWithResend({ to, subject, html, tag, attachments }) {
   const resendApiKey =
     process.env.RESEND_API_KEY ||
     process.env.RESEND_API_TOKEN ||
@@ -305,13 +305,15 @@ async function sendWithResend({ to, subject, html, tag }) {
     }
   };
 
+  const toList = Array.isArray(to) ? to : [to];
   const { data, error } = await resend.emails.send({
     from,
-    to: [to],
+    to: toList,
     subject,
     html: appendEmailSignature(html),
     reply_to: process.env.RESEND_REPLY_TO || 'info@swiftpathcapital.com',
-    tags: tag ? [{ name: 'automation', value: tag }] : undefined
+    tags: tag ? [{ name: 'automation', value: tag }] : undefined,
+    attachments
   });
 
   if (error) {
