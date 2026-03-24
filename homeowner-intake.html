@@ -788,24 +788,70 @@
       if (!document.getElementById('consentCheckbox').checked) { showStatus('Please agree to the Terms and Privacy Policy.', 'error'); return; }
       if (!hasSigned) { showStatus('Please provide your signature above.', 'error'); return; }
 
-      var data = {};
-      form.querySelectorAll('input, select, textarea').forEach(function(el) {
-        if (el.id && el.type !== 'checkbox' && el.type !== 'hidden') data[el.id] = el.value;
-      });
-      data.consent = document.getElementById('consentCheckbox').checked;
-      data.signature = canvas.toDataURL('image/png');
-      data.debts = [];
+      // Build payload with keys that save-application expects
+      var v = function(id) { var el = document.getElementById(id); return el ? el.value.trim() : ''; };
+      var data = {
+        // Keys save-application uses for filename & notifications
+        first_name: v('client1Name').split(' ')[0] || '',
+        last_name: v('client1Name').split(' ').slice(1).join(' ') || '',
+        email: v('client1Email'),
+        phone: v('client1Phone'),
+        // Form type identifier
+        form_type: 'homeowner_intake',
+        // Agent
+        agent_name: v('agentName'),
+        agent_email: v('agentEmail'),
+        agent_phone: v('agentPhone'),
+        agent_website: v('agentWebsite'),
+        // Client 1
+        client1_name: v('client1Name'),
+        client1_dob: v('client1DOB'),
+        client1_email: v('client1Email'),
+        client1_phone: v('client1Phone'),
+        // Client 2
+        client2_name: v('client2Name'),
+        client2_dob: v('client2DOB'),
+        client2_email: v('client2Email'),
+        client2_phone: v('client2Phone'),
+        // Property
+        property_address: [v('propAddress'), v('propCity'), v('propState'), v('propZip')].filter(Boolean).join(', '),
+        property_street: v('propAddress'),
+        property_city: v('propCity'),
+        property_state: v('propState'),
+        property_zip: v('propZip'),
+        fair_market_value: v('fairMarketValue'),
+        current_balance: v('currentBalance'),
+        current_rate: v('currentRate'),
+        years_remaining: v('yearsRemaining'),
+        mortgage_payment: v('mortgagePayment'),
+        property_classification: v('propClassification'),
+        // Finances
+        monthly_income: v('monthlyIncome'),
+        monthly_expenses: v('monthlyExpenses'),
+        liquid_savings: v('liquidSavings'),
+        credit_score: v('creditScore'),
+        // Signature (save-application looks for signature_data)
+        signature_data: canvas.toDataURL('image/png'),
+        // Meta
+        consent: true,
+        submitted_at: new Date().toISOString(),
+        page_url: window.location.href
+      };
+
+      // Collect debts
+      var debts = [];
       document.querySelectorAll('.debt-row').forEach(function(row) {
         var inputs = row.querySelectorAll('input');
         if (inputs[0].value) {
-          data.debts.push({ type: inputs[0].value, balance: inputs[1].value, rate: inputs[2].value, payment: inputs[3].value });
+          debts.push({ type: inputs[0].value, balance: inputs[1].value, rate: inputs[2].value, payment: inputs[3].value });
         }
       });
+      if (debts.length) data.additional_debts = JSON.stringify(debts);
 
       submitBtn.disabled = true;
       submitBtn.innerHTML = '<svg class="animate-spin" style="width:1rem;height:1rem" fill="none" viewBox="0 0 24 24"><circle style="opacity:.25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path style="opacity:.75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg> Submitting\u2026';
 
-      fetch('/.netlify/functions/homeowner-intake', {
+      fetch('/.netlify/functions/save-application', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)
