@@ -9,6 +9,7 @@
 
   function byId(id){ return document.getElementById(id); }
   function value(id){ return (byId(id)?.value || '').trim(); }
+  function isValidEmail(email){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email); }
 
   function getCookie(name){
     var m = document.cookie.match(new RegExp('(?:^|; )' + name.replace(/([.$?*|{}()\[\]\\/+^])/g, '\\$1') + '=([^;]*)'));
@@ -30,6 +31,11 @@
       field.parentNode.appendChild(errorEl);
     }
     errorEl.textContent = message;
+    var describedBy = (field.getAttribute('aria-describedby') || '').split(/\s+/).filter(Boolean);
+    if (!describedBy.includes(errorId)) {
+      describedBy.push(errorId);
+      field.setAttribute('aria-describedby', describedBy.join(' '));
+    }
   }
 
   function clearFieldError(fieldId){
@@ -37,8 +43,12 @@
     if (!field) return;
     field.classList.remove('ring-2', 'ring-red-400');
     field.removeAttribute('aria-invalid');
-    var errorEl = byId(fieldId + '-error');
-    if (errorEl) errorEl.textContent = '';
+    var errorId = fieldId + '-error';
+    var errorEl = byId(errorId);
+    if (errorEl) errorEl.remove();
+    var describedBy = (field.getAttribute('aria-describedby') || '').split(/\s+/).filter(Boolean).filter(function(id){ return id !== errorId; });
+    if (describedBy.length) field.setAttribute('aria-describedby', describedBy.join(' '));
+    else field.removeAttribute('aria-describedby');
   }
 
   function showStatus(message, type){
@@ -105,7 +115,7 @@
   function validateForm(){
     var ok = true;
 
-    ['client1Name', 'client1Email', 'client1Phone', 'propertyStreet', 'propertyCity', 'propertyState'].forEach(function(fieldId){
+    ['client1Name', 'client1Email', 'client1Phone', 'propertyStreet', 'propertyCity', 'propertyState', 'propertyZip'].forEach(function(fieldId){
       if (!value(fieldId)) {
         showFieldError(fieldId, 'This field is required.');
         ok = false;
@@ -113,6 +123,12 @@
         clearFieldError(fieldId);
       }
     });
+
+    var client1Email = value('client1Email');
+    if (client1Email && !isValidEmail(client1Email)) {
+      showFieldError('client1Email', 'Please enter a valid email address.');
+      ok = false;
+    }
 
     if (!byId('consentCheckbox')?.checked) {
       showFieldError('consentCheckbox', 'Please provide consent to submit.');
@@ -137,20 +153,10 @@
     var propertyAddress = [value('propertyStreet'), value('propertyCity'), value('propertyState'), value('propertyZip')].filter(Boolean).join(', ');
 
     var notes = [
-      'Agent: ' + value('agentName') + ' | ' + value('agentEmail') + ' | ' + value('agentPhone'),
-      'Client 1 DOB: ' + value('client1Dob'),
-      'Client 2: ' + [value('client2Name'), value('client2Dob'), value('client2Email'), value('client2Phone')].filter(Boolean).join(' | '),
+      'Agent: ' + [value('agentName'), value('agentEmail'), value('agentPhone')].filter(Boolean).join(' | '),
       'Property Class: ' + value('propertyClass'),
-      'Fair Market Value: ' + value('fairMarketValue'),
-      'Current Balance: ' + value('currentBalance'),
-      'Current APR: ' + value('currentApr'),
-      'Years Remaining: ' + value('yearsRemaining'),
-      'Mortgage Payment: ' + value('mortgagePayment'),
-      'Income: ' + value('monthlyIncome'),
-      'Expenses: ' + value('monthlyExpenses'),
-      'Liquid Savings: ' + value('liquidSavings'),
-      'Credit Score: ' + value('creditScore')
-    ].join('\n');
+      'Loan Purpose: Homeowner Occupied Intake'
+    ].filter(Boolean).join('\n');
 
     return [
       { name: 'full_name', value: client1Name },
@@ -272,11 +278,12 @@
       var hubspotFields = buildHubspotFields();
       var extraFields = buildExtraFields();
 
-      await Promise.all([
-        submitToHubspot(hubspotFields),
-        saveApplication(extraFields)
-      ]);
+      var hubspotPromise = submitToHubspot(hubspotFields);
+      saveApplication(extraFields).catch(function (err) {
+        console.error('Failed to archive application', err);
+      });
 
+      await hubspotPromise;
       location.href = THANK_YOU_URL;
     } catch (err) {
       console.error(err);
