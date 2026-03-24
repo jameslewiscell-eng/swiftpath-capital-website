@@ -305,7 +305,15 @@ async function sendWithResend({ to, subject, html, tag, attachments }) {
     }
   };
 
-  const toList = Array.isArray(to) ? to : [to];
+  const toList = (Array.isArray(to) ? to : [to])
+    .flatMap((entry) => String(entry || '').split(/[;,]/))
+    .map((entry) => entry.trim())
+    .filter(Boolean);
+
+  if (!toList.length) {
+    throw new Error('Missing recipient email address for Resend send.');
+  }
+
   const { data, error } = await resend.emails.send({
     from,
     to: toList,
