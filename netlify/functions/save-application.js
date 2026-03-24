@@ -42,14 +42,51 @@ function escapeHtml(value) {
 }
 
 function buildApplicationEntries(data = {}) {
+  const includeSensitive = String(process.env.APPLICATION_NOTIFICATION_INCLUDE_SENSITIVE || '').toLowerCase() === 'true';
+  const allowlist = String(process.env.APPLICATION_NOTIFICATION_FIELD_ALLOWLIST || '')
+    .split(',')
+    .map((key) => key.trim())
+    .filter(Boolean);
+  const denylist = new Set(
+    String(
+      process.env.APPLICATION_NOTIFICATION_FIELD_DENYLIST ||
+      'signature_data,date_of_birth,dob,partner_dob,ssn,social_security_number,credit_score,bank_account,routing_number'
+    )
+      .split(',')
+      .map((key) => key.trim().toLowerCase())
+      .filter(Boolean)
+  );
+
   return Object.entries(data)
-    .filter(([key]) => key !== 'signature_data')
+    .filter(([key]) => {
+      if (allowlist.length) return allowlist.includes(key);
+      if (includeSensitive) return true;
+      return !denylist.has(String(key).toLowerCase());
+    })
     .map(([key, value]) => ({ label: toLabel(key), value: normalizeValue(value) }))
     .filter((entry) => entry.value !== '');
 }
 
+function normalizePdfText(value) {
+  const punctuationMap = {
+    '’': "'",
+    '‘': "'",
+    '“': '"',
+    '”': '"',
+    '–': '-',
+    '—': '-',
+    '•': '*',
+    '…': '...'
+  };
+  const normalized = String(value || '')
+    .replace(/[’‘“”–—•…]/g, (ch) => punctuationMap[ch] || ch)
+    .normalize('NFKD')
+    .replace(/[\u0300-\u036f]/g, '');
+  return normalized.replace(/[^\x09\x0A\x0D\x20-\x7E]/g, '?');
+}
+
 function escapePdfText(value) {
-  return String(value || '')
+  return normalizePdfText(value)
     .replace(/\\/g, '\\\\')
     .replace(/\(/g, '\\(')
     .replace(/\)/g, '\\)')
@@ -88,18 +125,14 @@ async function generateApplicationPdf(entries, title) {
     lines.push('');
   }
 
-  const contentLines = [];
-  contentLines.push('BT');
-  contentLines.push('/F1 11 Tf');
-  contentLines.push('50 760 Td');
-  contentLines.push('14 TL');
-  for (const line of lines) {
-    contentLines.push(`(${escapePdfText(line)}) Tj`);
-    contentLines.push('T*');
+  const lineHeight = 14;
+  const topY = 760;
+  const bottomMargin = 40;
+  const linesPerPage = Math.max(1, Math.floor((topY - bottomMargin) / lineHeight) + 1);
+  const pageLineChunks = [];
+  for (let i = 0; i < lines.length; i += linesPerPage) {
+    pageLineChunks.push(lines.slice(i, i + linesPerPage));
   }
-  contentLines.push('ET');
-  const contentStream = contentLines.join('\n');
-  const contentBuffer = Buffer.from(contentStream, 'utf8');
 
   const objects = [];
   const addObject = (body) => {
@@ -108,9 +141,29 @@ async function generateApplicationPdf(entries, title) {
   };
 
   const fontObj = addObject('<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>');
-  const contentsObj = addObject(`<< /Length ${contentBuffer.length} >>\nstream\n${contentStream}\nendstream`);
-  const pageObj = addObject(`<< /Type /Page /Parent 4 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 ${fontObj} 0 R >> >> /Contents ${contentsObj} 0 R >>`);
-  const pagesObj = addObject(`<< /Type /Pages /Kids [${pageObj} 0 R] /Count 1 >>`);
+  const pagesObj = addObject('<< /Type /Pages /Kids [] /Count 0 >>');
+  const pageRefs = [];
+
+  for (const pageLines of pageLineChunks) {
+    const contentLines = [];
+    contentLines.push('BT');
+    contentLines.push('/F1 11 Tf');
+    contentLines.push(`50 ${topY} Td`);
+    contentLines.push(`${lineHeight} TL`);
+    for (const line of pageLines) {
+      contentLines.push(`(${escapePdfText(line)}) Tj`);
+      contentLines.push('T*');
+    }
+    contentLines.push('ET');
+
+    const contentStream = contentLines.join('\n');
+    const contentBuffer = Buffer.from(contentStream, 'utf8');
+    const contentsObj = addObject(`<< /Length ${contentBuffer.length} >>\nstream\n${contentStream}\nendstream`);
+    const pageObj = addObject(`<< /Type /Page /Parent ${pagesObj} 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 ${fontObj} 0 R >> >> /Contents ${contentsObj} 0 R >>`);
+    pageRefs.push(`${pageObj} 0 R`);
+  }
+
+  objects[pagesObj - 1] = `<< /Type /Pages /Kids [${pageRefs.join(' ')}] /Count ${pageRefs.length} >>`;
   const catalogObj = addObject(`<< /Type /Catalog /Pages ${pagesObj} 0 R >>`);
 
   let pdf = '%PDF-1.4\n';
