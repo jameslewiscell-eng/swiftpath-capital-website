@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Homeowner Intake • SwiftPath Capital</title>
+  <meta name="description" content="Private homeowner intake form." />
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/style.css"/>
+  <link rel="stylesheet" href="/assets/enhancements.css"/>
+  <style>
+    body{font-family:'Inter',sans-serif}
+    #signatureCanvas { border:2px solid #cbd5e1; border-radius:0.5rem; cursor:crosshair; touch-action:none; background:#fff; }
+    #signatureCanvas.signing { border-color:#ca8a04; }
+  </style>
+</head>
+<body class="bg-gray-50 text-slate-800">
+  <main class="py-12">
+    <section class="container mx-auto px-6 max-w-5xl">
+      <div class="bg-white border border-slate-200 rounded-xl shadow-sm p-6 md:p-8">
+        <div class="mb-8">
+          <picture><source srcset="Images/Logo.webp" type="image/webp"/><img src="Images/Logo.PNG" alt="SwiftPath Capital" class="h-12 w-auto" width="120" height="48" /></picture>
+          <h1 class="mt-4 text-3xl font-extrabold">Homeowner Intake Form</h1>
+          <p class="mt-2 text-slate-600">Private intake link for direct homeowner-occupied scenarios.</p>
+        </div>
+
+        <div id="submitStatus" class="hidden mb-6 rounded-md border p-4" aria-live="polite"></div>
+
+        <form id="homeownerIntakeForm" novalidate>
+          <div aria-hidden="true" style="position:absolute;left:-9999px;top:-9999px;height:0;width:0;overflow:hidden">
+            <label for="homeownerWebsite">Website</label>
+            <input type="text" id="homeownerWebsite" name="website" tabindex="-1" autocomplete="off" />
+          </div>
+
+          <input type="hidden" id="utm_source" value="">
+          <input type="hidden" id="utm_medium" value="">
+          <input type="hidden" id="utm_campaign" value="">
+          <input type="hidden" id="utm_term" value="">
+          <input type="hidden" id="utm_content" value="">
+          <input type="hidden" id="gclid" value="">
+
+          <h2 class="text-2xl font-bold border-b-2 border-yellow-600 pb-2">Agent Information</h2>
+          <div class="grid md:grid-cols-3 gap-6 mt-6">
+            <div>
+              <label class="block text-sm font-medium mb-1" for="agentName">Agent Name</label>
+              <input id="agentName" class="w-full border border-slate-300 rounded-lg px-3 py-2" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1" for="agentEmail">Agent Email</label>
+              <input id="agentEmail" type="email" class="w-full border border-slate-300 rounded-lg px-3 py-2" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1" for="agentPhone">Agent Phone</label>
+              <input id="agentPhone" type="tel" class="w-full border border-slate-300 rounded-lg px-3 py-2" />
+            </div>
+          </div>
+
+          <h2 class="mt-10 text-2xl font-bold border-b-2 border-yellow-600 pb-2">Client #1</h2>
+          <div class="grid md:grid-cols-2 gap-6 mt-6">
+            <div>
+              <label class="block text-sm font-medium mb-1" for="client1Name">Client #1 Name <span class="text-red-500">*</span></label>
+              <input id="client1Name" class="w-full border border-slate-300 rounded-lg px-3 py-2" required />
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1" for="client1Dob">Client #1 DOB</label>
+              <input id="client1Dob" type="date" class="w-full border border-slate-300 rounded-lg px-3 py-2" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1" for="client1Email">Email <span class="text-red-500">*</span></label>
+              <input id="client1Email" type="email" class="w-full border border-slate-300 rounded-lg px-3 py-2" required />
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1" for="client1Phone">Phone Number <span class="text-red-500">*</span></label>
+              <input id="client1Phone" type="tel" class="w-full border border-slate-300 rounded-lg px-3 py-2" required />
+            </div>
+          </div>
+
+          <h2 class="mt-10 text-2xl font-bold border-b-2 border-yellow-600 pb-2">Client #2 (Optional)</h2>
+          <div class="grid md:grid-cols-2 gap-6 mt-6">
+            <div>
+              <label class="block text-sm font-medium mb-1" for="client2Name">Client #2 Name</label>
+              <input id="client2Name" class="w-full border border-slate-300 rounded-lg px-3 py-2" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1" for="client2Dob">Client #2 DOB</label>
+              <input id="client2Dob" type="date" class="w-full border border-slate-300 rounded-lg px-3 py-2" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1" for="client2Email">Email</label>
+              <input id="client2Email" type="email" class="w-full border border-slate-300 rounded-lg px-3 py-2" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1" for="client2Phone">Phone Number</label>
+              <input id="client2Phone" type="tel" class="w-full border border-slate-300 rounded-lg px-3 py-2" />
+            </div>
+          </div>
+
+          <h2 class="mt-10 text-2xl font-bold border-b-2 border-yellow-600 pb-2">Property Address</h2>
+          <div class="grid md:grid-cols-4 gap-6 mt-6">
+            <div class="md:col-span-2">
+              <label class="block text-sm font-medium mb-1" for="propertyStreet">Address <span class="text-red-500">*</span></label>
+              <input id="propertyStreet" class="w-full border border-slate-300 rounded-lg px-3 py-2" required />
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1" for="propertyCity">City <span class="text-red-500">*</span></label>
+              <input id="propertyCity" class="w-full border border-slate-300 rounded-lg px-3 py-2" required />
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1" for="propertyState">State <span class="text-red-500">*</span></label>
+              <input id="propertyState" class="w-full border border-slate-300 rounded-lg px-3 py-2" required />
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1" for="propertyZip">Zip <span class="text-red-500">*</span></label>
+              <input id="propertyZip" class="w-full border border-slate-300 rounded-lg px-3 py-2" />
+            </div>
+          </div>
+
+          <h2 class="mt-10 text-2xl font-bold border-b-2 border-yellow-600 pb-2">Property Information / Values</h2>
+          <div class="grid md:grid-cols-2 gap-6 mt-6">
+            <div>
+              <label class="block text-sm font-medium mb-1" for="fairMarketValue">Fair Market Value of Property</label>
+              <input id="fairMarketValue" class="w-full border border-slate-300 rounded-lg px-3 py-2" inputmode="decimal" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1" for="currentBalance">Current Balance</label>
+              <input id="currentBalance" class="w-full border border-slate-300 rounded-lg px-3 py-2" inputmode="decimal" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1" for="currentApr">Current Interest Rate (APR)</label>
+              <input id="currentApr" class="w-full border border-slate-300 rounded-lg px-3 py-2" inputmode="decimal" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1" for="yearsRemaining">Years Remaining on Current Mortgage</label>
+              <input id="yearsRemaining" class="w-full border border-slate-300 rounded-lg px-3 py-2" inputmode="numeric" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1" for="mortgagePayment">Mortgage Payment (with taxes & insurance)</label>
+              <input id="mortgagePayment" class="w-full border border-slate-300 rounded-lg px-3 py-2" inputmode="decimal" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1" for="propertyClass">Property Classification</label>
+              <select id="propertyClass" class="w-full border border-slate-300 rounded-lg px-3 py-2">
+                <option value="">Select</option>
+                <option>Primary Residence</option>
+                <option>Secondary Residence</option>
+                <option>Investment Property</option>
+              </select>
+            </div>
+          </div>
+
+          <h2 class="mt-10 text-2xl font-bold border-b-2 border-yellow-600 pb-2">Income & Expenses</h2>
+          <div class="grid md:grid-cols-2 gap-6 mt-6">
+            <div>
+              <label class="block text-sm font-medium mb-1" for="monthlyIncome">Net Household Monthly Income</label>
+              <input id="monthlyIncome" class="w-full border border-slate-300 rounded-lg px-3 py-2" inputmode="decimal" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1" for="monthlyExpenses">Estimated Monthly Expenses</label>
+              <input id="monthlyExpenses" class="w-full border border-slate-300 rounded-lg px-3 py-2" inputmode="decimal" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1" for="liquidSavings">Liquid Savings</label>
+              <input id="liquidSavings" class="w-full border border-slate-300 rounded-lg px-3 py-2" inputmode="decimal" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1" for="creditScore">Current Credit Score</label>
+              <input id="creditScore" class="w-full border border-slate-300 rounded-lg px-3 py-2" inputmode="numeric" />
+            </div>
+          </div>
+
+          <h2 class="mt-10 text-2xl font-bold border-b-2 border-yellow-600 pb-2">Additional Debts / Loans</h2>
+          <p class="text-sm text-slate-500 mt-2">Enter up to 5 loan entries.</p>
+          <div class="overflow-x-auto mt-4">
+            <table class="min-w-full border border-slate-200 text-sm">
+              <thead class="bg-slate-100">
+                <tr>
+                  <th class="text-left p-2">Loan Type</th>
+                  <th class="text-left p-2">Current Balance</th>
+                  <th class="text-left p-2">Interest Rate</th>
+                  <th class="text-left p-2">Monthly Payment</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td class="p-2"><input id="debtLoanType1" class="w-full border border-slate-300 rounded px-2 py-1" /></td><td class="p-2"><input id="debtBalance1" class="w-full border border-slate-300 rounded px-2 py-1" /></td><td class="p-2"><input id="debtRate1" class="w-full border border-slate-300 rounded px-2 py-1" /></td><td class="p-2"><input id="debtPayment1" class="w-full border border-slate-300 rounded px-2 py-1" /></td></tr>
+                <tr><td class="p-2"><input id="debtLoanType2" class="w-full border border-slate-300 rounded px-2 py-1" /></td><td class="p-2"><input id="debtBalance2" class="w-full border border-slate-300 rounded px-2 py-1" /></td><td class="p-2"><input id="debtRate2" class="w-full border border-slate-300 rounded px-2 py-1" /></td><td class="p-2"><input id="debtPayment2" class="w-full border border-slate-300 rounded px-2 py-1" /></td></tr>
+                <tr><td class="p-2"><input id="debtLoanType3" class="w-full border border-slate-300 rounded px-2 py-1" /></td><td class="p-2"><input id="debtBalance3" class="w-full border border-slate-300 rounded px-2 py-1" /></td><td class="p-2"><input id="debtRate3" class="w-full border border-slate-300 rounded px-2 py-1" /></td><td class="p-2"><input id="debtPayment3" class="w-full border border-slate-300 rounded px-2 py-1" /></td></tr>
+                <tr><td class="p-2"><input id="debtLoanType4" class="w-full border border-slate-300 rounded px-2 py-1" /></td><td class="p-2"><input id="debtBalance4" class="w-full border border-slate-300 rounded px-2 py-1" /></td><td class="p-2"><input id="debtRate4" class="w-full border border-slate-300 rounded px-2 py-1" /></td><td class="p-2"><input id="debtPayment4" class="w-full border border-slate-300 rounded px-2 py-1" /></td></tr>
+                <tr><td class="p-2"><input id="debtLoanType5" class="w-full border border-slate-300 rounded px-2 py-1" /></td><td class="p-2"><input id="debtBalance5" class="w-full border border-slate-300 rounded px-2 py-1" /></td><td class="p-2"><input id="debtRate5" class="w-full border border-slate-300 rounded px-2 py-1" /></td><td class="p-2"><input id="debtPayment5" class="w-full border border-slate-300 rounded px-2 py-1" /></td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h2 class="mt-10 text-2xl font-bold border-b-2 border-yellow-600 pb-2">Signature</h2>
+          <p class="text-sm text-slate-500 mt-2">Please sign below to confirm the information provided is accurate.</p>
+          <div class="mt-4">
+            <canvas id="signatureCanvas" width="560" height="180"></canvas>
+            <div class="mt-2 flex gap-3">
+              <button type="button" id="clearSignatureBtn" class="text-sm border border-slate-300 rounded px-3 py-1 hover:bg-slate-50">Clear Signature</button>
+              <span id="signatureStatus" class="text-xs text-slate-500 self-center" aria-live="polite"></span>
+            </div>
+          </div>
+
+          <div class="mt-8">
+            <label class="inline-flex items-start gap-2 text-sm">
+              <input id="consentCheckbox" type="checkbox" class="mt-1" required />
+              <span>I consent to be contacted regarding this homeowner intake request and agree to the <a href="/terms.html" class="underline">Terms</a> and <a href="/privacy.html" class="underline">Privacy Policy</a>.</span>
+            </label>
+          </div>
+
+          <div class="mt-6">
+            <button id="submitBtn" type="submit" class="bg-yellow-600 hover:bg-yellow-700 text-white font-semibold px-6 py-3 rounded">Submit Intake</button>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <script src="/assets/signature-pad.js"></script>
+  <script src="/assets/homeowner-intake-submit.js" defer></script>
+</body>
+</html>
