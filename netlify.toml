@@ -66,3 +66,8 @@
 
     upgrade-insecure-requests;
   """
+
+[[headers]]
+  for = "/homeowner-intake.html"
+  [headers.values]
+  X-Robots-Tag = "noindex, nofollow, noarchive, nosnippet"
