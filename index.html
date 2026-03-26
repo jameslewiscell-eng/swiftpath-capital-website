@@ -393,44 +393,44 @@
 </div>
 <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 stagger-children">
 
-<!-- Card 1: First-Time Investor -->
-<button onclick="openStoryModal('story-new')" class="reveal text-left bg-gradient-to-b from-brand-blue/5 to-white border-2 border-brand-blue/20 rounded-2xl p-6 flex flex-col gap-3 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer w-full">
-<div class="w-12 h-12 rounded-xl bg-brand-blue/10 flex items-center justify-center">
-<svg class="w-6 h-6 text-brand-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332-.477-4.5-1.253"/></svg>
+<!-- Card 1: The New Investor -->
+<button onclick="openStoryModal('story-new')" class="card-enhanced reveal text-left flex flex-col gap-3 cursor-pointer w-full" aria-haspopup="dialog">
+<div class="card-icon">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332-.477-4.5-1.253"/></svg>
 </div>
 <h3 class="text-lg font-bold text-slate-800">The New Investor</h3>
 <p class="text-slate-600 text-sm flex-1">You're interested in real estate investing but not sure where to start. We're investors too — we help you evaluate deals, understand the numbers, and secure funding all in one place.</p>
-<span class="text-brand-blue text-sm font-semibold flex items-center gap-1 mt-auto">Read their story <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></span>
+<span class="product-arrow text-brand-blue text-sm font-semibold mt-auto">Read their story <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></span>
 </button>
 
 <!-- Card 2: The Portfolio Builder -->
-<button onclick="openStoryModal('story-portfolio')" class="reveal text-left bg-white border border-slate-200 rounded-2xl p-6 flex flex-col gap-3 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer w-full">
-<div class="w-12 h-12 rounded-xl bg-brand-gold/10 flex items-center justify-center">
-<svg class="w-6 h-6 text-brand-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+<button onclick="openStoryModal('story-portfolio')" class="card-enhanced reveal text-left flex flex-col gap-3 cursor-pointer w-full" aria-haspopup="dialog">
+<div class="card-icon">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
 </div>
 <h3 class="text-lg font-bold text-slate-800">The Portfolio Builder</h3>
 <p class="text-slate-600 text-sm flex-1">You're growing a rental portfolio and need a lender who understands cash-flow math. Our DSCR loans qualify on property income — not your W-2 — so you can keep scaling.</p>
-<span class="text-brand-blue text-sm font-semibold flex items-center gap-1 mt-auto">Read their story <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></span>
+<span class="product-arrow text-brand-blue text-sm font-semibold mt-auto">Read their story <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></span>
 </button>
 
 <!-- Card 3: The Fix-and-Flip Operator -->
-<button onclick="openStoryModal('story-flip')" class="reveal text-left bg-white border border-slate-200 rounded-2xl p-6 flex flex-col gap-3 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer w-full">
-<div class="w-12 h-12 rounded-xl bg-brand-blue/10 flex items-center justify-center">
-<svg class="w-6 h-6 text-brand-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+<button onclick="openStoryModal('story-flip')" class="card-enhanced reveal text-left flex flex-col gap-3 cursor-pointer w-full" aria-haspopup="dialog">
+<div class="card-icon">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
 </div>
 <h3 class="text-lg font-bold text-slate-800">The Fix-and-Flip Operator</h3>
 <p class="text-slate-600 text-sm flex-1">You buy, renovate, and sell — and you need a lender who funds rehab draws fast. We cover purchase and renovation costs so your project stays on schedule and on budget.</p>
-<span class="text-brand-blue text-sm font-semibold flex items-center gap-1 mt-auto">Read their story <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></span>
+<span class="product-arrow text-brand-blue text-sm font-semibold mt-auto">Read their story <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></span>
 </button>
 
 <!-- Card 4: The Speed Closer -->
-<button onclick="openStoryModal('story-speed')" class="reveal text-left bg-white border border-slate-200 rounded-2xl p-6 flex flex-col gap-3 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer w-full">
-<div class="w-12 h-12 rounded-xl bg-brand-gold/10 flex items-center justify-center">
-<svg class="w-6 h-6 text-brand-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+<button onclick="openStoryModal('story-speed')" class="card-enhanced reveal text-left flex flex-col gap-3 cursor-pointer w-full" aria-haspopup="dialog">
+<div class="card-icon">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
 </div>
 <h3 class="text-lg font-bold text-slate-800">The Speed Closer</h3>
 <p class="text-slate-600 text-sm flex-1">You've got a deal under contract with a tight timeline and a seller who won't wait. We issue same-day term sheets and close in as little as 7 days — so you don't lose the deal.</p>
-<span class="text-brand-blue text-sm font-semibold flex items-center gap-1 mt-auto">Read their story <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></span>
+<span class="product-arrow text-brand-blue text-sm font-semibold mt-auto">Read their story <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></span>
 </button>
 
 </div>
@@ -441,48 +441,55 @@
 </section>
 
 <!-- Story Modals -->
-<div id="story-modal-overlay" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/70 px-4 hidden" onclick="closeStoryModal(event)">
-<div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full p-8 relative" onclick="event.stopPropagation()">
-<button onclick="closeStoryModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-700 transition" aria-label="Close">
-<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+<div id="story-modal-overlay" class="modal-overlay fixed inset-0 z-50 flex items-center justify-center px-4 py-6 opacity-0 pointer-events-none" style="background:rgba(15,23,42,.65);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)" onclick="closeStoryModal(event)" role="dialog" aria-modal="true">
+<div class="modal-container bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[85vh] flex flex-col relative overflow-hidden" onclick="event.stopPropagation()">
+<!-- Gradient top bar (matches card-enhanced) -->
+<div class="h-1 w-full bg-gradient-to-r from-[#4A7A9D] to-[#c5a35a] flex-shrink-0"></div>
+<!-- Close button -->
+<button onclick="closeStoryModal()" class="absolute top-5 right-4 w-8 h-8 flex items-center justify-center rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 hover:text-slate-700 transition-colors duration-200 z-10" aria-label="Close">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
 </button>
+<!-- Scrollable content area -->
+<div class="overflow-y-auto flex-1 p-6 md:p-8">
 <!-- Story: New Investor -->
 <div id="story-new" class="story-content hidden">
 <p class="text-xs font-semibold tracking-widest uppercase text-brand-gold mb-2">The New Investor</p>
-<h3 class="text-2xl font-bold text-slate-800 mb-4">"I didn't even know what ARV meant."</h3>
-<p class="text-slate-600 mb-3">Marcus had been watching real estate videos for months and finally spotted a 3-bed/1-bath in Phoenix that seemed underpriced. He called SwiftPath — not sure if he even qualified for anything.</p>
-<p class="text-slate-600 mb-3">Instead of just running credit, James pulled up the comps with him on the phone. They walked through the after-repair value, estimated rehab costs, and what the margins actually looked like. "I didn't know if it was a good deal," Marcus said. "He helped me figure that out."</p>
-<p class="text-slate-600 mb-3">SwiftPath funded $185,000 for the purchase and renovation. Four months later, Marcus sold for $267,000 — netting $48,000 on his first deal. He was already under contract on his second before the first one closed.</p>
-<p class="text-brand-blue font-semibold text-sm">The loan got him in. The guidance got him there.</p>
+<h3 class="text-xl md:text-2xl font-bold text-slate-800 mb-4 pr-8">"I didn't even know what ARV meant."</h3>
+<p class="text-slate-600 mb-3 leading-relaxed">Marcus had been watching real estate videos for months and finally spotted a 3-bed/1-bath in Phoenix that seemed underpriced. He called SwiftPath — not sure if he even qualified for anything.</p>
+<p class="text-slate-600 mb-3 leading-relaxed">Instead of just running credit, James pulled up the comps with him on the phone. They walked through the after-repair value, estimated rehab costs, and what the margins actually looked like. "I didn't know if it was a good deal," Marcus said. "He helped me figure that out."</p>
+<p class="text-slate-600 mb-3 leading-relaxed">SwiftPath funded $185,000 for the purchase and renovation. Four months later, Marcus sold for $267,000 — netting $48,000 on his first deal. He was already under contract on his second before the first one closed.</p>
+<p class="text-brand-blue font-semibold text-sm mt-4">The loan got him in. The guidance got him there.</p>
 </div>
 <!-- Story: Portfolio Builder -->
 <div id="story-portfolio" class="story-content hidden">
 <p class="text-xs font-semibold tracking-widest uppercase text-brand-gold mb-2">The Portfolio Builder</p>
-<h3 class="text-2xl font-bold text-slate-800 mb-4">"My bank kept saying no. My rentals were cash-flowing fine."</h3>
-<p class="text-slate-600 mb-3">Diane had three rental properties and a bank that wouldn't budge. Her debt-to-income ratio looked bad on paper — even though her rentals were pulling in solid monthly income. A conventional lender couldn't see past her W-2.</p>
-<p class="text-slate-600 mb-3">SwiftPath structured a DSCR loan that qualified on the property's rental income alone — $1,850/month against a $1,200 payment. No personal income docs. No W-2 required.</p>
-<p class="text-slate-600 mb-3">Diane added two more doors to her portfolio within 90 days. She's now at six units and refinancing two into a portfolio loan.</p>
-<p class="text-brand-blue font-semibold text-sm">The right loan structure changed everything.</p>
+<h3 class="text-xl md:text-2xl font-bold text-slate-800 mb-4 pr-8">"My bank kept saying no. My rentals were cash-flowing fine."</h3>
+<p class="text-slate-600 mb-3 leading-relaxed">Diane had three rental properties and a bank that wouldn't budge. Her debt-to-income ratio looked bad on paper — even though her rentals were pulling in solid monthly income. A conventional lender couldn't see past her W-2.</p>
+<p class="text-slate-600 mb-3 leading-relaxed">SwiftPath structured a DSCR loan that qualified on the property's rental income alone — $1,850/month against a $1,200 payment. No personal income docs. No W-2 required.</p>
+<p class="text-slate-600 mb-3 leading-relaxed">Diane added two more doors to her portfolio within 90 days. She's now at six units and refinancing two into a portfolio loan.</p>
+<p class="text-brand-blue font-semibold text-sm mt-4">The right loan structure changed everything.</p>
 </div>
 <!-- Story: Fix and Flip -->
 <div id="story-flip" class="story-content hidden">
 <p class="text-xs font-semibold tracking-widest uppercase text-brand-gold mb-2">The Fix-and-Flip Operator</p>
-<h3 class="text-2xl font-bold text-slate-800 mb-4">"My old lender took two weeks to release draws. That was killing my returns."</h3>
-<p class="text-slate-600 mb-3">Carlos had flipped eight properties — he knew what he was doing. But his previous lender was consistently slow on rehab draw disbursements, sometimes two weeks after inspection. He was floating crew costs out of pocket every single project.</p>
-<p class="text-slate-600 mb-3">SwiftPath turned draws around in 48 hours. His next project came in $11,000 under budget and three weeks ahead of schedule because the crew stayed on site instead of waiting.</p>
-<p class="text-slate-600 mb-3">Carlos now runs two projects simultaneously with SwiftPath as his exclusive lender.</p>
-<p class="text-brand-blue font-semibold text-sm">Fast draws keep projects — and profits — on track.</p>
+<h3 class="text-xl md:text-2xl font-bold text-slate-800 mb-4 pr-8">"My old lender took two weeks to release draws. That was killing my returns."</h3>
+<p class="text-slate-600 mb-3 leading-relaxed">Carlos had flipped eight properties — he knew what he was doing. But his previous lender was consistently slow on rehab draw disbursements, sometimes two weeks after inspection. He was floating crew costs out of pocket every single project.</p>
+<p class="text-slate-600 mb-3 leading-relaxed">SwiftPath turned draws around in 48 hours. His next project came in $11,000 under budget and three weeks ahead of schedule because the crew stayed on site instead of waiting.</p>
+<p class="text-slate-600 mb-3 leading-relaxed">Carlos now runs two projects simultaneously with SwiftPath as his exclusive lender.</p>
+<p class="text-brand-blue font-semibold text-sm mt-4">Fast draws keep projects — and profits — on track.</p>
 </div>
 <!-- Story: Speed Closer -->
 <div id="story-speed" class="story-content hidden">
 <p class="text-xs font-semibold tracking-widest uppercase text-brand-gold mb-2">The Speed Closer</p>
-<h3 class="text-2xl font-bold text-slate-800 mb-4">"The seller gave me 10 days. My bank needed 45."</h3>
-<p class="text-slate-600 mb-3">Rachel found an off-market duplex at a significant discount — but the seller was clear: 10 days or he was moving on. Her bank quoted a 45-day minimum. She called SwiftPath at 9am.</p>
-<p class="text-slate-600 mb-3">She had a term sheet by noon. They closed in 8 days.</p>
-<p class="text-slate-600 mb-3">The duplex now cash-flows $800/month net, and she picked it up $40,000 below market value. "That deal would have been gone," she said. "I wouldn't have even tried if I didn't know SwiftPath could move that fast."</p>
-<p class="text-brand-blue font-semibold text-sm">Speed is a competitive advantage. We give it to you.</p>
+<h3 class="text-xl md:text-2xl font-bold text-slate-800 mb-4 pr-8">"The seller gave me 10 days. My bank needed 45."</h3>
+<p class="text-slate-600 mb-3 leading-relaxed">Rachel found an off-market duplex at a significant discount — but the seller was clear: 10 days or he was moving on. Her bank quoted a 45-day minimum. She called SwiftPath at 9am.</p>
+<p class="text-slate-600 mb-3 leading-relaxed">She had a term sheet by noon. They closed in 8 days.</p>
+<p class="text-slate-600 mb-3 leading-relaxed">The duplex now cash-flows $800/month net, and she picked it up $40,000 below market value. "That deal would have been gone," she said. "I wouldn't have even tried if I didn't know SwiftPath could move that fast."</p>
+<p class="text-brand-blue font-semibold text-sm mt-4">Speed is a competitive advantage. We give it to you.</p>
 </div>
-<div class="mt-6 pt-4 border-t border-slate-100">
+</div>
+<!-- Sticky CTA footer -->
+<div class="flex-shrink-0 p-4 md:px-8 md:pb-6 border-t border-slate-100 bg-white">
 <a href="#contact" onclick="closeStoryModal()" class="btn-primary w-full text-center block">See What You Qualify For &mdash; Free</a>
 </div>
 </div>
@@ -490,19 +497,24 @@
 
 <script>
 function openStoryModal(id) {
-  document.querySelectorAll('.story-content').forEach(el => el.classList.add('hidden'));
+  var overlay = document.getElementById('story-modal-overlay');
+  var container = overlay.querySelector('.modal-container');
+  document.querySelectorAll('.story-content').forEach(function(el) { el.classList.add('hidden'); });
   document.getElementById(id).classList.remove('hidden');
-  document.getElementById('story-modal-overlay').classList.remove('hidden');
+  overlay.classList.remove('pointer-events-none');
+  overlay.style.opacity = '1';
+  container.classList.add('active');
   document.body.style.overflow = 'hidden';
 }
 function closeStoryModal(e) {
-  if (e && e.target !== document.getElementById('story-modal-overlay')) return;
-  document.getElementById('story-modal-overlay').classList.add('hidden');
-  document.body.style.overflow = '';
+  if (e && e.target && e.target !== document.getElementById('story-modal-overlay')) return;
+  var overlay = document.getElementById('story-modal-overlay');
+  var container = overlay.querySelector('.modal-container');
+  container.classList.remove('active');
+  overlay.style.opacity = '0';
+  setTimeout(function() { overlay.classList.add('pointer-events-none'); document.body.style.overflow = ''; }, 300);
 }
-document.addEventListener('keydown', function(e) {
-  if (e.key === 'Escape') { document.getElementById('story-modal-overlay').classList.add('hidden'); document.body.style.overflow = ''; }
-});
+document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeStoryModal(); });
 </script>
 <!-- Contact / CTA — simplified pre-qual (no SMS gating on homepage) -->
 <section class="bg-gradient-subtle" id="contact">
