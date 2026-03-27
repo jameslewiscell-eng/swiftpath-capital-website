@@ -878,11 +878,47 @@ Check Your Loan Options Instantly — see if your deal qualifies before you appl
 <a class="hover:text-brand-gold transition duration-300" href="/terms.html">Terms</a>
 <span class="text-slate-600">·</span>
 <a class="hover:text-brand-gold transition duration-300" href="/esign.html">E-Sign Consent</a>
+<span class="text-slate-600">·</span>
+<button class="hover:text-brand-gold transition duration-300" id="openBugReport" type="button">Report a Bug</button>
 </div>
 </div>
 <p class="text-xs text-slate-500 text-center mt-4">SwiftPath Capital provides <strong>business-purpose loans only</strong>; we do not offer consumer/personal loans.</p>
 </div>
 </footer>
+<!-- Bug report modal -->
+<div class="fixed inset-0 z-[80] hidden bg-black/60" id="bugReportOverlay"></div>
+<div aria-labelledby="bugReportTitle" aria-modal="true" class="fixed inset-0 z-[81] hidden items-center justify-center p-4" id="bugReportModal" role="dialog">
+  <div class="w-full max-w-2xl rounded-2xl bg-white p-6 shadow-2xl max-h-[90vh] overflow-y-auto">
+    <div class="mb-4 flex items-start justify-between gap-3">
+      <div>
+        <h2 class="text-2xl font-bold text-brand-blue" id="bugReportTitle">Report a Bug</h2>
+        <p class="mt-1 text-sm text-slate-600">Describe what happened, then take a screenshot with this dialog visible.</p>
+      </div>
+      <button aria-label="Close bug report dialog" class="rounded p-2 hover:bg-slate-100" id="closeBugReport" type="button">✕</button>
+    </div>
+
+    <form class="space-y-4" id="bugReportForm">
+      <div>
+        <label class="mb-1 block text-sm font-medium text-slate-700" for="bugSummary">What went wrong?</label>
+        <input class="w-full rounded-lg border border-slate-300 px-3 py-2" id="bugSummary" maxlength="120" placeholder="Short summary" required type="text" />
+      </div>
+      <div>
+        <label class="mb-1 block text-sm font-medium text-slate-700" for="bugDetails">What did you click and what did you expect?</label>
+        <textarea class="w-full rounded-lg border border-slate-300 px-3 py-2" id="bugDetails" maxlength="2000" placeholder="Include steps to reproduce and any error text you saw." rows="6" required></textarea>
+      </div>
+      <div>
+        <label class="mb-1 block text-sm font-medium text-slate-700" for="bugContact">Your email (optional)</label>
+        <input class="w-full rounded-lg border border-slate-300 px-3 py-2" id="bugContact" placeholder="name@example.com" type="email" />
+      </div>
+      <p class="text-xs text-slate-500">Tip: keep this form open and take a screenshot of the page so we can see the issue context.</p>
+      <div class="flex flex-col gap-2 sm:flex-row sm:items-center">
+        <button class="rounded-lg bg-brand-blue px-4 py-2 font-semibold text-white hover:opacity-90" type="submit">Open Email Draft</button>
+        <button class="rounded-lg border border-slate-300 px-4 py-2 font-semibold text-slate-700 hover:bg-slate-50" id="copyBugReport" type="button">Copy Report Text</button>
+      </div>
+      <p aria-live="polite" class="text-sm text-green-700" id="bugReportStatus"></p>
+    </form>
+  </div>
+</div>
 <!-- Product Detail Modal -->
 <!-- WhatsApp Floating Button -->
 <div class="fixed inset-0 z-60 hidden bg-black/60" id="productOverlay"></div><div class="fixed inset-x-0 bottom-0 z-50 hidden md:inset-0 md:items-center md:justify-center" id="productModal" role="dialog" aria-modal="true" aria-labelledby="productTitle">
@@ -1390,6 +1426,75 @@ Check Your Loan Options Instantly — see if your deal qualifies before you appl
   }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
   document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale').forEach(function(el){
     observer.observe(el);
+  });
+})();
+
+// Bug report modal
+(function(){
+  var openBtn = document.getElementById('openBugReport');
+  var modal = document.getElementById('bugReportModal');
+  var overlay = document.getElementById('bugReportOverlay');
+  var closeBtn = document.getElementById('closeBugReport');
+  var form = document.getElementById('bugReportForm');
+  var copyBtn = document.getElementById('copyBugReport');
+  var status = document.getElementById('bugReportStatus');
+  var summary = document.getElementById('bugSummary');
+  var details = document.getElementById('bugDetails');
+  var contact = document.getElementById('bugContact');
+
+  if(!openBtn || !modal || !overlay || !form || !summary || !details) return;
+
+  function setOpen(isOpen){
+    modal.classList.toggle('hidden', !isOpen);
+    modal.classList.toggle('flex', isOpen);
+    overlay.classList.toggle('hidden', !isOpen);
+    document.documentElement.style.overflow = isOpen ? 'hidden' : '';
+    if(isOpen){
+      status.textContent = '';
+      setTimeout(function(){ summary.focus(); }, 0);
+    }
+  }
+
+  function buildReportText(){
+    var lines = [
+      'Summary: ' + (summary.value || ''),
+      '',
+      'Details:',
+      (details.value || ''),
+      '',
+      'Page URL: ' + window.location.href,
+      'Browser: ' + navigator.userAgent,
+      'Time: ' + new Date().toISOString()
+    ];
+    if(contact && contact.value.trim()) lines.splice(2, 0, 'Contact: ' + contact.value.trim(), '');
+    return lines.join('\n');
+  }
+
+  openBtn.addEventListener('click', function(){ setOpen(true); });
+  closeBtn.addEventListener('click', function(){ setOpen(false); });
+  overlay.addEventListener('click', function(){ setOpen(false); });
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape' && !modal.classList.contains('hidden')) setOpen(false);
+  });
+
+  copyBtn.addEventListener('click', async function(){
+    try {
+      await navigator.clipboard.writeText(buildReportText());
+      status.textContent = 'Copied report text. You can paste it into email or chat.';
+    } catch(err){
+      status.textContent = 'Could not copy automatically. Please select and copy manually.';
+    }
+  });
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    if(!summary.value.trim() || !details.value.trim()){
+      status.textContent = 'Please fill in the summary and details first.';
+      return;
+    }
+    var body = encodeURIComponent(buildReportText());
+    window.location.href = 'mailto:info@swiftpathcapital.com?subject=' + encodeURIComponent('Website Bug Report: ' + summary.value.trim().slice(0, 70)) + '&body=' + body;
+    status.textContent = 'Email draft opened. Please attach your screenshot before sending.';
   });
 })();
 
