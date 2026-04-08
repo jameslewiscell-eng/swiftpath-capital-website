@@ -121,13 +121,21 @@
   function fmtCurrency(n) { return n != null ? '$' + n.toFixed(2) : '--'; }
   function fmtPct(n) { return n != null ? (n * 100).toFixed(2) + '%' : '--'; }
 
+  // Google Ads API returns status as a numeric enum
+  const STATUS_MAP = { 2: 'ENABLED', 3: 'PAUSED', 4: 'REMOVED' };
+
+  function resolveStatus(status) {
+    if (typeof status === 'number') return STATUS_MAP[status] || 'UNKNOWN';
+    return (status || 'UNKNOWN').toUpperCase();
+  }
+
   function statusBadge(status) {
-    const s = (status || '').toLowerCase();
+    const s = resolveStatus(status);
     let cls = '';
-    if (s === 'enabled') cls = 'enabled';
-    else if (s === 'paused') cls = 'paused';
+    if (s === 'ENABLED') cls = 'enabled';
+    else if (s === 'PAUSED') cls = 'paused';
     else cls = 'removed';
-    return `<span class="badge ${cls}">${status}</span>`;
+    return `<span class="badge ${cls}">${s}</span>`;
   }
 
   function escapeHtml(str) {
@@ -227,7 +235,7 @@
         </tr></thead><tbody>`;
 
       campaigns.forEach(c => {
-        const statusLower = (c.status || '').toLowerCase();
+        const statusLower = resolveStatus(c.status).toLowerCase();
         const toggleBtn = statusLower === 'enabled'
           ? `<button class="btn-sm pause" onclick="toggleCampaign('${c.id}','PAUSED')">Pause</button>`
           : `<button class="btn-sm enable" onclick="toggleCampaign('${c.id}','ENABLED')">Enable</button>`;
@@ -291,7 +299,7 @@
         </tr></thead><tbody>`;
 
       adGroups.forEach(ag => {
-        const statusLower = (ag.status || '').toLowerCase();
+        const statusLower = resolveStatus(ag.status).toLowerCase();
         const toggleBtn = statusLower === 'enabled'
           ? `<button class="btn-sm pause" onclick="toggleAdGroup('${ag.id}','PAUSED')">Pause</button>`
           : `<button class="btn-sm enable" onclick="toggleAdGroup('${ag.id}','ENABLED')">Enable</button>`;
