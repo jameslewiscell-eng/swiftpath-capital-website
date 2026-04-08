@@ -24,8 +24,8 @@ function getClient() {
 
 // Known accounts managed via this MCC. Add new accounts here.
 const KNOWN_ACCOUNTS = {
-  manager: process.env.GOOGLE_ADS_CUSTOMER_ID,
-  swiftpath: '5354667756'
+  manager: process.env.GOOGLE_ADS_LOGIN_CUSTOMER_ID,
+  swiftpath: process.env.GOOGLE_ADS_CUSTOMER_ID
 };
 
 function getCustomer(accountOverride) {
