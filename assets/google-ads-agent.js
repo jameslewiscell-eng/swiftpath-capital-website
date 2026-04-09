@@ -104,10 +104,16 @@
   function getDateRange() {
     return document.getElementById('date-range').value;
   }
+  function normalizeDateRange(dateRange) {
+    return dateRange === 'ALL_TIME' ? 'LAST_30_DAYS' : dateRange;
+  }
 
   function getAccountParam() {
     const el = document.getElementById('account-select');
     return el ? el.value : '';
+  }
+  function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
   }
 
   function accountQS() {
@@ -154,6 +160,28 @@
     div.appendChild(document.createTextNode(str || ''));
     return div.innerHTML;
   }
+  function showAlert(message, level = 'warn') {
+    const el = document.getElementById('agent-alert');
+    if (!el) return;
+    el.textContent = message || '';
+    el.style.display = message ? 'block' : 'none';
+    if (!message) return;
+    if (level === 'error') {
+      el.style.background = '#fef2f2';
+      el.style.borderColor = '#fca5a5';
+      el.style.color = '#991b1b';
+      return;
+    }
+    if (level === 'info') {
+      el.style.background = '#eff6ff';
+      el.style.borderColor = '#93c5fd';
+      el.style.color = '#1e3a8a';
+      return;
+    }
+    el.style.background = '#fff7ed';
+    el.style.borderColor = '#fdba74';
+    el.style.color = '#9a3412';
+  }
 
   // ── Tabs ──────────────────────────────────────────────────
 
@@ -166,12 +194,13 @@
 
     const panel = document.getElementById(`panel-${tabId}`);
     if (panel) panel.classList.add('active');
+    if (tabId === 'builder' && authToken) ensureBuilderLoaded();
   };
 
   // ── Overview ──────────────────────────────────────────────
 
   async function loadOverview() {
-    const dateRange = getDateRange();
+    const dateRange = normalizeDateRange(getDateRange());
     try {
       const data = await apiGet(`google-ads-report?type=overview&dateRange=${dateRange}${accountQS()}`);
       const o = data.overview || {};
@@ -185,13 +214,14 @@
       document.getElementById('kpi-cpa').textContent = fmtCurrency(o.costPerConversion);
     } catch (err) {
       console.error('Failed to load overview:', err);
+      showAlert('Could not load overview metrics. Verify account access and Google Ads API credentials.', 'error');
     }
   }
 
   async function loadDaily() {
     const container = document.getElementById('daily-table-container');
     container.innerHTML = '<div class="loading-overlay"><span class="spinner"></span> Loading…</div>';
-    const dateRange = getDateRange();
+    const dateRange = normalizeDateRange(getDateRange());
 
     try {
       const data = await apiGet(`google-ads-report?type=daily&dateRange=${dateRange}${accountQS()}`);
@@ -199,6 +229,7 @@
 
       if (!rows.length) {
         container.innerHTML = '<p style="color:#6b7280;padding:1rem;">No data for this date range.</p>';
+        showAlert('No performance rows returned yet. If this is a new campaign, switch Date Range to All Time and confirm the campaign is ENABLED.', 'info');
         return;
       }
 
@@ -221,6 +252,7 @@
       container.innerHTML = html;
     } catch (err) {
       container.innerHTML = `<p style="color:#dc2626;padding:1rem;">Error: ${escapeHtml(err.message)}</p>`;
+      showAlert('Daily performance query failed. Try refreshing, then switch account if needed.', 'error');
     }
   }
 
@@ -236,8 +268,10 @@
 
       if (!campaigns.length) {
         container.innerHTML = '<p style="color:#6b7280;padding:1rem;">No campaigns found.</p>';
+        showAlert('No campaigns were returned for this account. Confirm the campaign was created under the selected account and is not REMOVED.', 'warn');
         return;
       }
+      showAlert('');
 
       let html = `<table class="data-table">
         <thead><tr>
@@ -268,6 +302,7 @@
       container.innerHTML = html;
     } catch (err) {
       container.innerHTML = `<p style="color:#dc2626;padding:1rem;">Error: ${escapeHtml(err.message)}</p>`;
+      showAlert('Campaign query failed. This usually means account permissions or token configuration needs attention.', 'error');
     }
   }
 
@@ -355,7 +390,7 @@
   async function loadKeywords() {
     const container = document.getElementById('keywords-table-container');
     container.innerHTML = '<div class="loading-overlay"><span class="spinner"></span> Loading keywords…</div>';
-    const dateRange = getDateRange();
+    const dateRange = normalizeDateRange(getDateRange());
 
     try {
       const data = await apiGet(`google-ads-report?type=keywords&dateRange=${dateRange}${accountQS()}`);
@@ -459,9 +494,116 @@
     coEl.innerHTML = callouts.map(c => `<span class="headline-chip">${escapeHtml(c)}</span>`).join('');
   }
 
+  // ── Campaign Builder (Phase 4a) ──────────────────────────
+
+  let funnelPages = [];
+  let builderLoaded = false;
+
+  function renderBuilderPageOptions() {
+    const select = document.getElementById('builder-page-select');
+    if (!select) return;
+    if (!funnelPages.length) {
+      select.innerHTML = '<option value="">No funnel pages found</option>';
+      return;
+    }
+    select.innerHTML = funnelPages
+      .map(p => `<option value="${escapeHtml(p.path)}">${escapeHtml(p.label)} (${escapeHtml(p.path)})</option>`)
+      .join('');
+  }
+
+  async function ensureBuilderLoaded() {
+    if (builderLoaded) return;
+    const statusEl = document.getElementById('builder-status');
+    if (!statusEl) return;
+    try {
+      const data = await apiGet('funnel-analyzer?list=1');
+      funnelPages = Array.isArray(data.pages) ? data.pages : [];
+      renderBuilderPageOptions();
+      statusEl.textContent = funnelPages.length
+        ? `Loaded ${funnelPages.length} funnel pages.`
+        : 'No funnel pages found.';
+      builderLoaded = true;
+    } catch (err) {
+      statusEl.textContent = `Failed to load funnel pages: ${err.message}`;
+    }
+  }
+
+  function makeJobId() {
+    return `bp_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+  }
+
+  async function pollBlueprint(jobId) {
+    const maxAttempts = 80;
+    const delayMs = 2500;
+    for (let i = 0; i < maxAttempts; i++) {
+      const data = await apiGet(`campaign-blueprint-status?jobId=${encodeURIComponent(jobId)}`);
+      if (data.status === 'ready' || data.status === 'error') return data;
+      await sleep(delayMs);
+    }
+    throw new Error('Timed out waiting for blueprint job to finish');
+  }
+
+  window.generateBlueprint = async function () {
+    const btn = document.getElementById('builder-generate-btn');
+    const select = document.getElementById('builder-page-select');
+    const statusEl = document.getElementById('builder-status');
+    const valEl = document.getElementById('builder-validation');
+    const jsonEl = document.getElementById('builder-json');
+    const path = select ? select.value : '';
+    if (!path) {
+      if (statusEl) statusEl.textContent = 'Choose a funnel page first.';
+      return;
+    }
+    if (!btn || !statusEl || !valEl || !jsonEl) return;
+
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span> Generating…';
+    statusEl.textContent = `Analyzing ${path}…`;
+    valEl.style.display = 'none';
+    jsonEl.style.display = 'none';
+    jsonEl.textContent = '';
+
+    try {
+      const analysisRes = await apiGet(`funnel-analyzer?url=${encodeURIComponent(path)}`);
+      const analysis = analysisRes.analysis;
+      if (!analysis || !analysis.path) {
+        throw new Error('Funnel analyzer did not return a valid analysis payload.');
+      }
+
+      const jobId = makeJobId();
+      statusEl.textContent = `Queued background generation (job ${jobId}).`;
+      await apiPost('campaign-blueprint-background', {
+        jobId,
+        analysis,
+        account: getAccountParam()
+      });
+
+      statusEl.textContent = `Generating blueprint for ${path}…`;
+      const result = await pollBlueprint(jobId);
+      if (result.status === 'error') {
+        throw new Error(result.error || 'Background job failed');
+      }
+
+      const validation = result.validation || { errors: [], warnings: [] };
+      valEl.style.display = 'block';
+      valEl.style.color = validation.errors && validation.errors.length ? '#991b1b' : '#065f46';
+      valEl.textContent = `Validation: ${validation.errors ? validation.errors.length : 0} errors, ${validation.warnings ? validation.warnings.length : 0} warnings.`;
+
+      jsonEl.style.display = 'block';
+      jsonEl.textContent = JSON.stringify(result.blueprint || result, null, 2);
+      statusEl.textContent = `Blueprint ready for ${path}.`;
+    } catch (err) {
+      statusEl.textContent = `Blueprint generation failed: ${err.message}`;
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Generate Blueprint';
+    }
+  };
+
   // ── Refresh All ───────────────────────────────────────────
 
   window.refreshAll = function () {
+    showAlert('');
     loadOverview();
     loadDaily();
     loadCampaigns();
