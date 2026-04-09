@@ -325,6 +325,7 @@
       </select>
       <label for="date-range" style="font-size:0.85rem;font-weight:600;color:#374151;">Date Range:</label>
       <select id="date-range">
+        <option value="ALL_TIME">All Time</option>
         <option value="TODAY">Today</option>
         <option value="YESTERDAY">Yesterday</option>
         <option value="LAST_7_DAYS" selected>Last 7 Days</option>
@@ -336,12 +337,14 @@
       <button onclick="refreshAll()">Refresh Data</button>
       <button class="secondary" onclick="switchTab('copy')">Generate Ad Copy</button>
     </div>
+    <div id="agent-alert" style="display:none;margin:0.9rem 1.5rem 0;padding:0.7rem 0.9rem;border-radius:8px;background:#fff7ed;border:1px solid #fdba74;color:#9a3412;font-size:0.85rem;"></div>
 
     <!-- Tabs -->
     <div class="tab-bar">
       <button class="tab-btn active" data-tab="overview" onclick="switchTab('overview')">Overview</button>
       <button class="tab-btn" data-tab="campaigns" onclick="switchTab('campaigns')">Campaigns</button>
       <button class="tab-btn" data-tab="keywords" onclick="switchTab('keywords')">Keywords</button>
+      <button class="tab-btn" data-tab="builder" onclick="switchTab('builder')">Campaign Builder</button>
       <button class="tab-btn" data-tab="copy" onclick="switchTab('copy')">Ad Copy AI</button>
     </div>
 
@@ -388,6 +391,24 @@
         <div id="keywords-table-container">
           <div class="loading-overlay"><span class="spinner"></span> Loading keyword data…</div>
         </div>
+      </div>
+    </div>
+
+    <!-- Campaign Builder Tab -->
+    <div class="tab-panel" id="panel-builder">
+      <div class="section" style="padding-top:1.5rem;">
+        <h2>Campaign Blueprint Builder</h2>
+        <p style="color:#6b7280;font-size:0.92rem;margin-top:-0.2rem;">
+          Select a funnel page, generate a blueprint in the background, then review raw JSON output.
+        </p>
+        <div style="display:flex;gap:0.75rem;flex-wrap:wrap;align-items:center;margin:0.9rem 0 1rem;">
+          <label for="builder-page-select" style="font-size:0.85rem;font-weight:600;color:#374151;">Funnel Page:</label>
+          <select id="builder-page-select" style="min-width:320px;"></select>
+          <button id="builder-generate-btn" onclick="generateBlueprint()">Generate Blueprint</button>
+        </div>
+        <div id="builder-status" style="font-size:0.85rem;color:#374151;margin-bottom:0.75rem;">Loading funnel pages…</div>
+        <div id="builder-validation" style="display:none;font-size:0.85rem;margin-bottom:0.75rem;"></div>
+        <pre id="builder-json" style="display:none;background:#0f172a;color:#e2e8f0;padding:1rem;border-radius:8px;overflow:auto;max-height:460px;font-size:0.8rem;line-height:1.4;"></pre>
       </div>
     </div>
 
