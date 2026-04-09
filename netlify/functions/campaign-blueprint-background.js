@@ -1,12 +1,16 @@
-// netlify/functions/campaign-blueprint.js
-// Phase 3 of the Campaign Builder: takes a funnel page analysis + live
-// house-style data and asks Claude to generate a CampaignBlueprint that
-// strictly conforms to SwiftPath's restrictive keyword strategy.
+// netlify/functions/campaign-blueprint-background.js
+// Phase 3 of the Campaign Builder — BACKGROUND function.
 //
-// The hard rules are enforced in two places:
-//   1. The system prompt Claude receives (soft guardrail)
-//   2. A validateBlueprint() function that runs on Claude's JSON output
-//      and rejects anything that violates a hard rule (hard guardrail)
+// Netlify background functions (*.js with -background suffix) return 202
+// immediately and run for up to 15 minutes. We use that to bypass the 30s
+// synchronous gateway timeout that was killing Opus generation calls.
+//
+// Flow:
+//   Client POSTs { analysis, jobId } — gets 202 immediately
+//   This function pulls live house style, calls Claude, validates result,
+//   and stores { status, blueprint?, error?, validation?, usage? } in
+//   Netlify Blobs under key `blueprint:<jobId>`
+//   Client polls /campaign-blueprint-status?jobId=<jobId> for the result
 //
 // Auth: shares GOOGLE_ADS_AGENT_SECRET with the rest of the agent.
 //
@@ -15,13 +19,15 @@
 //   (inherits all google-ads-client env vars for the house-style pull)
 
 const Anthropic = require('@anthropic-ai/sdk');
+const { getStore } = require('@netlify/blobs');
 const {
   getCustomer,
   handleOptions,
   errorResponse,
-  jsonResponse,
   requireAuth
 } = require('./lib/google-ads-client');
+
+const BLUEPRINT_STORE = 'campaign-blueprints';
 
 // ── Hardcoded house rules ────────────────────────────────────────
 //
@@ -389,11 +395,33 @@ async function callClaude({ systemPrompt, userPrompt }) {
   return { parsed, usage: response.usage };
 }
 
+// ── Blob storage helpers ────────────────────────────────────────
+
+function getBlueprintStore() {
+  // Netlify Blobs: scoped to this site automatically when running on Netlify
+  return getStore({ name: BLUEPRINT_STORE, consistency: 'strong' });
+}
+
+async function writeJob(jobId, payload) {
+  const store = getBlueprintStore();
+  await store.setJSON(`blueprint:${jobId}`, {
+    ...payload,
+    updatedAt: new Date().toISOString()
+  });
+}
+
 // ── Handler ──────────────────────────────────────────────────────
+//
+// Background functions in Netlify: Netlify returns 202 to the client as
+// soon as the handler begins; we can return whatever we like from the
+// handler (it's only logged, not sent to the client). So our job is to
+// run to completion and write the result to Blob storage.
 
 exports.handler = async function(event) {
   if (event.httpMethod === 'OPTIONS') return handleOptions();
-  if (event.httpMethod !== 'POST') return errorResponse(405, 'Method Not Allowed — use POST with {analysis} body');
+  if (event.httpMethod !== 'POST') {
+    return errorResponse(405, 'Method Not Allowed — use POST with {analysis, jobId} body');
+  }
 
   try {
     if (!requireAuth(event)) return errorResponse(401, 'Unauthorized');
@@ -401,11 +429,27 @@ exports.handler = async function(event) {
     return errorResponse(500, err.message);
   }
 
+  let jobId;
   try {
     const body = JSON.parse(event.body || '{}');
+    jobId = body.jobId;
     const analysis = body.analysis;
+    if (!jobId) {
+      return errorResponse(400, 'Request body must include { jobId }');
+    }
     if (!analysis || !analysis.path) {
       return errorResponse(400, 'Request body must include { analysis: <funnel-analyzer output> }');
+    }
+
+    // Mark the job as running ASAP so the client poller sees "pending"
+    // instead of "unknown" on the first poll.
+    try {
+      await writeJob(jobId, {
+        status: 'pending',
+        path: analysis.path
+      });
+    } catch (e) {
+      console.warn('Could not write initial pending marker:', e.message);
     }
 
     const account = body.account || 'swiftpath';
@@ -418,7 +462,7 @@ exports.handler = async function(event) {
     const systemPrompt = buildSystemPrompt(houseStyle);
     const userPrompt = buildUserPrompt(analysis);
 
-    // Call Claude
+    // Call Claude (may take 30-90s for Opus at this token count)
     const { parsed: blueprint, usage } = await callClaude({ systemPrompt, userPrompt });
 
     // Validate
@@ -428,7 +472,10 @@ exports.handler = async function(event) {
       expectedTheme
     });
 
-    return jsonResponse({
+    // Write the final result
+    await writeJob(jobId, {
+      status: 'ready',
+      path: analysis.path,
       blueprint,
       validation,
       houseStyleStats: {
@@ -438,9 +485,18 @@ exports.handler = async function(event) {
       usage,
       stateLookup: STATE_ID_TO_NAME
     });
+
+    return { statusCode: 202, body: JSON.stringify({ status: 'ready', jobId }) };
   } catch (err) {
     const msg = err.message || String(err) || 'Internal server error';
-    console.error('campaign-blueprint error:', msg, err);
-    return errorResponse(500, msg);
+    console.error('campaign-blueprint-background error:', msg, err);
+    if (jobId) {
+      try {
+        await writeJob(jobId, { status: 'error', error: msg });
+      } catch (e) {
+        console.error('Also failed to write error state:', e.message);
+      }
+    }
+    return { statusCode: 202, body: JSON.stringify({ status: 'error', error: msg }) };
   }
 };

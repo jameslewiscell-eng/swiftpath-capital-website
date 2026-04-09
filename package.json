@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.86.1",
+    "@netlify/blobs": "^10.7.4",
     "busboy": "^1.6.0",
     "cheerio": "^1.2.0",
     "google-ads-api": "^23.0.0"
