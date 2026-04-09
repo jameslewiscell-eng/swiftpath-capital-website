@@ -19,7 +19,7 @@
 //   (inherits all google-ads-client env vars for the house-style pull)
 
 const Anthropic = require('@anthropic-ai/sdk');
-const { getStore } = require('@netlify/blobs');
+const { getStore, connectLambda } = require('@netlify/blobs');
 const {
   getCustomer,
   handleOptions,
@@ -421,6 +421,14 @@ exports.handler = async function(event) {
   if (event.httpMethod === 'OPTIONS') return handleOptions();
   if (event.httpMethod !== 'POST') {
     return errorResponse(405, 'Method Not Allowed — use POST with {analysis, jobId} body');
+  }
+
+  // Bridge the Lambda v1 handler event into the Netlify Blobs SDK context
+  // so getStore() works without explicit siteID/token.
+  try {
+    connectLambda(event);
+  } catch (e) {
+    console.warn('connectLambda failed:', e.message);
   }
 
   try {

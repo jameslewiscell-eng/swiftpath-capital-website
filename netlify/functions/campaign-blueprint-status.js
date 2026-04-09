@@ -7,7 +7,7 @@
 //
 // Auth: shares GOOGLE_ADS_AGENT_SECRET with the rest of the agent.
 
-const { getStore } = require('@netlify/blobs');
+const { getStore, connectLambda } = require('@netlify/blobs');
 const {
   handleOptions,
   errorResponse,
@@ -20,6 +20,13 @@ const BLUEPRINT_STORE = 'campaign-blueprints';
 exports.handler = async function(event) {
   if (event.httpMethod === 'OPTIONS') return handleOptions();
   if (event.httpMethod !== 'GET') return errorResponse(405, 'Method Not Allowed');
+
+  // Bridge Lambda v1 event into the Netlify Blobs SDK context
+  try {
+    connectLambda(event);
+  } catch (e) {
+    console.warn('connectLambda failed:', e.message);
+  }
 
   try {
     if (!requireAuth(event)) return errorResponse(401, 'Unauthorized');
