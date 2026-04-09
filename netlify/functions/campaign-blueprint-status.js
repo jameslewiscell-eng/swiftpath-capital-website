@@ -39,7 +39,7 @@ exports.handler = async function(event) {
     const jobId = (params.jobId || '').trim();
     if (!jobId) return errorResponse(400, 'Missing required parameter: jobId');
 
-    const store = getStore({ name: BLUEPRINT_STORE, consistency: 'strong' });
+    const store = getStore({ name: BLUEPRINT_STORE });
     const payload = await store.get(`blueprint:${jobId}`, { type: 'json' });
 
     if (!payload) {

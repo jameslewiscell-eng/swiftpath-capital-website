@@ -399,7 +399,10 @@ async function callClaude({ systemPrompt, userPrompt }) {
 
 function getBlueprintStore() {
   // Netlify Blobs: scoped to this site automatically when running on Netlify
-  return getStore({ name: BLUEPRINT_STORE, consistency: 'strong' });
+  // (strong consistency requires an edge URL that isn't configured in
+  // Functions v1, so we fall back to eventual — the polling loop tolerates
+  // a few seconds of lag).
+  return getStore({ name: BLUEPRINT_STORE });
 }
 
 async function writeJob(jobId, payload) {
