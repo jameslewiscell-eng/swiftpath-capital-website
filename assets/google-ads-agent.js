@@ -118,7 +118,18 @@
   // ── Format Helpers ────────────────────────────────────────
 
   function fmt(n) { return n != null ? n.toLocaleString() : '--'; }
-  function fmtCurrency(n) { return n != null ? '$' + n.toFixed(2) : '--'; }
+  // SwiftPath's Google Ads account is denominated in COP (Colombian Pesos).
+  // COP is a whole-unit currency — no decimals, Spanish-style thousands separators.
+  const CURRENCY_FMT = new Intl.NumberFormat('es-CO', {
+    style: 'currency',
+    currency: 'COP',
+    maximumFractionDigits: 0,
+    minimumFractionDigits: 0
+  });
+  function fmtCurrency(n) {
+    if (n == null || Number.isNaN(Number(n))) return '--';
+    return CURRENCY_FMT.format(Math.round(Number(n)));
+  }
   function fmtPct(n) { return n != null ? (n * 100).toFixed(2) + '%' : '--'; }
 
   // Google Ads API returns status as a numeric enum
