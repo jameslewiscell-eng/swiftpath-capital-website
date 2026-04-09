@@ -284,10 +284,7 @@ async function campaignSettings(customer) {
       campaign_budget.id,
       campaign_budget.name,
       campaign_budget.amount_micros,
-      campaign_budget.delivery_method,
-      campaign_budget.explicit_shared,
-      campaign.start_date,
-      campaign.end_date
+      campaign_budget.delivery_method
     FROM campaign
     WHERE campaign.status != 'REMOVED'
   `);
@@ -392,11 +389,8 @@ async function campaignSettings(customer) {
         id: r.campaign_budget.id,
         name: r.campaign_budget.name,
         amount: Number(r.campaign_budget.amount_micros || 0) / 1_000_000,
-        deliveryMethod: r.campaign_budget.delivery_method,
-        shared: r.campaign_budget.explicit_shared
-      },
-      startDate: r.campaign.start_date,
-      endDate: r.campaign.end_date
+        deliveryMethod: r.campaign_budget.delivery_method
+      }
     })),
     geoTargets: geoRows.map(r => {
       const rn = r.campaign_criterion.location && r.campaign_criterion.location.geo_target_constant;
