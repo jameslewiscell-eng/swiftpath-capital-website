@@ -26,6 +26,35 @@ const {
 
 const CUSTOMER_ID = () => process.env.GOOGLE_ADS_CUSTOMER_ID;
 
+function normalizeError(err) {
+  if (!err) return 'Unknown server error';
+  if (typeof err === 'string') return err;
+
+  if (typeof err.message === 'string' && err.message.trim()) {
+    return err.message;
+  }
+
+  if (err.errors && Array.isArray(err.errors) && err.errors.length) {
+    const first = err.errors[0];
+    if (typeof first === 'string') return first;
+    if (first && typeof first.message === 'string') return first.message;
+  }
+
+  if (err.failure && Array.isArray(err.failure.errors) && err.failure.errors.length) {
+    const first = err.failure.errors[0];
+    const errorCodeKey = first.error_code ? Object.keys(first.error_code)[0] : '';
+    const codeSuffix = errorCodeKey ? ` (${errorCodeKey})` : '';
+    const message = first.message || 'Google Ads API operation failed';
+    return `${message}${codeSuffix}`;
+  }
+
+  try {
+    return JSON.stringify(err);
+  } catch (_) {
+    return String(err);
+  }
+}
+
 // ── Resource name helpers ─────────────────────────────────────────────────
 
 function tmpBudgetName() {
@@ -260,7 +289,7 @@ exports.handler = async function(event) {
 
     return jsonResponse({ ok: true, ...result });
   } catch (err) {
-    const msg = err.message || String(err) || 'Internal server error';
+    const msg = normalizeError(err);
     console.error('campaign-blueprint-create error:', msg, err);
     return errorResponse(500, msg);
   }

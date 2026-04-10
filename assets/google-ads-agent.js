@@ -96,7 +96,22 @@
     });
     if (!res.ok && res.status !== 202) {
       const text = await res.text();
-      throw new Error(`API error ${res.status}: ${text}`);
+      let details = text;
+      try {
+        const parsed = JSON.parse(text);
+        if (parsed && typeof parsed.error === 'string') {
+          details = parsed.error;
+        } else if (parsed && parsed.error && typeof parsed.error === 'object') {
+          details = parsed.error.message || JSON.stringify(parsed.error);
+        } else if (parsed && typeof parsed.message === 'string') {
+          details = parsed.message;
+        } else {
+          details = JSON.stringify(parsed);
+        }
+      } catch (_) {
+        // Non-JSON response body — keep raw text.
+      }
+      throw new Error(`API error ${res.status}: ${details}`);
     }
     // Netlify background functions return 202 with an empty body
     if (res.status === 202) return {};
