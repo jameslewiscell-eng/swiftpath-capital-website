@@ -500,6 +500,7 @@
 
   let funnelPages = [];
   let builderLoaded = false;
+  let lastBlueprint = null;
 
   function renderBuilderPageOptions() {
     const select = document.getElementById('builder-page-select');
@@ -599,11 +600,59 @@
       jsonEl.style.display = 'block';
       jsonEl.textContent = JSON.stringify(result.blueprint || result, null, 2);
       statusEl.textContent = `Blueprint ready for ${path}.`;
+
+      // Store blueprint and show the create button (only if validation passed)
+      lastBlueprint = result.blueprint || null;
+      const createBar = document.getElementById('builder-create-bar');
+      const createResult = document.getElementById('builder-create-result');
+      if (createBar) createBar.style.display = lastBlueprint ? 'block' : 'none';
+      if (createResult) { createResult.style.display = 'none'; createResult.innerHTML = ''; }
     } catch (err) {
       statusEl.textContent = `Blueprint generation failed: ${err.message}`;
     } finally {
       btn.disabled = false;
       btn.textContent = 'Generate Blueprint';
+    }
+  };
+
+  // ── Campaign Blueprint → Create ──────────────────────────
+
+  window.createBlueprintCampaign = async function () {
+    const btn = document.getElementById('builder-create-btn');
+    const resultEl = document.getElementById('builder-create-result');
+    if (!lastBlueprint) {
+      alert('No blueprint loaded. Generate a blueprint first.');
+      return;
+    }
+
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span> Creating…';
+    resultEl.style.display = 'none';
+
+    try {
+      const data = await apiPost('campaign-blueprint-create', {
+        blueprint: lastBlueprint,
+        account: getAccountParam()
+      });
+
+      resultEl.style.display = 'block';
+      resultEl.style.color = '#065f46';
+      resultEl.innerHTML =
+        `<strong>Campaign created!</strong> ID: <code>${escapeHtml(String(data.campaignId))}</code> &mdash; ` +
+        `${data.summary.adGroupsCreated} ad groups, ` +
+        `${data.summary.negativeKeywordsAdded} negative keywords, ` +
+        `${data.summary.geoTargetsAdded} geo targets. ` +
+        `Campaign is <strong>PAUSED</strong> &mdash; enable it in the Campaigns tab when ready.`;
+
+      // Refresh campaigns tab so the new one appears
+      loadCampaigns && loadCampaigns();
+    } catch (err) {
+      resultEl.style.display = 'block';
+      resultEl.style.color = '#991b1b';
+      resultEl.innerHTML = `<strong>Create failed:</strong> ${escapeHtml(err.message)}`;
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Create Campaign in Google Ads';
     }
   };
 
