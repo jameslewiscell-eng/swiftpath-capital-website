@@ -587,9 +587,14 @@
       }
 
       const validation = result.validation || { errors: [], warnings: [] };
+      const errs = validation.errors || [];
+      const warns = validation.warnings || [];
       valEl.style.display = 'block';
-      valEl.style.color = validation.errors && validation.errors.length ? '#991b1b' : '#065f46';
-      valEl.textContent = `Validation: ${validation.errors ? validation.errors.length : 0} errors, ${validation.warnings ? validation.warnings.length : 0} warnings.`;
+      valEl.style.color = errs.length ? '#991b1b' : '#065f46';
+      let valHtml = `<strong>Validation: ${errs.length} errors, ${warns.length} warnings.</strong>`;
+      if (errs.length) valHtml += '<ul style="margin:0.4rem 0 0;padding-left:1.25rem;">' + errs.map(e => `<li>${escapeHtml(e)}</li>`).join('') + '</ul>';
+      if (warns.length) valHtml += '<ul style="margin:0.4rem 0 0;padding-left:1.25rem;color:#92400e;">' + warns.map(w => `<li>${escapeHtml(w)}</li>`).join('') + '</ul>';
+      valEl.innerHTML = valHtml;
 
       jsonEl.style.display = 'block';
       jsonEl.textContent = JSON.stringify(result.blueprint || result, null, 2);
