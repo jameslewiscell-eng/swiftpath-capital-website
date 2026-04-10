@@ -599,7 +599,8 @@
 
       jsonEl.style.display = 'block';
       jsonEl.textContent = JSON.stringify(result.blueprint || result, null, 2);
-      statusEl.textContent = `Blueprint ready for ${path}.`;
+      const attemptNote = result.attempts > 1 ? ` (auto-corrected in ${result.attempts} attempts)` : '';
+      statusEl.textContent = `Blueprint ready for ${path}.${attemptNote}`;
 
       // Store blueprint and show the create button (only if validation passed)
       lastBlueprint = result.blueprint || null;

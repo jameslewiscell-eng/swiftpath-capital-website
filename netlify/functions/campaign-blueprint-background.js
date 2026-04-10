@@ -362,26 +362,18 @@ function validateBlueprint(bp, { houseStyleNegatives, expectedTheme }) {
 
 // ── Claude call ──────────────────────────────────────────────────
 
-async function callClaude({ systemPrompt, userPrompt }) {
+function getAnthropicClient() {
   const apiKey = process.env.ANTHROPIC_API_KEY;
   if (!apiKey) {
     throw new Error('ANTHROPIC_API_KEY env var is not set. Add it to Netlify before generating blueprints.');
   }
+  return new Anthropic({ apiKey });
+}
 
-  const client = new Anthropic({ apiKey });
-
-  const response = await client.messages.create({
-    model: 'claude-opus-4-6',
-    max_tokens: 8000,
-    system: systemPrompt,
-    messages: [{ role: 'user', content: userPrompt }]
-  });
-
-  // Extract text from the response
+function parseClaudeJson(response) {
   const textBlocks = (response.content || []).filter(b => b.type === 'text');
   const raw = textBlocks.map(b => b.text).join('\n').trim();
 
-  // Strip code fences if present
   let jsonStr = raw;
   const fenceMatch = raw.match(/```(?:json)?\s*([\s\S]*?)```/);
   if (fenceMatch) jsonStr = fenceMatch[1].trim();
@@ -392,7 +384,70 @@ async function callClaude({ systemPrompt, userPrompt }) {
   } catch (err) {
     throw new Error(`Claude returned non-JSON output: ${err.message}. First 500 chars: ${raw.slice(0, 500)}`);
   }
-  return { parsed, usage: response.usage };
+  return { parsed, raw, usage: response.usage };
+}
+
+// Generate a blueprint and auto-fix validation errors by feeding them back
+// to Claude in a multi-turn conversation. Returns once validation passes
+// or MAX_FIX_ATTEMPTS is exhausted.
+const MAX_FIX_ATTEMPTS = 3;
+
+async function generateAndFixBlueprint({ systemPrompt, userPrompt, houseStyleNegatives, expectedTheme }) {
+  const client = getAnthropicClient();
+  const messages = [{ role: 'user', content: userPrompt }];
+  let totalUsage = { input_tokens: 0, output_tokens: 0 };
+  let attempts = 0;
+
+  while (true) {
+    attempts++;
+
+    const response = await client.messages.create({
+      model: 'claude-opus-4-6',
+      max_tokens: 8000,
+      system: systemPrompt,
+      messages
+    });
+
+    totalUsage.input_tokens += (response.usage || {}).input_tokens || 0;
+    totalUsage.output_tokens += (response.usage || {}).output_tokens || 0;
+
+    const { parsed: blueprint, raw } = parseClaudeJson(response);
+
+    const validation = validateBlueprint(blueprint, {
+      houseStyleNegatives,
+      expectedTheme
+    });
+
+    if (validation.valid || attempts > MAX_FIX_ATTEMPTS) {
+      return { blueprint, validation, usage: totalUsage, attempts };
+    }
+
+    // Feed errors back — append assistant response + user correction
+    messages.push({ role: 'assistant', content: raw });
+    messages.push({
+      role: 'user',
+      content: buildFixPrompt(validation.errors, validation.warnings)
+    });
+  }
+}
+
+function buildFixPrompt(errors, warnings) {
+  let prompt = 'The blueprint you returned has validation errors that MUST be fixed before it can be created in Google Ads. Fix every issue below and return the corrected JSON. No prose — only the JSON object.\n\n';
+
+  if (errors.length) {
+    prompt += '## ERRORS (must fix all)\n';
+    errors.forEach((e, i) => { prompt += `${i + 1}. ${e}\n`; });
+    prompt += '\n';
+  }
+
+  if (warnings.length) {
+    prompt += '## WARNINGS (fix if possible)\n';
+    warnings.forEach((w, i) => { prompt += `${i + 1}. ${w}\n`; });
+    prompt += '\n';
+  }
+
+  prompt += 'Return ONLY the corrected JSON blueprint. No explanation.';
+  return prompt;
 }
 
 // ── Blob storage helpers ────────────────────────────────────────
@@ -472,13 +527,12 @@ exports.handler = async function(event) {
     // Compose prompts
     const systemPrompt = buildSystemPrompt(houseStyle);
     const userPrompt = buildUserPrompt(analysis);
-
-    // Call Claude (may take 30-90s for Opus at this token count)
-    const { parsed: blueprint, usage } = await callClaude({ systemPrompt, userPrompt });
-
-    // Validate
     const expectedTheme = (analysis.inventory && analysis.inventory.theme) || null;
-    const validation = validateBlueprint(blueprint, {
+
+    // Generate blueprint, auto-fixing validation errors up to MAX_FIX_ATTEMPTS
+    const { blueprint, validation, usage, attempts } = await generateAndFixBlueprint({
+      systemPrompt,
+      userPrompt,
       houseStyleNegatives: houseStyle.negatives,
       expectedTheme
     });
@@ -489,6 +543,7 @@ exports.handler = async function(event) {
       path: analysis.path,
       blueprint,
       validation,
+      attempts,
       houseStyleStats: {
         inheritedNegativesCount: houseStyle.negatives.length,
         topPerformersCount: houseStyle.topPerformers.length
