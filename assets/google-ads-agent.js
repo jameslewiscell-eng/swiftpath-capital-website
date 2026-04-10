@@ -94,10 +94,12 @@
       },
       body: JSON.stringify(body)
     });
-    if (!res.ok) {
+    if (!res.ok && res.status !== 202) {
       const text = await res.text();
       throw new Error(`API error ${res.status}: ${text}`);
     }
+    // Netlify background functions return 202 with an empty body
+    if (res.status === 202) return {};
     return res.json();
   }
 

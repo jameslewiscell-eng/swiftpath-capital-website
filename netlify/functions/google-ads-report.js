@@ -18,8 +18,7 @@ async function accountOverview(customer, dateRange) {
       metrics.conversions,
       metrics.cost_per_conversion,
       metrics.average_cpc,
-      metrics.ctr,
-      metrics.conversion_rate
+      metrics.ctr
     FROM customer
     WHERE segments.date DURING ${dateRange}
   `);
@@ -29,14 +28,16 @@ async function accountOverview(customer, dateRange) {
   }
 
   const m = rows[0].metrics;
+  const clicks = Number(m.clicks || 0);
+  const conversions = Number(m.conversions || 0);
   return {
     impressions: Number(m.impressions || 0),
-    clicks: Number(m.clicks || 0),
+    clicks,
     cost: Number(m.cost_micros || 0) / 1_000_000,
-    conversions: Number(m.conversions || 0),
+    conversions,
     cpc: Number(m.average_cpc || 0) / 1_000_000,
     ctr: Number(m.ctr || 0),
-    conversionRate: Number(m.conversion_rate || 0),
+    conversionRate: clicks > 0 ? conversions / clicks : 0,
     costPerConversion: Number(m.cost_per_conversion || 0) / 1_000_000
   };
 }
