@@ -516,6 +516,146 @@
   let funnelPages = [];
   let builderLoaded = false;
   let lastBlueprint = null;
+  const CREATE_FIXES_STORAGE_KEY = 'gads_builder_error_fixes_v1';
+  const ALWAYS_BLOCKED_KEYWORD_PHRASES = ['hard money'];
+
+  function getStoredCreateFixes() {
+    try {
+      const raw = localStorage.getItem(CREATE_FIXES_STORAGE_KEY);
+      if (!raw) return { blockedKeywordPhrases: [] };
+      const parsed = JSON.parse(raw);
+      if (!parsed || typeof parsed !== 'object') return { blockedKeywordPhrases: [] };
+      const blockedKeywordPhrases = Array.isArray(parsed.blockedKeywordPhrases)
+        ? parsed.blockedKeywordPhrases
+        : [];
+      return { blockedKeywordPhrases };
+    } catch (_) {
+      return { blockedKeywordPhrases: [] };
+    }
+  }
+
+  function storeCreateFixes(fixes) {
+    try {
+      localStorage.setItem(CREATE_FIXES_STORAGE_KEY, JSON.stringify(fixes || { blockedKeywordPhrases: [] }));
+    } catch (_) {
+      // Best effort only.
+    }
+  }
+
+  function cloneBlueprint(blueprint) {
+    return JSON.parse(JSON.stringify(blueprint || {}));
+  }
+
+  function applyLearnedFixesToBlueprint(blueprint) {
+    const draft = cloneBlueprint(blueprint);
+    const fixes = getStoredCreateFixes();
+    const blocked = [
+      ...ALWAYS_BLOCKED_KEYWORD_PHRASES,
+      ...(fixes.blockedKeywordPhrases || [])
+    ]
+      .map(v => String(v || '').trim().toLowerCase())
+      .filter(Boolean);
+
+    (draft.adGroups || []).forEach(ag => {
+      if (!ag || !Array.isArray(ag.keywords)) return;
+      ag.keywords = ag.keywords
+        .filter(kw => {
+          const keywordText = String(kw && kw.text || '').trim().toLowerCase();
+          if (!keywordText) return false;
+          return !blocked.some(term => keywordText.includes(term));
+        })
+        .filter(kw => String(kw && kw.text || '').trim().length > 0);
+    });
+
+    return draft;
+  }
+
+  function parseCreateFailure(message) {
+    const msg = String(message || '');
+    const triggerMatch = msg.match(/trigger:\s*"([^"]+)"/i);
+    if (triggerMatch && triggerMatch[1]) {
+      return { type: 'keyword_policy', keyword: triggerMatch[1].trim(), raw: msg };
+    }
+    if (/policy[_\s-]?violation/i.test(msg) && /keyword/i.test(msg)) {
+      return { type: 'keyword_policy_unknown', raw: msg };
+    }
+    return null;
+  }
+
+  function learnBlockedKeywordPhrase(blockedKeyword) {
+    const blocked = String(blockedKeyword || '').trim().toLowerCase();
+    if (!blocked) return;
+    const fixes = getStoredCreateFixes();
+    const existing = Array.isArray(fixes.blockedKeywordPhrases)
+      ? fixes.blockedKeywordPhrases
+      : [];
+    if (existing.includes(blocked)) return;
+    fixes.blockedKeywordPhrases = [...existing, blocked];
+    storeCreateFixes(fixes);
+  }
+
+  function removeKeywordFromBlueprint(blueprint, blockedKeyword) {
+    const draft = cloneBlueprint(blueprint);
+    const bad = String(blockedKeyword || '').trim().toLowerCase();
+    if (!bad) return draft;
+    (draft.adGroups || []).forEach(ag => {
+      if (!ag || !Array.isArray(ag.keywords)) return;
+      ag.keywords = ag.keywords.filter(kw => {
+        const current = String(kw && kw.text || '').trim().toLowerCase();
+        return current && !current.includes(bad);
+      });
+    });
+    return draft;
+  }
+
+  function firstAdGroupWithoutKeywords(blueprint) {
+    const groups = (blueprint && blueprint.adGroups) || [];
+    for (const ag of groups) {
+      const keywords = Array.isArray(ag && ag.keywords) ? ag.keywords : [];
+      const validCount = keywords.filter(kw => String(kw && kw.text || '').trim()).length;
+      if (validCount === 0) return String(ag && ag.name || '').trim() || 'Unnamed ad group';
+    }
+    return '';
+  }
+
+  async function attemptInteractiveCreateRecovery(errorMessage) {
+    const parsed = parseCreateFailure(errorMessage);
+    if (!parsed) return null;
+
+    if (parsed.type === 'keyword_policy' && parsed.keyword) {
+      learnBlockedKeywordPhrase(parsed.keyword);
+      lastBlueprint = removeKeywordFromBlueprint(lastBlueprint, parsed.keyword);
+      const emptyGroupName = firstAdGroupWithoutKeywords(lastBlueprint);
+      if (emptyGroupName) {
+        return {
+          fatal: true,
+          message: `Removed blocked keyword "${parsed.keyword}", but "${emptyGroupName}" now has no keywords left. Regenerate blueprint with more policy-safe keywords.`
+        };
+      }
+      return { message: `Removed blocked keyword "${parsed.keyword}" and retrying.` };
+    }
+
+    if (parsed.type === 'keyword_policy_unknown') {
+      const blockedInput = prompt(
+        'Google Ads returned a keyword policy violation but did not identify the exact keyword.\n' +
+        'Enter the blocked keyword to DELETE (leave blank to cancel):'
+      );
+      const blockedKeyword = String(blockedInput || '').trim();
+      if (!blockedKeyword) return null;
+      learnBlockedKeywordPhrase(blockedKeyword);
+      lastBlueprint = removeKeywordFromBlueprint(lastBlueprint, blockedKeyword);
+      const emptyGroupName = firstAdGroupWithoutKeywords(lastBlueprint);
+      if (emptyGroupName) {
+        return {
+          fatal: true,
+          message: `Removed blocked keyword "${blockedKeyword}", but "${emptyGroupName}" now has no keywords left. Regenerate blueprint with more policy-safe keywords.`
+        };
+      }
+      return { message: `Removed blocked keyword "${blockedKeyword}" and retrying.` };
+    }
+
+    return null;
+  }
 
   function renderBuilderPageOptions() {
     const select = document.getElementById('builder-page-select');
@@ -646,6 +786,8 @@
     resultEl.style.display = 'none';
 
     try {
+      // Apply previously learned blocked-keyword filters before every create attempt.
+      lastBlueprint = applyLearnedFixesToBlueprint(lastBlueprint);
       const data = await apiPost('campaign-blueprint-create', {
         blueprint: lastBlueprint,
         account: getAccountParam()
@@ -663,6 +805,35 @@
       // Refresh campaigns tab so the new one appears
       loadCampaigns && loadCampaigns();
     } catch (err) {
+      const recovery = await attemptInteractiveCreateRecovery(err.message);
+      if (recovery) {
+        resultEl.style.display = 'block';
+        if (recovery.fatal) {
+          resultEl.style.color = '#991b1b';
+          resultEl.innerHTML = `<strong>Create blocked:</strong> ${escapeHtml(recovery.message)}`;
+          return;
+        }
+        resultEl.style.color = '#92400e';
+        resultEl.innerHTML = `<strong>Retrying…</strong> ${escapeHtml(recovery.message)}`;
+        try {
+          const retryData = await apiPost('campaign-blueprint-create', {
+            blueprint: lastBlueprint,
+            account: getAccountParam()
+          });
+          resultEl.style.color = '#065f46';
+          resultEl.innerHTML =
+            `<strong>Campaign created after recovery!</strong> ID: <code>${escapeHtml(String(retryData.campaignId))}</code> &mdash; ` +
+            `${retryData.summary.adGroupsCreated} ad groups, ` +
+            `${retryData.summary.negativeKeywordsAdded} negative keywords, ` +
+            `${retryData.summary.geoTargetsAdded} geo targets.`;
+          loadCampaigns && loadCampaigns();
+          return;
+        } catch (retryErr) {
+          resultEl.style.color = '#991b1b';
+          resultEl.innerHTML = `<strong>Create failed after recovery attempt:</strong> ${escapeHtml(retryErr.message)}`;
+          return;
+        }
+      }
       resultEl.style.display = 'block';
       resultEl.style.color = '#991b1b';
       resultEl.innerHTML = `<strong>Create failed:</strong> ${escapeHtml(err.message)}`;
