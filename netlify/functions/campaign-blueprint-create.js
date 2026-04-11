@@ -137,7 +137,7 @@ function validateBlueprintForCreate(blueprint) {
   if (!blueprint.campaign || typeof blueprint.campaign !== 'object') {
     errors.push('Blueprint must include a campaign object.');
   } else {
-    if (!hasValue(blueprint.campaign.name)) {
+    if (typeof blueprint.campaign.name !== 'string' || !hasValue(blueprint.campaign.name)) {
       errors.push('Blueprint campaign.name must be a non-empty string.');
     }
 
@@ -158,8 +158,12 @@ function validateBlueprintForCreate(blueprint) {
       errors.push('Blueprint campaign.geoTargetStateIds must be an array when provided.');
     } else if (Array.isArray(blueprint.campaign.geoTargetStateIds)) {
       blueprint.campaign.geoTargetStateIds.forEach((stateId, idx) => {
-        if (!hasValue(stateId)) {
-          errors.push(`Blueprint campaign.geoTargetStateIds[${idx}] must be non-empty.`);
+        const isStringId = typeof stateId === 'string' && hasValue(stateId);
+        const isFiniteNumericId = typeof stateId === 'number' && Number.isFinite(stateId);
+        if (!isStringId && !isFiniteNumericId) {
+          errors.push(
+            `Blueprint campaign.geoTargetStateIds[${idx}] must be a non-empty string or finite number.`
+          );
         }
       });
     }
@@ -168,8 +172,8 @@ function validateBlueprintForCreate(blueprint) {
       errors.push('Blueprint campaign.languages must be an array when provided.');
     } else if (Array.isArray(blueprint.campaign.languages)) {
       blueprint.campaign.languages.forEach((lang, idx) => {
-        if (!hasValue(lang)) {
-          errors.push(`Blueprint campaign.languages[${idx}] must be non-empty.`);
+        if (typeof lang !== 'string' || !hasValue(lang)) {
+          errors.push(`Blueprint campaign.languages[${idx}] must be a non-empty string.`);
         }
       });
     }
@@ -187,12 +191,12 @@ function validateBlueprintForCreate(blueprint) {
       return;
     }
 
-    if (!ag.name || !String(ag.name).trim()) {
-      errors.push(`Ad group #${idx} is missing a name.`);
+    if (typeof ag.name !== 'string' || !ag.name.trim()) {
+      errors.push(`Ad group #${idx} name must be a non-empty string.`);
     }
 
     const rsa = ag.rsa || {};
-    const adGroupLabel = String(ag.name || '').trim() || idx;
+    const adGroupLabel = (typeof ag.name === 'string' ? ag.name.trim() : '') || idx;
 
     const collectStringAssets = (values, fieldLabel) => {
       if (values == null) return [];
@@ -240,7 +244,7 @@ function validateBlueprintForCreate(blueprint) {
 
     const keywordCount = cleanKeywordPayload(ag.keywords).length;
     if (keywordCount === 0) {
-      errors.push(`Ad group "${ag.name || idx}" must include at least one non-empty keyword.`);
+      errors.push(`Ad group "${adGroupLabel}" must include at least one non-empty keyword.`);
     }
   });
 
@@ -404,13 +408,14 @@ async function createFromBlueprint(customer, blueprint) {
   for (const ag of blueprint.adGroups || []) {
     // Create ad group
     const cpcMicros = Math.round((ag.cpcBidCOP || 9500) * 1_000_000);
+    const adGroupName = typeof ag.name === 'string' ? ag.name.trim() : '';
     const agRes = await customer.mutateResources([
       {
         entity: 'AdGroup',
         operation: 'create',
         resource: {
           resource_name: `customers/${cid}/adGroups/-1`,
-          name: ag.name,
+          name: adGroupName,
           campaign: campaignResourceName,
           status: 2,  // ENABLED
           type: 2,    // SEARCH_STANDARD
@@ -422,7 +427,7 @@ async function createFromBlueprint(customer, blueprint) {
     const agResourceName = agRes.mutate_operation_responses[0]
       .ad_group_result.resource_name;
     const agId = agResourceName.split('/').pop();
-    adGroupIds.push({ name: ag.name, id: agId });
+    adGroupIds.push({ name: adGroupName, id: agId });
 
     // Keywords
     const kwMutations = cleanKeywordPayload(ag.keywords).map(kw => ({
