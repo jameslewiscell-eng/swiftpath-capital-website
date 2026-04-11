@@ -82,6 +82,15 @@ function tmpBudgetName() {
   return `customers/${CUSTOMER_ID()}/campaignBudgets/-1`;
 }
 
+
+function uniqueBudgetName(baseName) {
+  const safeBase = (typeof baseName === 'string' && baseName.trim())
+    ? baseName.trim()
+    : 'Search Campaign Budget';
+  const suffix = `${Date.now()}-${Math.floor(Math.random() * 10000)}`;
+  return `${safeBase} [${suffix}]`;
+}
+
 // ── Status/enum helpers ───────────────────────────────────────────────────
 
 // google-ads-api accepts string enum values
@@ -107,7 +116,7 @@ async function createFromBlueprint(customer, blueprint) {
       operation: 'create',
       resource: {
         resource_name: tmpBudgetName(),
-        name: budget.name || `${c.name} Budget`,
+        name: uniqueBudgetName(budget.name || `${c.name} Budget`),
         amount_micros: budgetMicros,
         delivery_method: 2  // STANDARD
       }
