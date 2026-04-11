@@ -390,7 +390,10 @@ async function createFromBlueprint(customer, blueprint) {
         // manual here avoids errors from missing bidding strategy config).
         manual_cpc: {
           enhanced_cpc_enabled: false
-        }
+        },
+        // Required in newer Google Ads API versions.
+        // 2 = DOES_NOT_CONTAIN_EU_POLITICAL_ADVERTISING
+        contains_eu_political_advertising: 2
       }
     }
   ]);
@@ -430,6 +433,10 @@ async function createFromBlueprint(customer, blueprint) {
     }
     }));
 
+  // Negative keywords at campaign level
+  // Google Ads keyword match type enums:
+  //   2 = EXACT, 3 = PHRASE, 4 = BROAD
+  const MATCH_TYPE_MAP = { EXACT: 2, PHRASE: 3, BROAD: 4 };
   const negCriteria = cleanKeywordPayload(c.additionalNegatives).map(kw => ({
     entity: 'CampaignCriterion',
     operation: 'create',
@@ -538,7 +545,7 @@ async function createFromBlueprint(customer, blueprint) {
     if (trimmedPath1) responsiveSearchAd.path1 = trimmedPath1;
     if (trimmedPath2) responsiveSearchAd.path2 = trimmedPath2;
 
-    await mutateStep(`RSA for "${adGroupName}"`, [
+    await customer.mutateResources([
       {
         entity: 'AdGroupAd',
         operation: 'create',
