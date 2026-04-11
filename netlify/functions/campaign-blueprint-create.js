@@ -30,22 +30,43 @@ function normalizeError(err) {
   if (!err) return 'Unknown server error';
   if (typeof err === 'string') return err;
 
-  if (typeof err.message === 'string' && err.message.trim()) {
-    return err.message;
+  const topLevelMessage =
+    typeof err.message === 'string' ? err.message.trim() : '';
+  const hasInformativeTopLevelMessage =
+    topLevelMessage && topLevelMessage !== '[object Object]';
+
+  if (err.failure && Array.isArray(err.failure.errors) && err.failure.errors.length) {
+    const first = err.failure.errors[0];
+
+    if (typeof first === 'string' && first.trim()) {
+      return first;
+    }
+
+    if (first && typeof first === 'object') {
+      const errorCodeKey = first.error_code ? Object.keys(first.error_code)[0] : '';
+      const codeSuffix = errorCodeKey ? ` (${errorCodeKey})` : '';
+      const message =
+        (typeof first.message === 'string' && first.message.trim())
+          ? first.message
+          : (hasInformativeTopLevelMessage ? topLevelMessage : 'Google Ads API operation failed');
+      return `${message}${codeSuffix}`;
+    }
+
+    return hasInformativeTopLevelMessage
+      ? topLevelMessage
+      : 'Google Ads API operation failed';
   }
 
   if (err.errors && Array.isArray(err.errors) && err.errors.length) {
     const first = err.errors[0];
-    if (typeof first === 'string') return first;
-    if (first && typeof first.message === 'string') return first.message;
+    if (typeof first === 'string' && first.trim()) return first;
+    if (first && typeof first.message === 'string' && first.message.trim()) {
+      return first.message;
+    }
   }
 
-  if (err.failure && Array.isArray(err.failure.errors) && err.failure.errors.length) {
-    const first = err.failure.errors[0];
-    const errorCodeKey = first.error_code ? Object.keys(first.error_code)[0] : '';
-    const codeSuffix = errorCodeKey ? ` (${errorCodeKey})` : '';
-    const message = first.message || 'Google Ads API operation failed';
-    return `${message}${codeSuffix}`;
+  if (hasInformativeTopLevelMessage) {
+    return topLevelMessage;
   }
 
   try {
@@ -59,6 +80,15 @@ function normalizeError(err) {
 
 function tmpBudgetName() {
   return `customers/${CUSTOMER_ID()}/campaignBudgets/-1`;
+}
+
+
+function uniqueBudgetName(baseName) {
+  const safeBase = (typeof baseName === 'string' && baseName.trim())
+    ? baseName.trim()
+    : 'Search Campaign Budget';
+  const suffix = `${Date.now()}-${Math.floor(Math.random() * 10000)}`;
+  return `${safeBase} [${suffix}]`;
 }
 
 // ── Status/enum helpers ───────────────────────────────────────────────────
@@ -86,7 +116,7 @@ async function createFromBlueprint(customer, blueprint) {
       operation: 'create',
       resource: {
         resource_name: tmpBudgetName(),
-        name: budget.name || `${c.name} Budget`,
+        name: uniqueBudgetName(budget.name || `${c.name} Budget`),
         amount_micros: budgetMicros,
         delivery_method: 2  // STANDARD
       }
