@@ -335,9 +335,6 @@ async function createFromBlueprint(customer, blueprint) {
   // so we multiply by 1,000,000.
   const budgetMicros = Math.round((budget.amountCOP || 40000) * 1_000_000);
 
-  // Negative keywords at campaign level
-  const MATCH_TYPE_MAP = { EXACT: 3, PHRASE: 4, BROAD: 5 };
-
   // Helper: wrap mutate calls so failures include the step name for debugging.
   async function mutateStep(stepLabel, mutations) {
     try {
