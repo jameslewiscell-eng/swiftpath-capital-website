@@ -188,7 +188,20 @@ function validateBlueprintForCreate(blueprint) {
     if (descriptions.length > 4) {
       errors.push(`Ad group "${ag.name || idx}" must include no more than 4 RSA descriptions.`);
     }
+
+    const keywordCount = cleanKeywordPayload(ag.keywords).length;
+    if (keywordCount === 0) {
+      errors.push(`Ad group "${ag.name || idx}" must include at least one non-empty keyword.`);
+    }
   });
+
+  const emptyNegativeCount = (Array.isArray(blueprint?.campaign?.additionalNegatives)
+    ? blueprint.campaign.additionalNegatives
+    : [])
+    .filter(kw => !String((kw && kw.text) || '').trim()).length;
+  if (emptyNegativeCount > 0) {
+    errors.push('Blueprint campaign additionalNegatives contains empty keyword text values.');
+  }
 
   return errors;
 }
@@ -199,6 +212,15 @@ function validateBlueprintForCreate(blueprint) {
 const AD_NETWORK_TYPE = {
   GOOGLE_SEARCH: 2,
 };
+
+function cleanKeywordPayload(entries) {
+  return (Array.isArray(entries) ? entries : [])
+    .map(entry => ({
+      text: String((entry && entry.text) || '').trim(),
+      matchType: entry && entry.matchType
+    }))
+    .filter(entry => entry.text.length > 0);
+}
 
 // ── Main creator ──────────────────────────────────────────────────────────
 
@@ -287,7 +309,7 @@ async function createFromBlueprint(customer, blueprint) {
 
   // Negative keywords at campaign level
   const MATCH_TYPE_MAP = { EXACT: 3, PHRASE: 4, BROAD: 5 };
-  const negCriteria = (c.additionalNegatives || []).map(kw => ({
+  const negCriteria = cleanKeywordPayload(c.additionalNegatives).map(kw => ({
     entity: 'CampaignCriterion',
     operation: 'create',
     resource: {
@@ -332,7 +354,7 @@ async function createFromBlueprint(customer, blueprint) {
     adGroupIds.push({ name: ag.name, id: agId });
 
     // Keywords
-    const kwMutations = (ag.keywords || []).map(kw => ({
+    const kwMutations = cleanKeywordPayload(ag.keywords).map(kw => ({
       entity: 'AdGroupCriterion',
       operation: 'create',
       resource: {
@@ -364,6 +386,15 @@ async function createFromBlueprint(customer, blueprint) {
       .map(url => String(url || '').trim())
       .filter(Boolean);
 
+    const trimmedPath1 = String(rsa.path1 || '').trim();
+    const trimmedPath2 = String(rsa.path2 || '').trim();
+    const responsiveSearchAd = {
+      headlines: unpinnedHeadlines,
+      descriptions: unpinnedDescs
+    };
+    if (trimmedPath1) responsiveSearchAd.path1 = trimmedPath1;
+    if (trimmedPath2) responsiveSearchAd.path2 = trimmedPath2;
+
     await customer.mutateResources([
       {
         entity: 'AdGroupAd',
@@ -373,12 +404,7 @@ async function createFromBlueprint(customer, blueprint) {
           status: 2,  // ENABLED
           ad: {
             final_urls: cleanFinalUrls,
-            responsive_search_ad: {
-              headlines: unpinnedHeadlines,
-              descriptions: unpinnedDescs,
-              path1: rsa.path1 || '',
-              path2: rsa.path2 || ''
-            }
+            responsive_search_ad: responsiveSearchAd
           }
         }
       }
