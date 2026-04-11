@@ -516,6 +516,127 @@
   let funnelPages = [];
   let builderLoaded = false;
   let lastBlueprint = null;
+  const CREATE_FIXES_STORAGE_KEY = 'gads_builder_error_fixes_v1';
+
+  function getStoredCreateFixes() {
+    try {
+      const raw = localStorage.getItem(CREATE_FIXES_STORAGE_KEY);
+      if (!raw) return { keywordReplacements: {} };
+      const parsed = JSON.parse(raw);
+      if (!parsed || typeof parsed !== 'object') return { keywordReplacements: {} };
+      const replacements = parsed.keywordReplacements && typeof parsed.keywordReplacements === 'object'
+        ? parsed.keywordReplacements
+        : {};
+      return { keywordReplacements: replacements };
+    } catch (_) {
+      return { keywordReplacements: {} };
+    }
+  }
+
+  function storeCreateFixes(fixes) {
+    try {
+      localStorage.setItem(CREATE_FIXES_STORAGE_KEY, JSON.stringify(fixes || { keywordReplacements: {} }));
+    } catch (_) {
+      // Best effort only.
+    }
+  }
+
+  function cloneBlueprint(blueprint) {
+    return JSON.parse(JSON.stringify(blueprint || {}));
+  }
+
+  function applyLearnedFixesToBlueprint(blueprint) {
+    const draft = cloneBlueprint(blueprint);
+    const fixes = getStoredCreateFixes();
+    const replacements = fixes.keywordReplacements || {};
+
+    (draft.adGroups || []).forEach(ag => {
+      if (!ag || !Array.isArray(ag.keywords)) return;
+      ag.keywords = ag.keywords
+        .map(kw => {
+          const originalText = String(kw && kw.text || '').trim();
+          if (!originalText) return kw;
+          const replacement = replacements[originalText.toLowerCase()];
+          if (!replacement) return kw;
+          return { ...kw, text: replacement };
+        })
+        .filter(kw => String(kw && kw.text || '').trim().length > 0);
+    });
+
+    return draft;
+  }
+
+  function parseCreateFailure(message) {
+    const msg = String(message || '');
+    const triggerMatch = msg.match(/trigger:\s*"([^"]+)"/i);
+    if (triggerMatch && triggerMatch[1]) {
+      return { type: 'keyword_policy', keyword: triggerMatch[1].trim(), raw: msg };
+    }
+    if (/policy[_\s-]?violation/i.test(msg) && /keyword/i.test(msg)) {
+      return { type: 'keyword_policy_unknown', raw: msg };
+    }
+    return null;
+  }
+
+  function learnKeywordReplacement(badKeyword, replacementKeyword) {
+    const bad = String(badKeyword || '').trim().toLowerCase();
+    const good = String(replacementKeyword || '').trim();
+    if (!bad || !good) return;
+    const fixes = getStoredCreateFixes();
+    fixes.keywordReplacements = fixes.keywordReplacements || {};
+    fixes.keywordReplacements[bad] = good;
+    storeCreateFixes(fixes);
+  }
+
+  function replaceKeywordInBlueprint(blueprint, badKeyword, replacementKeyword) {
+    const draft = cloneBlueprint(blueprint);
+    const bad = String(badKeyword || '').trim().toLowerCase();
+    const replacement = String(replacementKeyword || '').trim();
+    if (!bad || !replacement) return draft;
+    (draft.adGroups || []).forEach(ag => {
+      if (!ag || !Array.isArray(ag.keywords)) return;
+      ag.keywords = ag.keywords.map(kw => {
+        const current = String(kw && kw.text || '').trim().toLowerCase();
+        if (current !== bad) return kw;
+        return { ...kw, text: replacement };
+      });
+    });
+    return draft;
+  }
+
+  async function attemptInteractiveCreateRecovery(errorMessage) {
+    const parsed = parseCreateFailure(errorMessage);
+    if (!parsed) return null;
+
+    if (parsed.type === 'keyword_policy' && parsed.keyword) {
+      const userFix = prompt(
+        `Google Ads rejected keyword "${parsed.keyword}" for policy reasons.\n` +
+        'Enter a safer replacement keyword to retry (leave blank to cancel):'
+      );
+      const replacement = String(userFix || '').trim();
+      if (!replacement) return null;
+      learnKeywordReplacement(parsed.keyword, replacement);
+      lastBlueprint = replaceKeywordInBlueprint(lastBlueprint, parsed.keyword, replacement);
+      return { message: `Applied replacement "${parsed.keyword}" → "${replacement}" and retrying.` };
+    }
+
+    if (parsed.type === 'keyword_policy_unknown') {
+      const blockedInput = prompt(
+        'Google Ads returned a keyword policy violation but did not identify the exact keyword.\n' +
+        'Enter the blocked keyword to replace (leave blank to cancel):'
+      );
+      const blockedKeyword = String(blockedInput || '').trim();
+      if (!blockedKeyword) return null;
+      const replacementInput = prompt(`Enter a safer replacement for "${blockedKeyword}":`);
+      const replacement = String(replacementInput || '').trim();
+      if (!replacement) return null;
+      learnKeywordReplacement(blockedKeyword, replacement);
+      lastBlueprint = replaceKeywordInBlueprint(lastBlueprint, blockedKeyword, replacement);
+      return { message: `Applied replacement "${blockedKeyword}" → "${replacement}" and retrying.` };
+    }
+
+    return null;
+  }
 
   function renderBuilderPageOptions() {
     const select = document.getElementById('builder-page-select');
@@ -646,6 +767,8 @@
     resultEl.style.display = 'none';
 
     try {
+      // Apply previously learned keyword replacements before every create attempt.
+      lastBlueprint = applyLearnedFixesToBlueprint(lastBlueprint);
       const data = await apiPost('campaign-blueprint-create', {
         blueprint: lastBlueprint,
         account: getAccountParam()
@@ -663,6 +786,30 @@
       // Refresh campaigns tab so the new one appears
       loadCampaigns && loadCampaigns();
     } catch (err) {
+      const recovery = await attemptInteractiveCreateRecovery(err.message);
+      if (recovery) {
+        resultEl.style.display = 'block';
+        resultEl.style.color = '#92400e';
+        resultEl.innerHTML = `<strong>Retrying…</strong> ${escapeHtml(recovery.message)}`;
+        try {
+          const retryData = await apiPost('campaign-blueprint-create', {
+            blueprint: lastBlueprint,
+            account: getAccountParam()
+          });
+          resultEl.style.color = '#065f46';
+          resultEl.innerHTML =
+            `<strong>Campaign created after recovery!</strong> ID: <code>${escapeHtml(String(retryData.campaignId))}</code> &mdash; ` +
+            `${retryData.summary.adGroupsCreated} ad groups, ` +
+            `${retryData.summary.negativeKeywordsAdded} negative keywords, ` +
+            `${retryData.summary.geoTargetsAdded} geo targets.`;
+          loadCampaigns && loadCampaigns();
+          return;
+        } catch (retryErr) {
+          resultEl.style.color = '#991b1b';
+          resultEl.innerHTML = `<strong>Create failed after recovery attempt:</strong> ${escapeHtml(retryErr.message)}`;
+          return;
+        }
+      }
       resultEl.style.display = 'block';
       resultEl.style.color = '#991b1b';
       resultEl.innerHTML = `<strong>Create failed:</strong> ${escapeHtml(err.message)}`;
