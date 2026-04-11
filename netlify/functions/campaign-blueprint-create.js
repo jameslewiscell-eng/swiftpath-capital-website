@@ -109,11 +109,12 @@ function uniqueBudgetName(baseName, context = '') {
   const MAX_SAFE_CONTEXT_LENGTH = 40;
   const sanitizeNamePart = (value, fallback, maxLength) => {
     const candidate = (typeof value === 'string' && value.trim()) ? value.trim() : fallback;
-    return candidate
+    const cleaned = candidate
       .replace(/[\r\n[\]]+/g, ' ')
       .replace(/\s+/g, ' ')
-      .trim()
-      .slice(0, maxLength);
+      .trim();
+    const normalized = cleaned || fallback;
+    return normalized.slice(0, maxLength).trim();
   };
   const safeBase = sanitizeNamePart(baseName, 'Search Campaign Budget', MAX_SAFE_BASE_LENGTH);
   const safeContext = sanitizeNamePart(context, 'campaign', MAX_SAFE_CONTEXT_LENGTH);
@@ -163,30 +164,44 @@ function validateBlueprintForCreate(blueprint) {
     }
 
     const rsa = ag.rsa || {};
-    const finalUrls = Array.isArray(rsa.finalUrls)
-      ? rsa.finalUrls.map(u => String(u || '').trim()).filter(Boolean)
-      : [];
-    const headlines = Array.isArray(rsa.headlines)
-      ? rsa.headlines.map(h => String(h || '').trim()).filter(Boolean)
-      : [];
-    const descriptions = Array.isArray(rsa.descriptions)
-      ? rsa.descriptions.map(d => String(d || '').trim()).filter(Boolean)
-      : [];
+    const adGroupLabel = ag.name || idx;
+
+    const collectStringAssets = (values, fieldLabel) => {
+      if (!Array.isArray(values)) return [];
+      const cleaned = [];
+      values.forEach((item, itemIndex) => {
+        if (typeof item !== 'string') {
+          errors.push(
+            `Ad group "${adGroupLabel}" has non-string RSA ${fieldLabel} at index ${itemIndex + 1}.`
+          );
+          return;
+        }
+        const trimmed = item.trim();
+        if (trimmed) {
+          cleaned.push(trimmed);
+        }
+      });
+      return cleaned;
+    };
+
+    const finalUrls = collectStringAssets(rsa.finalUrls, 'final URL');
+    const headlines = collectStringAssets(rsa.headlines, 'headline');
+    const descriptions = collectStringAssets(rsa.descriptions, 'description');
 
     if (!finalUrls.length) {
-      errors.push(`Ad group "${ag.name || idx}" must include at least one RSA final URL.`);
+      errors.push(`Ad group "${adGroupLabel}" must include at least one RSA final URL.`);
     }
     if (headlines.length < 3) {
-      errors.push(`Ad group "${ag.name || idx}" must include at least 3 RSA headlines.`);
+      errors.push(`Ad group "${adGroupLabel}" must include at least 3 RSA headlines.`);
     }
     if (headlines.length > 15) {
-      errors.push(`Ad group "${ag.name || idx}" must include no more than 15 RSA headlines.`);
+      errors.push(`Ad group "${adGroupLabel}" must include no more than 15 RSA headlines.`);
     }
     if (descriptions.length < 2) {
-      errors.push(`Ad group "${ag.name || idx}" must include at least 2 RSA descriptions.`);
+      errors.push(`Ad group "${adGroupLabel}" must include at least 2 RSA descriptions.`);
     }
     if (descriptions.length > 4) {
-      errors.push(`Ad group "${ag.name || idx}" must include no more than 4 RSA descriptions.`);
+      errors.push(`Ad group "${adGroupLabel}" must include no more than 4 RSA descriptions.`);
     }
 
     const keywordCount = cleanKeywordPayload(ag.keywords).length;
