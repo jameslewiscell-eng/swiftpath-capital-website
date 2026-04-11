@@ -104,13 +104,26 @@ function tmpBudgetName() {
 
 
 function uniqueBudgetName(baseName, context = '') {
-  const safeBase = (typeof baseName === 'string' && baseName.trim())
-    ? baseName.trim()
-    : 'Search Campaign Budget';
-  const safeContext = (typeof context === 'string' && context.trim()) ? context.trim() : 'campaign';
+  const MAX_BUDGET_NAME_LENGTH = 255;
+  const MAX_SAFE_BASE_LENGTH = 180;
+  const MAX_SAFE_CONTEXT_LENGTH = 40;
+  const sanitizeNamePart = (value, fallback, maxLength) => {
+    const candidate = (typeof value === 'string' && value.trim()) ? value.trim() : fallback;
+    return candidate
+      .replace(/[\r\n[\]]+/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim()
+      .slice(0, maxLength);
+  };
+  const safeBase = sanitizeNamePart(baseName, 'Search Campaign Budget', MAX_SAFE_BASE_LENGTH);
+  const safeContext = sanitizeNamePart(context, 'campaign', MAX_SAFE_CONTEXT_LENGTH);
   const epoch = Date.now().toString(36);
   const rand = Math.random().toString(36).slice(2, 7);
-  return `${safeBase} [${safeContext}-${epoch}-${rand}]`;
+  const suffix = `[${safeContext}-${epoch}-${rand}]`;
+  const separator = ' ';
+  const maxBaseLength = Math.max(1, MAX_BUDGET_NAME_LENGTH - suffix.length - separator.length);
+  const boundedBase = safeBase.slice(0, maxBaseLength);
+  return `${boundedBase}${separator}${suffix}`;
 }
 
 function validateBlueprintForCreate(blueprint) {
@@ -121,6 +134,16 @@ function validateBlueprintForCreate(blueprint) {
 
   if (!blueprint.campaign || typeof blueprint.campaign !== 'object') {
     errors.push('Blueprint must include a campaign object.');
+  } else {
+    const budget = blueprint.campaign.campaignBudget;
+    if (!budget || typeof budget !== 'object') {
+      errors.push('Blueprint campaign must include a campaignBudget object.');
+    } else {
+      const amountCOP = Number(budget.amountCOP);
+      if (!Number.isFinite(amountCOP) || amountCOP <= 0) {
+        errors.push('Blueprint campaignBudget.amountCOP must be a positive number.');
+      }
+    }
   }
 
   if (!Array.isArray(blueprint.adGroups) || blueprint.adGroups.length === 0) {
@@ -156,8 +179,14 @@ function validateBlueprintForCreate(blueprint) {
     if (headlines.length < 3) {
       errors.push(`Ad group "${ag.name || idx}" must include at least 3 RSA headlines.`);
     }
+    if (headlines.length > 15) {
+      errors.push(`Ad group "${ag.name || idx}" must include no more than 15 RSA headlines.`);
+    }
     if (descriptions.length < 2) {
       errors.push(`Ad group "${ag.name || idx}" must include at least 2 RSA descriptions.`);
+    }
+    if (descriptions.length > 4) {
+      errors.push(`Ad group "${ag.name || idx}" must include no more than 4 RSA descriptions.`);
     }
   });
 
