@@ -136,11 +136,12 @@ function isKeywordPolicyViolationError(err) {
       : [];
 
   return errorsList.some(errorObj => {
+    const detail = extractErrorDetail(errorObj);
     const policyCode = errorObj && errorObj.error_code && errorObj.error_code.policy_violation_error;
     const isPolicyViolation = typeof policyCode === 'string' && policyCode.trim().length > 0;
     if (!isPolicyViolation) return false;
-    const fieldPath = (errorObj.location && Array.isArray(errorObj.location.field_path_elements))
-      ? errorObj.location.field_path_elements.map(el => el.field_name || '').join('.')
+    const fieldPath = detail && typeof detail.fieldPath === 'string'
+      ? detail.fieldPath
       : '';
     return fieldPath.includes('ad_group_criterion_operation') && fieldPath.includes('keyword');
   });
@@ -154,7 +155,12 @@ function extractErrorTriggerValues(err) {
       : [];
 
   return errorsList
-    .map(errorObj => errorObj && errorObj.trigger && errorObj.trigger.string_value)
+    .filter(errorObj => isKeywordPolicyViolationError({ errors: [errorObj] }))
+    .map(errorObj => {
+      const detail = extractErrorDetail(errorObj);
+      if (!detail || typeof detail.trigger !== 'string') return '';
+      return detail.trigger;
+    })
     .map(v => String(v || '').trim())
     .filter(Boolean);
 }
@@ -527,9 +533,25 @@ async function createFromBlueprint(customer, blueprint) {
       try {
         await mutateStep(`Keywords for "${adGroupName}"`, kwMutations);
       } catch (err) {
-        if (!isKeywordPolicyViolationError(err)) throw err;
+        const returnedErrors =
+          Array.isArray(err && err.errors) ? err.errors :
+          Array.isArray(err && err.response && err.response.errors) ? err.response.errors :
+          Array.isArray(err && err.failure && err.failure.errors) ? err.failure.errors :
+          (() => {
+            const detail = extractErrorDetail(err);
+            return detail ? [detail] : [];
+          })();
 
-        const blockedKeywords = new Set(extractErrorTriggerValues(err).map(v => v.toLowerCase()));
+        const hasOnlyKeywordPolicyViolations =
+          returnedErrors.length > 0 &&
+          returnedErrors.every(errorDetail => isKeywordPolicyViolationError({ errors: [errorDetail] }));
+
+        const blockedKeywords = new Set(
+          extractErrorTriggerValues(err)
+            .map(v => String(v).trim().toLowerCase())
+            .filter(Boolean)
+        );
+        if (!hasOnlyKeywordPolicyViolations || !blockedKeywords.size) throw err;
         const allowedKeywordMutations = kwMutations.filter(mutation => {
           const keywordText = String(
             mutation &&
@@ -548,10 +570,12 @@ async function createFromBlueprint(customer, blueprint) {
         }
 
         await mutateStep(`Keywords for "${adGroupName}" (policy-safe retry)`, allowedKeywordMutations);
+        const skippedKeywords = Array.from(blockedKeywords);
         console.warn('Skipped policy-violating keywords during campaign creation', {
           adGroupName,
           skippedKeywordCount: kwMutations.length - allowedKeywordMutations.length,
-          skippedKeywords: Array.from(blockedKeywords)
+          skippedKeywordsSample: skippedKeywords.slice(0, 10),
+          skippedKeywordsTruncated: skippedKeywords.length > 10
         });
       }
     }
