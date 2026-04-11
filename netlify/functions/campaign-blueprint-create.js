@@ -297,6 +297,7 @@ async function createFromBlueprint(customer, blueprint) {
   const cid = CUSTOMER_ID();
   const c = blueprint.campaign;
   const budget = c.campaignBudget;
+  const campaignName = c.name.trim();
 
   // COP is a micro-unit-less currency — the API still stores micros internally,
   // so we multiply by 1,000,000.
@@ -309,7 +310,7 @@ async function createFromBlueprint(customer, blueprint) {
       operation: 'create',
       resource: {
         resource_name: tmpBudgetName(),
-        name: uniqueBudgetName(budget.name || `${c.name} Budget`, c.name),
+        name: uniqueBudgetName(budget.name || `${campaignName} Budget`, campaignName),
         amount_micros: budgetMicros,
         delivery_method: 2  // STANDARD
       }
@@ -327,7 +328,7 @@ async function createFromBlueprint(customer, blueprint) {
       operation: 'create',
       resource: {
         resource_name: `customers/${cid}/campaigns/-1`,
-        name: c.name,
+        name: campaignName,
         status: 3,  // PAUSED
         advertising_channel_type: 2,  // SEARCH
         campaign_budget: budgetResourceName,
