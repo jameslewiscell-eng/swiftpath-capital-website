@@ -123,12 +123,13 @@ function uniqueBudgetName(baseName, context = '') {
   const suffix = `[${safeContext}-${epoch}-${rand}]`;
   const separator = ' ';
   const maxBaseLength = Math.max(1, MAX_BUDGET_NAME_LENGTH - suffix.length - separator.length);
-  const boundedBase = safeBase.slice(0, maxBaseLength);
+  const boundedBase = safeBase.slice(0, maxBaseLength).trim();
   return `${boundedBase}${separator}${suffix}`;
 }
 
 function validateBlueprintForCreate(blueprint) {
   const errors = [];
+  const hasValue = value => String(value ?? '').trim().length > 0;
   if (!blueprint || typeof blueprint !== 'object') {
     return ['Blueprint payload must be an object.'];
   }
@@ -136,6 +137,10 @@ function validateBlueprintForCreate(blueprint) {
   if (!blueprint.campaign || typeof blueprint.campaign !== 'object') {
     errors.push('Blueprint must include a campaign object.');
   } else {
+    if (!hasValue(blueprint.campaign.name)) {
+      errors.push('Blueprint campaign.name must be a non-empty string.');
+    }
+
     const budget = blueprint.campaign.campaignBudget;
     if (!budget || typeof budget !== 'object') {
       errors.push('Blueprint campaign must include a campaignBudget object.');
@@ -144,6 +149,29 @@ function validateBlueprintForCreate(blueprint) {
       if (!Number.isFinite(amountCOP) || amountCOP <= 0) {
         errors.push('Blueprint campaignBudget.amountCOP must be a positive number.');
       }
+    }
+
+    if (
+      blueprint.campaign.geoTargetStateIds != null &&
+      !Array.isArray(blueprint.campaign.geoTargetStateIds)
+    ) {
+      errors.push('Blueprint campaign.geoTargetStateIds must be an array when provided.');
+    } else if (Array.isArray(blueprint.campaign.geoTargetStateIds)) {
+      blueprint.campaign.geoTargetStateIds.forEach((stateId, idx) => {
+        if (!hasValue(stateId)) {
+          errors.push(`Blueprint campaign.geoTargetStateIds[${idx}] must be non-empty.`);
+        }
+      });
+    }
+
+    if (blueprint.campaign.languages != null && !Array.isArray(blueprint.campaign.languages)) {
+      errors.push('Blueprint campaign.languages must be an array when provided.');
+    } else if (Array.isArray(blueprint.campaign.languages)) {
+      blueprint.campaign.languages.forEach((lang, idx) => {
+        if (!hasValue(lang)) {
+          errors.push(`Blueprint campaign.languages[${idx}] must be non-empty.`);
+        }
+      });
     }
   }
 
@@ -164,10 +192,16 @@ function validateBlueprintForCreate(blueprint) {
     }
 
     const rsa = ag.rsa || {};
-    const adGroupLabel = ag.name || idx;
+    const adGroupLabel = String(ag.name || '').trim() || idx;
 
     const collectStringAssets = (values, fieldLabel) => {
-      if (!Array.isArray(values)) return [];
+      if (values == null) return [];
+      if (!Array.isArray(values)) {
+        errors.push(
+          `Ad group "${adGroupLabel}" RSA ${fieldLabel}s must be an array of strings.`
+        );
+        return [];
+      }
       const cleaned = [];
       values.forEach((item, itemIndex) => {
         if (typeof item !== 'string') {
@@ -237,6 +271,22 @@ function cleanKeywordPayload(entries) {
     .filter(entry => entry.text.length > 0);
 }
 
+function normalizeGeoTargetConstant(stateId) {
+  const raw = String(stateId ?? '').trim();
+  if (!raw) return null;
+  return raw.startsWith('geoTargetConstants/')
+    ? raw
+    : `geoTargetConstants/${raw}`;
+}
+
+function normalizeLanguageConstant(language) {
+  const raw = String(language ?? '').trim();
+  if (!raw) return null;
+  return raw.startsWith('languageConstants/')
+    ? raw
+    : `languageConstants/${raw}`;
+}
+
 // ── Main creator ──────────────────────────────────────────────────────────
 
 async function createFromBlueprint(customer, blueprint) {
@@ -298,19 +348,25 @@ async function createFromBlueprint(customer, blueprint) {
   const campaignId = campaignResourceName.split('/').pop();
 
   // ── Step 3: Geo + language criteria ───────────────────────────────────
-  const geoCriteria = (c.geoTargetStateIds || []).map(stateId => ({
+  const geoCriteria = (Array.isArray(c.geoTargetStateIds) ? c.geoTargetStateIds : [])
+    .map(normalizeGeoTargetConstant)
+    .filter(Boolean)
+    .map(geoTargetConstant => ({
     entity: 'CampaignCriterion',
     operation: 'create',
     resource: {
       campaign: campaignResourceName,
       location: {
-        geo_target_constant: `geoTargetConstants/${stateId}`
+        geo_target_constant: geoTargetConstant
       },
       negative: false
     }
-  }));
+    }));
 
-  const langCriteria = (c.languages || []).map(langConstant => ({
+  const langCriteria = (Array.isArray(c.languages) ? c.languages : [])
+    .map(normalizeLanguageConstant)
+    .filter(Boolean)
+    .map(langConstant => ({
     entity: 'CampaignCriterion',
     operation: 'create',
     resource: {
@@ -320,7 +376,7 @@ async function createFromBlueprint(customer, blueprint) {
       },
       negative: false
     }
-  }));
+    }));
 
   // Negative keywords at campaign level
   const MATCH_TYPE_MAP = { EXACT: 3, PHRASE: 4, BROAD: 5 };
