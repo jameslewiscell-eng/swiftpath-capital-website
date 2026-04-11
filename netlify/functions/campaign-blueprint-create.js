@@ -28,7 +28,11 @@ const CUSTOMER_ID = () => process.env.GOOGLE_ADS_CUSTOMER_ID;
 
 function normalizeError(err) {
   if (!err) return 'Unknown server error';
-  if (typeof err === 'string') return err;
+
+  if (typeof err === 'string') {
+    const trimmed = err.trim();
+    return trimmed || 'Unknown server error';
+  }
 
   const topLevelMessage =
     typeof err.message === 'string' ? err.message.trim() : '';
@@ -38,17 +42,19 @@ function normalizeError(err) {
   if (err.failure && Array.isArray(err.failure.errors) && err.failure.errors.length) {
     const first = err.failure.errors[0];
 
-    if (typeof first === 'string' && first.trim()) {
-      return first;
+    if (typeof first === 'string') {
+      const trimmed = first.trim();
+      if (trimmed) return trimmed;
     }
 
     if (first && typeof first === 'object') {
       const errorCodeKey = first.error_code ? Object.keys(first.error_code)[0] : '';
       const codeSuffix = errorCodeKey ? ` (${errorCodeKey})` : '';
-      const message =
-        (typeof first.message === 'string' && first.message.trim())
-          ? first.message
-          : (hasInformativeTopLevelMessage ? topLevelMessage : 'Google Ads API operation failed');
+      const firstMessage =
+        typeof first.message === 'string' ? first.message.trim() : '';
+      const message = firstMessage || (hasInformativeTopLevelMessage
+        ? topLevelMessage
+        : 'Google Ads API operation failed');
       return `${message}${codeSuffix}`;
     }
 
@@ -59,9 +65,13 @@ function normalizeError(err) {
 
   if (err.errors && Array.isArray(err.errors) && err.errors.length) {
     const first = err.errors[0];
-    if (typeof first === 'string' && first.trim()) return first;
-    if (first && typeof first.message === 'string' && first.message.trim()) {
-      return first.message;
+    if (typeof first === 'string') {
+      const trimmed = first.trim();
+      if (trimmed) return trimmed;
+    }
+    if (first && typeof first.message === 'string') {
+      const trimmed = first.message.trim();
+      if (trimmed) return trimmed;
     }
   }
 
@@ -70,10 +80,20 @@ function normalizeError(err) {
   }
 
   try {
-    return JSON.stringify(err);
+    const serialized = JSON.stringify(err);
+    if (typeof serialized === 'string' && serialized.trim() && serialized !== '[object Object]') {
+      return serialized;
+    }
   } catch (_) {
-    return String(err);
+    // Fallback handled below.
   }
+
+  const fallbackString = String(err).trim();
+  if (fallbackString && fallbackString !== '[object Object]') {
+    return fallbackString;
+  }
+
+  return 'Google Ads API operation failed';
 }
 
 // ── Resource name helpers ─────────────────────────────────────────────────
@@ -83,11 +103,16 @@ function tmpBudgetName() {
 }
 
 
-function uniqueBudgetName(baseName) {
+function uniqueBudgetName(baseName, context = '') {
   const safeBase = (typeof baseName === 'string' && baseName.trim())
     ? baseName.trim()
     : 'Search Campaign Budget';
-  const suffix = `${Date.now()}-${Math.floor(Math.random() * 10000)}`;
+  const stableInput = `${CUSTOMER_ID() || 'unknown-customer'}|${safeBase}|${context}`;
+  let hash = 0;
+  for (let i = 0; i < stableInput.length; i += 1) {
+    hash = ((hash * 31) + stableInput.charCodeAt(i)) >>> 0;
+  }
+  const suffix = hash.toString(36).padStart(7, '0');
   return `${safeBase} [${suffix}]`;
 }
 
@@ -116,7 +141,7 @@ async function createFromBlueprint(customer, blueprint) {
       operation: 'create',
       resource: {
         resource_name: tmpBudgetName(),
-        name: uniqueBudgetName(budget.name || `${c.name} Budget`),
+        name: uniqueBudgetName(budget.name || `${c.name} Budget`, c.name),
         amount_micros: budgetMicros,
         delivery_method: 2  // STANDARD
       }
