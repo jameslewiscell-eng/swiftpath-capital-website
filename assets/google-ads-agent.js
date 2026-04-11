@@ -517,25 +517,26 @@
   let builderLoaded = false;
   let lastBlueprint = null;
   const CREATE_FIXES_STORAGE_KEY = 'gads_builder_error_fixes_v1';
+  const ALWAYS_BLOCKED_KEYWORD_PHRASES = ['hard money'];
 
   function getStoredCreateFixes() {
     try {
       const raw = localStorage.getItem(CREATE_FIXES_STORAGE_KEY);
-      if (!raw) return { keywordReplacements: {} };
+      if (!raw) return { blockedKeywordPhrases: [] };
       const parsed = JSON.parse(raw);
-      if (!parsed || typeof parsed !== 'object') return { keywordReplacements: {} };
-      const replacements = parsed.keywordReplacements && typeof parsed.keywordReplacements === 'object'
-        ? parsed.keywordReplacements
-        : {};
-      return { keywordReplacements: replacements };
+      if (!parsed || typeof parsed !== 'object') return { blockedKeywordPhrases: [] };
+      const blockedKeywordPhrases = Array.isArray(parsed.blockedKeywordPhrases)
+        ? parsed.blockedKeywordPhrases
+        : [];
+      return { blockedKeywordPhrases };
     } catch (_) {
-      return { keywordReplacements: {} };
+      return { blockedKeywordPhrases: [] };
     }
   }
 
   function storeCreateFixes(fixes) {
     try {
-      localStorage.setItem(CREATE_FIXES_STORAGE_KEY, JSON.stringify(fixes || { keywordReplacements: {} }));
+      localStorage.setItem(CREATE_FIXES_STORAGE_KEY, JSON.stringify(fixes || { blockedKeywordPhrases: [] }));
     } catch (_) {
       // Best effort only.
     }
@@ -548,17 +549,20 @@
   function applyLearnedFixesToBlueprint(blueprint) {
     const draft = cloneBlueprint(blueprint);
     const fixes = getStoredCreateFixes();
-    const replacements = fixes.keywordReplacements || {};
+    const blocked = [
+      ...ALWAYS_BLOCKED_KEYWORD_PHRASES,
+      ...(fixes.blockedKeywordPhrases || [])
+    ]
+      .map(v => String(v || '').trim().toLowerCase())
+      .filter(Boolean);
 
     (draft.adGroups || []).forEach(ag => {
       if (!ag || !Array.isArray(ag.keywords)) return;
       ag.keywords = ag.keywords
-        .map(kw => {
-          const originalText = String(kw && kw.text || '').trim();
-          if (!originalText) return kw;
-          const replacement = replacements[originalText.toLowerCase()];
-          if (!replacement) return kw;
-          return { ...kw, text: replacement };
+        .filter(kw => {
+          const keywordText = String(kw && kw.text || '').trim().toLowerCase();
+          if (!keywordText) return false;
+          return !blocked.some(term => keywordText.includes(term));
         })
         .filter(kw => String(kw && kw.text || '').trim().length > 0);
     });
@@ -578,30 +582,40 @@
     return null;
   }
 
-  function learnKeywordReplacement(badKeyword, replacementKeyword) {
-    const bad = String(badKeyword || '').trim().toLowerCase();
-    const good = String(replacementKeyword || '').trim();
-    if (!bad || !good) return;
+  function learnBlockedKeywordPhrase(blockedKeyword) {
+    const blocked = String(blockedKeyword || '').trim().toLowerCase();
+    if (!blocked) return;
     const fixes = getStoredCreateFixes();
-    fixes.keywordReplacements = fixes.keywordReplacements || {};
-    fixes.keywordReplacements[bad] = good;
+    const existing = Array.isArray(fixes.blockedKeywordPhrases)
+      ? fixes.blockedKeywordPhrases
+      : [];
+    if (existing.includes(blocked)) return;
+    fixes.blockedKeywordPhrases = [...existing, blocked];
     storeCreateFixes(fixes);
   }
 
-  function replaceKeywordInBlueprint(blueprint, badKeyword, replacementKeyword) {
+  function removeKeywordFromBlueprint(blueprint, blockedKeyword) {
     const draft = cloneBlueprint(blueprint);
-    const bad = String(badKeyword || '').trim().toLowerCase();
-    const replacement = String(replacementKeyword || '').trim();
-    if (!bad || !replacement) return draft;
+    const bad = String(blockedKeyword || '').trim().toLowerCase();
+    if (!bad) return draft;
     (draft.adGroups || []).forEach(ag => {
       if (!ag || !Array.isArray(ag.keywords)) return;
-      ag.keywords = ag.keywords.map(kw => {
+      ag.keywords = ag.keywords.filter(kw => {
         const current = String(kw && kw.text || '').trim().toLowerCase();
-        if (current !== bad) return kw;
-        return { ...kw, text: replacement };
+        return current && !current.includes(bad);
       });
     });
     return draft;
+  }
+
+  function firstAdGroupWithoutKeywords(blueprint) {
+    const groups = (blueprint && blueprint.adGroups) || [];
+    for (const ag of groups) {
+      const keywords = Array.isArray(ag && ag.keywords) ? ag.keywords : [];
+      const validCount = keywords.filter(kw => String(kw && kw.text || '').trim()).length;
+      if (validCount === 0) return String(ag && ag.name || '').trim() || 'Unnamed ad group';
+    }
+    return '';
   }
 
   async function attemptInteractiveCreateRecovery(errorMessage) {
@@ -609,30 +623,35 @@
     if (!parsed) return null;
 
     if (parsed.type === 'keyword_policy' && parsed.keyword) {
-      const userFix = prompt(
-        `Google Ads rejected keyword "${parsed.keyword}" for policy reasons.\n` +
-        'Enter a safer replacement keyword to retry (leave blank to cancel):'
-      );
-      const replacement = String(userFix || '').trim();
-      if (!replacement) return null;
-      learnKeywordReplacement(parsed.keyword, replacement);
-      lastBlueprint = replaceKeywordInBlueprint(lastBlueprint, parsed.keyword, replacement);
-      return { message: `Applied replacement "${parsed.keyword}" → "${replacement}" and retrying.` };
+      learnBlockedKeywordPhrase(parsed.keyword);
+      lastBlueprint = removeKeywordFromBlueprint(lastBlueprint, parsed.keyword);
+      const emptyGroupName = firstAdGroupWithoutKeywords(lastBlueprint);
+      if (emptyGroupName) {
+        return {
+          fatal: true,
+          message: `Removed blocked keyword "${parsed.keyword}", but "${emptyGroupName}" now has no keywords left. Regenerate blueprint with more policy-safe keywords.`
+        };
+      }
+      return { message: `Removed blocked keyword "${parsed.keyword}" and retrying.` };
     }
 
     if (parsed.type === 'keyword_policy_unknown') {
       const blockedInput = prompt(
         'Google Ads returned a keyword policy violation but did not identify the exact keyword.\n' +
-        'Enter the blocked keyword to replace (leave blank to cancel):'
+        'Enter the blocked keyword to DELETE (leave blank to cancel):'
       );
       const blockedKeyword = String(blockedInput || '').trim();
       if (!blockedKeyword) return null;
-      const replacementInput = prompt(`Enter a safer replacement for "${blockedKeyword}":`);
-      const replacement = String(replacementInput || '').trim();
-      if (!replacement) return null;
-      learnKeywordReplacement(blockedKeyword, replacement);
-      lastBlueprint = replaceKeywordInBlueprint(lastBlueprint, blockedKeyword, replacement);
-      return { message: `Applied replacement "${blockedKeyword}" → "${replacement}" and retrying.` };
+      learnBlockedKeywordPhrase(blockedKeyword);
+      lastBlueprint = removeKeywordFromBlueprint(lastBlueprint, blockedKeyword);
+      const emptyGroupName = firstAdGroupWithoutKeywords(lastBlueprint);
+      if (emptyGroupName) {
+        return {
+          fatal: true,
+          message: `Removed blocked keyword "${blockedKeyword}", but "${emptyGroupName}" now has no keywords left. Regenerate blueprint with more policy-safe keywords.`
+        };
+      }
+      return { message: `Removed blocked keyword "${blockedKeyword}" and retrying.` };
     }
 
     return null;
@@ -767,7 +786,7 @@
     resultEl.style.display = 'none';
 
     try {
-      // Apply previously learned keyword replacements before every create attempt.
+      // Apply previously learned blocked-keyword filters before every create attempt.
       lastBlueprint = applyLearnedFixesToBlueprint(lastBlueprint);
       const data = await apiPost('campaign-blueprint-create', {
         blueprint: lastBlueprint,
@@ -789,6 +808,11 @@
       const recovery = await attemptInteractiveCreateRecovery(err.message);
       if (recovery) {
         resultEl.style.display = 'block';
+        if (recovery.fatal) {
+          resultEl.style.color = '#991b1b';
+          resultEl.innerHTML = `<strong>Create blocked:</strong> ${escapeHtml(recovery.message)}`;
+          return;
+        }
         resultEl.style.color = '#92400e';
         resultEl.innerHTML = `<strong>Retrying…</strong> ${escapeHtml(recovery.message)}`;
         try {
