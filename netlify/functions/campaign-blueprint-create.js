@@ -123,7 +123,7 @@ function uniqueBudgetName(baseName, context = '') {
   const suffix = `[${safeContext}-${epoch}-${rand}]`;
   const separator = ' ';
   const maxBaseLength = Math.max(1, MAX_BUDGET_NAME_LENGTH - suffix.length - separator.length);
-  const boundedBase = safeBase.slice(0, maxBaseLength);
+  const boundedBase = safeBase.slice(0, maxBaseLength).trim();
   return `${boundedBase}${separator}${suffix}`;
 }
 
@@ -164,10 +164,16 @@ function validateBlueprintForCreate(blueprint) {
     }
 
     const rsa = ag.rsa || {};
-    const adGroupLabel = ag.name || idx;
+    const adGroupLabel = String(ag.name || '').trim() || idx;
 
     const collectStringAssets = (values, fieldLabel) => {
-      if (!Array.isArray(values)) return [];
+      if (values == null) return [];
+      if (!Array.isArray(values)) {
+        errors.push(
+          `Ad group "${adGroupLabel}" RSA ${fieldLabel}s must be an array of strings.`
+        );
+        return [];
+      }
       const cleaned = [];
       values.forEach((item, itemIndex) => {
         if (typeof item !== 'string') {
