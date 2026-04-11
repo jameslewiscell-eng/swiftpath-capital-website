@@ -545,19 +545,6 @@ async function createFromBlueprint(customer, blueprint) {
     if (trimmedPath1) responsiveSearchAd.path1 = trimmedPath1;
     if (trimmedPath2) responsiveSearchAd.path2 = trimmedPath2;
 
-    if (!adGroupName) {
-      throw new Error('Ad group name is required before creating RSA.');
-    }
-    if (cleanFinalUrls.length === 0) {
-      throw new Error(`Ad group "${adGroupName}" is missing RSA final URLs.`);
-    }
-    if (unpinnedHeadlines.length < 3) {
-      throw new Error(`Ad group "${adGroupName}" must include at least 3 RSA headlines.`);
-    }
-    if (unpinnedDescs.length < 2) {
-      throw new Error(`Ad group "${adGroupName}" must include at least 2 RSA descriptions.`);
-    }
-
     await customer.mutateResources([
       {
         entity: 'AdGroupAd',
