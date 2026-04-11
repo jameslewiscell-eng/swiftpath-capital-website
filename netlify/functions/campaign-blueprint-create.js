@@ -107,13 +107,61 @@ function uniqueBudgetName(baseName, context = '') {
   const safeBase = (typeof baseName === 'string' && baseName.trim())
     ? baseName.trim()
     : 'Search Campaign Budget';
-  const stableInput = `${CUSTOMER_ID() || 'unknown-customer'}|${safeBase}|${context}`;
-  let hash = 0;
-  for (let i = 0; i < stableInput.length; i += 1) {
-    hash = ((hash * 31) + stableInput.charCodeAt(i)) >>> 0;
+  const safeContext = (typeof context === 'string' && context.trim()) ? context.trim() : 'campaign';
+  const epoch = Date.now().toString(36);
+  const rand = Math.random().toString(36).slice(2, 7);
+  return `${safeBase} [${safeContext}-${epoch}-${rand}]`;
+}
+
+function validateBlueprintForCreate(blueprint) {
+  const errors = [];
+  if (!blueprint || typeof blueprint !== 'object') {
+    return ['Blueprint payload must be an object.'];
   }
-  const suffix = hash.toString(36).padStart(7, '0');
-  return `${safeBase} [${suffix}]`;
+
+  if (!blueprint.campaign || typeof blueprint.campaign !== 'object') {
+    errors.push('Blueprint must include a campaign object.');
+  }
+
+  if (!Array.isArray(blueprint.adGroups) || blueprint.adGroups.length === 0) {
+    errors.push('Blueprint must include at least one ad group.');
+    return errors;
+  }
+
+  blueprint.adGroups.forEach((ag, index) => {
+    const idx = index + 1;
+    if (!ag || typeof ag !== 'object') {
+      errors.push(`Ad group #${idx} is missing.`);
+      return;
+    }
+
+    if (!ag.name || !String(ag.name).trim()) {
+      errors.push(`Ad group #${idx} is missing a name.`);
+    }
+
+    const rsa = ag.rsa || {};
+    const finalUrls = Array.isArray(rsa.finalUrls)
+      ? rsa.finalUrls.map(u => String(u || '').trim()).filter(Boolean)
+      : [];
+    const headlines = Array.isArray(rsa.headlines)
+      ? rsa.headlines.map(h => String(h || '').trim()).filter(Boolean)
+      : [];
+    const descriptions = Array.isArray(rsa.descriptions)
+      ? rsa.descriptions.map(d => String(d || '').trim()).filter(Boolean)
+      : [];
+
+    if (!finalUrls.length) {
+      errors.push(`Ad group "${ag.name || idx}" must include at least one RSA final URL.`);
+    }
+    if (headlines.length < 3) {
+      errors.push(`Ad group "${ag.name || idx}" must include at least 3 RSA headlines.`);
+    }
+    if (descriptions.length < 2) {
+      errors.push(`Ad group "${ag.name || idx}" must include at least 2 RSA descriptions.`);
+    }
+  });
+
+  return errors;
 }
 
 // ── Status/enum helpers ───────────────────────────────────────────────────
@@ -273,13 +321,19 @@ async function createFromBlueprint(customer, blueprint) {
 
     // RSA
     const rsa = ag.rsa || {};
-    const headlines = (rsa.headlines || []).map((text, i) => ({
-      text,
-      pinned_field: i === 0 ? 1 : 0  // 1 = HEADLINE_1, 0 = unset
-    }));
-    // Unpin all — let Google optimize
-    const unpinnedHeadlines = (rsa.headlines || []).map(text => ({ text }));
-    const unpinnedDescs = (rsa.descriptions || []).map(text => ({ text }));
+    // Unpin all — let Google optimize. Trim and drop blank values to avoid
+    // "required field missing" API errors from empty asset entries.
+    const unpinnedHeadlines = (rsa.headlines || [])
+      .map(text => String(text || '').trim())
+      .filter(Boolean)
+      .map(text => ({ text }));
+    const unpinnedDescs = (rsa.descriptions || [])
+      .map(text => String(text || '').trim())
+      .filter(Boolean)
+      .map(text => ({ text }));
+    const cleanFinalUrls = (rsa.finalUrls || [])
+      .map(url => String(url || '').trim())
+      .filter(Boolean);
 
     await customer.mutateResources([
       {
@@ -289,7 +343,7 @@ async function createFromBlueprint(customer, blueprint) {
           ad_group: agResourceName,
           status: 2,  // ENABLED
           ad: {
-            final_urls: rsa.finalUrls || [],
+            final_urls: cleanFinalUrls,
             responsive_search_ad: {
               headlines: unpinnedHeadlines,
               descriptions: unpinnedDescs,
@@ -317,7 +371,12 @@ async function createFromBlueprint(customer, blueprint) {
 
 // ── Handler ────────────────────────────────────────────────────────────────
 
-exports.handler = async function(event) {
+exports.handler = async function(event, context) {
+  const requestId =
+    (context && context.awsRequestId) ||
+    (event && event.headers && (event.headers['x-nf-request-id'] || event.headers['X-Nf-Request-Id'])) ||
+    '';
+
   if (event.httpMethod === 'OPTIONS') return handleOptions();
   if (event.httpMethod !== 'POST') {
     return errorResponse(405, 'Method Not Allowed — use POST with { blueprint, account? }');
@@ -326,7 +385,8 @@ exports.handler = async function(event) {
   try {
     if (!requireAuth(event)) return errorResponse(401, 'Unauthorized');
   } catch (err) {
-    return errorResponse(500, err.message);
+    const authMsg = requestId ? `${err.message} (requestId: ${requestId})` : err.message;
+    return errorResponse(500, authMsg);
   }
 
   let blueprint;
@@ -338,6 +398,10 @@ exports.handler = async function(event) {
     if (!blueprint || !blueprint.campaign) {
       return errorResponse(400, 'Request body must include { blueprint } with a campaign field');
     }
+    const validationErrors = validateBlueprintForCreate(blueprint);
+    if (validationErrors.length) {
+      return errorResponse(400, `Blueprint validation failed: ${validationErrors.join(' ')}`);
+    }
 
     const customer = getCustomer(account);
     const result = await createFromBlueprint(customer, blueprint);
@@ -345,7 +409,12 @@ exports.handler = async function(event) {
     return jsonResponse({ ok: true, ...result });
   } catch (err) {
     const msg = normalizeError(err);
-    console.error('campaign-blueprint-create error:', msg, err);
-    return errorResponse(500, msg);
+    const responseMessage = requestId ? `${msg} (requestId: ${requestId})` : msg;
+    console.error('campaign-blueprint-create error:', {
+      requestId,
+      message: msg,
+      error: err
+    });
+    return errorResponse(500, responseMessage);
   }
 };
