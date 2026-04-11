@@ -26,6 +26,41 @@ const {
 
 const CUSTOMER_ID = () => process.env.GOOGLE_ADS_CUSTOMER_ID;
 
+function extractErrorDetail(errorObj) {
+  if (!errorObj || typeof errorObj !== 'object') return null;
+
+  const detail = {};
+
+  // Extract error code (e.g. { field_error: 'REQUIRED' })
+  if (errorObj.error_code && typeof errorObj.error_code === 'object') {
+    const codeKey = Object.keys(errorObj.error_code)[0];
+    if (codeKey) detail.errorCode = `${codeKey}: ${errorObj.error_code[codeKey]}`;
+  }
+
+  // Extract message
+  if (typeof errorObj.message === 'string' && errorObj.message.trim()) {
+    detail.message = errorObj.message.trim();
+  }
+
+  // Extract trigger value
+  if (errorObj.trigger && typeof errorObj.trigger === 'object') {
+    const triggerValue = errorObj.trigger.string_value || errorObj.trigger.int64_value;
+    if (triggerValue != null) detail.trigger = String(triggerValue);
+  }
+
+  // Extract field path from location
+  if (errorObj.location && errorObj.location.field_path_elements) {
+    const parts = errorObj.location.field_path_elements.map(el => {
+      const name = el.field_name || el.fieldName || '';
+      const idx = el.index != null ? `[${el.index}]` : '';
+      return `${name}${idx}`;
+    });
+    if (parts.length) detail.fieldPath = parts.join('.');
+  }
+
+  return Object.keys(detail).length ? detail : null;
+}
+
 function normalizeError(err) {
   if (!err) return 'Unknown server error';
 
@@ -39,8 +74,15 @@ function normalizeError(err) {
   const hasInformativeTopLevelMessage =
     topLevelMessage && topLevelMessage !== '[object Object]';
 
-  if (err.failure && Array.isArray(err.failure.errors) && err.failure.errors.length) {
-    const first = err.failure.errors[0];
+  // Check both err.failure.errors (google-ads-api v14+) and err.errors (direct)
+  const errorsList = (err.failure && Array.isArray(err.failure.errors) && err.failure.errors.length)
+    ? err.failure.errors
+    : (err.errors && Array.isArray(err.errors) && err.errors.length)
+      ? err.errors
+      : null;
+
+  if (errorsList) {
+    const first = errorsList[0];
 
     if (typeof first === 'string') {
       const trimmed = first.trim();
@@ -48,31 +90,21 @@ function normalizeError(err) {
     }
 
     if (first && typeof first === 'object') {
-      const errorCodeKey = first.error_code ? Object.keys(first.error_code)[0] : '';
-      const codeSuffix = errorCodeKey ? ` (${errorCodeKey})` : '';
-      const firstMessage =
-        typeof first.message === 'string' ? first.message.trim() : '';
-      const message = firstMessage || (hasInformativeTopLevelMessage
-        ? topLevelMessage
-        : 'Google Ads API operation failed');
-      return `${message}${codeSuffix}`;
+      const detail = extractErrorDetail(first);
+      const parts = [];
+      const firstMessage = detail && detail.message
+        ? detail.message
+        : (hasInformativeTopLevelMessage ? topLevelMessage : 'Google Ads API operation failed');
+      parts.push(firstMessage);
+      if (detail && detail.errorCode) parts.push(`[${detail.errorCode}]`);
+      if (detail && detail.fieldPath) parts.push(`at field: ${detail.fieldPath}`);
+      if (detail && detail.trigger) parts.push(`trigger: "${detail.trigger}"`);
+      return parts.join(' — ');
     }
 
     return hasInformativeTopLevelMessage
       ? topLevelMessage
       : 'Google Ads API operation failed';
-  }
-
-  if (err.errors && Array.isArray(err.errors) && err.errors.length) {
-    const first = err.errors[0];
-    if (typeof first === 'string') {
-      const trimmed = first.trim();
-      if (trimmed) return trimmed;
-    }
-    if (first && typeof first.message === 'string') {
-      const trimmed = first.message.trim();
-      if (trimmed) return trimmed;
-    }
   }
 
   if (hasInformativeTopLevelMessage) {
@@ -303,8 +335,23 @@ async function createFromBlueprint(customer, blueprint) {
   // so we multiply by 1,000,000.
   const budgetMicros = Math.round((budget.amountCOP || 40000) * 1_000_000);
 
+  // Negative keywords at campaign level
+  const MATCH_TYPE_MAP = { EXACT: 3, PHRASE: 4, BROAD: 5 };
+
+  // Helper: wrap mutate calls so failures include the step name for debugging.
+  async function mutateStep(stepLabel, mutations) {
+    try {
+      return await customer.mutateResources(mutations);
+    } catch (err) {
+      // Annotate the error with the step that failed so the outer handler
+      // can report *which* API call triggered the problem.
+      err._blueprintStep = stepLabel;
+      throw err;
+    }
+  }
+
   // ── Step 1: Create budget ──────────────────────────────────────────────
-  const budgetRes = await customer.mutateResources([
+  const budgetRes = await mutateStep('CampaignBudget', [
     {
       entity: 'CampaignBudget',
       operation: 'create',
@@ -322,7 +369,7 @@ async function createFromBlueprint(customer, blueprint) {
 
   // ── Step 2: Create campaign ────────────────────────────────────────────
   const ns = c.networkSettings || {};
-  const campaignRes = await customer.mutateResources([
+  const campaignRes = await mutateStep('Campaign', [
     {
       entity: 'Campaign',
       operation: 'create',
@@ -383,8 +430,6 @@ async function createFromBlueprint(customer, blueprint) {
     }
     }));
 
-  // Negative keywords at campaign level
-  const MATCH_TYPE_MAP = { EXACT: 3, PHRASE: 4, BROAD: 5 };
   const negCriteria = cleanKeywordPayload(c.additionalNegatives).map(kw => ({
     entity: 'CampaignCriterion',
     operation: 'create',
@@ -400,7 +445,7 @@ async function createFromBlueprint(customer, blueprint) {
 
   const allCampaignCriteria = [...geoCriteria, ...langCriteria, ...negCriteria];
   if (allCampaignCriteria.length) {
-    await customer.mutateResources(allCampaignCriteria);
+    await mutateStep('CampaignCriteria', allCampaignCriteria);
   }
 
   // ── Step 4: Ad groups + keywords + RSAs ───────────────────────────────
@@ -410,7 +455,7 @@ async function createFromBlueprint(customer, blueprint) {
     // Create ad group
     const cpcMicros = Math.round((ag.cpcBidCOP || 9500) * 1_000_000);
     const adGroupName = typeof ag.name === 'string' ? ag.name.trim() : '';
-    const agRes = await customer.mutateResources([
+    const agRes = await mutateStep(`AdGroup "${adGroupName}"`, [
       {
         entity: 'AdGroup',
         operation: 'create',
@@ -444,7 +489,7 @@ async function createFromBlueprint(customer, blueprint) {
       }
     }));
     if (kwMutations.length) {
-      await customer.mutateResources(kwMutations);
+      await mutateStep(`Keywords for "${adGroupName}"`, kwMutations);
     }
 
     // RSA
@@ -463,6 +508,27 @@ async function createFromBlueprint(customer, blueprint) {
       .map(url => String(url || '').trim())
       .filter(Boolean);
 
+    // Guard against sending an RSA with insufficient assets — the API
+    // requires ≥3 headlines, ≥2 descriptions, and ≥1 final URL.
+    if (unpinnedHeadlines.length < 3) {
+      throw Object.assign(
+        new Error(`Ad group "${adGroupName}" has only ${unpinnedHeadlines.length} non-empty headlines after trimming (minimum 3 required)`),
+        { _blueprintStep: `RSA for "${adGroupName}"` }
+      );
+    }
+    if (unpinnedDescs.length < 2) {
+      throw Object.assign(
+        new Error(`Ad group "${adGroupName}" has only ${unpinnedDescs.length} non-empty descriptions after trimming (minimum 2 required)`),
+        { _blueprintStep: `RSA for "${adGroupName}"` }
+      );
+    }
+    if (cleanFinalUrls.length < 1) {
+      throw Object.assign(
+        new Error(`Ad group "${adGroupName}" has no non-empty final URLs after trimming`),
+        { _blueprintStep: `RSA for "${adGroupName}"` }
+      );
+    }
+
     const trimmedPath1 = String(rsa.path1 || '').trim();
     const trimmedPath2 = String(rsa.path2 || '').trim();
     const responsiveSearchAd = {
@@ -472,7 +538,7 @@ async function createFromBlueprint(customer, blueprint) {
     if (trimmedPath1) responsiveSearchAd.path1 = trimmedPath1;
     if (trimmedPath2) responsiveSearchAd.path2 = trimmedPath2;
 
-    await customer.mutateResources([
+    await mutateStep(`RSA for "${adGroupName}"`, [
       {
         entity: 'AdGroupAd',
         operation: 'create',
@@ -541,12 +607,24 @@ exports.handler = async function(event, context) {
     return jsonResponse({ ok: true, ...result });
   } catch (err) {
     const msg = normalizeError(err);
-    const responseMessage = requestId ? `${msg} (requestId: ${requestId})` : msg;
-    console.error('campaign-blueprint-create error:', {
+    const step = err._blueprintStep || 'unknown';
+    const responseMessage = requestId
+      ? `[${step}] ${msg} (requestId: ${requestId})`
+      : `[${step}] ${msg}`;
+
+    // Log full error details for debugging — including any nested errors
+    // from the Google Ads API (error_code, location, trigger).
+    const errorDetails = {
       requestId,
+      step,
       message: msg,
-      error: err
-    });
+    };
+    const rawErrors = (err.failure && err.failure.errors) || err.errors;
+    if (Array.isArray(rawErrors)) {
+      errorDetails.googleAdsErrors = rawErrors.map(e => extractErrorDetail(e)).filter(Boolean);
+    }
+    console.error('campaign-blueprint-create error:', errorDetails);
+    console.error('campaign-blueprint-create raw error:', err);
     return errorResponse(500, responseMessage);
   }
 };
