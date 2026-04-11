@@ -549,22 +549,23 @@
   function applyLearnedFixesToBlueprint(blueprint) {
     const draft = cloneBlueprint(blueprint);
     const fixes = getStoredCreateFixes();
-    const blocked = [
-      ...ALWAYS_BLOCKED_KEYWORD_PHRASES,
-      ...(fixes.blockedKeywordPhrases || [])
-    ]
+    const alwaysBlockedTerms = ALWAYS_BLOCKED_KEYWORD_PHRASES
       .map(v => String(v || '').trim().toLowerCase())
       .filter(Boolean);
+    const learnedBlockedKeywords = new Set(
+      (fixes.blockedKeywordPhrases || [])
+        .map(v => String(v || '').trim().toLowerCase())
+        .filter(Boolean)
+    );
 
     (draft.adGroups || []).forEach(ag => {
       if (!ag || !Array.isArray(ag.keywords)) return;
-      ag.keywords = ag.keywords
-        .filter(kw => {
-          const keywordText = String(kw && kw.text || '').trim().toLowerCase();
-          if (!keywordText) return false;
-          return !blocked.some(term => keywordText.includes(term));
-        })
-        .filter(kw => String(kw && kw.text || '').trim().length > 0);
+      ag.keywords = ag.keywords.filter(kw => {
+        const keywordText = String(kw && kw.text || '').trim().toLowerCase();
+        if (!keywordText) return false;
+        if (alwaysBlockedTerms.some(term => keywordText.includes(term))) return false;
+        return !learnedBlockedKeywords.has(keywordText);
+      });
     });
 
     return draft;
@@ -602,7 +603,7 @@
       if (!ag || !Array.isArray(ag.keywords)) return;
       ag.keywords = ag.keywords.filter(kw => {
         const current = String(kw && kw.text || '').trim().toLowerCase();
-        return current && !current.includes(bad);
+        return current && current !== bad;
       });
     });
     return draft;
@@ -788,6 +789,13 @@
     try {
       // Apply previously learned blocked-keyword filters before every create attempt.
       lastBlueprint = applyLearnedFixesToBlueprint(lastBlueprint);
+      const emptyGroupName = firstAdGroupWithoutKeywords(lastBlueprint);
+      if (emptyGroupName) {
+        resultEl.style.display = 'block';
+        resultEl.style.color = '#991b1b';
+        resultEl.innerHTML = `<strong>Create blocked:</strong> &quot;${escapeHtml(emptyGroupName)}&quot; has no keywords after applying saved blocked-keyword fixes. Regenerate blueprint with more policy-safe keywords.`;
+        return;
+      }
       const data = await apiPost('campaign-blueprint-create', {
         blueprint: lastBlueprint,
         account: getAccountParam()
