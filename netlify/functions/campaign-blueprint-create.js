@@ -128,6 +128,37 @@ function normalizeError(err) {
   return 'Google Ads API operation failed';
 }
 
+function isKeywordPolicyViolationError(err) {
+  const errorsList = (err && err.failure && Array.isArray(err.failure.errors) && err.failure.errors.length)
+    ? err.failure.errors
+    : (err && Array.isArray(err.errors) && err.errors.length)
+      ? err.errors
+      : [];
+
+  return errorsList.some(errorObj => {
+    const policyCode = errorObj && errorObj.error_code && errorObj.error_code.policy_violation_error;
+    const isPolicyViolation = typeof policyCode === 'string' && policyCode.trim().length > 0;
+    if (!isPolicyViolation) return false;
+    const fieldPath = (errorObj.location && Array.isArray(errorObj.location.field_path_elements))
+      ? errorObj.location.field_path_elements.map(el => el.field_name || '').join('.')
+      : '';
+    return fieldPath.includes('ad_group_criterion_operation') && fieldPath.includes('keyword');
+  });
+}
+
+function extractErrorTriggerValues(err) {
+  const errorsList = (err && err.failure && Array.isArray(err.failure.errors) && err.failure.errors.length)
+    ? err.failure.errors
+    : (err && Array.isArray(err.errors) && err.errors.length)
+      ? err.errors
+      : [];
+
+  return errorsList
+    .map(errorObj => errorObj && errorObj.trigger && errorObj.trigger.string_value)
+    .map(v => String(v || '').trim())
+    .filter(Boolean);
+}
+
 // ── Resource name helpers ─────────────────────────────────────────────────
 
 function tmpBudgetName() {
@@ -493,7 +524,36 @@ async function createFromBlueprint(customer, blueprint) {
       }
     }));
     if (kwMutations.length) {
-      await mutateStep(`Keywords for "${adGroupName}"`, kwMutations);
+      try {
+        await mutateStep(`Keywords for "${adGroupName}"`, kwMutations);
+      } catch (err) {
+        if (!isKeywordPolicyViolationError(err)) throw err;
+
+        const blockedKeywords = new Set(extractErrorTriggerValues(err).map(v => v.toLowerCase()));
+        const allowedKeywordMutations = kwMutations.filter(mutation => {
+          const keywordText = String(
+            mutation &&
+            mutation.resource &&
+            mutation.resource.keyword &&
+            mutation.resource.keyword.text
+          ).trim().toLowerCase();
+          return keywordText && !blockedKeywords.has(keywordText);
+        });
+
+        if (!allowedKeywordMutations.length) {
+          throw Object.assign(
+            new Error(`All keywords were blocked by policy for ad group "${adGroupName}". Remove restricted terms and try again.`),
+            { _blueprintStep: `Keywords for "${adGroupName}"` }
+          );
+        }
+
+        await mutateStep(`Keywords for "${adGroupName}" (policy-safe retry)`, allowedKeywordMutations);
+        console.warn('Skipped policy-violating keywords during campaign creation', {
+          adGroupName,
+          skippedKeywordCount: kwMutations.length - allowedKeywordMutations.length,
+          skippedKeywords: Array.from(blockedKeywords)
+        });
+      }
     }
 
     // RSA
