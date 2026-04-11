@@ -58,7 +58,8 @@
       https://www.google.com
       https://www.googleadservices.com
       https://ad.doubleclick.net
-      https://googleads.g.doubleclick.net;
+      https://googleads.g.doubleclick.net
+      https://ingesteer.services-prod.nsvcs.net;
 
     frame-src https://www.youtube.com https://youtu.be
       https://www.googletagmanager.com
